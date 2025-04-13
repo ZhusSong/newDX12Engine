@@ -6,6 +6,7 @@
 //Windows环境的引擎定义
 class FWindowsEngine :public FEngine
 {
+	friend class IRenderingInterface;
 public:
 	FWindowsEngine();
 	~FWindowsEngine();
@@ -25,6 +26,14 @@ public:
 	ID3D12Resource* GetCurrentSwapBuff() const;
 	D3D12_CPU_DESCRIPTOR_HANDLE GetCurrentSwapBufferView() const;
 	D3D12_CPU_DESCRIPTOR_HANDLE GetCurrentDepthStencilView() const;
+public:
+	DXGI_FORMAT GetBackBufferFormat() const { return BackBufferFormat; }
+
+	DXGI_FORMAT GetDepthStencilFormat() const { return DepthStencilFormat; }
+
+	UINT GetDXGISampleCount()const;
+
+	UINT GetDXGISampleQuality()const;
 
 protected:
 	void WaitGPUCommandQueueComplete();
@@ -33,8 +42,12 @@ private:
 	bool InitWindows(FWinMainCommandParameters InParameters);
 
 	bool InitDirect3D();
+
+	void PostInitDirect3D();
 protected:
+	//当前围栏值
 	UINT64 CurrentFenceIndex;
+	//当前交换链缓冲区
 	int CurrentSwapBuffIndex;
 
 	//创建 DirectX 图形基础结构 (DXGI) 对象

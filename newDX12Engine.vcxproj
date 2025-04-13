@@ -24,6 +24,12 @@
     <ClCompile Include="EngineCode\Frame\WinMainCommandParameters.cpp" />
     <ClCompile Include="EngineCode\DX12Engine.cpp" />
     <ClCompile Include="EngineCode\EngineFactory.cpp" />
+    <ClCompile Include="EngineCode\Math\EngineMath.cpp" />
+    <ClCompile Include="EngineCode\Mesh\BoxMesh.cpp" />
+    <ClCompile Include="EngineCode\Mesh\Frame\Mesh.cpp" />
+    <ClCompile Include="EngineCode\Mesh\Frame\MeshType.cpp" />
+    <ClCompile Include="EngineCode\Rendering\Frame\Rendering.cpp" />
+    <ClCompile Include="EngineCode\Shader\Frame\Shader.cpp" />
     <ClCompile Include="EngineCode\Windows\WindowsEngine.cpp" />
     <ClCompile Include="EngineCode\Windows\WindowsMessageProcessing.cpp" />
     <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_core\simple_c_array\simple_c_array_string.c" />
@@ -73,6 +79,12 @@
     <ClInclude Include="EngineCode\Debug\Log\SimpleLog.h" />
     <ClInclude Include="EngineCode\EngineFactory.h" />
     <ClInclude Include="EngineCode\EngineMinimal.h" />
+    <ClInclude Include="EngineCode\Math\EngineMath.h" />
+    <ClInclude Include="EngineCode\Mesh\BoxMesh.h" />
+    <ClInclude Include="EngineCode\Mesh\Frame\Mesh.h" />
+    <ClInclude Include="EngineCode\Mesh\Frame\MeshType.h" />
+    <ClInclude Include="EngineCode\Rendering\Frame\Rendering.h" />
+    <ClInclude Include="EngineCode\Shader\Frame\Shader.h" />
     <ClInclude Include="EngineCode\Windows\WindowsEngine.h" />
     <ClInclude Include="EngineCode\Windows\WindowsMessageProcessing.h" />
     <ClInclude Include="simple_library\public\simple_array\simple_hash_array.h" />
@@ -223,7 +235,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>J:\newDX12Project\newDX12Engine\simple_library;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

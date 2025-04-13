@@ -75,7 +75,10 @@ int Exit(FEngine* InEngine)
 	return ReturnValue;
 }
 
-//hInstance 自己的实例
+FEngine* Engine = NULL;
+
+
+//hInstance 当前实例
 //prevInstance 上次的实例
 //cmdLine 传递命令
 //showCmd 多少条cmd

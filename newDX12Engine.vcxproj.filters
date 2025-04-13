@@ -194,6 +194,27 @@
     <Filter Include="EngineCode\Frame">
       <UniqueIdentifier>{671846e0-5c13-4fc9-8230-c69b5131e746}</UniqueIdentifier>
     </Filter>
+    <Filter Include="EngineCode\Math">
+      <UniqueIdentifier>{3d4b5c6b-ef3b-4023-a3ce-59e9d085117e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Mesh">
+      <UniqueIdentifier>{082ff661-4598-4724-82eb-ced851769e0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Shader">
+      <UniqueIdentifier>{09dc547f-8c0f-46b4-8957-7e057b4f364b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering">
+      <UniqueIdentifier>{a997e81a-1eee-45bb-b4ac-888f72575669}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Frame">
+      <UniqueIdentifier>{90576393-c62f-4f5a-ac65-0f4f328b7656}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Mesh\Frame">
+      <UniqueIdentifier>{ce55ecb1-0c7a-4ddf-8bd5-5b75b3ee7a77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Shader\Frame">
+      <UniqueIdentifier>{44974a97-2b02-4ea9-a382-84d7490978be}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="simple_library\private\simple_math\soft_rasterization\soft_rasterization.cpp">
@@ -327,6 +348,24 @@
     </ClCompile>
     <ClCompile Include="EngineCode\EngineFactory.cpp">
       <Filter>EngineCode</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Frame\Rendering.cpp">
+      <Filter>EngineCode\Rendering\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Mesh\Frame\Mesh.cpp">
+      <Filter>EngineCode\Mesh\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Mesh\Frame\MeshType.cpp">
+      <Filter>EngineCode\Mesh\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Mesh\BoxMesh.cpp">
+      <Filter>EngineCode\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Math\EngineMath.cpp">
+      <Filter>EngineCode\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Shader\Frame\Shader.cpp">
+      <Filter>EngineCode\Shader\Frame</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -503,6 +542,24 @@
     </ClInclude>
     <ClInclude Include="EngineCode\Debug\Log\SimpleLog.h">
       <Filter>EngineCode\Debug\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Frame\Rendering.h">
+      <Filter>EngineCode\Rendering\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Mesh\Frame\Mesh.h">
+      <Filter>EngineCode\Mesh\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Mesh\Frame\MeshType.h">
+      <Filter>EngineCode\Mesh\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Mesh\BoxMesh.h">
+      <Filter>EngineCode\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Math\EngineMath.h">
+      <Filter>EngineCode\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Shader\Frame\Shader.h">
+      <Filter>EngineCode\Shader\Frame</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
