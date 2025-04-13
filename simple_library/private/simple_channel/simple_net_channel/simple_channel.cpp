@@ -1,11 +1,10 @@
-// Copyright (C) RenZhai.2022.All Rights Reserved.
 #include "simple_library/public/simple_channel/simple_core/simple_channel.h"
 #include "simple_library/public/simple_channel/simple_core/simple_connetion.h"
 #include "simple_library/public/simple_math/simple_math.h"
 
 FSimpleChannel::FSimpleChannel()
 	:Connetion(nullptr)
-	,ID(get_uint32_random(9999999))
+	,ID(get_uint32_random(99999))
 {
 
 }

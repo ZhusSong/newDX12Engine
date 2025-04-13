@@ -1,4 +1,3 @@
-// Copyright (C) RenZhai.2022.All Rights Reserved.
 #include "simple_library/public/simple_core_minimal/simple_c_windows/simple_c_windows_setting.h"
 
 void set_console_w_color(simple_console_w_color font_color, simple_console_w_color background_color)
