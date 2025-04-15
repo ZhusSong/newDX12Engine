@@ -4,7 +4,7 @@
 #include "WinMainCommandParameters.h"
 #endif
 
-//ÒýÇæ¿ò¼Ü¶¨Òå
+//å¼•æ“Žæ¡†æž¶å®šä¹‰
 class FEngine
 {
 public:

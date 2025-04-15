@@ -2,13 +2,13 @@
 
 #include "simple_library/public/simple_core_minimal/simple_c_core/simple_core_minimal.h"
 
-//ÔËĞĞÅú´¦Àí ÒÔ¹ÜÀíÔ±Æô¶¯
+//è¿è¡Œæ‰¹å¤„ç† ä»¥ç®¡ç†å‘˜å¯åŠ¨
 //mshta vbscript:CreateObject("Shell.Application").ShellExecute("%~dp0git_install.exe","1 F:\c\c\20\20.exe F:\c\c\git_install\git_install\icon1.ico test_git1","","runas",1)(window.close)&&exit
-//ÏÂÃæÊÇ°¸Àı
+//ä¸‹é¢æ˜¯æ¡ˆä¾‹
 /*
-#define REG_SHELL_DIRECTORY					"*\\Shell\\"						//ÔÚ¶ÔÏóÉÏÊó±êÓÒ¼ü
-#define REG_DIRECTORY						"Directory\\Background\\shell\\"	//ÔÚ¿Õ°×µÄµØÇøµã»÷ÓÒ¼ü Ìí¼Ó°´Å¥
-#define REG_DESKTOPBACKGROUND				"DesktopBackground\\shell\\"		//ÔÚ¿Õ°×µÄµØÇøµã»÷ÓÒ¼ü Ìí¼Ó°´Å¥
+#define REG_SHELL_DIRECTORY					"*\\Shell\\"						//åœ¨å¯¹è±¡ä¸Šé¼ æ ‡å³é”®
+#define REG_DIRECTORY						"Directory\\Background\\shell\\"	//åœ¨ç©ºç™½çš„åœ°åŒºç‚¹å‡»å³é”® æ·»åŠ æŒ‰é’®
+#define REG_DESKTOPBACKGROUND				"DesktopBackground\\shell\\"		//åœ¨ç©ºç™½çš„åœ°åŒºç‚¹å‡»å³é”® æ·»åŠ æŒ‰é’®
 
 #define REG_PATH_TEST REG_DIRECTORY
 int main(int argc, char *argv[])
@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
 	strcat(buf_reg_sub_key, name);
 	strcat(buf_reg_sub_key, "\\command");
 
-	if (strcmp(commit_type ,"1") == 0) //°²×°
+	if (strcmp(commit_type ,"1") == 0) //å®‰è£…
 	{
 		//key
 		freg_info info;
@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
 
 		if (!register_info(&info))
 		{
-			printf("\n 1 ĞèÒª¹ÜÀíÔ±È¨ÏŞ~~ \n");
+			printf("\n 1 éœ€è¦ç®¡ç†å‘˜æƒé™~~ \n");
 			system("pause");
 
 			return 1;
@@ -63,13 +63,13 @@ int main(int argc, char *argv[])
 
 		if (!register_info(&info))
 		{
-			printf("\n 2 ĞèÒª¹ÜÀíÔ±È¨ÏŞ~~ \n");
+			printf("\n 2 éœ€è¦ç®¡ç†å‘˜æƒé™~~ \n");
 			system("pause");
 
 			return 1;
 		}
 	}
-	else if (strcmp(commit_type, "2") == 0) //Ğ¶ÔØ
+	else if (strcmp(commit_type, "2") == 0) //å¸è½½
 	{
 		if (delete_register_info(HKEY_CLASSES_ROOT, buf_reg_key))
 		{
@@ -100,12 +100,12 @@ typedef struct
 
 void init_feg_info(freg_info *info);
 
-//×¢²á ¼üĞÅÏ¢
+//æ³¨å†Œ é”®ä¿¡æ¯
 bool register_info(const freg_info *info);
 
-//×ÓÏî²»ÔËĞĞ´æÔÚ×ÓÏî ·ñÔòÉ¾³ıÊ§°Ü
+//å­é¡¹ä¸è¿è¡Œå­˜åœ¨å­é¡¹ å¦åˆ™åˆ é™¤å¤±è´¥
 bool delete_register_info(HKEY hkey, const char *filename);
 
-//×ÓÏî²»ÔËĞĞ´æÔÚ×ÓÏî ·ñÔòÉ¾³ıÊ§°Ü
+//å­é¡¹ä¸è¿è¡Œå­˜åœ¨å­é¡¹ å¦åˆ™åˆ é™¤å¤±è´¥
 bool delete_reg_key(HKEY hkey, const char *filename, const char *subkey_name);
 _CRT_END_C_HEADER

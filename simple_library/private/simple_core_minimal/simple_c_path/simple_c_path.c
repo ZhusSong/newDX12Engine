@@ -37,7 +37,7 @@ void get_path_clean_filename(char *buf, const char *path_buf)
 
 void normalization_path(char *path_buf)
 {	
-	//这种替换似乎有点问题 
+	//杩欑鏇挎崲浼间箮鏈夌偣闂 
 	//replace_char_inline(path_buf,'\\','/');
 	
 	int len = strlen(path_buf);

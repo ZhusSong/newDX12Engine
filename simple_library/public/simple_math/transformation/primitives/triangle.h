@@ -14,6 +14,6 @@ namespace primitives
 		fvector_4d Color;
 	};
 
-	//ÅĞ¶¨Ò»¸öµãÊÇ²»ÊÇÔÚÈı½ÇĞÎÀïÃæ
+	//åˆ¤å®šä¸€ä¸ªç‚¹æ˜¯ä¸æ˜¯åœ¨ä¸‰è§’å½¢é‡Œé¢
 	bool SIMPLE_LIBRARY_API is_inside_triangle(ftriangle in_triangle, int x, int y);
 }

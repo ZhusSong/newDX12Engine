@@ -7,8 +7,8 @@ namespace SimpleImage
 {
 	struct SIMPLE_LIBRARY_API FBmpImageInfo
 	{
-		BITMAPFILEHEADER BmpHearder;		//Õ∑–≈œ¢
-		BITMAPINFOHEADER BmpInFoHeader;		//Õ∑–≈œ¢2
-		RGBQUAD          BmpColors[256];	//—’…´±Ì
+		BITMAPFILEHEADER BmpHearder;		//Â§¥‰ø°ÊÅØ
+		BITMAPINFOHEADER BmpInFoHeader;		//Â§¥‰ø°ÊÅØ2
+		RGBQUAD          BmpColors[256];	//È¢úËâ≤Ë°®
 	};
 }

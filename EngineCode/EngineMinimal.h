@@ -1,5 +1,5 @@
 #pragma once
-// ¶¨ÒåÁËĞèÒª¼ÓÔØµÄÍ·ÎÄ¼ş
+// å®šä¹‰äº†éœ€è¦åŠ è½½çš„å¤´æ–‡ä»¶
 #include "../simple_library/public/simple_library.h"
 #include "Debug/Log/SimpleLog.h"
 

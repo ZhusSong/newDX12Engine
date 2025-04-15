@@ -18,12 +18,12 @@ void FMesh::Init()
 {
     float AspectRatio = (float)FEngineRenderConfig::GetRenderConfig()->ScrrenWidth / (float)FEngineRenderConfig::GetRenderConfig()->ScrrenHight;
     //(1,1,0) (-1,1,0) (-1,-1,0) (1,-1,0) (1,1,1) (-1,1,1) (-1,-1,1) (1,-1,1)
-    //»ùÓÚÊÓÒ°¹¹½¨×óÊÖÍ¸ÊÓÍ¶Ó°¾ØÕó
+    //åŸºäºè§†é‡æ„å»ºå·¦æ‰‹é€è§†æŠ•å½±çŸ©é˜µ
     XMMATRIX Project = XMMatrixPerspectiveFovLH(
-        0.25f * PI, //ÒÔ»¡¶ÈÎªµ¥Î»µÄ×ÔÉÏ¶øÏÂµÄÊÓ³¡½Ç¡£
-        AspectRatio,//ÊÓÍ¼¿Õ¼ä X:Y µÄ×İºá±È¡£
-        1.0f,//µ½½ü¼ô²ÃÆ½ÃæµÄ¾àÀë¡£±ØĞë´óÓÚÁã¡£
-        1000.f//µ½Ô¶¼ô²ÃÆ½ÃæµÄ¾àÀë¡£±ØĞë´óÓÚÁã¡£
+        0.25f * PI, //ä»¥å¼§åº¦ä¸ºå•ä½çš„è‡ªä¸Šè€Œä¸‹çš„è§†åœºè§’ã€‚
+        AspectRatio,//è§†å›¾ç©ºé—´ X:Y çš„çºµæ¨ªæ¯”ã€‚
+        1.0f,//åˆ°è¿‘å‰ªè£å¹³é¢çš„è·ç¦»ã€‚å¿…é¡»å¤§äºé›¶ã€‚
+        1000.f//åˆ°è¿œå‰ªè£å¹³é¢çš„è·ç¦»ã€‚å¿…é¡»å¤§äºé›¶ã€‚
     );
 
     XMStoreFloat4x4(&ProjectMatrix, Project);
@@ -31,7 +31,7 @@ void FMesh::Init()
 
 void FMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
 {
-    //¹¹½¨CBVÕ»ÃèÊö
+    //æ„å»ºCBVæ ˆæè¿°
     D3D12_DESCRIPTOR_HEAP_DESC HeapDesc;
     HeapDesc.NumDescriptors = 1;
     HeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
@@ -39,7 +39,7 @@ void FMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
     HeapDesc.NodeMask = 0;
     GetD3dDevice()->CreateDescriptorHeap(&HeapDesc, IID_PPV_ARGS(&CBVHeap));
 
-    //³£Á¿»º³åÇøµÄ¹¹½¨
+    //å¸¸é‡ç¼“å†²åŒºçš„æ„å»º
     //////////////////////////////
     objectConstants = make_shared<FRenderingResourcesUpdate>();
     objectConstants->Init(GetD3dDevice().Get(), sizeof(FObjectTransformation), 1);
@@ -54,10 +54,10 @@ void FMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
         &CBVDesc,
         CBVHeap->GetCPUDescriptorHandleForHeapStart());
 
-    //¹¹½¨¸ùÇ©Ãû
+    //æ„å»ºæ ¹ç­¾å
     CD3DX12_ROOT_PARAMETER RootParam[1];
 
-    //CBVÃèÊö±í
+    //CBVæè¿°è¡¨
     CD3DX12_DESCRIPTOR_RANGE DescriptorRangeCBV;
     DescriptorRangeCBV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 0);
 
@@ -70,7 +70,7 @@ void FMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
         nullptr,
         D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 
-    //´´½¨
+    //åˆ›å»º
     ComPtr<ID3DBlob> SerializeRootSignature;
     ComPtr<ID3DBlob> ErrorBlob;
     D3D12SerializeRootSignature(
@@ -84,14 +84,14 @@ void FMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
         Engine_Log_Error("%s", (char*)ErrorBlob->GetBufferPointer());
     }
 
-    //´´½¨
+    //åˆ›å»º
     GetD3dDevice()->CreateRootSignature(
         0,
         SerializeRootSignature->GetBufferPointer(),
         SerializeRootSignature->GetBufferSize(),
         IID_PPV_ARGS(&RootSignature));
 
-    //¹¹½¨Shader
+    //æ„å»ºShader
     //HLSL
     VertexShader.BuildShaders(L"../newDX12Engine/Shader/VertexShader.hlsl", "VertexShaderMain", "vs_5_0");
     PixelShader.BuildShaders(L"../newDX12Engine/Shader/VertexShader.hlsl", "PixelShaderMain", "ps_5_0");
@@ -102,12 +102,12 @@ void FMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
         {"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0}
     };
 
-    //¹¹½¨Ä£ĞÍ
+    //æ„å»ºæ¨¡å‹
     //////////////////////////
     VertexStrideInBytes = sizeof(FVertex);
     IndexSize = InRenderingData->IndexData.size();
 
-    //»ñÈ¡ÁËÄ£ĞÍÊı¾İµÄ´óĞ¡
+    //è·å–äº†æ¨¡å‹æ•°æ®çš„å¤§å°
     VertexSizeInBytes = InRenderingData->VertexData.size() * VertexStrideInBytes;
     IndexSizeInBytes = IndexSize * sizeof(uint16_t);
 
@@ -124,26 +124,26 @@ void FMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
     GPUIndexBufferPtr = ConstructDefaultBuffer(IndexBufferTmpPtr,
         InRenderingData->IndexData.data(), IndexSizeInBytes);
 
-    //PSO Á÷Ë®Ïß°ó¶¨
+    //PSO æµæ°´çº¿ç»‘å®š
     D3D12_GRAPHICS_PIPELINE_STATE_DESC GPSDesc;
     memset(&GPSDesc, 0, sizeof(D3D12_GRAPHICS_PIPELINE_STATE_DESC));
 
-    //°ó¶¨ÊäÈë²¼¾Ö
+    //ç»‘å®šè¾“å…¥å¸ƒå±€
     GPSDesc.InputLayout.pInputElementDescs = InputElementDesc.data();
     GPSDesc.InputLayout.NumElements = (UINT)InputElementDesc.size();
 
-    //°ó¶¨¸ùÇ©Ãû
+    //ç»‘å®šæ ¹ç­¾å
     GPSDesc.pRootSignature = RootSignature.Get();
 
-    //°ó¶¨¶¥µã×ÅÉ«Æ÷´úÂë
+    //ç»‘å®šé¡¶ç‚¹ç€è‰²å™¨ä»£ç 
     GPSDesc.VS.pShaderBytecode = reinterpret_cast<BYTE*>(VertexShader.GetBufferPointer());
     GPSDesc.VS.BytecodeLength = VertexShader.GetBufferSize();
 
-    //°ó¶¨ÏñËØ×ÅÉ«Æ÷
+    //ç»‘å®šåƒç´ ç€è‰²å™¨
     GPSDesc.PS.pShaderBytecode = PixelShader.GetBufferPointer();
     GPSDesc.PS.BytecodeLength = PixelShader.GetBufferSize();
 
-    //ÅäÖÃ¹âÕ¤»¯×´Ì¬
+    //é…ç½®å…‰æ …åŒ–çŠ¶æ€
     GPSDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
 
     //0000..0000
@@ -193,27 +193,27 @@ void FMesh::Draw(float DeltaTime)
 
     D3D12_VERTEX_BUFFER_VIEW VBV = GetVertexBufferView();
 
-    //°ó¶¨äÖÈ¾Á÷Ë®ÏßÉÏµÄÊäÈë²Û£¬¿ÉÒÔÔÚÊäÈë×°ÅäÆ÷½×¶Î´«Èë¶¥µãÊı¾İ
+    //ç»‘å®šæ¸²æŸ“æµæ°´çº¿ä¸Šçš„è¾“å…¥æ§½ï¼Œå¯ä»¥åœ¨è¾“å…¥è£…é…å™¨é˜¶æ®µä¼ å…¥é¡¶ç‚¹æ•°æ®
     GetGraphicsCommandList()->IASetVertexBuffers(
-        0,//ÆğÊ¼ÊäÈë²Û 0-15 
+        0,//èµ·å§‹è¾“å…¥æ§½ 0-15 
         1,//k k+1 ... k+n-1 
         &VBV);
 
     D3D12_INDEX_BUFFER_VIEW IBV = GetIndexBufferView();
     GetGraphicsCommandList()->IASetIndexBuffer(&IBV);
 
-    //¶¨ÒåÎÒÃÇÒª»æÖÆµÄÄÄÖÖÍ¼Ôª µã Ïß Ãæ
+    //å®šä¹‰æˆ‘ä»¬è¦ç»˜åˆ¶çš„å“ªç§å›¾å…ƒ ç‚¹ çº¿ é¢
     GetGraphicsCommandList()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
     GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(0, CBVHeap->GetGPUDescriptorHandleForHeapStart());
 
-    //ÕæÕıµÄ»æÖÆ
+    //çœŸæ­£çš„ç»˜åˆ¶
     GetGraphicsCommandList()->DrawIndexedInstanced(
-        IndexSize,//¶¥µãÊıÁ¿
-        1,//»æÖÆÊµÀıÊıÁ¿
-        0,//¶¥µã»º³åÇøµÚÒ»¸ö±»»æÖÆµÄË÷Òı
-        0,//GPU ´ÓË÷Òı»º³åÇø¶ÁÈ¡µÄµÚÒ»¸öË÷ÒıµÄÎ»ÖÃ¡£
-        0);//ÔÚ´Ó¶¥µã»º³åÇø¶ÁÈ¡Ã¿¸öÊµÀıÊı¾İÖ®Ç°Ìí¼Óµ½Ã¿¸öË÷ÒıµÄÖµ¡£
+        IndexSize,//é¡¶ç‚¹æ•°é‡
+        1,//ç»˜åˆ¶å®ä¾‹æ•°é‡
+        0,//é¡¶ç‚¹ç¼“å†²åŒºç¬¬ä¸€ä¸ªè¢«ç»˜åˆ¶çš„ç´¢å¼•
+        0,//GPU ä»ç´¢å¼•ç¼“å†²åŒºè¯»å–çš„ç¬¬ä¸€ä¸ªç´¢å¼•çš„ä½ç½®ã€‚
+        0);//åœ¨ä»é¡¶ç‚¹ç¼“å†²åŒºè¯»å–æ¯ä¸ªå®ä¾‹æ•°æ®ä¹‹å‰æ·»åŠ åˆ°æ¯ä¸ªç´¢å¼•çš„å€¼ã€‚
 }
 
 void FMesh::PreDraw(float DeltaTime)

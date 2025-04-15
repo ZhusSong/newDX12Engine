@@ -88,15 +88,15 @@ public:
 
 public:
 
-	//¹ßĞÔ->ÎïÌå
+	//æƒ¯æ€§->ç‰©ä½“
 	void inertia_to_object(const frotator& in_rot);
-	//ÎïÌå->¹ßĞÔ
+	//ç‰©ä½“->æƒ¯æ€§
 	void object_to_inertia(const frotator& in_rot);
 
-	//ĞĞÁĞÊ½
+	//è¡Œåˆ—å¼
 	float determinant()const;
 
-	//µ¥Î»»¯
+	//å•ä½åŒ–
 	static fmatrix_4x4 identity();
 
 	void transpose();

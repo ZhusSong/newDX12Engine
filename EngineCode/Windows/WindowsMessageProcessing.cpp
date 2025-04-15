@@ -1,6 +1,6 @@
 #include "WindowsMessageProcessing.h"
 
-//消息处理句柄
+//娑堟伅澶勭悊鍙ユ焺
 LRESULT CALLBACK EngineWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
@@ -10,6 +10,6 @@ LRESULT CALLBACK EngineWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPa
 		return 0;
 	}
 
-	//交给windows自己处理完成
+	//浜ょ粰windows鑷繁澶勭悊瀹屾垚
 	return DefWindowProc(hwnd, msg, wParam, lParam);
 }

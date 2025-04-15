@@ -49,11 +49,11 @@ public:
 
 	fquat inverse()const;
 
-	//Å·À­×ªËÄÔª
-	//¹ßĞÔ->ÎïÌå
+	//æ¬§æ‹‰è½¬å››å…ƒ
+	//æƒ¯æ€§->ç‰©ä½“
 	void inertia_to_object(const frotator& in_rot);
 
-	//ÎïÌå->¹ßĞÔ
+	//ç‰©ä½“->æƒ¯æ€§
 	void object_to_inertia(const frotator& in_rot);
 
 	//
@@ -63,24 +63,24 @@ public:
 	frotator get_rot_by_object_to_inertia_v2();
 	frotator get_rot_by_inertia_to_object_v2();
 
-	//Ã»ÓĞ¹éÒ»»¯µÄfquat
+	//æ²¡æœ‰å½’ä¸€åŒ–çš„fquat
 	static fquat lerp(const fquat &in_q0,const fquat &in_q1,float in_t);
 
-	//Ë«ÏßĞÔËÄÔªÊı²åÖµ
+	//åŒçº¿æ€§å››å…ƒæ•°æ’å€¼
 	static fquat bilinear_lerp(
 		const fquat& in_q00, const fquat& in_q10,
 		const fquat& in_q01, const fquat& in_q11,
 		float frac_x, float frac_y);
 	
-	//Ã»ÓĞ¹éÒ»»¯
+	//æ²¡æœ‰å½’ä¸€åŒ–
 	static fquat s_lerp(const fquat& in_q0, const fquat& in_q1, float in_t);
 
-	//ËÄÔªÊı²åÖµ È«Â·¾¶
+	//å››å…ƒæ•°æ’å€¼ å…¨è·¯å¾„
 	static fquat s_lerp_full_path(const fquat& in_q0, const fquat& in_q1, float in_t);
 	static fquat s_quad(const fquat& in_q0, const fquat& in_q1, const fquat& in_s0, const fquat& in_s1, float in_t);
 	static fquat s_quad_full_path(const fquat& in_q0, const fquat& in_q1, const fquat& in_s0, const fquat& in_s1, float in_t);
 	
-	//»ñÈ¡in_s0 in_s1
+	//è·å–in_s0 in_s1
 	static fquat get_tangents(const fquat& in_prev_q, const fquat& in_q, const fquat& in_nest_q);
 	
 	const fquat identity();

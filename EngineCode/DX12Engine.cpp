@@ -78,32 +78,32 @@ int Exit(FEngine* InEngine)
 FEngine* Engine = NULL;
 
 
-//hInstance µ±Ç°ÊµÀı
-//prevInstance ÉÏ´ÎµÄÊµÀı
-//cmdLine ´«µİÃüÁî
-//showCmd ¶àÉÙÌõcmd
+//hInstance å½“å‰å®ä¾‹
+//prevInstance ä¸Šæ¬¡çš„å®ä¾‹
+//cmdLine ä¼ é€’å‘½ä»¤
+//showCmd å¤šå°‘æ¡cmd
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, int showCmd)
 {
 	int ReturnValue = 0;
 
 	if (FEngine* Engine = FEngineFactory::CreateEngine())
 	{
-		//³õÊ¼»¯
+		//åˆå§‹åŒ–
 		Init(Engine, hInstance, prevInstance, cmdLine, showCmd);
 
 		MSG EngineMsg = { 0 };
 
-		//äÖÈ¾³öÍ¼
+		//æ¸²æŸ“å‡ºå›¾
 		while (EngineMsg.message != WM_QUIT)
 		{
-			//PM_NOREMOVE ÏûÏ¢²»´Ó¶ÓÁĞÀï³ıµô¡£
-			//PM_REMOVE   ÏûÏ¢´Ó¶ÓÁĞÀï³ıµô¡£
-			//PM_NOYIELD  ´Ë±êÖ¾Ê¹ÏµÍ³²»ÊÍ·ÅµÈ´ıµ÷ÓÃ³ÌĞò¿ÕÏĞµÄÏß³Ì
+			//PM_NOREMOVE æ¶ˆæ¯ä¸ä»é˜Ÿåˆ—é‡Œé™¤æ‰ã€‚
+			//PM_REMOVE   æ¶ˆæ¯ä»é˜Ÿåˆ—é‡Œé™¤æ‰ã€‚
+			//PM_NOYIELD  æ­¤æ ‡å¿—ä½¿ç³»ç»Ÿä¸é‡Šæ”¾ç­‰å¾…è°ƒç”¨ç¨‹åºç©ºé—²çš„çº¿ç¨‹
 			// 
-			//PM_QS_INPUT ´¦ÀíÊó±êºÍ¼üÅÌÏûÏ¢¡£
-			//PM_QS_PAINT ´¦Àí»­Í¼ÏûÏ¢¡£
-			//PM_QS_POSTMESSAGE ´¦ÀíËùÓĞ±»¼ÄËÍµÄÏûÏ¢£¬°üÀ¨¼ÆÊ±Æ÷ºÍÈÈ¼ü¡£
-			//PM_QS_SENDMESSAGE ´¦ÀíËùÓĞ·¢ËÍÏûÏ¢¡£
+			//PM_QS_INPUT å¤„ç†é¼ æ ‡å’Œé”®ç›˜æ¶ˆæ¯ã€‚
+			//PM_QS_PAINT å¤„ç†ç”»å›¾æ¶ˆæ¯ã€‚
+			//PM_QS_POSTMESSAGE å¤„ç†æ‰€æœ‰è¢«å¯„é€çš„æ¶ˆæ¯ï¼ŒåŒ…æ‹¬è®¡æ—¶å™¨å’Œçƒ­é”®ã€‚
+			//PM_QS_SENDMESSAGE å¤„ç†æ‰€æœ‰å‘é€æ¶ˆæ¯ã€‚
 			if (PeekMessage(&EngineMsg, 0, 0, 0, PM_REMOVE))
 			{
 				TranslateMessage(&EngineMsg);
@@ -115,7 +115,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, in
 			}
 		}
 
-		//ÍË³ö
+		//é€€å‡º
 		ReturnValue = Exit(Engine);
 	}
 	else

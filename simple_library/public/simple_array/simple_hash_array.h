@@ -6,7 +6,7 @@ template<typename T>
 class TIndexedContainerIterator
 {
 public:
-	//¹¹Ôì
+	//æ„é€ 
 	TIndexedContainerIterator(T *InIter,int InN)
 		:Iter(InIter)
 	{
@@ -51,7 +51,7 @@ public:
 		,NestIndex(0)
 		,PreAllocationSize(10)
 	{
-		//Ê×ÏÈÔ¤·ÖÅä10¸öÔªËØ
+		//é¦–å…ˆé¢„åˆ†é…10ä¸ªå…ƒç´ 
 		Data = (unsigned char*)malloc(PreAllocationSize * sizeof(ElementType));
 	}
 
@@ -102,7 +102,7 @@ public:
 
 		if (NestIndex >= PreAllocationSize)
 		{
-			//ÄÚ´æ²»¹»ÁË ²»¹»¾Í·ÖÅä		
+			//å†…å­˜ä¸å¤Ÿäº† ä¸å¤Ÿå°±åˆ†é…		
 			Data = (unsigned char*)realloc(Data, ElementSize * (NestIndex + 10));
 		}
 
@@ -174,7 +174,7 @@ public:
 				int CpyNum = CurrentIndex - InIndex;
 
 				int ElementSize = sizeof(ElementType);
-				if (CpyNum > 0)//´ú±íÒÆ³ıµÄÊÇÖĞ¼äµÄ
+				if (CpyNum > 0)//ä»£è¡¨ç§»é™¤çš„æ˜¯ä¸­é—´çš„
 				{
 					memcpy(&Data[InIndex*ElementSize], &Data[(InIndex + 1)*ElementSize], CpyNum * ElementSize);
 
@@ -182,7 +182,7 @@ public:
 
 					return true;
 				}
-				else if (CpyNum == 0)//ÒÆ³ıµÄ¶ÔÏó¾ÍÊÇ×îºóÒ»¸ö
+				else if (CpyNum == 0)//ç§»é™¤çš„å¯¹è±¡å°±æ˜¯æœ€åä¸€ä¸ª
 				{
 					NestIndex--;
 
@@ -190,7 +190,7 @@ public:
 				}
 				else
 				{
-					//check(0);//²»Ó¦¸Ã×ßÕâ±ß
+					//check(0);//ä¸åº”è¯¥èµ°è¿™è¾¹
 				}
 			}
 		}
@@ -232,7 +232,7 @@ public:
 	}
 
 protected:
-	unsigned char* Data;//Á¬ĞøÄÚ´æ
-	int NestIndex;//µ±Ç°µÄindex
-	int PreAllocationSize;//Ô¤·ÖÅäµÄÊıÁ¿
+	unsigned char* Data;//è¿ç»­å†…å­˜
+	int NestIndex;//å½“å‰çš„index
+	int PreAllocationSize;//é¢„åˆ†é…çš„æ•°é‡
 };

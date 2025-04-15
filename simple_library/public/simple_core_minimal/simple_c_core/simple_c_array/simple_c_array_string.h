@@ -15,8 +15,8 @@ typedef struct
 SIMPLE_ARRAY_C_STRUCT(simple_c_string,str_node)
 
 _CRT_BEGIN_C_HEADER
-//Õ­×Ö·û
- void init_string(simple_c_string *array_c);//³õÊ¼»¯ ·ÖÅäÄÚ´æ
+//çª„å­—ç¬¦
+ void init_string(simple_c_string *array_c);//åˆå§‹åŒ– åˆ†é…å†…å­˜
 
  void destroy_string(simple_c_string *array_c);
 
@@ -32,10 +32,10 @@ _CRT_BEGIN_C_HEADER
 
  bool is_exist(char const *  in_data, simple_c_string *array_c);
  
- //¿í×Ö·û
+ //å®½å­—ç¬¦
  void dismantling_wstring(const wchar_t* in_data, const wchar_t* str_sub, simple_c_wstring* array_c);
  
- void init_wstring(simple_c_wstring* array_c);//³õÊ¼»¯ ·ÖÅäÄÚ´æ
+ void init_wstring(simple_c_wstring* array_c);//åˆå§‹åŒ– åˆ†é…å†…å­˜
 
  void destroy_wstring(simple_c_wstring* array_c);
 

@@ -83,7 +83,7 @@ public:
 			{
 				if (Count->WeakCount < 1)
 				{
-					delete Count; //ÈõÖ¸ÕëÒ²ÊÇĞèÒªÅĞ¶Ï ¸æËßÈõÖ¸Õë ÎÒÃÇÖÇÄÜÖ¸ÕëµÄÇé¿ö
+					delete Count; //å¼±æŒ‡é’ˆä¹Ÿæ˜¯éœ€è¦åˆ¤æ–­ å‘Šè¯‰å¼±æŒ‡é’ˆ æˆ‘ä»¬æ™ºèƒ½æŒ‡é’ˆçš„æƒ…å†µ
 					Count = nullptr;
 				}
 
@@ -150,7 +150,7 @@ public:
 	FSharedPtr<T> Pin()
 	{
 		FSharedPtr<T> SP(*this);
-		return SP;//ÈõÖ¸Õë
+		return SP;//å¼±æŒ‡é’ˆ
 	}
 
 	bool /*expired*/ IsVaild()

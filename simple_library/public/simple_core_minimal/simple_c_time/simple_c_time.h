@@ -12,7 +12,7 @@ char *get_locale(char *in_buffer, const char *in_locale, const char *in_encoding
 
 struct tm *get_local_time_tm();
 
-//获取的是本地时间
+//鑾峰彇鐨勬槸鏈湴鏃堕棿
 time_t get_time_t();
 
 void get_local_time_string(char *t_buffer);

@@ -5,8 +5,8 @@
 
 namespace soft_rasterization
 {
-	////////////////////////////¶ÔÏó
-	//ÍòÎï½ÔÎª¶ÔÏó
+	////////////////////////////å¯¹è±¡
+	//ä¸‡ç‰©çš†ä¸ºå¯¹è±¡
 	class SIMPLE_LIBRARY_API fobject
 	{
 		friend class fengine;
@@ -36,7 +36,7 @@ namespace soft_rasterization
 		static std::vector<fobject*> gobject_array;
 	};
 
-	//×é¼ş»ùÀà
+	//ç»„ä»¶åŸºç±»
 	class SIMPLE_LIBRARY_API fcomponent : public fobject
 	{
 	public:
@@ -44,7 +44,7 @@ namespace soft_rasterization
 		std::vector<fcomponent*> children;
 	};
 
-	//Î»ÒÆ×é¼ş
+	//ä½ç§»ç»„ä»¶
 	class SIMPLE_LIBRARY_API ftransform_component :public fcomponent
 	{
 	public:
@@ -64,13 +64,13 @@ namespace soft_rasterization
 		frotator rotation;
 		fvector_3d scale;
 
-		//Ğı×ªÓĞ¹Ø
+		//æ—‹è½¬æœ‰å…³
 		fvector_3d forward_vector;
 		fvector_3d right_vector;
 		fvector_3d up_vector;
 
-		//Èç¹ûÊÇÉãÏñ»ú ÄÇÃ´ËüÊÇ°ÑÊÀ½çµã×ªÎª¾Ö²¿¿Õ¼äÏÂ¡£
-		//Èç¹ûÊÇÄ£ĞÍµÄworldmatrix ÄÇÃ´Ëü½«°Ñ¾Ö²¿µã×ªµ½ÊÀ½ç¿Õ¼äÏÂ
+		//å¦‚æœæ˜¯æ‘„åƒæœº é‚£ä¹ˆå®ƒæ˜¯æŠŠä¸–ç•Œç‚¹è½¬ä¸ºå±€éƒ¨ç©ºé—´ä¸‹ã€‚
+		//å¦‚æœæ˜¯æ¨¡å‹çš„worldmatrix é‚£ä¹ˆå®ƒå°†æŠŠå±€éƒ¨ç‚¹è½¬åˆ°ä¸–ç•Œç©ºé—´ä¸‹
 		fmatrix_4x4 matrix;
 		fmatrix_4x4 viewProj_matrix;
 
@@ -78,14 +78,14 @@ namespace soft_rasterization
 		frotator last_rotation;
 	};
 
-	//Mesh×é¼ş
+	//Meshç»„ä»¶
 	class SIMPLE_LIBRARY_API fmesh_component :public ftransform_component
 	{
 	public:
 		std::vector<fvector_3d> vertex_data;
 	};
 
-	//ÄÜ¿´µ½µÄ»ùÀà
+	//èƒ½çœ‹åˆ°çš„åŸºç±»
 	class SIMPLE_LIBRARY_API factor :public fobject
 	{
 		VARIABLE(category = actor, visibleanywhere, blueprintreadonly, meta = (allowprivateaccess = "true"))
@@ -101,13 +101,13 @@ namespace soft_rasterization
 		FORCEINLINE ftransform_component* get_transform() { return transform; }
 	};
 
-	//ÉãÏñ»ú
+	//æ‘„åƒæœº
 	class SIMPLE_LIBRARY_API fcamera :public factor
 	{
 	public:
 	};
 
-	//Ä£ĞÍActor
+	//æ¨¡å‹Actor
 	class fmesh_actor :public factor
 	{
 		VARIABLE(category = actor, visibleanywhere, blueprintreadonly, meta = (allowprivateaccess = "true"))
@@ -120,7 +120,7 @@ namespace soft_rasterization
 		FORCEINLINE fmesh_component* get_mesh() { return mesh_component; }
 	};
 
-	//ÊÓ¿ÚÅäÖÃ
+	//è§†å£é…ç½®
 	struct SIMPLE_LIBRARY_API fviewport_config
 	{
 		fviewport_config()
@@ -139,7 +139,7 @@ namespace soft_rasterization
 		float near_z;
 		float far_z;
 	};
-	////////////////////////////ÒªäÖÈ¾µÄÊı¾İ
+	////////////////////////////è¦æ¸²æŸ“çš„æ•°æ®
 	struct SIMPLE_LIBRARY_API frender_data_3d
 	{
 		std::vector<fvector_3d> vertex_data;
@@ -154,7 +154,7 @@ namespace soft_rasterization
 		std::vector<uint16_t> index_data;
 	};
 
-	////////////////////////////ÒıÇæ
+	////////////////////////////å¼•æ“
 	class SIMPLE_LIBRARY_API fengine
 	{
 	public:
@@ -188,11 +188,11 @@ namespace soft_rasterization
 
 		std::vector<fmesh_actor*> draw_obj;
 
-		//Ã¿Ò»Ö¡Òª»æÖÆµÄÊı¾İ
+		//æ¯ä¸€å¸§è¦ç»˜åˆ¶çš„æ•°æ®
 		std::vector<frender_data_3d> frame_render_data3;
 		std::wstring wpath;
 
-		//Ö¡Êı
+		//å¸§æ•°
 		int index;//
 	};
 
@@ -230,13 +230,13 @@ int main()
 			set_rot(r);
 
 			//
-			//// Î»ÖÃ
+			//// ä½ç½®
 			//get_transform()->position.x -= 1.f;
 			//get_transform()->position.y -= 1.f;
 			//get_transform()->position.z -= 1.f;
-			////// Ğı×ª
+			////// æ—‹è½¬
 			////get_transform()->rotation.yaw += 6.f;
-			//// Ëõ·Å
+			//// ç¼©æ”¾
 			//get_transform()->scale.x -= 0.1f;
 			//get_transform()->scale.y -= 0.4f;
 			//get_transform()->scale.z -= 0.4f;
@@ -251,13 +251,13 @@ int main()
 			in_objs.push_back(new ftest_mesh_actor());
 			fmesh_actor* in_actor = in_objs[in_objs.size() - 1];
 
-			//Èı½ÇĞÎ ÃæÆ¬
+			//ä¸‰è§’å½¢ é¢ç‰‡
 			in_actor->get_mesh()->vertex_data.push_back(fvector_3d(0.f, 0.f, 0.f));
 			in_actor->get_mesh()->vertex_data.push_back(fvector_3d(0.f, 10.f, 10.f));
 			in_actor->get_mesh()->vertex_data.push_back(fvector_3d(10.f, 0.f, 0.f));
 		}
 
-		//1.×ªÂ·¾¶
+		//1.è½¬è·¯å¾„
 		char path_buff[1024] = { 0 };
 		char path[] = "../Math/render/a_%i.bmp";
 		get_full_path(path_buff, 1024, path);

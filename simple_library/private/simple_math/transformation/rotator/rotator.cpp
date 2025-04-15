@@ -9,7 +9,7 @@ void frotator::object_to_inertia(const fmatrix_3x3& in_rot_matrix)
 	feuler euler;
 	euler.pitch = -in_rot_matrix.m32;
 
-	//ÅÐ¶¨ÍòÏòËø
+	//åˆ¤å®šä¸‡å‘é”
 	if (fabs(euler.pitch) > 0.99999f)
 	{
 		euler.pitch *= (3.1415926f / 2.f);
@@ -58,7 +58,7 @@ void frotator::euler_to_rotator(const feuler& in_euler)
 
 void frotator::rotator_to_euler(feuler& in_euler) const
 {
-	//½«½Ç¶È×ªÎª»¡¶È
+	//å°†è§’åº¦è½¬ä¸ºå¼§åº¦
 	in_euler.heading = math_utils::angle_to_radian(pitch);//y
 	in_euler.pitch = math_utils::angle_to_radian(roll);//x
 	in_euler.bank  = math_utils::angle_to_radian(yaw);//z
@@ -115,7 +115,7 @@ void frotator::inertia_to_object(const fmatrix_3x3& in_rot_matrix)
 	feuler euler;
 	euler.pitch = -in_rot_matrix.m23;
 
-	//ÅÐ¶¨ÍòÏòËø
+	//åˆ¤å®šä¸‡å‘é”
 	if (fabs(euler.pitch) > 9.99999f)
 	{
 		euler.pitch *= (3.1415926f / 2.f);

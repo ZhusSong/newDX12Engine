@@ -5,7 +5,7 @@
 struct fmatrix_3x3;
 struct fquat;
 
-//Å·À­½Ç »¡¶È
+//æ¬§æ‹‰è§’ å¼§åº¦
 struct SIMPLE_LIBRARY_API feuler
 {
 	feuler()
@@ -70,25 +70,25 @@ public:
 
 	frotator(float in_pitch,float in_yaw,float in_roll);
 
-	//¾ØÕó ×ª Å·À­½Ç
-	//¹ßÐÔ->ÎïÌå
-	//Èç¹ûÊÇÐý×ª¾ØÕó Ö´ÐÐ¸ÃAPI¼´¿É
+	//çŸ©é˜µ è½¬ æ¬§æ‹‰è§’
+	//æƒ¯æ€§->ç‰©ä½“
+	//å¦‚æžœæ˜¯æ—‹è½¬çŸ©é˜µ æ‰§è¡Œè¯¥APIå³å¯
 	void inertia_to_object(const fmatrix_3x3& in_rot_matrix);
 
-	//ÎïÌå->¹ßÐÔ
+	//ç‰©ä½“->æƒ¯æ€§
 	void object_to_inertia(const fmatrix_3x3& in_rot_matrix);
 
-	//ËÄÔªÊý ×ª Å·À­½Ç
-	//¹ßÐÔ->ÎïÌå
+	//å››å…ƒæ•° è½¬ æ¬§æ‹‰è§’
+	//æƒ¯æ€§->ç‰©ä½“
 	void inertia_to_object(const fquat& in_quat);
 
-	//ÎïÌå->¹ßÐÔ
+	//ç‰©ä½“->æƒ¯æ€§
 	void object_to_inertia(const fquat& in_quat);
 
-	//×ª½Ç¶È
+	//è½¬è§’åº¦
 	void euler_to_rotator(const feuler& in_euler);
 
-	//×ª½Ç¶È
+	//è½¬è§’åº¦
 	void rotator_to_euler(feuler& in_euler) const;
 	feuler rotator_to_euler() const;
 };

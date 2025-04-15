@@ -93,19 +93,19 @@ public:
 			m31* a.m13 + m32 * a.m23 + m33 * a.m33);
 	}
 
-	//¹ßĞÔ->ÎïÌå
+	//æƒ¯æ€§->ç‰©ä½“
 	void inertia_to_object(const frotator &in_rot);
-	//ÎïÌå->¹ßĞÔ
+	//ç‰©ä½“->æƒ¯æ€§
 	void object_to_inertia(const frotator& in_rot);
 
-	//ĞĞÁĞÊ½
+	//è¡Œåˆ—å¼
 	float Determinant();
 
-	//3x3¾ØÕó×ªÖÃ
+	//3x3çŸ©é˜µè½¬ç½®
 	void transpose();
 
 	fmatrix_3x3 to_transpose() const;
 
-	//µ¥Î»»¯
+	//å•ä½åŒ–
 	static fmatrix_3x3 identity();
 };

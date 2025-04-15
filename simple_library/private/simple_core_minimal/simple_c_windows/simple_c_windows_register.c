@@ -43,7 +43,7 @@ bool delete_register_info(HKEY hkey, const char *filename)
 					if (value = RegDeleteKey(hresult, subkey_name) != ERROR_SUCCESS)
 					{
 						error_count++;
-						printf("\n error ¸Ä¼ü  %s ´æÔÚ×ÓÏî ÎŞ·¨É¾³ı \n", subkey_name);
+						printf("\n error æ”¹é”®  %s å­˜åœ¨å­é¡¹ æ— æ³•åˆ é™¤ \n", subkey_name);
 					}
 				}
 				else
@@ -64,7 +64,7 @@ bool delete_register_info(HKEY hkey, const char *filename)
 	else
 	{
 		error_count++;
-		printf("\n error %s ÊÇÎŞĞ§ or ĞèÒª¹ÜÀíÔ±È¨ÏŞ...\n", filename);
+		printf("\n error %s æ˜¯æ— æ•ˆ or éœ€è¦ç®¡ç†å‘˜æƒé™...\n", filename);
 	}
 
 	if (!error_count)

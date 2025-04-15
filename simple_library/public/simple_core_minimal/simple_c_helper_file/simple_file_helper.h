@@ -24,10 +24,10 @@ void init_def_c_paths_w(def_c_paths_w* c_paths);
 
 int copy_file(char *Src, char *Dest);
 
-//ÒÆ³ıÄ¿Â¼ÏÂËùÓĞÎÄ¼ş
+//ç§»é™¤ç›®å½•ä¸‹æ‰€æœ‰æ–‡ä»¶
 void remove_dir_all_files(const char* file_dir);
 
-//µİ¹éÒÆ³ıÎÄ¼şÂ·¾¶ Ê¹ÓÃ¸ÃAPIÈ·±£Â·¾¶ÏÂÒÑ¾­Ã»ÓĞÎÄ¼ş Ö»ÓĞÎÄ¼ş¼Ğ
+//é€’å½’ç§»é™¤æ–‡ä»¶è·¯å¾„ ä½¿ç”¨è¯¥APIç¡®ä¿è·¯å¾„ä¸‹å·²ç»æ²¡æœ‰æ–‡ä»¶ åªæœ‰æ–‡ä»¶å¤¹
 void remove_directory_all(const char* file_dir);
 
 void find_files(char const *in_path, def_c_paths *str,bool b_recursion,bool b_include_folder);
@@ -36,94 +36,94 @@ bool is_file_exists(char const* filename);
 
 bool create_file(char const *filename);
  
-//´´½¨Â·¾¶
+//åˆ›å»ºè·¯å¾„
 bool create_file_directory(char const *in_path);
 
-//´ò¿ªµØÖ·
+//æ‰“å¼€åœ°å€
 bool open_url(const char* url);
 
-//Í¨¹ı²ÎÊı´ò¿ªurl
+//é€šè¿‡å‚æ•°æ‰“å¼€url
 bool open_url_by_param(const char* url, const char* param);
 
-//Í¨¹ı²Ù×÷´ò¿ªÄ³¸ö¶«Î÷
+//é€šè¿‡æ“ä½œæ‰“å¼€æŸä¸ªä¸œè¥¿
 bool open_by_operation(const char* in_operation, const char* url, const char* param);
 
-//´ò¿ªÒ»¸öÎÄ¼ş¼Ğ
+//æ‰“å¼€ä¸€ä¸ªæ–‡ä»¶å¤¹
 bool open_explore(const char* url);
 
-//Ê¹ÓÃ¸Ã½Ó¿Ú Ò»¶¨Òª³õÊ¼»¯buf
+//ä½¿ç”¨è¯¥æ¥å£ ä¸€å®šè¦åˆå§‹åŒ–buf
 bool get_file_buf(const char *path,char *buf);
 
 bool save_file_buff(const char* path, char* buf);
 
 bool add_file_buf(const char *path, char *buf);
 
-//Õâ¸öº¯ÊıÊÇÒÔ×Ö·û´®µÄ·½Ê½´æ´¢£¬Èç¹ûÊı¾İÖĞÓĞ0 ×Ô¶¯½Ø¶Ï£¬½¨ÒéÓÃ¶ş½øÖÆ´æ´¢
+//è¿™ä¸ªå‡½æ•°æ˜¯ä»¥å­—ç¬¦ä¸²çš„æ–¹å¼å­˜å‚¨ï¼Œå¦‚æœæ•°æ®ä¸­æœ‰0 è‡ªåŠ¨æˆªæ–­ï¼Œå»ºè®®ç”¨äºŒè¿›åˆ¶å­˜å‚¨
 bool add_new_file_buf(const char *path, char *buf);
 
-//Õâ¸öÊÇÒÔ¶ş½øÖÆ·½Ê½¶ÁÈ¡
+//è¿™ä¸ªæ˜¯ä»¥äºŒè¿›åˆ¶æ–¹å¼è¯»å–
 bool load_data_from_disk(const char* path, char* buf);
 
 unsigned int get_file_size_by_filename(const char *filename);
 
 unsigned int get_file_size(FILE *file_handle);
 
-//Õâ¸öÊÇÒÔ¶ş½øÖÆ·½Ê½´æ´¢£¬²»»áÓöµ½Ïñ0×Ô¶¯½Ø¶ÏµÄÇé¿ö
+//è¿™ä¸ªæ˜¯ä»¥äºŒè¿›åˆ¶æ–¹å¼å­˜å‚¨ï¼Œä¸ä¼šé‡åˆ°åƒ0è‡ªåŠ¨æˆªæ–­çš„æƒ…å†µ
 bool save_data_to_disk(const char* path, char* buf, int buf_size);
-//¿í×Ö·ûºÍÕ­×Ö·û
+//å®½å­—ç¬¦å’Œçª„å­—ç¬¦
 // 
-//¿í×Ö·û×ªÕ­×Ö·û
+//å®½å­—ç¬¦è½¬çª„å­—ç¬¦
 _number_of_successful_conversions(size_t) wchar_t_to_char(
 	_out_pram(char*) dst_char,
 	size_t char_size,
 	_in_pram(wchar_t const*) _Src);
 
-//Õ­×Ö·û×ª¿í×Ö·û
+//çª„å­—ç¬¦è½¬å®½å­—ç¬¦
 _number_of_successful_conversions(size_t) char_to_wchar_t(
 	_out_pram(wchar_t*) dst_wchar_t,
 	size_t wchar_t_size,
 	_in_pram(char const*) _Src);
 
-//¿í×Ö·û
+//å®½å­—ç¬¦
 //////////////////////////////////////////////
-//Õâ¸öº¯ÊıÊÇÒÔ×Ö·û´®µÄ·½Ê½´æ´¢£¬Èç¹ûÊı¾İÖĞÓĞ0 ×Ô¶¯½Ø¶Ï£¬½¨ÒéÓÃ¶ş½øÖÆ´æ´¢
+//è¿™ä¸ªå‡½æ•°æ˜¯ä»¥å­—ç¬¦ä¸²çš„æ–¹å¼å­˜å‚¨ï¼Œå¦‚æœæ•°æ®ä¸­æœ‰0 è‡ªåŠ¨æˆªæ–­ï¼Œå»ºè®®ç”¨äºŒè¿›åˆ¶å­˜å‚¨
 bool add_new_file_buf_w(const wchar_t* path, char* buf);
 
 bool get_file_buf_w(const wchar_t* path, char* buf);
 
-//Õâ¸öÊÇÒÔ¶ş½øÖÆ·½Ê½´æ´¢£¬²»»áÓöµ½Ïñ0×Ô¶¯½Ø¶ÏµÄÇé¿ö
+//è¿™ä¸ªæ˜¯ä»¥äºŒè¿›åˆ¶æ–¹å¼å­˜å‚¨ï¼Œä¸ä¼šé‡åˆ°åƒ0è‡ªåŠ¨æˆªæ–­çš„æƒ…å†µ
 bool save_data_to_disk_w(const wchar_t* path, char* buf,int buf_size);
 
-//Õâ¸öÊÇÒÔ¶ş½øÖÆ·½Ê½¶ÁÈ¡ bufµÄ´óĞ¡Òª±ÈÊµ¼Ê´óĞ¡+1 ÒòÎª×îºóÒ»Î»Áô¸ø/0
+//è¿™ä¸ªæ˜¯ä»¥äºŒè¿›åˆ¶æ–¹å¼è¯»å– bufçš„å¤§å°è¦æ¯”å®é™…å¤§å°+1 å› ä¸ºæœ€åä¸€ä½ç•™ç»™/0
 bool load_data_from_disk_w(const wchar_t* path, char* buf);
 
 bool is_file_exists_w(const wchar_t *filename);
 
-//´ò¿ªµØÖ·
+//æ‰“å¼€åœ°å€
 bool open_url_w(const wchar_t* url);
 
 bool open_url_by_param_w(const wchar_t* url,const wchar_t *param);
 
 bool open_by_operation_w(const wchar_t *in_operation, const wchar_t* url, const wchar_t* param);
 
-//´ò¿ªÒ»¸öÎÄ¼ş¼Ğ
+//æ‰“å¼€ä¸€ä¸ªæ–‡ä»¶å¤¹
 bool open_explore_w(const wchar_t* url);
 
 unsigned int get_file_size_by_filename_w(const wchar_t* filename);
 
-//v2°æ±¾ Â·¾¶×ÔÊÊÓ¦
+//v2ç‰ˆæœ¬ è·¯å¾„è‡ªé€‚åº”
 
 typedef struct
 {
-	int index;//±íÊ¾µ±Ç°Æ«ÒÆ
-	int num;//±íÊ¾ÊıÁ¿
+	int index;//è¡¨ç¤ºå½“å‰åç§»
+	int num;//è¡¨ç¤ºæ•°é‡
 	char* paths;//MAX_PATH
 }def_c_paths_v2;
 
 typedef struct
 {
-	int index;//±íÊ¾µ±Ç°Æ«ÒÆ
-	int num;//±íÊ¾ÊıÁ¿
+	int index;//è¡¨ç¤ºå½“å‰åç§»
+	int num;//è¡¨ç¤ºæ•°é‡
 	wchar_t* paths;//MAX_PATH
 }def_c_paths_w_v2;
 

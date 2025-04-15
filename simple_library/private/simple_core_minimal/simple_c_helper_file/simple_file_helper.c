@@ -15,57 +15,57 @@ char wildcard[] = "*";
 #endif 
 #endif 
 
-//ÓÃÓÚ¼ì²âShellExecuteµÄ·µ»ØÖµĞÅÏ¢
+//ç”¨äºæ£€æµ‹ShellExecuteçš„è¿”å›å€¼ä¿¡æ¯
 bool check_ShellExecute_ret(int ret)
 {
 	if (ret == 0)
 	{
-		// ÄÚ´æ²»×ã
+		// å†…å­˜ä¸è¶³
 		assert(0, "open_url_w=>insufficient memory.");
 	}
 	else if (ret == 2)
 	{
-		// ÎÄ¼şÃû´íÎó
+		// æ–‡ä»¶åé”™è¯¯
 		assert(0, "open_url_w=>File name error.");
 	}
 	else if (ret == 3)
 	{
-		// Â·¾¶Ãû´íÎó
+		// è·¯å¾„åé”™è¯¯
 		assert(0, "open_url_w=>Path name error.");
 	}
 	else if (ret == 11)
 	{
-		// EXE ÎÄ¼şÎŞĞ§
+		// EXE æ–‡ä»¶æ— æ•ˆ
 		assert(0, "open_url_w=>Invalid .exe file.");
 	}
 	else if (ret == 26)
 	{
-		// ·¢Éú¹²Ïí´íÎó
+		// å‘ç”Ÿå…±äº«é”™è¯¯
 		assert(0, "open_url_w=>A sharing error occurred.");
 	}
 	else if (ret == 27)
 	{
-		// ÎÄ¼şÃû²»ÍêÈ«»òÎŞĞ§
+		// æ–‡ä»¶åä¸å®Œå…¨æˆ–æ— æ•ˆ
 		assert(0, "open_url_w=>incomplete or invalid file name.");
 	}
 	else if (ret == 28)
 	{
-		// ³¬Ê±
+		// è¶…æ—¶
 		assert(0, "open_url_w=>timeout.");
 	}
 	else if (ret == 29)
 	{
-		// DDE ÊÂÎñÊ§°Ü
+		// DDE äº‹åŠ¡å¤±è´¥
 		assert(0, "open_url_w=> DDE transaction failed.");
 	}
 	else if (ret == 30)
 	{
-		// ÕıÔÚ´¦ÀíÆäËû DDE ÊÂÎñ¶ø²»ÄÜÍê³É¸Ã DDE ÊÂÎñ
+		// æ­£åœ¨å¤„ç†å…¶ä»– DDE äº‹åŠ¡è€Œä¸èƒ½å®Œæˆè¯¥ DDE äº‹åŠ¡
 		assert(0, "open_url_w=> is processing another DDE transaction and cannot complete the DDE transaction.");
 	}
 	else if (ret == 31)
 	{
-		// Ã»ÓĞÏà¹ØÁªµÄÓ¦ÓÃ³ÌĞò
+		// æ²¡æœ‰ç›¸å…³è”çš„åº”ç”¨ç¨‹åº
 		assert(0, "open_url_w=>no associated application.");
 	}
 
@@ -86,7 +86,7 @@ void init_def_c_paths_w(def_c_paths_w* c_paths)
 
 int copy_file(char *Src, char *Dest)
 {
-	//µ±Ç°µÄ»º´æ »º´æ1MB´óĞ¡£¬Èç¹û³¬¹ı¾Í»á³öÎÊÌâ Õâ¸ö»áÔÚstd C¿Î³ÌÀïÃæ¼ÌĞøÀ©Õ¹
+	//å½“å‰çš„ç¼“å­˜ ç¼“å­˜1MBå¤§å°ï¼Œå¦‚æœè¶…è¿‡å°±ä¼šå‡ºé—®é¢˜ è¿™ä¸ªä¼šåœ¨std Cè¯¾ç¨‹é‡Œé¢ç»§ç»­æ‰©å±•
 	char Buf[1024 * 1024] = { 0 };
 	int FileSize = 0;
 	FILE *FpSrc = NULL;
@@ -158,11 +158,11 @@ void find_files_v2(char const* in_path, def_c_paths_v2* str, bool b_recursion, b
 
 		if (b_include_folder)
 		{
-			//Ìí¼ÓÂ·¾¶ µÚÒ»¸öÂ·¾¶
+			//æ·»åŠ è·¯å¾„ ç¬¬ä¸€ä¸ªè·¯å¾„
 			add_def_c_paths(str, buff);
 		}
 
-		//Æ´½Ó
+		//æ‹¼æ¥
 		strcat(buff, wildcard);
 		if ((hfile =
 #ifdef _WIN64
@@ -225,16 +225,16 @@ int get_def_c_offset(const char* str)
 {
 	return 
 		strlen(str) + 
-		sizeof(char) + //ÎÒÃÇÌá¹©µÄ\0½áÎ²
-		sizeof(char);//¿½±´ÖĞ×Ô´øµÄ\0½áÎ²
+		sizeof(char) + //æˆ‘ä»¬æä¾›çš„\0ç»“å°¾
+		sizeof(char);//æ‹·è´ä¸­è‡ªå¸¦çš„\0ç»“å°¾
 }
 
 int get_def_c_offset_w(const wchar_t* str)
 {
 	return
 		wcslen(str) +
-		sizeof(wchar_t) + //ÎÒÃÇÌá¹©µÄ\0½áÎ²
-		sizeof(wchar_t);//¿½±´ÖĞ×Ô´øµÄ\0½áÎ²
+		sizeof(wchar_t) + //æˆ‘ä»¬æä¾›çš„\0ç»“å°¾
+		sizeof(wchar_t);//æ‹·è´ä¸­è‡ªå¸¦çš„\0ç»“å°¾
 }
 
 char* get_max_len_path(const def_c_paths *Paths,int *max_len)
@@ -268,7 +268,7 @@ void remove_directory_all(const char* file_dir)
 	def_c_paths_v2 tmp_paths;
 	init_def_c_paths_v2(&tmp_paths);
 
-	//´Ó³¤µ½¶ÌÅÅÁĞ
+	//ä»é•¿åˆ°çŸ­æ’åˆ—
 	for (int i = 0; i < Paths.index; i++)
 	{
 		int max_len = 0;
@@ -276,7 +276,7 @@ void remove_directory_all(const char* file_dir)
 
 		if (max_path && max_path[0]!= '\0')
 		{
-			//Ìí¼ÓÂ·¾¶
+			//æ·»åŠ è·¯å¾„
 			add_def_c_paths(&tmp_paths, max_path);
 
 			memset(max_path, 0, strlen(max_path));
@@ -331,7 +331,7 @@ void find_files(char const *in_path, def_c_paths *str, bool b_recursion,bool b_i
 			strcat(str->paths[str->index++], separator);
 		}
 
-		//Æ´½Ó
+		//æ‹¼æ¥
 		strcat(tmp_path, separator);
 		strcat(tmp_path, wildcard);
 		if ((hfile =
@@ -441,7 +441,7 @@ bool create_file_directory(char const *in_path)
 
 bool open_url(const char* url)
 {
-	//¿í×Ö·û×ªÎªÕ­×Ö·û
+	//å®½å­—ç¬¦è½¬ä¸ºçª„å­—ç¬¦
 	wchar_t path[1024] = { 0 };
 	char_to_wchar_t(path,1024, url);
 
@@ -450,7 +450,7 @@ bool open_url(const char* url)
 
 bool open_url_by_param(const char* url, const char* param)
 {
-	//¿í×Ö·û×ªÎªÕ­×Ö·û
+	//å®½å­—ç¬¦è½¬ä¸ºçª„å­—ç¬¦
 	wchar_t path[1024] = { 0 };
 	char_to_wchar_t(path, 1024, url);
 
@@ -464,7 +464,7 @@ bool open_by_operation(const char* in_operation, const char* url, const char* pa
 	wchar_t my_operation[1024] = { 0 };
 	char_to_wchar_t(my_operation, 1024, in_operation);
 
-	//¿í×Ö·û×ªÎªÕ­×Ö·û
+	//å®½å­—ç¬¦è½¬ä¸ºçª„å­—ç¬¦
 	wchar_t path[1024] = { 0 };
 	char_to_wchar_t(path, 1024, url);
 
@@ -476,7 +476,7 @@ bool open_by_operation(const char* in_operation, const char* url, const char* pa
 
 bool open_explore(const char* url)
 {
-	//¿í×Ö·û×ªÎªÕ­×Ö·û
+	//å®½å­—ç¬¦è½¬ä¸ºçª„å­—ç¬¦
 	wchar_t path[1024] = { 0 };
 	char_to_wchar_t(path, 1024, url);
 
@@ -599,18 +599,18 @@ bool load_data_from_disk_w(const wchar_t* path, char* buf)
 	FILE* f = NULL;
 	if ((f = _wfopen(path, L"rb")) != NULL)
 	{
-		//°ÑÎÄ¼şÖ¸ÕëÒÆ¶¯µ½ÎÄ¼şÎ²²¿;
+		//æŠŠæ–‡ä»¶æŒ‡é’ˆç§»åŠ¨åˆ°æ–‡ä»¶å°¾éƒ¨;
 		fseek(f, 0, SEEK_END);
 
 		int l = 0;
-		//À´·µ»Øµ±Ç°ÎÄ¼şµÄÎ»ÖÃ£¬·µ»Øµ¥Î»Îª×Ö½Ú ´óÓÚ0 ´ú±íÎÄ¼şÓĞĞ§
+		//æ¥è¿”å›å½“å‰æ–‡ä»¶çš„ä½ç½®ï¼Œè¿”å›å•ä½ä¸ºå­—èŠ‚ å¤§äº0 ä»£è¡¨æ–‡ä»¶æœ‰æ•ˆ
 		if ((l = ftell(f)) > 0)
 		{
-			//°ÑÎÄ¼şÖ¸ÕëÒÆµ½ÎÄ¼şÍ·²¿
+			//æŠŠæ–‡ä»¶æŒ‡é’ˆç§»åˆ°æ–‡ä»¶å¤´éƒ¨
 			rewind(f);
-			//°ÑÎÄ¼ş¿½±´µ½»º´æ
+			//æŠŠæ–‡ä»¶æ‹·è´åˆ°ç¼“å­˜
 			fread(buf, sizeof(unsigned char), l, f);
-			//ÎÄ¼şºóÃæĞèÒª0½áÎ²
+			//æ–‡ä»¶åé¢éœ€è¦0ç»“å°¾
 			//buf[l] = '\0';
 		}
 		fclose(f);
@@ -691,7 +691,7 @@ void init_def_c_paths_w_v2(def_c_paths_w_v2* c_paths)
 void add_def_c_paths(def_c_paths_v2* c_paths, const char* str)
 {
 	int str_len = strlen(str);
-	str_len += sizeof(char);//×îºóÒ»¸ö /0½áÎ²
+	str_len += sizeof(char);//æœ€åä¸€ä¸ª /0ç»“å°¾
 
 	if (!c_paths->paths)
 	{
@@ -713,7 +713,7 @@ void add_def_c_paths(def_c_paths_v2* c_paths, const char* str)
 void add_def_c_paths_w(def_c_paths_w_v2* c_paths, const wchar_t* str)
 {
 	int str_len = wcslen(str);
-	str_len += sizeof(wchar_t);//×îºóÒ»¸ö /0½áÎ²
+	str_len += sizeof(wchar_t);//æœ€åä¸€ä¸ª /0ç»“å°¾
 
 	if (!c_paths->paths)
 	{
@@ -817,18 +817,18 @@ bool load_data_from_disk(const char* path, char* buf)
 	FILE* f = NULL;
 	if ((f = fopen(path, "rb")) != NULL)
 	{
-		//°ÑÎÄ¼şÖ¸ÕëÒÆ¶¯µ½ÎÄ¼şÎ²²¿;
+		//æŠŠæ–‡ä»¶æŒ‡é’ˆç§»åŠ¨åˆ°æ–‡ä»¶å°¾éƒ¨;
 		fseek(f, 0, SEEK_END);
 
 		int l = 0;
-		//À´·µ»Øµ±Ç°ÎÄ¼şµÄÎ»ÖÃ£¬·µ»Øµ¥Î»Îª×Ö½Ú ´óÓÚ0 ´ú±íÎÄ¼şÓĞĞ§
+		//æ¥è¿”å›å½“å‰æ–‡ä»¶çš„ä½ç½®ï¼Œè¿”å›å•ä½ä¸ºå­—èŠ‚ å¤§äº0 ä»£è¡¨æ–‡ä»¶æœ‰æ•ˆ
 		if ((l = ftell(f)) > 0)
 		{
-			//°ÑÎÄ¼şÖ¸ÕëÒÆµ½ÎÄ¼şÍ·²¿
+			//æŠŠæ–‡ä»¶æŒ‡é’ˆç§»åˆ°æ–‡ä»¶å¤´éƒ¨
 			rewind(f);
-			//°ÑÎÄ¼ş¿½±´µ½»º´æ
+			//æŠŠæ–‡ä»¶æ‹·è´åˆ°ç¼“å­˜
 			fread(buf, 1, l, f);
-			//ÎÄ¼şºóÃæĞèÒª0½áÎ²
+			//æ–‡ä»¶åé¢éœ€è¦0ç»“å°¾
 			//buf[l] = '\0';
 		}
 		fclose(f);

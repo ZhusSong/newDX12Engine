@@ -40,15 +40,15 @@ void fmatrix_4x3::identity()
 
 fmatrix_4x3 fmatrix_4x3::inversion(const fmatrix_4x3& in_m)
 {
-	//ĞĞÁĞÊ½
+	//è¡Œåˆ—å¼
 	float det = determinant(in_m);
 
-	//ÅĞ¶¨ÊÇ·ñÓĞÆæÒì¾ØÕó ĞĞÁĞÊ½Èç¹ûÎª0 ¾Í´ú±íÃ»ÓĞÄæ¾ØÕó
+	//åˆ¤å®šæ˜¯å¦æœ‰å¥‡å¼‚çŸ©é˜µ è¡Œåˆ—å¼å¦‚æœä¸º0 å°±ä»£è¡¨æ²¡æœ‰é€†çŸ©é˜µ
 	assert(fabs(det) > 0.00001);
 
 	float det_tmp = 1.f / det;
 
-	//¼ÆËã3x3 °éËæ³ËÒÔĞĞÁĞÊ½
+	//è®¡ç®—3x3 ä¼´éšä¹˜ä»¥è¡Œåˆ—å¼
 	fmatrix_4x3 m;
 	m.m11 = (in_m.m22 * in_m.m33 - in_m.m23 * in_m.m32) * det_tmp;
 	m.m12 = (in_m.m13 * in_m.m32 - in_m.m12 * in_m.m23) * det_tmp;
@@ -62,7 +62,7 @@ fmatrix_4x3 fmatrix_4x3::inversion(const fmatrix_4x3& in_m)
 	m.m32 = (in_m.m12 * in_m.m31 - in_m.m11 * in_m.m32) * det_tmp;
 	m.m33 = (in_m.m11 * in_m.m22 - in_m.m12 * in_m.m21) * det_tmp;
 
-	//Æ½ÒÆµÄÄæ
+	//å¹³ç§»çš„é€†
 	m.x = -(in_m.x * in_m.m11 + in_m.y * in_m.m21 + in_m.z * in_m.m31);
 	m.y = -(in_m.x * in_m.m12 + in_m.y * in_m.m22 + in_m.z * in_m.m32);
 	m.z = -(in_m.x * in_m.m13 + in_m.y * in_m.m23 + in_m.z * in_m.m33);

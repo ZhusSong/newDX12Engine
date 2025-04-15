@@ -68,7 +68,7 @@ void fmatrix_4x4::object_to_inertia(const frotator& in_rot)
 
 float fmatrix_4x4::determinant()const
 {
-   //ÏÈ½µÎ¬
+   //å…ˆé™ç»´
     //m11
     float m11_algebraic_cofactor = fmatrix_3x3(
         m22, m23, m24,
@@ -117,7 +117,7 @@ fmatrix_4x4 fmatrix_4x4::to_transpose()
 {
     fmatrix_4x4 matrix_4x4 = *this;
 
-    //½»»»º¯Êı
+    //äº¤æ¢å‡½æ•°
     auto swap_float = [](float& a, float& b)
     {
         float tmp = a;

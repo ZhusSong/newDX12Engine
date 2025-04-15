@@ -2,18 +2,18 @@
 
 
 #ifdef CLOSE_DISABLE_DEBUG_INFOR
-#pragma warning(disable:4267)//¡°²ÎÊı¡±£º´Ó¡°xx¡±×ª»»Îª¡°xx¡±£¬¿ÉÄÜ»á¶ªÊ§Êı¾İ
-#pragma warning(disable:4311)// ÀàĞÍ×ª»»£ºÖ¸Õë´Ó¡°ÄúµÄptr*¡±½Ø¶ÏÎª¡°DWORD¡±
-#pragma warning(disable:4244)// ´Ó¡°xx¡±×ª»»Îª¡°xx¡±£¬¿ÉÄÜ»á¶ªÊ§Êı¾İ
-#pragma warning(disable:4309)// ³£ÊıÖµ½Ø¶Ï
-#pragma warning(disable:4305)//¡°²ÎÊı¡±£º´Ó¡°int¡±½Ø¶ÏÎª¡°u\u short¡±
-#pragma warning(disable:4133)// function¡±£º²»¼æÈİµÄÀàĞÍ-´Ó¡°char[260]¡±µ½¡°LPWSTR¡±
-#pragma warning(disable:4090)//¡°ÕıÔÚ³õÊ¼»¯¡±£º²»Í¬µÄ¡°const¡±ÏŞ¶¨·û
-#pragma warning(disable:4013)//¡°XXX¡±Î´¶¨Òå£»¼ÙÉèÍâ²¿·µ»Øint
-#pragma warning(disable:4251)// ÒÔºó¿ªÆôµ±Ç°×´Ì¬¼ì²édllÇé¿ö
-#pragma warning(disable:4717)// ÔÚËùÓĞ¿ØÖÆÂ·¾¶ÉÏµİ¹é£¬º¯Êı½«µ¼ÖÂÔËĞĞÊ±¶ÑÕ»Òç³ö
-#pragma warning(disable:4099)// Ê×ÏÈÊ¹ÓÃ¡°struct¡±¿´µ½µÄÀàĞÍÃû³ÆÏÖÔÚÊ¹ÓÃ¡°class¡±¿´µ½
-#pragma warning(disable:4018)// £º¡°<¡±£ºÓĞ·ûºÅ/ÎŞ·ûºÅ²»Æ¥Åä
+#pragma warning(disable:4267)//â€œå‚æ•°â€ï¼šä»â€œxxâ€è½¬æ¢ä¸ºâ€œxxâ€ï¼Œå¯èƒ½ä¼šä¸¢å¤±æ•°æ®
+#pragma warning(disable:4311)// ç±»å‹è½¬æ¢ï¼šæŒ‡é’ˆä»â€œæ‚¨çš„ptr*â€æˆªæ–­ä¸ºâ€œDWORDâ€
+#pragma warning(disable:4244)// ä»â€œxxâ€è½¬æ¢ä¸ºâ€œxxâ€ï¼Œå¯èƒ½ä¼šä¸¢å¤±æ•°æ®
+#pragma warning(disable:4309)// å¸¸æ•°å€¼æˆªæ–­
+#pragma warning(disable:4305)//â€œå‚æ•°â€ï¼šä»â€œintâ€æˆªæ–­ä¸ºâ€œu\u shortâ€
+#pragma warning(disable:4133)// functionâ€ï¼šä¸å…¼å®¹çš„ç±»å‹-ä»â€œchar[260]â€åˆ°â€œLPWSTRâ€
+#pragma warning(disable:4090)//â€œæ­£åœ¨åˆå§‹åŒ–â€ï¼šä¸åŒçš„â€œconstâ€é™å®šç¬¦
+#pragma warning(disable:4013)//â€œXXXâ€æœªå®šä¹‰ï¼›å‡è®¾å¤–éƒ¨è¿”å›int
+#pragma warning(disable:4251)// ä»¥åå¼€å¯å½“å‰çŠ¶æ€æ£€æŸ¥dllæƒ…å†µ
+#pragma warning(disable:4717)// åœ¨æ‰€æœ‰æ§åˆ¶è·¯å¾„ä¸Šé€’å½’ï¼Œå‡½æ•°å°†å¯¼è‡´è¿è¡Œæ—¶å †æ ˆæº¢å‡º
+#pragma warning(disable:4099)// é¦–å…ˆä½¿ç”¨â€œstructâ€çœ‹åˆ°çš„ç±»å‹åç§°ç°åœ¨ä½¿ç”¨â€œclassâ€çœ‹åˆ°
+#pragma warning(disable:4018)// ï¼šâ€œ<â€ï¼šæœ‰ç¬¦å·/æ— ç¬¦å·ä¸åŒ¹é…
 #pragma warning(disable:4477)
 #pragma warning(disable:4244)//'argument': conversion from 'float' to 'int', possible loss of data
 #endif // DEBUG
@@ -46,10 +46,10 @@
 //image
 #include "simple_image/simple_image.h"
 
-//ÈİÆ÷
+//å®¹å™¨
 #include "simple_library/public/simple_array/simple_hash_array.h"
 
-//µÚÈı·½¿â
+//ç¬¬ä¸‰æ–¹åº“
 //xml
 #include "simple_library/third_party_library/tinyxml/tinystr.h"
 #include "simple_library/third_party_library/tinyxml/tinyxml.h"

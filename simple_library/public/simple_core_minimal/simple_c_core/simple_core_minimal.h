@@ -35,4 +35,4 @@
 
 //#include <array>
 
-#define SIMPLE_C_BUFF_SIZE 8196 //如果嫌小就给大点
+#define SIMPLE_C_BUFF_SIZE 8196 //濡傛灉瀚屽皬灏辩粰澶х偣

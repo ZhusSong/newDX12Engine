@@ -3,10 +3,8 @@
 #if defined(_WIN32)
 #include "../Frame/Engine.h"
 
-//Windows»·¾³µÄÒıÇæ¶¨Òå
 class FWindowsEngine :public FEngine
 {
-	friend class IRenderingInterface;
 public:
 	FWindowsEngine();
 	~FWindowsEngine();
@@ -26,14 +24,6 @@ public:
 	ID3D12Resource* GetCurrentSwapBuff() const;
 	D3D12_CPU_DESCRIPTOR_HANDLE GetCurrentSwapBufferView() const;
 	D3D12_CPU_DESCRIPTOR_HANDLE GetCurrentDepthStencilView() const;
-public:
-	DXGI_FORMAT GetBackBufferFormat() const { return BackBufferFormat; }
-
-	DXGI_FORMAT GetDepthStencilFormat() const { return DepthStencilFormat; }
-
-	UINT GetDXGISampleCount()const;
-
-	UINT GetDXGISampleQuality()const;
 
 protected:
 	void WaitGPUCommandQueueComplete();
@@ -42,47 +32,32 @@ private:
 	bool InitWindows(FWinMainCommandParameters InParameters);
 
 	bool InitDirect3D();
-
-	void PostInitDirect3D();
 protected:
-	//µ±Ç°Î§À¸Öµ
 	UINT64 CurrentFenceIndex;
-	//µ±Ç°½»»»Á´»º³åÇø
 	int CurrentSwapBuffIndex;
 
-	//´´½¨ DirectX Í¼ĞÎ»ù´¡½á¹¹ (DXGI) ¶ÔÏó
-	ComPtr<IDXGIFactory4> DXGIFactory;
+	ComPtr<IDXGIFactory4> DXGIFactory;//åˆ›å»º DirectX å›¾å½¢åŸºç¡€ç»“æ„ (DXGI) å¯¹è±¡
+	ComPtr<ID3D12Device> D3dDevice;//åˆ›å»ºå‘½ä»¤åˆ†é…å™¨ã€å‘½ä»¤åˆ—è¡¨ã€å‘½ä»¤é˜Ÿåˆ—ã€Fenceã€èµ„æºã€ç®¡é“çŠ¶æ€å¯¹è±¡ã€å †ã€æ ¹ç­¾åã€é‡‡æ ·å™¨å’Œè®¸å¤šèµ„æºè§†å›¾
+	ComPtr<ID3D12Fence> Fence;//ä¸€ä¸ªç”¨äºåŒæ­¥ CPU å’Œä¸€ä¸ªæˆ–å¤šä¸ª GPU çš„å¯¹è±¡ã€‚
 
-	//´´½¨ÃüÁî·ÖÅäÆ÷¡¢ÃüÁîÁĞ±í¡¢ÃüÁî¶ÓÁĞ¡¢Fence¡¢×ÊÔ´¡¢¹ÜµÀ×´Ì¬¶ÔÏó¡¢¶Ñ¡¢¸ùÇ©Ãû¡¢²ÉÑùÆ÷ºÍĞí¶à×ÊÔ´ÊÓÍ¼
-	ComPtr<ID3D12Device> D3dDevice;
-
-	//Î§À¸£¬ÓÃÓÚÍ¬²½ CPU ºÍ GPU ¶ÔÏó¡£
-	ComPtr<ID3D12Fence> Fence;
-
-	//ÃüÁî¶ÓÁĞ
-	ComPtr<ID3D12CommandQueue> CommandQueue;
-
-	//ÃüÁî´æ´¢
-	ComPtr<ID3D12CommandAllocator> CommandAllocator; 
-
-	//ÃüÁîÁĞ±í
-	ComPtr<ID3D12GraphicsCommandList> GraphicsCommandList;
+	ComPtr<ID3D12CommandQueue> CommandQueue;//é˜Ÿåˆ—
+	ComPtr<ID3D12CommandAllocator> CommandAllocator; //å­˜å‚¨
+	ComPtr<ID3D12GraphicsCommandList> GraphicsCommandList;//å‘½ä»¤åˆ—è¡¨
 
 	ComPtr<IDXGISwapChain> SwapChain;
 
-	//ÃèÊö·û¶ÔÏóºÍ¶Ñ
+	//æè¿°ç¬¦å¯¹è±¡å’Œå †
 	ComPtr<ID3D12DescriptorHeap> RTVHeap;
 	ComPtr<ID3D12DescriptorHeap> DSVHeap;
 
-	//½»»»Á´ÓëÉî¶ÈÄ£°å
 	vector<ComPtr<ID3D12Resource>> SwapChainBuffer;
 	ComPtr<ID3D12Resource> DepthStencilBuffer;
 
-	//ÆÁÄ»ÊÓ¿Ú
+	//å’Œå±å¹•çš„è§†å£æœ‰å…³
 	D3D12_VIEWPORT ViewprotInfo;
 	D3D12_RECT ViewprotRect;
 protected:
-	HWND MainWindowsHandle;//Ö÷windows¾ä±ú
+	HWND MianWindowsHandle;//ä¸»windowså¥æŸ„
 	UINT M4XQualityLevels;
 	bool bMSAA4XEnabled;
 	DXGI_FORMAT BackBufferFormat;

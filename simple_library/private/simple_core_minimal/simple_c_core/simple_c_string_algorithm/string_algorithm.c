@@ -79,7 +79,7 @@ void trim_start_inline(char* buff)
 			buff[i - index] = buff[i];
 		}
 
-		//Ìî³ä×îºó 0
+		//å¡«å……æœ€å 0
 		for (int i = 1; i <= index; i++)
 		{
 			buff[buff_len - i] = '\0';
@@ -186,7 +186,7 @@ bool remove_char_form_start(char* str, char sub_str)
 {
 	int len = strlen(str) + 1;
 
-	//´ÓÍ·¿ªÊ¼¼ì²é È»ºóÉ¾³ı¶ÔÏó
+	//ä»å¤´å¼€å§‹æ£€æŸ¥ ç„¶ååˆ é™¤å¯¹è±¡
 	for (int i = 0; i < len; i++)
 	{
 		if (str[i] == sub_str)
@@ -216,7 +216,7 @@ int find_string(const char *str, char const* sub_str,int start_pos)
 		if (sub_str[0] == str[i])
 		{
 			int tmp_index = i;
-			int l = 1;//µÚÒ»¸öÊÇ³É¹¦
+			int l = 1;//ç¬¬ä¸€ä¸ªæ˜¯æˆåŠŸ
 			while (sub_str[l] == str[i + l] && sub_str[l] != '\0')
 			{
 				l++;
@@ -252,7 +252,7 @@ int find_string_from_end(const char* str, char const* sub_str, int start_pos)
 		if (sub_str[0] == str[i])
 		{
 			int tmp_index = i;
-			int l = 1;//µÚÒ»¸öÊÇ³É¹¦
+			int l = 1;//ç¬¬ä¸€ä¸ªæ˜¯æˆåŠŸ
 			while (sub_str[l] == str[i + l] && sub_str[l] != '\0')
 			{
 				l++;
@@ -405,7 +405,7 @@ int wfind_string(wchar_t *str, wchar_t const* sub_str)
 		if (sub_str[0] == str[i])
 		{
 			int tmp_index = i;
-			int l = 1;//µÚÒ»¸öÊÇ³É¹¦
+			int l = 1;//ç¬¬ä¸€ä¸ªæ˜¯æˆåŠŸ
 			while (sub_str[l] == str[i + l] && sub_str[l] != L'\0')
 			{
 				l++;
@@ -426,7 +426,7 @@ void wremove_wchar_start(wchar_t *str, wchar_t sub_str)
 {
 	int len = wcslen(str) + 1;
 
-	//´ÓÍ·¿ªÊ¼¼ì²é È»ºóÉ¾³ı¶ÔÏó
+	//ä»å¤´å¼€å§‹æ£€æŸ¥ ç„¶ååˆ é™¤å¯¹è±¡
 	for (int i = 0; i < len; i++)
 	{
 		if (str[i] == sub_str)

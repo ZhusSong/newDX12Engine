@@ -15,7 +15,7 @@ public:
 		float in_m21, 
 		float in_m22);
 
-	//ĞĞÁĞÊ½
+	//è¡Œåˆ—å¼
 	float Determinant() const;
 public:
 	void operator+=(const fmatrix_2x2& a)
@@ -86,6 +86,6 @@ public:
 			m21 * a.m11 + m22 * a.m21, m21 * a.m12 + m22 * a.m22);
 	}
 public:
-	//µ¥Î»»¯
+	//å•ä½åŒ–
 	static fmatrix_2x2 identity();
 };

@@ -5,38 +5,38 @@
 _CRT_BEGIN_C_HEADER
 void remove_string_start(char *str, char const* sub_str);
 
-//´ÓºóÍùÇ°ÕÒ
+//ä»åå¾€å‰æ‰¾
 int find_string_from_end(const char* str, char const* sub_str, int start_pos);
 
-//´ÓÇ°ÍùºóÕÒ
+//ä»å‰å¾€åæ‰¾
 int find_string(const char *str, char const* sub_str,int start_pos);
 
-//Ö»ÒÆ³ıµÚÒ»¸ö
+//åªç§»é™¤ç¬¬ä¸€ä¸ª
 bool remove_char_start(char *str, char sub_str);
 
-//´ÓÇ°ÍùºóÕÒ£¬ÕÒµ½ÁË¾ÍÒÆ³ı
+//ä»å‰å¾€åæ‰¾ï¼Œæ‰¾åˆ°äº†å°±ç§»é™¤
 bool remove_char_form_start(char* str, char sub_str);
 
-//ÒÆ³ı×îºóÃæ
+//ç§»é™¤æœ€åé¢
 bool remove_char_end(char *str, char sub_str);
 
-//´ÓºóÃæÍùÇ°ÕÒ£¬ÕÒµ½ÁË¾ÍÒÆ³ı
+//ä»åé¢å¾€å‰æ‰¾ï¼Œæ‰¾åˆ°äº†å°±ç§»é™¤
 bool remove_char_form_end(char* str, char sub_str);
 
-//ÅĞ¶¨×Ö·û´®ÊÇ·ñ°üº¬
+//åˆ¤å®šå­—ç¬¦ä¸²æ˜¯å¦åŒ…å«
 bool c_str_contain(const char* buff_str,const char *sub_str);
 
-//Ç°ºó¿Õ¸ñ¶¼ĞŞµô
+//å‰åç©ºæ ¼éƒ½ä¿®æ‰
 void trim_start_and_end_inline(char* buff);
 
 bool string_equal(const char* str_1, const char* str_2);
 
-//È¥³ıÇ°ÃæµÄ¿Õ¸ñ
+//å»é™¤å‰é¢çš„ç©ºæ ¼
 void trim_start_inline(char *buff);
-//È¥³ıºóÃæµÄ¿Õ¸ñ
+//å»é™¤åé¢çš„ç©ºæ ¼
 void trim_end_inline(char *buff);
 
-//²ğ·Ö
+//æ‹†åˆ†
 bool split(const char *buf,const char* str_split,char *l,char *r, bool bcontain_str_split);
 
 void remove_all_char_end(char *str, char sub_str);
@@ -56,7 +56,7 @@ int char_to_tchar(const char *str, wchar_t *tc);
 
 int tchar_to_char(const wchar_t *tc, char *str);
 
-//×¢Òâ £ºstr ±ØĞëÊÇ×ã¹»´óµÄ¿Õ¼ä ²»Òª´«Ò»¸ö×Ô¶¯Æ¥ÅäÄÚ´æµÄÖ¸Õë
+//æ³¨æ„ ï¼šstr å¿…é¡»æ˜¯è¶³å¤Ÿå¤§çš„ç©ºé—´ ä¸è¦ä¼ ä¸€ä¸ªè‡ªåŠ¨åŒ¹é…å†…å­˜çš„æŒ‡é’ˆ
 void wremove_string_start(wchar_t *str, wchar_t const* sub_str);
 
 int wfind_string(wchar_t *str, wchar_t const* sub_str);

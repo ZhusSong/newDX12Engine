@@ -11,7 +11,7 @@
 
 static float get_float_random_static()
 {
-	//ÖØÖÃÊ±¼ä´Á
+	//é‡ç½®æ—¶é—´æˆ³
 	//srand((unsigned int)time(nullptr));
 
 	return (float)(rand()) / (float)RAND_MAX;

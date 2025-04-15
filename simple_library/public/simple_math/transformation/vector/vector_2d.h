@@ -1,4 +1,3 @@
-// Copyright (C) RenZhai.2022.All Rights Reserved.
 #pragma once
 #include "simple_library/public/simple_library_macro.h"
 
@@ -63,7 +62,7 @@ public:
 		*this = *this + a;
 	}
 
-	//向量是不能和标量相加 
+	//鍚戦噺鏄笉鑳藉拰鏍囬噺鐩稿姞 
 	fvector_2d operator+(float k)const
 	{
 		return fvector_2d(x + k, y + k);

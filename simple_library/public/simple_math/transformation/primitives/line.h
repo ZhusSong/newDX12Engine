@@ -25,7 +25,7 @@ namespace primitives
 		float b;
 	};
 
-	//ÅĞ¶¨Ò»¸öµãÊÇ²»ÊÇÔÚÏßÀïÃæ
+	//åˆ¤å®šä¸€ä¸ªç‚¹æ˜¯ä¸æ˜¯åœ¨çº¿é‡Œé¢
 	bool is_inside_line(const fline& in_line, int x, int y);
 
 

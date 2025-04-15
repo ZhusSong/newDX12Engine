@@ -1,4 +1,3 @@
-// Copyright (C) RenZhai.2022.All Rights Reserved.
 #pragma once
 #include "assert.h" 
 #include "simple_library/public/simple_library_macro.h"
@@ -72,7 +71,7 @@ public:
 		*this = *this + a;
 	}
 
-	//ÏòÁ¿²»ÄÜÕâÃ´×ö
+	//å‘é‡ä¸èƒ½è¿™ä¹ˆåš
 	void operator+=(const float& a)
 	{
 		x += a;
@@ -80,7 +79,7 @@ public:
 		z += a;
 	}
 
-	//ÏòÁ¿²»ÄÜÕâÃ´×ö
+	//å‘é‡ä¸èƒ½è¿™ä¹ˆåš
 	void operator-=(const float& a)
 	{
 		x -= a;

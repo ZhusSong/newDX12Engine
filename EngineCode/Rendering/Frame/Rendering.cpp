@@ -31,7 +31,7 @@ void IRenderingInterface::Init()
 
 void IRenderingInterface::PreDraw(float DeltaTime)
 {
-	//ÖØÖµÎÒÃÇµÄÃüÁîÁĞ±í
+	//é‡å€¼æˆ‘ä»¬çš„å‘½ä»¤åˆ—è¡¨
 	ANALYSIS_HRESULT(GetGraphicsCommandList()->Reset(GetCommandAllocator().Get(), NULL));
 }
 
@@ -72,14 +72,14 @@ ComPtr<ID3D12Resource> IRenderingInterface::ConstructDefaultBuffer(
 	SubResourceData.RowPitch = InDataSize;
 	SubResourceData.SlicePitch = SubResourceData.RowPitch;
 
-	//±ê¼Ç×ÊÔ´Îª¸´ÖÆÄ¿±ê
+	//æ ‡è®°èµ„æºä¸ºå¤åˆ¶ç›®æ ‡
 	CD3DX12_RESOURCE_BARRIER CopyDestBarrier = CD3DX12_RESOURCE_BARRIER::Transition(Buffer.Get(),
 		D3D12_RESOURCE_STATE_COMMON,
 		D3D12_RESOURCE_STATE_COPY_DEST);
 
 	GetGraphicsCommandList()->ResourceBarrier(1, &CopyDestBarrier);
 
-	//¸üĞÂ×Ó×ÊÔ´£¬Ó¦¸ÃÌî³äËùÓĞ×Ó×ÊÔ´Êı×é
+	//æ›´æ–°å­èµ„æºï¼Œåº”è¯¥å¡«å……æ‰€æœ‰å­èµ„æºæ•°ç»„
 	UpdateSubresources<1>(
 		GetGraphicsCommandList().Get(),
 		Buffer.Get(),
@@ -100,7 +100,7 @@ ComPtr<ID3D12Device> IRenderingInterface::GetD3dDevice()
 {
 	if (FWindowsEngine* InEngine = GetEngine())
 	{
-		return InEngine->D3dDevice;
+			return InEngine->D3dDevice;
 	}
 
 	return NULL;

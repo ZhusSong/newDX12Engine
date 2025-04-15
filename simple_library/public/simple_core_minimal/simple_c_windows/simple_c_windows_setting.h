@@ -5,22 +5,22 @@
 _CRT_BEGIN_C_HEADER
 typedef enum 
 {
-	SIMPLE_BLACK = 0,				// ╨зи╚		
-	SIMPLE_BLUE,					// ю╤и╚		
-	SIMPLE_GREEN,					// бли╚		
-	SIMPLE_LIGHT_BLUE,				// гЁбли╚	
-	SIMPLE_RED,						// ╨Ли╚		
-	SIMPLE_VIOLET,					// вои╚		
-	SIMPLE_YELLOW,					// ╩фи╚		
-	SIMPLE_WHITE,					// ╟ви╚		
-	SIMPLE_GREY,					// ╩ри╚
-	SIMPLE_PALE_BLUE,				// ╣╜ю╤и╚
-	SIMPLE_PALE_GREEN,				// ╣╜бли╚
-	SIMPLE_LIGHT_GREEN,				// ╣╜гЁбли╚
-	SIMPLE_PALE_RED,				// ╣╜╨Ли╚
-	SIMPLE_LAVENDER,				// ╣╜вои╚
-	SIMPLE_CANARY_YELLOW,			// ╣╜╩фи╚
-	SIMPLE_BRIGHT_WHITE,			// аа╟ви╚
+	SIMPLE_BLACK = 0,				// И╩▒Х┴╡		
+	SIMPLE_BLUE,					// Х⌠²Х┴╡		
+	SIMPLE_GREEN,					// Г╩©Х┴╡		
+	SIMPLE_LIGHT_BLUE,				// Ф╣┘Г╩©Х┴╡	
+	SIMPLE_RED,						// Г╨╒Х┴╡		
+	SIMPLE_VIOLET,					// Г╢╚Х┴╡		
+	SIMPLE_YELLOW,					// И╩└Х┴╡		
+	SIMPLE_WHITE,					// Г≥╫Х┴╡		
+	SIMPLE_GREY,					// Г│╟Х┴╡
+	SIMPLE_PALE_BLUE,				// Ф╥║Х⌠²Х┴╡
+	SIMPLE_PALE_GREEN,				// Ф╥║Г╩©Х┴╡
+	SIMPLE_LIGHT_GREEN,				// Ф╥║Ф╣┘Г╩©Х┴╡
+	SIMPLE_PALE_RED,				// Ф╥║Г╨╒Х┴╡
+	SIMPLE_LAVENDER,				// Ф╥║Г╢╚Х┴╡
+	SIMPLE_CANARY_YELLOW,			// Ф╥║И╩└Х┴╡
+	SIMPLE_BRIGHT_WHITE,			// Д╨╝Г≥╫Х┴╡
 }simple_console_w_color;
 
 //set_console_windows_color
