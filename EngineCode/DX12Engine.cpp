@@ -41,10 +41,10 @@ int Init(FEngine* InEngine, HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cm
 	return ReturnValue;
 }
 
-void Tick(FEngine* InEngine)
+void Update(FEngine* InEngine)
 {
 	float DeltaTime = 0.03f;
-	InEngine->Tick(DeltaTime);
+	InEngine->Update(DeltaTime);
 
 	//Sleep(30);
 }
@@ -86,7 +86,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, in
 {
 	int ReturnValue = 0;
 
-	if (FEngine* Engine = FEngineFactory::CreateEngine())
+	Engine = FEngineFactory::CreateEngine();
+
+	if (Engine)
 	{
 		//初始化
 		Init(Engine, hInstance, prevInstance, cmdLine, showCmd);
@@ -111,7 +113,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, in
 			}
 			else
 			{
-				Tick(Engine);
+				Update(Engine);
 			}
 		}
 

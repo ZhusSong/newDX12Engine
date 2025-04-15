@@ -352,6 +352,21 @@
     <ClCompile Include="EngineCode\Math\EngineMath.cpp">
       <Filter>EngineCode\Math</Filter>
     </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Frame\Rendering.cpp">
+      <Filter>EngineCode\Rendering\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Mesh\Frame\Mesh.cpp">
+      <Filter>EngineCode\Mesh\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Mesh\Frame\MeshType.cpp">
+      <Filter>EngineCode\Mesh\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Mesh\BoxMesh.cpp">
+      <Filter>EngineCode\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Shader\Frame\Shader.cpp">
+      <Filter>EngineCode\Shader\Frame</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="simple_library\public\simple_library.h">
@@ -530,6 +545,21 @@
     </ClInclude>
     <ClInclude Include="EngineCode\Math\EngineMath.h">
       <Filter>EngineCode\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Frame\Rendering.h">
+      <Filter>EngineCode\Rendering\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Mesh\Frame\Mesh.h">
+      <Filter>EngineCode\Mesh\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Mesh\Frame\MeshType.h">
+      <Filter>EngineCode\Mesh\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Mesh\BoxMesh.h">
+      <Filter>EngineCode\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Shader\Frame\Shader.h">
+      <Filter>EngineCode\Shader\Frame</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

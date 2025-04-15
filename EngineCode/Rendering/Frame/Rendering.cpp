@@ -100,7 +100,7 @@ ComPtr<ID3D12Device> IRenderingInterface::GetD3dDevice()
 {
 	if (FWindowsEngine* InEngine = GetEngine())
 	{
-			return InEngine->D3dDevice;
+		return InEngine->D3dDevice;
 	}
 
 	return NULL;

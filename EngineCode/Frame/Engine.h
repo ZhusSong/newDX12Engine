@@ -22,7 +22,7 @@ public:
 	) = 0;
 	virtual int PostInit() = 0;
 
-	virtual void Tick(float DeltaTime) = 0;
+	virtual void Update(float DeltaTime) = 0;
 
 	virtual int PreExit() = 0;
 	virtual int Exit() = 0;

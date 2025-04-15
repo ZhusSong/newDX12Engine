@@ -19,9 +19,14 @@
 #include <DirectXCollision.h>
 #include "Debug/EngineDebug.h"
 
+//定义窗口坐标
+#define WINDOWS_LOCATION_X 0
+#define WINDOWS_LOCATION_Y 0
+
 using namespace Microsoft::WRL;
 using namespace std;
 using namespace DirectX;
 using namespace DirectX::PackedVector;
+
 
 extern class FEngine* Engine;
