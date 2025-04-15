@@ -12,6 +12,7 @@ struct FObjectTransformation
 	static XMFLOAT4X4 IdentityMatrix4x4();
 };
 
+// 网格接口
 class FMesh : public IRenderingInterface
 {
 public:

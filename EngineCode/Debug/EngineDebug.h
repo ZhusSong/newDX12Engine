@@ -1,6 +1,6 @@
 #pragma once
 
-//状态宏
+// 运行状态宏
 
 #define ANALYSIS_HRESULT(InValue) \
 {\

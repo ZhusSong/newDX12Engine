@@ -2,6 +2,8 @@
 
 #if defined(_WIN32)
 #include "../EngineMinimal.h"
+
+// 定义Windows环境下所需参数
 class FWinMainCommandParameters
 {
 public:
