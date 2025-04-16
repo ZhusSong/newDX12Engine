@@ -4,6 +4,7 @@
 #include "Debug/Log/SimpleLog.h"
 
 #include <vector>
+#include <sstream>
 
 #pragma comment(lib, "d3dcompiler.lib")
 #pragma comment(lib, "D3D12.lib")
@@ -29,4 +30,4 @@ using namespace DirectX;
 using namespace DirectX::PackedVector;
 
 
-extern class FEngine* Engine;
+extern class CEngine* Engine;

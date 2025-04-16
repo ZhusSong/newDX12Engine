@@ -1,8 +1,9 @@
 #pragma once
+#pragma once
 
 #include "Core/Mesh.h"
 
-class CBoxMesh :public CMesh
+class CSphereMesh :public CMesh
 {
 	typedef CMesh Super;
 public:
@@ -12,5 +13,5 @@ public:
 
 	virtual void Draw(float DeltaTime);
 
-	void CreateMesh(FMeshRenderingData& MeshData, float InHeight, float InWidth, float InDepth);
+	void CreateMesh(FMeshRenderingData& MeshData, float InRadius, uint32_t InAxialSubdivision, uint32_t InHeightSubdivision);
 };

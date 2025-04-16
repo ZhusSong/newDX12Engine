@@ -2,7 +2,7 @@
 
 #include "Core/Mesh.h"
 
-class CBoxMesh :public CMesh
+class CPlaneMesh :public CMesh
 {
 	typedef CMesh Super;
 public:
@@ -12,5 +12,5 @@ public:
 
 	virtual void Draw(float DeltaTime);
 
-	void CreateMesh(FMeshRenderingData& MeshData, float InHeight, float InWidth, float InDepth);
+	void CreateMesh(FMeshRenderingData& MeshData, float InHeight, float InWidth, uint32_t InHeightSubdivide, uint32_t InWidthSubdivide);
 };

@@ -10,6 +10,7 @@ SIZE_T FShader::GetBufferSize()
 	return ShaderCode->GetBufferSize();
 }
 
+
 void FShader::BuildShaders(const wstring& InFileName, const string& InEntryFunName, const string& InShadersVersion)
 {
 	ComPtr<ID3DBlob> ErrorShaderMsg;

@@ -2,7 +2,7 @@
 #include "EngineFactory.h"
 #include "Debug/Log/SimpleLog.h"
 
-int Init(FEngine* InEngine, HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, int showCmd)
+int Init(CEngine* InEngine, HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, int showCmd)
 {
 #if defined(_WIN32)
 	FWinMainCommandParameters WinMainParameters(hInstance, prevInstance, cmdLine, showCmd);
@@ -41,15 +41,15 @@ int Init(FEngine* InEngine, HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cm
 	return ReturnValue;
 }
 
-void Update(FEngine* InEngine)
+void Update(CEngine* InEngine)
 {
 	float DeltaTime = 0.03f;
-	InEngine->Update(DeltaTime);
+	InEngine->Tick(DeltaTime);
 
 	//Sleep(30);
 }
 
-int Exit(FEngine* InEngine)
+int Exit(CEngine* InEngine)
 {
 	int ReturnValue = InEngine->PreExit();
 	if (ReturnValue != 0)
@@ -75,7 +75,7 @@ int Exit(FEngine* InEngine)
 	return ReturnValue;
 }
 
-FEngine* Engine = NULL;
+CEngine* Engine = NULL;
 
 
 //hInstance 当前实例

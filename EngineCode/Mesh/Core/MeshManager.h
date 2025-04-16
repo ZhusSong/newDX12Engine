@@ -1,22 +1,15 @@
 #pragma once
-#include "../../Rendering/Frame/Rendering.h"
+#include "../../Core/CoreObject/CoreMinimalObject.h"
+#include "../../Shader/Core/Shader.h"
 #include "MeshType.h"
-#include "../../Shader/Frame/Shader.h"
+#include "Mesh.h"
 
-struct FObjectTransformation
-{
-	FObjectTransformation();
+class FRenderingResourcesUpdate;
 
-	XMFLOAT4X4 World;
-
-	static XMFLOAT4X4 IdentityMatrix4x4();
-};
-
-// 网格接口
-class FMesh : public IRenderingInterface
+class CMeshManage :public CCoreMinimalObject, public IRenderingInterface
 {
 public:
-	FMesh();
+	CMeshManage();
 
 	virtual void Init();
 
@@ -26,10 +19,43 @@ public:
 	virtual void Draw(float DeltaTime);
 	virtual void PostDraw(float DeltaTime);
 
-	static FMesh* CreateMesh(const FMeshRenderingData* InRenderingData);
-
 	D3D12_VERTEX_BUFFER_VIEW GetVertexBufferView();
 	D3D12_INDEX_BUFFER_VIEW GetIndexBufferView();
+public:
+	CMesh* CreateBoxMesh(
+		float InHeight,
+		float InWidth,
+		float InDepth);
+
+	CMesh* CreateConeMesh(
+		float InRadius,
+		float InHeight,
+		uint32_t InAxialSubdivision,
+		uint32_t InHeightSubdivision);
+
+	CMesh* CreateCylinderMesh(
+		float InTopRadius,
+		float InBottomRadius,
+		float InHeight,
+		uint32_t InAxialSubdivision,
+		uint32_t InHeightSubdivision);
+
+	CMesh* CreatePlaneMesh(
+		float InHeight,
+		float InWidth,
+		uint32_t InHeightSubdivide,
+		uint32_t InWidthSubdivide);
+
+	CMesh* CreateSphereMesh(
+		float InRadius,
+		uint32_t InAxialSubdivision,
+		uint32_t InHeightSubdivision);
+
+	CMesh* CreateMesh(string& InPath);
+
+protected:
+	template<class T, typename ...ParamTypes>
+	T* CreateMesh(ParamTypes &&...Params);
 
 protected:
 	ComPtr<ID3DBlob> CPUVertexBufferPtr;
@@ -43,7 +69,7 @@ protected:
 
 	ComPtr<ID3D12RootSignature>  RootSignature;
 	ComPtr<ID3D12DescriptorHeap> CBVHeap;
-	shared_ptr<FRenderingResourcesUpdate> objectConstants;
+	shared_ptr<FRenderingResourcesUpdate> ObjectConstants;
 
 	ComPtr<ID3D12PipelineState> PSO;
 

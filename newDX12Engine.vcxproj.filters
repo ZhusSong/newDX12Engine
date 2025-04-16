@@ -191,7 +191,7 @@
     <Filter Include="EngineCode\Windows">
       <UniqueIdentifier>{8b805001-b059-4de4-af59-e6bbe76d35a9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="EngineCode\Frame">
+    <Filter Include="EngineCode\Core">
       <UniqueIdentifier>{671846e0-5c13-4fc9-8230-c69b5131e746}</UniqueIdentifier>
     </Filter>
     <Filter Include="EngineCode\Math">
@@ -206,14 +206,41 @@
     <Filter Include="EngineCode\Rendering">
       <UniqueIdentifier>{a997e81a-1eee-45bb-b4ac-888f72575669}</UniqueIdentifier>
     </Filter>
-    <Filter Include="EngineCode\Rendering\Frame">
+    <Filter Include="EngineCode\Rendering\Core">
       <UniqueIdentifier>{90576393-c62f-4f5a-ac65-0f4f328b7656}</UniqueIdentifier>
     </Filter>
-    <Filter Include="EngineCode\Mesh\Frame">
+    <Filter Include="EngineCode\Mesh\Core">
       <UniqueIdentifier>{ce55ecb1-0c7a-4ddf-8bd5-5b75b3ee7a77}</UniqueIdentifier>
     </Filter>
-    <Filter Include="EngineCode\Shader\Frame">
+    <Filter Include="EngineCode\Shader\Core">
       <UniqueIdentifier>{44974a97-2b02-4ea9-a382-84d7490978be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Core\CoreObject">
+      <UniqueIdentifier>{4b611164-a374-4756-9da3-ee2346e26a14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Component">
+      <UniqueIdentifier>{5de13d9d-94b1-4ad4-9f63-24859c60df0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Component\Core">
+      <UniqueIdentifier>{c9a03d9f-9084-42ee-8071-69a72c2d3bca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\CodeReflection">
+      <UniqueIdentifier>{6fac1f18-c502-4c31-93a4-219ee86bd94c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Component\Input">
+      <UniqueIdentifier>{593733b4-dd75-4eb0-aff1-15e020f4aaec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Engine">
+      <UniqueIdentifier>{cfdb38aa-495f-4a15-a4b9-960eb85618fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Engine\Core">
+      <UniqueIdentifier>{794d5911-23e9-4660-af2f-6844b1b4b195}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Engine\DirectX">
+      <UniqueIdentifier>{f48bcb84-4ecf-4527-b092-163030b1d9d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Engine\DirectX\Core">
+      <UniqueIdentifier>{1e0498d2-76ca-4cac-9f10-846c9fcff33e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -331,12 +358,6 @@
     <ClCompile Include="EngineCode\Config\EngineRenderConfig.cpp">
       <Filter>EngineCode\Config</Filter>
     </ClCompile>
-    <ClCompile Include="EngineCode\Frame\Engine.cpp">
-      <Filter>EngineCode\Frame</Filter>
-    </ClCompile>
-    <ClCompile Include="EngineCode\Frame\WinMainCommandParameters.cpp">
-      <Filter>EngineCode\Frame</Filter>
-    </ClCompile>
     <ClCompile Include="EngineCode\Windows\WindowsEngine.cpp">
       <Filter>EngineCode\Windows</Filter>
     </ClCompile>
@@ -352,20 +373,86 @@
     <ClCompile Include="EngineCode\Math\EngineMath.cpp">
       <Filter>EngineCode\Math</Filter>
     </ClCompile>
-    <ClCompile Include="EngineCode\Rendering\Frame\Rendering.cpp">
-      <Filter>EngineCode\Rendering\Frame</Filter>
-    </ClCompile>
-    <ClCompile Include="EngineCode\Mesh\Frame\Mesh.cpp">
-      <Filter>EngineCode\Mesh\Frame</Filter>
-    </ClCompile>
-    <ClCompile Include="EngineCode\Mesh\Frame\MeshType.cpp">
-      <Filter>EngineCode\Mesh\Frame</Filter>
-    </ClCompile>
     <ClCompile Include="EngineCode\Mesh\BoxMesh.cpp">
       <Filter>EngineCode\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="EngineCode\Shader\Frame\Shader.cpp">
-      <Filter>EngineCode\Shader\Frame</Filter>
+    <ClCompile Include="EngineCode\Mesh\Core\Mesh.cpp">
+      <Filter>EngineCode\Mesh\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Mesh\Core\MeshType.cpp">
+      <Filter>EngineCode\Mesh\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Shader\Core\Shader.cpp">
+      <Filter>EngineCode\Shader\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\Rendering.cpp">
+      <Filter>EngineCode\Rendering\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Core\Engine.cpp">
+      <Filter>EngineCode\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Core\WinMainCommandParameters.cpp">
+      <Filter>EngineCode\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Core\CoreObject\CoreMinimalObject.cpp">
+      <Filter>EngineCode\Core\CoreObject</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\TransformComponent.cpp">
+      <Filter>EngineCode\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\InputComponent.cpp">
+      <Filter>EngineCode\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Core\Component.cpp">
+      <Filter>EngineCode\Component\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Core\Camera.cpp">
+      <Filter>EngineCode\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Core\Viewport.cpp">
+      <Filter>EngineCode\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Input\InputType.cpp">
+      <Filter>EngineCode\Component\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Core\CoreObject\GuidInterface.cpp">
+      <Filter>EngineCode\Core\CoreObject</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Core\World.cpp">
+      <Filter>EngineCode\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Engine\Core\RenderingEngine.cpp">
+      <Filter>EngineCode\Rendering\Engine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\RenderingResourcesUpdate.cpp">
+      <Filter>EngineCode\Rendering\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Mesh\ConeMesh.cpp">
+      <Filter>EngineCode\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Mesh\CustomMesh.cpp">
+      <Filter>EngineCode\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Mesh\CylinderMesh.cpp">
+      <Filter>EngineCode\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Mesh\PlaneMesh.cpp">
+      <Filter>EngineCode\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Mesh\SphereMesh.cpp">
+      <Filter>EngineCode\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Mesh\Core\MeshManager.cpp">
+      <Filter>EngineCode\Mesh\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Mesh\Core\ObjectTransform.cpp">
+      <Filter>EngineCode\Mesh\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Engine\DirectX\Core\DirectXRenderingEngine.cpp">
+      <Filter>EngineCode\Rendering\Engine\DirectX\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Engine\DirectX\DirectX12RenderingEngine.cpp">
+      <Filter>EngineCode\Rendering\Engine\DirectX</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -516,12 +603,6 @@
     <ClInclude Include="EngineCode\Config\EngineRenderConfig.h">
       <Filter>EngineCode\Config</Filter>
     </ClInclude>
-    <ClInclude Include="EngineCode\Frame\Engine.h">
-      <Filter>EngineCode\Frame</Filter>
-    </ClInclude>
-    <ClInclude Include="EngineCode\Frame\WinMainCommandParameters.h">
-      <Filter>EngineCode\Frame</Filter>
-    </ClInclude>
     <ClInclude Include="EngineCode\Windows\WindowsEngine.h">
       <Filter>EngineCode\Windows</Filter>
     </ClInclude>
@@ -546,20 +627,92 @@
     <ClInclude Include="EngineCode\Math\EngineMath.h">
       <Filter>EngineCode\Math</Filter>
     </ClInclude>
-    <ClInclude Include="EngineCode\Rendering\Frame\Rendering.h">
-      <Filter>EngineCode\Rendering\Frame</Filter>
-    </ClInclude>
-    <ClInclude Include="EngineCode\Mesh\Frame\Mesh.h">
-      <Filter>EngineCode\Mesh\Frame</Filter>
-    </ClInclude>
-    <ClInclude Include="EngineCode\Mesh\Frame\MeshType.h">
-      <Filter>EngineCode\Mesh\Frame</Filter>
-    </ClInclude>
     <ClInclude Include="EngineCode\Mesh\BoxMesh.h">
       <Filter>EngineCode\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="EngineCode\Shader\Frame\Shader.h">
-      <Filter>EngineCode\Shader\Frame</Filter>
+    <ClInclude Include="EngineCode\Mesh\Core\Mesh.h">
+      <Filter>EngineCode\Mesh\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Mesh\Core\MeshType.h">
+      <Filter>EngineCode\Mesh\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Shader\Core\Shader.h">
+      <Filter>EngineCode\Shader\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\Rendering.h">
+      <Filter>EngineCode\Rendering\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Core\Engine.h">
+      <Filter>EngineCode\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Core\WinMainCommandParameters.h">
+      <Filter>EngineCode\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Core\CoreObject\CoreMinimalObject.h">
+      <Filter>EngineCode\Core\CoreObject</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\TransformComponent.h">
+      <Filter>EngineCode\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\InputComponent.h">
+      <Filter>EngineCode\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Core\Component.h">
+      <Filter>EngineCode\Component\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Core\Camera.h">
+      <Filter>EngineCode\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Core\Viewport.h">
+      <Filter>EngineCode\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\CodeReflection\CodeReflectionMacroTag.h">
+      <Filter>EngineCode\CodeReflection</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Input\InputType.h">
+      <Filter>EngineCode\Component\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Core\CoreObject\GuidInterface.h">
+      <Filter>EngineCode\Core\CoreObject</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Core\World.h">
+      <Filter>EngineCode\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Engine\Core\RenderingEngine.h">
+      <Filter>EngineCode\Rendering\Engine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\RenderingResourcesUpdate.h">
+      <Filter>EngineCode\Rendering\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Mesh\ConeMesh.h">
+      <Filter>EngineCode\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Mesh\CustomMesh.h">
+      <Filter>EngineCode\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Mesh\CylinderMesh.h">
+      <Filter>EngineCode\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Mesh\PlaneMesh.h">
+      <Filter>EngineCode\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Mesh\SphereMesh.h">
+      <Filter>EngineCode\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Mesh\Core\MeshManager.h">
+      <Filter>EngineCode\Mesh\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Mesh\Core\ObjectTransform.h">
+      <Filter>EngineCode\Mesh\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Engine\DirectX\Core\DirectXRenderingEngine.h">
+      <Filter>EngineCode\Rendering\Engine\DirectX\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Engine\DirectX\DirectX12RenderingEngine.h">
+      <Filter>EngineCode\Rendering\Engine\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Windows\WindowsPlatform.h">
+      <Filter>EngineCode\Windows</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
