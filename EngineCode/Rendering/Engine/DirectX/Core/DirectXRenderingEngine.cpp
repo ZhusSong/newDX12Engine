@@ -73,7 +73,6 @@ int CDirectXRenderingEngine::PostInit()
 	ANALYSIS_HRESULT(GraphicsCommandList->Reset(CommandAllocator.Get(), NULL));
 	{
 		//构建Mesh
-	//	CBoxMesh* Box = CBoxMesh::CreateMesh();
 		MeshManage->CreateBoxMesh(4.f, 3.f, 1.5f);
 		//MeshManage->CreatePlaneMesh(4.f, 3.f, 20, 20);
 		//	string MeshObjPath = "../RenZhaiEngine/Mesh.obj";

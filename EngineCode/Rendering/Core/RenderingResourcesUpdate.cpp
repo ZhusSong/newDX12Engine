@@ -14,6 +14,12 @@ FRenderingResourcesUpdate::~FRenderingResourcesUpdate()
 	}
 }
 
+/// <summary>
+/// 初始化对象所对应的常量缓冲区
+/// </summary>
+/// <param name="InDevice">当前D3D设备</param>
+/// <param name="InElemetSize">对象内存空间</param>
+/// <param name="InElemetCount">对象数</param>
 void FRenderingResourcesUpdate::Init(ID3D12Device* InDevice, UINT InElemetSize, UINT InElemetCount)
 {
 	assert(InDevice);

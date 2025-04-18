@@ -2,6 +2,7 @@
 #include "../../Rendering/Core/Rendering.h"
 #include "MeshType.h"
 
+// 网格接口
 class CMesh :public CCoreMinimalObject, public IRenderingInterface
 {
 public:
