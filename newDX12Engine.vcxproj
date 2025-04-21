@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="EngineCode\Component\Core\Component.cpp" />
     <ClCompile Include="EngineCode\Component\InputComponent.cpp" />
+    <ClCompile Include="EngineCode\Component\Input\Input.cpp" />
     <ClCompile Include="EngineCode\Component\Input\InputType.cpp" />
     <ClCompile Include="EngineCode\Component\TransformComponent.cpp" />
     <ClCompile Include="EngineCode\Config\EngineRenderConfig.cpp" />
@@ -33,6 +34,7 @@
     <ClCompile Include="EngineCode\Core\World.cpp" />
     <ClCompile Include="EngineCode\DX12Engine.cpp" />
     <ClCompile Include="EngineCode\EngineFactory.cpp" />
+    <ClCompile Include="EngineCode\Interface\DirectXDeviceInterfece.cpp" />
     <ClCompile Include="EngineCode\Math\EngineMath.cpp" />
     <ClCompile Include="EngineCode\Mesh\BoxMesh.cpp" />
     <ClCompile Include="EngineCode\Mesh\ConeMesh.cpp" />
@@ -44,6 +46,7 @@
     <ClCompile Include="EngineCode\Mesh\CylinderMesh.cpp" />
     <ClCompile Include="EngineCode\Mesh\PlaneMesh.cpp" />
     <ClCompile Include="EngineCode\Mesh\SphereMesh.cpp" />
+    <ClCompile Include="EngineCode\Rendering\Core\Buffer\ConstructBuffer.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\Rendering.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\RenderingResourcesUpdate.cpp" />
     <ClCompile Include="EngineCode\Rendering\Engine\Core\RenderingEngine.cpp" />
@@ -94,6 +97,7 @@
     <ClInclude Include="EngineCode\CodeReflection\CodeReflectionMacroTag.h" />
     <ClInclude Include="EngineCode\Component\Core\Component.h" />
     <ClInclude Include="EngineCode\Component\InputComponent.h" />
+    <ClInclude Include="EngineCode\Component\Input\Input.h" />
     <ClInclude Include="EngineCode\Component\Input\InputType.h" />
     <ClInclude Include="EngineCode\Component\TransformComponent.h" />
     <ClInclude Include="EngineCode\Config\EngineRenderConfig.h" />
@@ -109,6 +113,7 @@
     <ClInclude Include="EngineCode\Debug\Log\SimpleLog.h" />
     <ClInclude Include="EngineCode\EngineFactory.h" />
     <ClInclude Include="EngineCode\EngineMinimal.h" />
+    <ClInclude Include="EngineCode\Interface\DirectXDeviceInterfece.h" />
     <ClInclude Include="EngineCode\Math\EngineMath.h" />
     <ClInclude Include="EngineCode\Mesh\BoxMesh.h" />
     <ClInclude Include="EngineCode\Mesh\ConeMesh.h" />
@@ -120,6 +125,7 @@
     <ClInclude Include="EngineCode\Mesh\CylinderMesh.h" />
     <ClInclude Include="EngineCode\Mesh\PlaneMesh.h" />
     <ClInclude Include="EngineCode\Mesh\SphereMesh.h" />
+    <ClInclude Include="EngineCode\Rendering\Core\Buffer\ConstructBuffer.h" />
     <ClInclude Include="EngineCode\Rendering\Core\Rendering.h" />
     <ClInclude Include="EngineCode\Rendering\Core\RenderingResourcesUpdate.h" />
     <ClInclude Include="EngineCode\Rendering\Engine\Core\RenderingEngine.h" />

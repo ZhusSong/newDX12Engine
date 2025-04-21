@@ -2,6 +2,7 @@
 
 #include "Core/Mesh.h"
 
+// 读取obj模型mesh
 class CCustomMesh :public CMesh
 {
 	typedef CMesh Super;

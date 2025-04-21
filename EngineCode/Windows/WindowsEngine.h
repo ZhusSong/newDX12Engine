@@ -7,7 +7,8 @@
 
 class CWindowsEngine:public CEngine
 {
-	friend class IRenderingInterface;
+	// 设置DirectX渲染接口类为友元，使其能够访问protected对象
+	friend class IDirectXDeviceInterface;
 public:
 	CWindowsEngine();
 

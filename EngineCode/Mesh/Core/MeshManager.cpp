@@ -9,6 +9,7 @@
 #include "ObjectTransform.h"
 #include "../../Rendering/Core/RenderingResourcesUpdate.h"
 #include "../../Rendering/Engine/DirectX/Core/DirectXRenderingEngine.h"
+#include "../../Rendering/Core/Buffer/ConstructBuffer.h"
 
 CMeshManage::CMeshManage()
     :VertexSizeInBytes(0)
@@ -126,11 +127,14 @@ void CMeshManage::BuildMesh(const FMeshRenderingData* InRenderingData)
     ANALYSIS_HRESULT(D3DCreateBlob(IndexSizeInBytes, &CPUIndexBufferPtr));
     memcpy(CPUIndexBufferPtr->GetBufferPointer(), InRenderingData->IndexData.data(), IndexSizeInBytes);
 
-    GPUVertexBufferPtr = ConstructDefaultBuffer(
+
+    ConstructBuffer::FConstructBuffer ConstructBuffer;
+    GPUVertexBufferPtr = ConstructBuffer.ConstructDefaultBuffer(
         VertexBufferTmpPtr,
         InRenderingData->VertexData.data(), VertexSizeInBytes);
 
-    GPUIndexBufferPtr = ConstructDefaultBuffer(IndexBufferTmpPtr,
+    GPUIndexBufferPtr = ConstructBuffer.ConstructDefaultBuffer(
+        IndexBufferTmpPtr,
         InRenderingData->IndexData.data(), IndexSizeInBytes);
 
     //PSO 流水线绑定
