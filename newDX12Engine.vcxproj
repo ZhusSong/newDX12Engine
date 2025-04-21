@@ -30,6 +30,9 @@
     <ClCompile Include="EngineCode\Core\CoreObject\GuidInterface.cpp" />
     <ClCompile Include="EngineCode\Core\Engine.cpp" />
     <ClCompile Include="EngineCode\Core\Viewport.cpp" />
+    <ClCompile Include="EngineCode\Core\Viewport\Viewport.cpp" />
+    <ClCompile Include="EngineCode\Core\Viewport\ViewportInfo.cpp" />
+    <ClCompile Include="EngineCode\Core\Viewport\ViewportTransformation.cpp" />
     <ClCompile Include="EngineCode\Core\WinMainCommandParameters.cpp" />
     <ClCompile Include="EngineCode\Core\World.cpp" />
     <ClCompile Include="EngineCode\DX12Engine.cpp" />
@@ -102,10 +105,14 @@
     <ClInclude Include="EngineCode\Component\TransformComponent.h" />
     <ClInclude Include="EngineCode\Config\EngineRenderConfig.h" />
     <ClInclude Include="EngineCode\Core\Camera.h" />
+    <ClInclude Include="EngineCode\Core\CameraType.h" />
     <ClInclude Include="EngineCode\Core\CoreObject\CoreMinimalObject.h" />
     <ClInclude Include="EngineCode\Core\CoreObject\GuidInterface.h" />
     <ClInclude Include="EngineCode\Core\Engine.h" />
     <ClInclude Include="EngineCode\Core\Viewport.h" />
+    <ClInclude Include="EngineCode\Core\Viewport\Viewport.h" />
+    <ClInclude Include="EngineCode\Core\Viewport\ViewportInfo.h" />
+    <ClInclude Include="EngineCode\Core\Viewport\ViewportTransformation.h" />
     <ClInclude Include="EngineCode\Core\WinMainCommandParameters.h" />
     <ClInclude Include="EngineCode\Core\World.h" />
     <ClInclude Include="EngineCode\d3dx12.h" />

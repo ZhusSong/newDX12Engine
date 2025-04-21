@@ -1,13 +1,18 @@
 #pragma once
-#include "Viewport.h"
 #include "CoreObject/CoreMinimalObject.h"
+#include "Viewport/Viewport.h"
 #include "../CodeReflection/CodeReflectionMacroTag.h"
+#include "../Interface/DirectXDeviceInterfece.h"
 
+enum ECmeraType;
 struct FInputKey;
 class CTransformComponent;
 class CInputComponent;
 
-class CCamera:public CCoreMinimalObject,public FViewport
+// 相机类
+class CCamera:public CCoreMinimalObject
+	,public FViewport
+	, public IDirectXDeviceInterface
 {
 	CVARIABLE()
 	CTransformComponent* TransformationComponent;
@@ -17,9 +22,10 @@ class CCamera:public CCoreMinimalObject,public FViewport
 public:
 	CCamera();
 	virtual void BeginInit();
-	virtual void Update(float DeltaTime);
+	virtual void Tick(float DeltaTime);
 
 	virtual void ExecuteKeyboard(const FInputKey& InputKey);
+	virtual void BuildViewMatrix(float DeltaTime);
 public:
 	// 鼠标处理相关
 	virtual void OnMouseButtonDown(int X, int Y);
@@ -29,6 +35,9 @@ public:
 
 	virtual void MoveForward(float InValue);
 	virtual void MoveRight(float InValue);
+protected:
+	void RotateAroundYAxis(float InRotateDegrees);
+	void RotateAroundZAxis(float InRotateDegrees);
 
 public:
 	FORCEINLINE 	CInputComponent* GetInputComponent() { return InputComponent; }
@@ -39,5 +48,9 @@ protected:
 	bool bLeftMouseDown;
 
 	float MouseSensitivity;
+	ECmeraType CmeraType;
 
+	float Radius;
+	float A;//Theta
+	float B;//
 };
