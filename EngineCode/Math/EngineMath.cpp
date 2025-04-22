@@ -2,6 +2,7 @@
 
 namespace EngineMath
 {
+    // 4X4单位矩阵
     XMFLOAT4X4 IdentityMatrix4x4()
     {
         return XMFLOAT4X4(

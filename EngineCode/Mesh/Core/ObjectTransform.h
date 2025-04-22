@@ -7,5 +7,4 @@ struct FObjectTransform
 
 	XMFLOAT4X4 World;
 
-	static XMFLOAT4X4 IdentityMatrix4x4();
 };

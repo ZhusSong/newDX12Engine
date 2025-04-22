@@ -92,6 +92,11 @@ int CDirectXRenderingEngine::PostInit()
 	return 0;
 }
 
+void CDirectXRenderingEngine::UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo)
+{
+	MeshManage->UpdateCalculations(DeltaTime, ViewportInfo);
+}
+
 void CDirectXRenderingEngine::Tick(float DeltaTime)
 {
 	//重置录制相关的内存，为下一帧做准备
@@ -196,6 +201,7 @@ UINT CDirectXRenderingEngine::GetDXGISampleQuality() const
 	return bMSAA4XEnabled ? (M4XQualityLevels - 1) : 0;
 }
 
+// 等待GPU处理完成
 void CDirectXRenderingEngine::WaitGPUCommandQueueComplete()
 {
 	CurrentFenceIndex++;

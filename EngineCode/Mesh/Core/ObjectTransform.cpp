@@ -1,6 +1,6 @@
 #include "ObjectTransform.h"
 
 FObjectTransform::FObjectTransform()
-    :World(FObjectTransform::IdentityMatrix4x4())
+    :World(EngineMath::IdentityMatrix4x4())
 {
 }

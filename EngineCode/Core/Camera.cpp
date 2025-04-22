@@ -8,9 +8,18 @@ CCamera::CCamera()
 {
 	InputComponent = CreateObject<CInputComponent>(new CInputComponent());
 	TransformationComponent = CreateObject<CTransformComponent>(new CTransformComponent());
+
+	MouseSensitivity = 0.7f;
+	CmeraType = ECmeraType::CameraRoaming;
+
+	Radius = 10.f;
+	A = XM_PI;//
+	B = XM_PI;
 }
 void CCamera::BeginInit()
 {
+	//初始化我们的投影矩阵
+	ViewportInit();
 	// 绑定代理
 	InputComponent->CaptureKeyboardInforDelegate.Bind(this, &CCamera::ExecuteKeyboard);
 
@@ -59,8 +68,10 @@ void CCamera::BuildViewMatrix(float DeltaTime)
 	{
 	case CameraRoaming:
 	{
+		//计算和矫正轴
 		TransformationComponent->CorrectionVector();
 
+		//算出按自身方向移动意图
 		fvector_3d V3;
 		TransformationComponent->GetCorrectionPosition(V3);
 
@@ -152,6 +163,7 @@ void CCamera::OnMouseWheel(int X, int Y, float InDelta)
 	{
 		Radius += (InDelta / 100.f);
 
+		//限制在一定的范围内
 		Radius = math_libray::Clamp(Radius, 7.f, 40.f);
 	}
 }
@@ -190,12 +202,15 @@ void CCamera::MoveRight(float InValue)
 
 void CCamera::RotateAroundYAxis(float InRotateDegrees)
 {
+	//拿到相机的方向
 	XMFLOAT3 RightVector = TransformationComponent->GetRightVector();
 	XMFLOAT3 UPVector = TransformationComponent->GetUPVector();
 	XMFLOAT3 ForwardVector = TransformationComponent->GetForwardVector();
 
+	//拿到关于Y的旋转矩阵
 	XMMATRIX RotationY = XMMatrixRotationAxis(XMLoadFloat3(&TransformationComponent->GetRightVector()), InRotateDegrees);
 
+	//计算各个方向和按照Z轴旋转后的最终效果
 	//XMStoreFloat3(&TransformationComponent->GetRightVector(), XMVector3TransformNormal(XMLoadFloat3(&RightVector), RotationY));
 	XMStoreFloat3(&TransformationComponent->GetUPVector(), XMVector3TransformNormal(XMLoadFloat3(&UPVector), RotationY));
 	XMStoreFloat3(&TransformationComponent->GetForwardVector(), XMVector3TransformNormal(XMLoadFloat3(&ForwardVector), RotationY));
@@ -203,13 +218,15 @@ void CCamera::RotateAroundYAxis(float InRotateDegrees)
 
 void CCamera::RotateAroundZAxis(float InRotateDegrees)
 {
+	//拿到相机的方向
 	XMFLOAT3 RightVector = TransformationComponent->GetRightVector();
 	XMFLOAT3 UPVector = TransformationComponent->GetUPVector();
 	XMFLOAT3 ForwardVector = TransformationComponent->GetForwardVector();
 
+	//拿到关于Z的旋转矩阵
 	XMMATRIX RotationZ = XMMatrixRotationZ(InRotateDegrees);
 
-	//更该transform
+	//计算各个方向和按照Z轴旋转后的最终效果
 	XMStoreFloat3(&TransformationComponent->GetRightVector(), XMVector3TransformNormal(XMLoadFloat3(&RightVector), RotationZ));
 	XMStoreFloat3(&TransformationComponent->GetUPVector(), XMVector3TransformNormal(XMLoadFloat3(&UPVector), RotationZ));
 	XMStoreFloat3(&TransformationComponent->GetForwardVector(), XMVector3TransformNormal(XMLoadFloat3(&ForwardVector), RotationZ));

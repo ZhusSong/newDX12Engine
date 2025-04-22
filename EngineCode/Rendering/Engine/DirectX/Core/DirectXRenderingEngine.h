@@ -1,5 +1,6 @@
 #pragma once
 #include "../../Core/RenderingEngine.h"
+#include "../../../../Core/Viewport/ViewportInfo.h"
 
 class CMeshManage;
 // DirectX的渲染引擎，继承自渲染引擎基类
@@ -16,6 +17,8 @@ public:
 
 	virtual int Init(FWinMainCommandParameters InParameters);
 	virtual int PostInit();
+
+	virtual void UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo);
 
 	virtual void Tick(float DeltaTime);
 

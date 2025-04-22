@@ -19,7 +19,7 @@ CMeshManage::CMeshManage()
     , IndexSizeInBytes(0)
     , IndexFormat(DXGI_FORMAT_R16_UINT)
     , IndexSize(0)
-    , WorldMatrix(FObjectTransform::IdentityMatrix4x4())
+    , WorldMatrix(EngineMath::IdentityMatrix4x4())
 {
 
 }
@@ -78,10 +78,11 @@ void CMeshManage::BuildMesh(const FMeshRenderingData* InRenderingData)
     //构建根签名
     CD3DX12_ROOT_PARAMETER RootParam[2];
 
-    //CBV描述表
+    //ObjCBV描述表
     CD3DX12_DESCRIPTOR_RANGE DescriptorRangeObjCBV;
     DescriptorRangeObjCBV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 0);
 
+    //ViewportCBV描述表
     CD3DX12_DESCRIPTOR_RANGE DescriptorRangeViewportCBV;
     DescriptorRangeViewportCBV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 1);
 
@@ -95,7 +96,7 @@ void CMeshManage::BuildMesh(const FMeshRenderingData* InRenderingData)
         nullptr,
         D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 
-    //ｴｴｽｨ
+    // 创建
     ComPtr<ID3DBlob> SerializeRootSignature;
     ComPtr<ID3DBlob> ErrorBlob;
     D3D12SerializeRootSignature(
@@ -109,7 +110,7 @@ void CMeshManage::BuildMesh(const FMeshRenderingData* InRenderingData)
         Engine_Log_Error("%s", (char*)ErrorBlob->GetBufferPointer());
     }
 
-    //ｴｴｽｨ
+    //创建
     GetD3dDevice()->CreateRootSignature(
         0,
         SerializeRootSignature->GetBufferPointer(),
@@ -132,7 +133,7 @@ void CMeshManage::BuildMesh(const FMeshRenderingData* InRenderingData)
     VertexStrideInBytes = sizeof(FVertex);
     IndexSize = InRenderingData->IndexData.size();
 
-    //ｻ｡ﾁﾋﾄ｣ﾐﾍﾊｾﾝｵﾄｴ｡
+    //获取模型数据size
     VertexSizeInBytes = InRenderingData->VertexData.size() * VertexStrideInBytes;
     IndexSizeInBytes = IndexSize * sizeof(uint16_t);
 
@@ -150,28 +151,29 @@ void CMeshManage::BuildMesh(const FMeshRenderingData* InRenderingData)
     GPUIndexBufferPtr = ConstructBuffer.ConstructDefaultBuffer(IndexBufferTmpPtr,
         InRenderingData->IndexData.data(), IndexSizeInBytes);
 
-    //PSO ﾁｮﾏﾟｰｨ
+    // PSO 流水线绑定
     D3D12_GRAPHICS_PIPELINE_STATE_DESC GPSDesc;
     memset(&GPSDesc, 0, sizeof(D3D12_GRAPHICS_PIPELINE_STATE_DESC));
 
-    //ｰｨﾊ菠・ｼｾﾖ
+    // 绑定输入布局
     GPSDesc.InputLayout.pInputElementDescs = InputElementDesc.data();
     GPSDesc.InputLayout.NumElements = (UINT)InputElementDesc.size();
 
-    //ｰｨｸｩﾃ・
+    // 绑定根签名
     GPSDesc.pRootSignature = RootSignature.Get();
 
-    //ｰｨｶ･ｵ聆ﾅﾉｫﾆ惲・
+    // 绑定顶点着色器
     GPSDesc.VS.pShaderBytecode = reinterpret_cast<BYTE*>(VertexShader.GetBufferPointer());
     GPSDesc.VS.BytecodeLength = VertexShader.GetBufferSize();
 
-    //ｰｨﾏﾘﾗﾅﾉｫﾆ・
+    // 绑定像素着色器
     GPSDesc.PS.pShaderBytecode = PixelShader.GetBufferPointer();
     GPSDesc.PS.BytecodeLength = PixelShader.GetBufferSize();
 
-    //ﾅ葷ﾃｹ籃､ｻｯﾗｴﾌｬ
+    // 配置光栅化状态
     GPSDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
-    GPSDesc.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;//ﾒﾔﾏﾟｿｽﾊｽﾏﾔﾊｾ
+    // 以线框方式显示
+    GPSDesc.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;
 
     //0000..0000
     GPSDesc.SampleMask = UINT_MAX;
@@ -185,7 +187,7 @@ void CMeshManage::BuildMesh(const FMeshRenderingData* InRenderingData)
     GPSDesc.SampleDesc.Count = GetEngine()->GetRenderingEngine()->GetDXGISampleCount();
     GPSDesc.SampleDesc.Quality = GetEngine()->GetRenderingEngine()->GetDXGISampleQuality();
 
-    //RTV ｺﾍ DSVｸｽ
+    //RTV 和 DSV格式
     GPSDesc.RTVFormats[0] = GetEngine()->GetRenderingEngine()->GetBackBufferFormat();
     GPSDesc.DSVFormat = GetEngine()->GetRenderingEngine()->GetDepthStencilFormat();
 
@@ -214,7 +216,7 @@ void CMeshManage::UpdateCalculations(float DeltaTime, const FViewportInfo& Viewp
     XMStoreFloat4x4(&ObjectTransformation.World, XMMatrixTranspose(ATRIXWorld));
     ObjectConstants->Update(0, &ObjectTransformation);
 
-    //ｸ・ﾂﾊﾓｿﾚ
+    //更新视口
     XMMATRIX ViewProject = XMMatrixMultiply(ViewMatrix, ProjectMatrix);
     FViewportTransformation ViewportTransformation;
     XMStoreFloat4x4(&ViewportTransformation.ViewProjectionMatrix, XMMatrixTranspose(ViewProject));
@@ -236,16 +238,16 @@ void CMeshManage::Draw(float DeltaTime)
 
     D3D12_VERTEX_BUFFER_VIEW VBV = GetVertexBufferView();
 
-    //ｰｨ葷ﾈｾﾁｮﾏﾟﾉﾏｵﾄﾊ菠・ﾛ｣ｬｿﾉﾒﾔﾔﾚﾊ菠・ｰﾅ菷ﾗｶﾎｴｫﾈ・･ｵ飜ｾﾝ
+    //绑定渲染流水线上的输入槽，可以在输入装配器阶段传入顶点数据
     GetGraphicsCommandList()->IASetVertexBuffers(
-        0,//ﾆｼﾊ菠・ﾛ 0-15 
+        0,//起始输入槽 0-15 
         1,//k k+1 ... k+n-1 
         &VBV);
 
     D3D12_INDEX_BUFFER_VIEW IBV = GetIndexBufferView();
     GetGraphicsCommandList()->IASetIndexBuffer(&IBV);
 
-    //ｶｨﾒ衾ﾒﾃﾇﾒｪｻ贍ﾆｵﾄﾄﾄﾖﾖﾍｼﾔｪ ｵ・ﾏﾟ ﾃ・
+    //定义要绘制的哪种图元 点 线 面
     GetGraphicsCommandList()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
     UINT DescriptorOffset = GetD3dDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
@@ -257,13 +259,13 @@ void CMeshManage::Draw(float DeltaTime)
     DesHandle.Offset(1, DescriptorOffset);
     GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(1, DesHandle);
 
-    //ﾕ贏ｵﾄｻ贍ﾆ
+    // 真正的绘制
     GetGraphicsCommandList()->DrawIndexedInstanced(
-        IndexSize,//ｶ･ｵ飜ﾁｿ
-        1,//ｻ贍ﾆﾊｵﾀﾊﾁｿ
-        0,//ｶ･ｵ羹ｺｳ衂ﾚﾒｻｸｻｻ贍ﾆｵﾄﾋ
-        0,//GPU ｴﾓﾋｻｺｳ衂ﾁﾈ｡ｵﾄｵﾚﾒｻｸｵﾄﾎｻﾖﾃ｡｣
-        0);//ﾔﾚｴﾓｶ･ｵ羹ｺｳ衂ﾁﾈ｡ﾃｿｸｵﾀﾊｾﾝﾖｮﾇｰﾌ晴ﾓｵｽﾃｿｸｵﾄﾖｵ｡｣
+        IndexSize,//顶点数量
+        1,//绘制实例数量
+        0,//顶点缓冲区第一个被绘制的索引
+        0,//GPU 从索引缓冲区读取的第一个索引的位置。
+        0);//在从顶点缓冲区读取每个实例数据之前添加到每个索引的值。
 }
 
 void CMeshManage::PreDraw(float DeltaTime)
@@ -326,13 +328,13 @@ T* CMeshManage::CreateMesh(ParamTypes && ...Params)
 {
     T* MyMesh = new T();
 
-    //ﾌ睚｡ﾄ｣ﾐﾍﾗﾊﾔｴ
+    //提取模型资源
     FMeshRenderingData MeshData;
     MyMesh->CreateMesh(MeshData, forward<ParamTypes>(Params)...);
 
     MyMesh->BeginInit();
 
-    //ｹｹｽｨmesh
+    //构建mesh
     BuildMesh(&MeshData);
 
     MyMesh->Init();

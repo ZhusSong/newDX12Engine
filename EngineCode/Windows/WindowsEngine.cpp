@@ -10,6 +10,7 @@
 #include "../Mesh/CustomMesh.h"
 #include "../Core/CoreObject/CoreMinimalObject.h"
 #include "../Core/World.h"
+#include "../Core/Camera.h"
 
 #include "../Rendering/Engine/DirectX/DirectX12RenderingEngine.h"
 
@@ -52,7 +53,7 @@ int CWindowsEngine::Init(FWinMainCommandParameters InParameters)
 
 	RenderingEngine->Init(InParameters);
 
-	CWorld* World = CreateObject<CWorld>(new CWorld());
+	World = CreateObject<CWorld>(new CWorld());
 
 	Engine_Log("Engine initialization complete.");
 
@@ -82,8 +83,18 @@ void CWindowsEngine::Tick(float DeltaTime)
 			Tmp->Tick(DeltaTime);
 		}
 	}
+	if (World)
+	{
+		if (World->GetCamera())
+		{
+			FViewportInfo ViewportInfo;
+			ViewportInfo.ViewMatrix = World->GetCamera()->ViewMatrix;
+			ViewportInfo.ProjectMatrix = World->GetCamera()->ProjectMatrix;
+			RenderingEngine->UpdateCalculations(DeltaTime, ViewportInfo);
 
-	RenderingEngine->Tick(DeltaTime);
+			RenderingEngine->Tick(DeltaTime);
+		}
+	}
 }
 
 int CWindowsEngine::PreExit()
@@ -124,7 +135,7 @@ bool CWindowsEngine::InitWindows(FWinMainCommandParameters InParameters)
 	WindowsClass.hIcon = nullptr; //应用程序放在磁盘上显示的图标
 	WindowsClass.hIconSm = NULL;//应用程序显示在左上角的图标
 	WindowsClass.hInstance = InParameters.HInstance; //窗口实例
-	WindowsClass.lpszClassName = L"RenzhaiEngine";//窗口名字
+	WindowsClass.lpszClassName = L"DX12Engine";//窗口名字
 	WindowsClass.lpszMenuName = nullptr;//
 	WindowsClass.style = CS_VREDRAW | CS_HREDRAW;//怎么绘制窗口 垂直和水平重绘
 	WindowsClass.lpfnWndProc = EngineWindowProc;//消息处理函数
@@ -149,8 +160,8 @@ bool CWindowsEngine::InitWindows(FWinMainCommandParameters InParameters)
 
 	MainWindowsHandle = CreateWindowEx(
 		NULL,//窗口额外的风格
-		L"RenZhaiEngine", // 窗口名称
-		L"RENZHAI Engine",//会显示在窗口的标题栏上去
+		L"DX12Engine", // 窗口名称
+		L"DX12 Engine",//会显示在窗口的标题栏上去
 		WS_OVERLAPPEDWINDOW, //窗口风格
 		WINDOWS_LOCATION_X, WINDOWS_LOCATION_Y,//窗口的坐标
 		WindowWidth, WindowHight,//

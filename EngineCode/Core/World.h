@@ -13,6 +13,9 @@ class CWorld :public CCoreMinimalObject
 public:
 	CWorld();
 
+	CCamera* GetCamera() { return Camera; }
+
+protected:
 	CVARIABLE()
 		CCamera* Camera;
 };

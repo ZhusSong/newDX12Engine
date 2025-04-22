@@ -3,7 +3,8 @@
 #if defined(_WIN32)
 #include "../../EngineCode/Core/Engine.h"
 #include "../Rendering/Engine/Core/RenderingEngine.h"
-#include "../Rendering/Engine/DirectX/Core/DirectXRenderingEngine.h"
+class CDirectXRenderingEngine;
+class CWorld;
 
 class CWindowsEngine:public CEngine
 {
@@ -32,8 +33,12 @@ public:
 	bool InitWindows(FWinMainCommandParameters InParameters);
 
 protected:
-	HWND MainWindowsHandle;//主windows句柄
+	//主windows句柄
+	HWND MainWindowsHandle;
+
+protected:
 	CDirectXRenderingEngine* RenderingEngine;
+	CWorld* World;
 
 };
 #endif
