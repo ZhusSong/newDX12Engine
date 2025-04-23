@@ -11,6 +11,7 @@ DEFINITION_SIMPLE_SINGLE_DELEGATE(FCaptureOnMouseWheelDelegate, void, int, int, 
 
 class CInputComponent :public CComponent
 {
+	// 绑定代理
 public:
 	CVARIABLE(hello world)
 		FCaptureKeyboardInforDelegate CaptureKeyboardInforDelegate;

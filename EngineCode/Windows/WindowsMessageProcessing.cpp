@@ -4,6 +4,7 @@
 // 操作窗口时，处理操作对应的消息句柄
 LRESULT CALLBACK EngineWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+	// 消息队列
 	switch (msg)
 	{
 		// 关闭
