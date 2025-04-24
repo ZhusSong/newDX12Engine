@@ -50,6 +50,13 @@
     <ClCompile Include="EngineCode\Mesh\PlaneMesh.cpp" />
     <ClCompile Include="EngineCode\Mesh\SphereMesh.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\Buffer\ConstructBuffer.cpp" />
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\ConstantBuffer\ConstantBufferViews.cpp" />
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DescriptorHeap\DirectXDescriptorHeap.cpp" />
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\Geometry\GeometryMap.cpp" />
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\Geometry\RenderingData.cpp" />
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\PipelineState\DirectXPipelineState.cpp" />
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderingPipeline.cpp" />
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RootSignature\DirectXRootSignature.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\Rendering.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\RenderingResourcesUpdate.cpp" />
     <ClCompile Include="EngineCode\Rendering\Engine\Core\RenderingEngine.cpp" />
@@ -133,6 +140,13 @@
     <ClInclude Include="EngineCode\Mesh\PlaneMesh.h" />
     <ClInclude Include="EngineCode\Mesh\SphereMesh.h" />
     <ClInclude Include="EngineCode\Rendering\Core\Buffer\ConstructBuffer.h" />
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\ConstantBuffer\ConstantBufferViews.h" />
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DescriptorHeap\DirectXDescriptorHeap.h" />
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\Geometry\GeometryMap.h" />
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\Geometry\RenderingData.h" />
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\PipelineState\DirectXPipelineState.h" />
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderingPipeline.h" />
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RootSignature\DirectXRootSignature.h" />
     <ClInclude Include="EngineCode\Rendering\Core\Rendering.h" />
     <ClInclude Include="EngineCode\Rendering\Core\RenderingResourcesUpdate.h" />
     <ClInclude Include="EngineCode\Rendering\Engine\Core\RenderingEngine.h" />

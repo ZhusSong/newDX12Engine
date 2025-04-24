@@ -251,6 +251,27 @@
     <Filter Include="EngineCode\Core\Viewport">
       <UniqueIdentifier>{ac99bb4e-8ba6-4b5e-a161-7732867577b2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="EngineCode\Rendering\Core\DirectX">
+      <UniqueIdentifier>{7728bd0a-94d5-4337-9e6f-57983418068f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline">
+      <UniqueIdentifier>{6748e046-e2c3-4d97-b8b9-1d195101f86b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\ConstantBuffer">
+      <UniqueIdentifier>{91c473c2-26cf-4fba-86f8-77dbf392bae8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DescriptorHeap">
+      <UniqueIdentifier>{e20e40fd-7503-427e-876a-a40192a231f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\Geometry">
+      <UniqueIdentifier>{f7d4f548-9897-41b5-9fc7-057f3d5a4d03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\PipelineState">
+      <UniqueIdentifier>{0b9e6db8-1198-4fba-b059-1f73e642baac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RootSignature">
+      <UniqueIdentifier>{aa0ee951-7472-4f68-9374-e385fd2f474f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="simple_library\private\simple_math\soft_rasterization\soft_rasterization.cpp">
@@ -480,6 +501,27 @@
     </ClCompile>
     <ClCompile Include="EngineCode\Core\Viewport\Viewport.cpp">
       <Filter>EngineCode\Core\Viewport</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\ConstantBuffer\ConstantBufferViews.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\ConstantBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DescriptorHeap\DirectXDescriptorHeap.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\DescriptorHeap</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\Geometry\RenderingData.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\PipelineState\DirectXPipelineState.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\PipelineState</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RootSignature\DirectXRootSignature.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RootSignature</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderingPipeline.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\Geometry\GeometryMap.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\Geometry</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -761,6 +803,27 @@
     </ClInclude>
     <ClInclude Include="EngineCode\Core\CameraType.h">
       <Filter>EngineCode\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\ConstantBuffer\ConstantBufferViews.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\ConstantBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DescriptorHeap\DirectXDescriptorHeap.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\DescriptorHeap</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\Geometry\RenderingData.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\PipelineState\DirectXPipelineState.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\PipelineState</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RootSignature\DirectXRootSignature.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RootSignature</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderingPipeline.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\Geometry\GeometryMap.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\Geometry</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
