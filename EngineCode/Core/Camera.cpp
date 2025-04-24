@@ -168,6 +168,7 @@ void CCamera::OnMouseWheel(int X, int Y, float InDelta)
 	}
 }
 
+// 移动
 void CCamera::MoveForward(float InValue)
 {
 	if (CmeraType == ECmeraType::CameraRoaming)

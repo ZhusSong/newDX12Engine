@@ -9,9 +9,10 @@ void CInputComponent::BeginInit()
 	MouseMoveDelegate.AddFunction(this, &CInputComponent::OnMouseMove);
 	MousesWheelsDelegate.AddFunction(this, &CInputComponent::OnMouseWheel);
 }
-
+// 每帧运行
 void CInputComponent::Tick(float DeltaTime)
 {
+	// 检测是否进行了键盘事件的绑定
 	if (CaptureKeyboardInforDelegate.IsBound())
 	{
 		FInputKey InputKey;
@@ -48,6 +49,7 @@ void CInputComponent::Tick(float DeltaTime)
 	}
 }
 
+// 鼠标按下时
 void CInputComponent::OnMouseButtonDown(int X, int Y)
 {
 	if (OnMouseButtonDownDelegate.IsBound())
@@ -56,6 +58,7 @@ void CInputComponent::OnMouseButtonDown(int X, int Y)
 	}
 }
 
+// 鼠标抬起时
 void CInputComponent::OnMouseButtonUp(int X, int Y)
 {
 	if (OnMouseButtonUpDelegate.IsBound())
@@ -64,6 +67,7 @@ void CInputComponent::OnMouseButtonUp(int X, int Y)
 	}
 }
 
+// 鼠标抬起时
 void CInputComponent::OnMouseMove(int X, int Y)
 {
 	if (OnMouseMoveDelegate.IsBound())
@@ -72,6 +76,7 @@ void CInputComponent::OnMouseMove(int X, int Y)
 	}
 }
 
+// 滚轮滚动时
 void CInputComponent::OnMouseWheel(int X, int Y, float InDelta)
 {
 	if (OnMouseWheelDelegate.IsBound())

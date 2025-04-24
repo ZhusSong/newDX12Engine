@@ -30,6 +30,7 @@ void CTransformComponent::SetUPVector(const XMFLOAT3& InUPVector)
 	UPVector = InUPVector;
 }
 
+// 矫正位置矩阵
 void CTransformComponent::CorrectionVector()
 {
 	XMVECTOR Right = XMLoadFloat3(&RightVector);

@@ -11,6 +11,12 @@ LRESULT CALLBACK EngineWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPa
 	case WM_CLOSE:
 		PostQuitMessage(0);
 		return 0;
+		// 鼠标左键点击
+	case WM_LBUTTONDOWN:
+		return 0;
+		// 鼠标左键点击
+	case WM_LBUTTONUP:
+		return 0;
 		// 鼠标右键点击
 	case WM_RBUTTONDOWN:
 		MouseDownDelegate.Broadcast(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));

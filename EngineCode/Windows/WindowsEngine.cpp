@@ -30,7 +30,7 @@ CWindowsEngine::~CWindowsEngine()
 int CWindowsEngine::PreInit(FWinMainCommandParameters InParameters)
 {
 	//日志系统初始化
-	const char LogPath[] = "../log";
+	const char LogPath[] = "log";
 	init_log_system(LogPath);
 	Engine_Log("Log Init.");
 
