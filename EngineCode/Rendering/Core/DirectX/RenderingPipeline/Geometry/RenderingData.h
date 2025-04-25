@@ -9,12 +9,11 @@ struct FRenderingData :public IDirectXDeviceInterface_Struct
 public:
 	FRenderingData();
 
-	// 渲染物体索引数据所需空间
+	// 渲染物体索引与顶点数据所需空间
 	UINT IndexSize;
-
-	// 渲染物体顶点数据所需空间
 	UINT VertexSize;
 
+	// 索引与顶点偏移
 	UINT IndexOffsetPosition;
 	UINT VertexOffsetPosition;
 
