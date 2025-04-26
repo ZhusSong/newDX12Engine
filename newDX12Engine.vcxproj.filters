@@ -272,6 +272,12 @@
     <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RootSignature">
       <UniqueIdentifier>{aa0ee951-7472-4f68-9374-e385fd2f474f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="EngineCode\Actor">
+      <UniqueIdentifier>{03b0c946-58d3-478f-a83b-7ad92263d7b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Actor\Core">
+      <UniqueIdentifier>{d2bc0840-bcfd-4168-ac7d-0dc9d071f213}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="simple_library\private\simple_math\soft_rasterization\soft_rasterization.cpp">
@@ -522,6 +528,9 @@
     </ClCompile>
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\Geometry\GeometryMap.cpp">
       <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Actor\Core\ActorObject.cpp">
+      <Filter>EngineCode\Actor\Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -824,6 +833,9 @@
     </ClInclude>
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\Geometry\GeometryMap.h">
       <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Actor\Core\ActorObject.h">
+      <Filter>EngineCode\Actor\Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
