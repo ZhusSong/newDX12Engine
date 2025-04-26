@@ -5,6 +5,7 @@
 #include "Mesh.h"
 #include "../../Interface/DirectXDeviceInterfece.h"
 #include "../../Core/Viewport/ViewportInfo.h"
+#include "../../Rendering/Core/DirectX/RenderingPipeline/RenderingPipeline.h"
 
 class FRenderingResourcesUpdate;
 
@@ -17,53 +18,56 @@ public:
 
 	virtual void Init();
 
-	virtual void BuildMesh(const FMeshRenderingData* InRenderingData);
+	virtual void BuildMesh();
 	virtual void UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo);
 
 	virtual void PreDraw(float DeltaTime);
 	virtual void Draw(float DeltaTime);
 	virtual void PostDraw(float DeltaTime);
 
-	D3D12_VERTEX_BUFFER_VIEW GetVertexBufferView();
-	D3D12_INDEX_BUFFER_VIEW GetIndexBufferView();
+	/*D3D12_VERTEX_BUFFER_VIEW GetVertexBufferView();
+	D3D12_INDEX_BUFFER_VIEW GetIndexBufferView();*/
 public:
-	CMesh* CreateBoxMesh(
+	GMesh* CreateBoxMesh(
 		float InHeight,
 		float InWidth,
 		float InDepth);
 
-	CMesh* CreateConeMesh(
+	GMesh* CreateConeMesh(
 		float InRadius,
 		float InHeight,
 		uint32_t InAxialSubdivision,
 		uint32_t InHeightSubdivision);
 
-	CMesh* CreateCylinderMesh(
+	GMesh* CreateCylinderMesh(
 		float InTopRadius,
 		float InBottomRadius,
 		float InHeight,
 		uint32_t InAxialSubdivision,
 		uint32_t InHeightSubdivision);
 
-	CMesh* CreatePlaneMesh(
+	GMesh* CreatePlaneMesh(
 		float InHeight,
 		float InWidth,
 		uint32_t InHeightSubdivide,
 		uint32_t InWidthSubdivide);
 
-	CMesh* CreateSphereMesh(
+	GMesh* CreateSphereMesh(
 		float InRadius,
 		uint32_t InAxialSubdivision,
 		uint32_t InHeightSubdivision);
 
-	CMesh* CreateMesh(string& InPath);
+	GMesh* CreateMesh(string& InPath);
 
 protected:
 	template<class T, typename ...ParamTypes>
 	T* CreateMesh(ParamTypes &&...Params);
 
 protected:
-	ComPtr<ID3DBlob> CPUVertexBufferPtr;
+	FRenderingPipeline RenderingPipeline;
+
+
+	/*ComPtr<ID3DBlob> CPUVertexBufferPtr;
 	ComPtr<ID3DBlob> CPUIndexBufferPtr;
 
 	ComPtr<ID3D12Resource> GPUVertexBufferPtr;
@@ -76,21 +80,16 @@ protected:
 	ComPtr<ID3D12DescriptorHeap> CBVHeap;
 
 	shared_ptr<FRenderingResourcesUpdate> ObjectConstants;
-	shared_ptr<FRenderingResourcesUpdate> ViewportConstants;
-
-	ComPtr<ID3D12PipelineState> PSO;
-
-	FShader VertexShader;
-	FShader PixelShader;
-
-	vector<D3D12_INPUT_ELEMENT_DESC> InputElementDesc;
-protected:
-	UINT VertexSizeInBytes;
-	UINT VertexStrideInBytes;
-
-	UINT IndexSizeInBytes;
-	DXGI_FORMAT IndexFormat;
-	UINT IndexSize;
-
-	XMFLOAT4X4 WorldMatrix;
+	shared_ptr<FRenderingResourcesUpdate> ViewportConstants;*/
+//
+//	
+//protected:
+//	UINT VertexSizeInBytes;
+//	UINT VertexStrideInBytes;
+//
+//	UINT IndexSizeInBytes;
+//	DXGI_FORMAT IndexFormat;
+//	UINT IndexSize;
+//
+//	XMFLOAT4X4 WorldMatrix;
 };

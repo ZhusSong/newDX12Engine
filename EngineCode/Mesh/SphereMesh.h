@@ -3,9 +3,9 @@
 
 #include "Core/Mesh.h"
 
-class CSphereMesh :public CMesh
+class GSphereMesh :public GMesh
 {
-	typedef CMesh Super;
+	typedef GMesh Super;
 public:
 	virtual void Init();
 

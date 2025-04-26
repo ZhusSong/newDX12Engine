@@ -72,8 +72,31 @@ int CDirectXRenderingEngine::PostInit()
 
 	ANALYSIS_HRESULT(GraphicsCommandList->Reset(CommandAllocator.Get(), NULL));
 	{
+		if (GMesh* BoxMesh = MeshManage->CreateBoxMesh(4.f, 3.f, 1.5f))
+		{
+			BoxMesh->SetPosition(XMFLOAT3(4, 3, 5));
+			BoxMesh->SetRotation(fvector_3d(60.f, 1.f, 20.f));
+		}
+
+		MeshManage->CreatePlaneMesh(4.f, 3.f, 20, 20);
+		if (GMesh* SphereMesh = MeshManage->CreateSphereMesh(2.f, 20, 20))
+		{
+			SphereMesh->SetPosition(XMFLOAT3(1, 2, 4));
+			SphereMesh->SetScale(fvector_3d(3.f, 3.f, 3.f));
+		}
+
+		if (GMesh* CylinderMesh = MeshManage->CreateCylinderMesh(1.f, 1.f, 5.f, 20, 20))
+		{
+			CylinderMesh->SetPosition(XMFLOAT3(1, -2, -4));
+		}
+
+		if (GMesh* ConeMesh = MeshManage->CreateConeMesh(1.f, 5.f, 20, 20))
+		{
+			ConeMesh->SetPosition(XMFLOAT3(-1, 1, 9));
+			ConeMesh->SetRotation(fvector_3d(90.f, 1.f, 20.f));
+		}
 		//构建Mesh
-		MeshManage->CreateBoxMesh(4.f, 3.f, 1.5f);
+		MeshManage->BuildMesh();
 		//MeshManage->CreatePlaneMesh(4.f, 3.f, 20, 20);
 		//	string MeshObjPath = "../RenZhaiEngine/Mesh.obj";
 		//	MeshManage->CreateMesh(MeshObjPath);

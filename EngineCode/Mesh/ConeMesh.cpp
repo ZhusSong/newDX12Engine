@@ -1,27 +1,27 @@
 #include "ConeMesh.h"
 #include "Core/MeshType.h"
 
-void CConeMesh::Init()
+void GConeMesh::Init()
 {
 	Super::Init();
 
 }
 
-void CConeMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
+void GConeMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
 {
 	Super::BuildMesh(InRenderingData);
 
 
 }
 
-void CConeMesh::Draw(float DeltaTime)
+void GConeMesh::Draw(float DeltaTime)
 {
 	Super::Draw(DeltaTime);
 
 
 }
 
-void CConeMesh::CreateMesh(
+void GConeMesh::CreateMesh(
 	FMeshRenderingData& MeshData,
 	float InRadius,
 	float InHeight,
