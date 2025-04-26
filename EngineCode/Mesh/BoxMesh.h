@@ -2,9 +2,10 @@
 
 #include "Core/Mesh.h"
 
-class CBoxMesh :public CMesh
+// 盒子网格
+class GBoxMesh :public GMesh
 {
-	typedef CMesh Super;
+	typedef GMesh Super;
 public:
 	virtual void Init();
 

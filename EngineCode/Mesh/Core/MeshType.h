@@ -15,5 +15,9 @@ struct FMeshRenderingData
 {
 	vector<FVertex> VertexData;
 	vector<uint16_t> IndexData;
+public:
+	// 得到当前渲染对象顶点与索引size
+	UINT GetVertexSizeInBytes() { return VertexData.size() * sizeof(FVertex); }
+	UINT GetIndexSizeInBytes() { return IndexData.size() * sizeof(uint16_t); }
 };
 

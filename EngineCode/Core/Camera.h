@@ -1,5 +1,5 @@
 #pragma once
-#include "CoreObject/CoreMinimalObject.h"
+#include "../Actor/Core/ActorObject.h"
 #include "Viewport/Viewport.h"
 #include "../CodeReflection/CodeReflectionMacroTag.h"
 #include "../Interface/DirectXDeviceInterfece.h"
@@ -10,17 +10,17 @@ class CTransformComponent;
 class CInputComponent;
 
 // 相机类
-class CCamera:public CCoreMinimalObject
+class GCamera:public GActorObject
 	,public FViewport
 	, public IDirectXDeviceInterface
 {
-	CVARIABLE()
-	CTransformComponent* TransformationComponent;
+	//CVARIABLE()
+	//CTransformComponent* TransformationComponent;
 
 	CVARIABLE()
 	CInputComponent* InputComponent;
 public:
-	CCamera();
+	GCamera();
 	virtual void BeginInit();
 	virtual void Tick(float DeltaTime);
 
@@ -42,7 +42,7 @@ protected:
 public:
 	FORCEINLINE 	CInputComponent* GetInputComponent() { return InputComponent; }
 
-	FORCEINLINE 	CTransformComponent* GetTransformationComponent() { return TransformationComponent; }
+	//FORCEINLINE 	CTransformComponent* GetTransformationComponent() { return TransformationComponent; }
 protected:
 	POINT LastMousePosition;
 	bool bLeftMouseDown;

@@ -7,7 +7,7 @@
 #endif
 
 // 提供渲染内容的接口
-class IRenderingInterface //:public IGuidInterface
+class IRenderingInterface 
 {
 	friend class CDirectXRenderingEngine;
 public:

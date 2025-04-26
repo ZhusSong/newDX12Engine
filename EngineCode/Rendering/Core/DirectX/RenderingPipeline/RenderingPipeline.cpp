@@ -11,6 +11,11 @@ void FRenderingPipeline::BuildMesh(GMesh* InMesh, const FMeshRenderingData& Mesh
 	GeometryMap.BuildMesh(InMesh, MeshData);
 }
 
+void FRenderingPipeline::UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo)
+{
+	GeometryMap.UpdateCalculations(DeltaTime, ViewportInfo);
+}
+
 void FRenderingPipeline::BuildPipeline()
 {
 	// 先进行重置
@@ -40,6 +45,33 @@ void FRenderingPipeline::BuildPipeline()
 	// 构建模型
 	GeometryMap.Build();
 
+	// 构建常量描述堆
+	GeometryMap.BuildDescriptorHeap();
+
+	// 构建常量缓冲区
+	GeometryMap.BuildConstantBuffer();
+
+	// 构建视口常量缓冲区视图
+	GeometryMap.BuildViewportConstantBufferView();
+
 	// 构建管线
 	DirectXPipelineState.Build();
+}
+
+void FRenderingPipeline::PreDraw(float DeltaTime)
+{
+	DirectXPipelineState.PreDraw(DeltaTime);
+}
+
+void FRenderingPipeline::Draw(float DeltaTime)
+{
+	GeometryMap.PreDraw(DeltaTime);
+	RootSignature.PreDraw(DeltaTime);
+
+	GeometryMap.Draw(DeltaTime);
+}
+
+void FRenderingPipeline::PostDraw(float DeltaTime)
+{
+	GeometryMap.PostDraw(DeltaTime);
 }

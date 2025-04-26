@@ -19,6 +19,7 @@ struct FGeometry :public IDirectXDeviceInterface_Struct
 
 	UINT GetDrawObjectNumber() const { return DescribeMeshRenderingData.size(); }
 
+	// 得到顶点与索引缓冲区视图
 	D3D12_VERTEX_BUFFER_VIEW GetVertexBufferView();
 	D3D12_INDEX_BUFFER_VIEW GetIndexBufferView();
 protected:
@@ -36,6 +37,8 @@ protected:
 	// 渲染数据描述列表
 	vector<FRenderingData> DescribeMeshRenderingData;
 };
+
+
 struct FGeometryMap :public IDirectXDeviceInterface_Struct
 {
 	FGeometryMap();
@@ -48,13 +51,18 @@ struct FGeometryMap :public IDirectXDeviceInterface_Struct
 
 	void BuildMesh(GMesh* InMesh, const FMeshRenderingData& MeshData);
 
+	// 构建模型
 	void Build();
+
+	// 描述堆
 	void BuildDescriptorHeap();
 
+	//构建常量缓冲区
 	void BuildConstantBuffer();
 
 	UINT GetDrawObjectNumber();
 
+	//构建视口常量缓冲区视图
 	void BuildViewportConstantBufferView();
 
 public:

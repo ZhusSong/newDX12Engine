@@ -7,6 +7,8 @@ FDirectXPipelineState::FDirectXPipelineState()
 {
 
 }
+
+// 预渲染
 void FDirectXPipelineState::PreDraw(float DeltaTime)
 {
     GetGraphicsCommandList()->Reset(GetCommandAllocator().Get(), PSO.Get());
@@ -35,6 +37,7 @@ void FDirectXPipelineState::BindInputLayout(const D3D12_INPUT_ELEMENT_DESC* InIn
 
 void FDirectXPipelineState::BindRootSignature(ID3D12RootSignature* InRootSignature)
 {
+    //绑定根签名
 	GPSDesc.pRootSignature = InRootSignature;
 }
 

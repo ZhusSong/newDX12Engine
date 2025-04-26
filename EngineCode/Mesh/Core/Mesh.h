@@ -1,12 +1,16 @@
 #pragma once
 #include "../../Rendering/Core/Rendering.h"
 #include "MeshType.h"
+#include "../../Actor/Core/ActorObject.h"
 
-// 网格接口
-class CMesh :public CCoreMinimalObject, public IRenderingInterface
+class CTransformComponent;
+// 游戏对象网格接口
+class GMesh :public GActorObject, public IRenderingInterface
 {
+	CVARIABLE()
+		CTransformComponent* TransformComponent;
 public:
-	CMesh();
+	GMesh();
 
 	virtual void Init();
 

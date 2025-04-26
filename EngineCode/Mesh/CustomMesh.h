@@ -3,9 +3,9 @@
 #include "Core/Mesh.h"
 
 // 读取obj模型mesh
-class CCustomMesh :public CMesh
+class GCustomMesh :public GMesh
 {
-	typedef CMesh Super;
+	typedef GMesh Super;
 public:
 	virtual void Init();
 

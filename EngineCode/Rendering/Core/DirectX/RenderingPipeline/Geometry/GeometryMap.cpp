@@ -52,6 +52,59 @@ void FGeometry::BuildMesh(GMesh* InMesh, const FMeshRenderingData& MeshData)
 	}
 }
 
+void FGeometry::Build()
+{
+	// 获取顶点与索引size
+	UINT VertexSizeInBytes = MeshRenderingData.GetVertexSizeInBytes();
+	UINT IndexSizeInBytes = MeshRenderingData.GetIndexSizeInBytes();
+
+	// 拷贝到CPU顶点与索引buffer
+	ANALYSIS_HRESULT(D3DCreateBlob(
+		VertexSizeInBytes,
+		&CPUVertexBufferPtr));
+
+	memcpy(CPUVertexBufferPtr->GetBufferPointer(),
+		MeshRenderingData.VertexData.data(), VertexSizeInBytes);
+
+	ANALYSIS_HRESULT(D3DCreateBlob(
+		IndexSizeInBytes,
+		&CPUIndexBufferPtr));
+
+	memcpy(CPUIndexBufferPtr->GetBufferPointer(),
+		MeshRenderingData.IndexData.data(), IndexSizeInBytes);
+
+	ConstructBuffer::FConstructBuffer ConstructBuffer;
+	GPUVertexBufferPtr = ConstructBuffer.ConstructDefaultBuffer(
+		VertexBufferTmpPtr,
+		MeshRenderingData.VertexData.data(), VertexSizeInBytes);
+
+	GPUIndexBufferPtr = ConstructBuffer.ConstructDefaultBuffer(
+		IndexBufferTmpPtr,
+		MeshRenderingData.IndexData.data(), IndexSizeInBytes);
+}
+
+// 返回顶点缓冲区视图
+D3D12_VERTEX_BUFFER_VIEW FGeometry::GetVertexBufferView()
+{
+	D3D12_VERTEX_BUFFER_VIEW VBV;
+	VBV.BufferLocation = GPUVertexBufferPtr->GetGPUVirtualAddress();
+	VBV.SizeInBytes = MeshRenderingData.GetVertexSizeInBytes();
+	VBV.StrideInBytes = sizeof(FVertex);
+
+	return VBV;
+}
+
+// 返回索引缓冲区视图
+D3D12_INDEX_BUFFER_VIEW FGeometry::GetIndexBufferView()
+{
+	D3D12_INDEX_BUFFER_VIEW IBV;
+	IBV.BufferLocation = GPUIndexBufferPtr->GetGPUVirtualAddress();
+	IBV.SizeInBytes = MeshRenderingData.GetIndexSizeInBytes();
+	IBV.Format = DXGI_FORMAT_R16_UINT;
+
+	return IBV;
+}
+
 // 初始化几何体数据
 FGeometryMap::FGeometryMap()
 {
@@ -66,10 +119,10 @@ void FGeometryMap::PreDraw(float DeltaTime)
 
 void FGeometryMap::Draw(float DeltaTime)
 {
-	//葷ﾈｾﾊﾓｿﾚ
+	// 渲染视口
 	DrawViewport(DeltaTime);
 
-	//葷ﾈｾﾄ｣ﾐﾍ
+	// 渲染模型
 	DrawMesh(DeltaTime);
 }
 
@@ -83,13 +136,13 @@ void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& View
 	XMMATRIX ViewMatrix = XMLoadFloat4x4(&ViewportInfo.ViewMatrix);
 	XMMATRIX ProjectMatrix = XMLoadFloat4x4(&ViewportInfo.ProjectMatrix);
 
-	for (auto& Tmp : Geometrys)//ﾔﾝﾊｱﾏﾈﾕ篥ｴﾐｴ
+	for (auto& Tmp : Geometrys)
 	{
 		for (size_t i = 0; i < Tmp.second.DescribeMeshRenderingData.size(); i++)
 		{
 			FRenderingData& InRenderingData = Tmp.second.DescribeMeshRenderingData[i];
 
-			//ｹｹﾔ・｣ﾐﾍｵﾄworld
+			//构造模型的world坐标
 			{
 				XMFLOAT3& Position = InRenderingData.Mesh->GetPosition();
 				fvector_3d Scale = InRenderingData.Mesh->GetScale();
@@ -105,7 +158,7 @@ void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& View
 					Position.x,					Position.y,				Position.z,					1.f };
 			}
 
-			//ｸ・ﾂﾄ｣ﾐﾍﾎｻﾖﾃ
+			// 更新模型位置
 			XMMATRIX ATRIXWorld = XMLoadFloat4x4(&InRenderingData.WorldMatrix);
 
 			FObjectTransform ObjectTransformation;
@@ -114,7 +167,7 @@ void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& View
 		}
 	}
 
-	//ｸ・ﾂﾊﾓｿﾚ
+	// 更新视口
 	XMMATRIX ViewProject = XMMatrixMultiply(ViewMatrix, ProjectMatrix);
 	FViewportTransformation ViewportTransformation;
 	XMStoreFloat4x4(&ViewportTransformation.ViewProjectionMatrix, XMMatrixTranspose(ViewProject));
@@ -131,7 +184,7 @@ void FGeometryMap::BuildMesh(GMesh* InMesh, const FMeshRenderingData& MeshData)
 
 void FGeometryMap::Build()
 {
-	//ｹｹｽｨﾄ｣ﾐﾍ
+	// 构建模型
 	for (auto& Tmp : Geometrys)
 	{
 		Tmp.second.Build();
@@ -140,19 +193,19 @@ void FGeometryMap::Build()
 
 void FGeometryMap::BuildDescriptorHeap()
 {
-	//+1ﾉ耘・
+	// +1为摄像机
 	DescriptorHeap.Build(GetDrawObjectNumber() + 1);
 }
 
 void FGeometryMap::BuildConstantBuffer()
 {
-	//ｴｴｽｨｳ｣ﾁｿｻｺｳ衂・
+	// 创建常量缓冲区
 	ObjectConstantBufferViews.CreateConstant(sizeof(FObjectTransform), GetDrawObjectNumber());
 
 	//Handle
 	CD3DX12_CPU_DESCRIPTOR_HANDLE DesHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(GetHeap()->GetCPUDescriptorHandleForHeapStart());
 
-	//ｹｹｽｨｳ｣ﾁｿｻｺｳ衂・
+	// 构建常量缓冲区
 	ObjectConstantBufferViews.BuildConstantBuffer(DesHandle, GetDrawObjectNumber());
 }
 
@@ -163,13 +216,13 @@ UINT FGeometryMap::GetDrawObjectNumber()
 
 void FGeometryMap::BuildViewportConstantBufferView()
 {
-	//ｴｴｽｨｳ｣ﾁｿｻｺｳ衂・
+	// 创建常量缓冲区
 	ViewportConstantBufferViews.CreateConstant(sizeof(FViewportTransformation), 1);
 
-	//Handle
+	// Handle
 	CD3DX12_CPU_DESCRIPTOR_HANDLE DesHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(DescriptorHeap.GetHeap()->GetCPUDescriptorHandleForHeapStart());
 
-	//ｹｹｽｨｳ｣ﾁｿｻｺｳ衂・
+	// 构建常量缓冲区
 	ViewportConstantBufferViews.BuildConstantBuffer(DesHandle, 1, GetDrawObjectNumber());
 }
 
@@ -187,7 +240,7 @@ void FGeometryMap::DrawMesh(float DeltaTime)
 {
 	UINT DescriptorOffset = GetD3dDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 
-	//ﾄ｣ﾐﾍｹｹｽｨ
+	// 模型构建
 	for (auto& Tmp : Geometrys)
 	{
 		D3D12_VERTEX_BUFFER_VIEW VBV = Tmp.second.GetVertexBufferView();
@@ -201,26 +254,27 @@ void FGeometryMap::DrawMesh(float DeltaTime)
 
 			GetGraphicsCommandList()->IASetIndexBuffer(&IBV);
 
-			//ｰｨ葷ﾈｾﾁｮﾏﾟﾉﾏｵﾄﾊ菠・ﾛ｣ｬｿﾉﾒﾔﾔﾚﾊ菠・ｰﾅ菷ﾗｶﾎｴｫﾈ・･ｵ飜ｾﾝ
+			//绑定渲染流水线上的输入槽，可以在输入装配器阶段传入顶点数据
 			GetGraphicsCommandList()->IASetVertexBuffers(
-				0,//ﾆｼﾊ菠・ﾛ 0-15 
+				0,//起始输入槽 0-15 
 				1,//k k+1 ... k+n-1 
 				&VBV);
 
-			//ｶｨﾒ衾ﾒﾃﾇﾒｪｻ贍ﾆｵﾄﾄﾄﾖﾖﾍｼﾔｪ ｵ・ﾏﾟ ﾃ・
+
+			//定义我们要绘制的哪种图元 点 线 面
 			GetGraphicsCommandList()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-			//ﾆｼｵﾘﾖｷﾆｫﾒﾆ
+			//起始地址偏移
 			DesHandle.Offset(i, DescriptorOffset);
 			GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(0, DesHandle);
 
-			//ﾕ贏ｵﾄｻ贍ﾆ
+			//真正的绘制
 			GetGraphicsCommandList()->DrawIndexedInstanced(
-				InRenderingData.IndexSize,//ｶ･ｵ飜ﾁｿ
-				1,//ｻ贍ﾆﾊｵﾀﾊﾁｿ
-				InRenderingData.IndexOffsetPosition,//ｶ･ｵ羹ｺｳ衂ﾚﾒｻｸｻｻ贍ﾆｵﾄﾋ
-				InRenderingData.VertexOffsetPosition,//GPU ｴﾓﾋｻｺｳ衂ﾁﾈ｡ｵﾄｵﾚﾒｻｸｵﾄﾎｻﾖﾃ｡｣
-				0);//ﾔﾚｴﾓｶ･ｵ羹ｺｳ衂ﾁﾈ｡ﾃｿｸｵﾀﾊｾﾝﾖｮﾇｰﾌ晴ﾓｵｽﾃｿｸｵﾄﾖｵ｡｣
+				InRenderingData.IndexSize,//顶点数量
+				1,//绘制实例数量
+				InRenderingData.IndexOffsetPosition,//顶点缓冲区第一个被绘制的索引
+				InRenderingData.VertexOffsetPosition,//GPU 从索引缓冲区读取的第一个索引的位置。
+				0);//在从顶点缓冲区读取每个实例数据之前添加到每个索引的值。
 		}
 	}
 }
