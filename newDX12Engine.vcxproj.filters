@@ -278,6 +278,18 @@
     <Filter Include="EngineCode\Actor\Core">
       <UniqueIdentifier>{d2bc0840-bcfd-4168-ac7d-0dc9d071f213}</UniqueIdentifier>
     </Filter>
+    <Filter Include="EngineCode\Component\Light">
+      <UniqueIdentifier>{51132f17-d2e3-41a5-b269-fb40ab8c6825}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Component\Light\Core">
+      <UniqueIdentifier>{2f190626-6446-4bf5-80b9-04cf8def866d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Actor\Light">
+      <UniqueIdentifier>{392fac8f-4761-4dd7-b17d-f119df422065}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Mesh\Core\Material">
+      <UniqueIdentifier>{0e7d84d5-8a1d-4d5e-9b47-1d3fe6e8d7dc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="simple_library\private\simple_math\soft_rasterization\soft_rasterization.cpp">
@@ -531,6 +543,24 @@
     </ClCompile>
     <ClCompile Include="EngineCode\Actor\Core\ActorObject.cpp">
       <Filter>EngineCode\Actor\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Light\Core\LightComponent.cpp">
+      <Filter>EngineCode\Component\Light\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Light\Core\LightConstantBuffer.cpp">
+      <Filter>EngineCode\Component\Light\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Light\ParallelLightComponent.cpp">
+      <Filter>EngineCode\Component\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Actor\Light\ParallelLight.cpp">
+      <Filter>EngineCode\Actor\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Mesh\Core\Material\Material.cpp">
+      <Filter>EngineCode\Mesh\Core\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Mesh\Core\Material\MaterialConstantBuffer.cpp">
+      <Filter>EngineCode\Mesh\Core\Material</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -836,6 +866,27 @@
     </ClInclude>
     <ClInclude Include="EngineCode\Actor\Core\ActorObject.h">
       <Filter>EngineCode\Actor\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Light\Core\LightComponent.h">
+      <Filter>EngineCode\Component\Light\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Light\Core\LightConstantBuffer.h">
+      <Filter>EngineCode\Component\Light\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Light\ParallelLightComponent.h">
+      <Filter>EngineCode\Component\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Actor\Light\ParallelLight.h">
+      <Filter>EngineCode\Actor\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Mesh\Core\Material\Material.h">
+      <Filter>EngineCode\Mesh\Core\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Mesh\Core\Material\MaterialConstantBuffer.h">
+      <Filter>EngineCode\Mesh\Core\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderingPipelineType.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

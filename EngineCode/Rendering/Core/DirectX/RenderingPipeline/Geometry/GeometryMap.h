@@ -58,14 +58,29 @@ struct FGeometryMap :public IDirectXDeviceInterface_Struct
 	void BuildDescriptorHeap();
 
 	//构建常量缓冲区
-	void BuildConstantBuffer();
+	void BuildMeshConstantBuffer();
 
-	UINT GetDrawObjectNumber();
+	//构建Material常量缓冲区
+	void BuildMaterialConstantBuffer();
+
+	//构建Light常量缓冲区
+	void BuildLightConstantBuffer();
 
 	//构建视口常量缓冲区视图
 	void BuildViewportConstantBufferView();
 
+	// 得到绘制mesh对象的数量
+	UINT GetDrawMeshObjectNumber();
+
+	// 得到绘制mat材质对象的数量
+	UINT GetDrawMaterialObjectNumber();
+
+	// 得到绘制light灯光对象的数量
+	UINT GetDrawLightObjectNumber();
+
+
 public:
+	void DrawLight(float DeltaTime);
 	void DrawViewport(float DeltaTime);
 	void DrawMesh(float DeltaTime);
 public:
@@ -75,7 +90,9 @@ protected:
 	map<int, FGeometry> Geometrys;
 	FDirectXDescriptorHeap DescriptorHeap;
 
-	FConstantBufferViews ObjectConstantBufferViews;
+	FConstantBufferViews MeshConstantBufferViews;
+	FConstantBufferViews MaterialConstantBufferViews;
+	FConstantBufferViews LightConstantBufferViews;
 	FConstantBufferViews ViewportConstantBufferViews;
 
 };
