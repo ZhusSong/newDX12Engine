@@ -13,6 +13,8 @@ cbuffer ViewportConstBuffer : register(b1)
 
 cbuffer MaterialConstBuffer : register(b2)
 {
+    int MaterialType;
+    
     float4 BaseColor;
     float4x4 TransformInformation;
 }
@@ -59,10 +61,23 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
 
     float3 ModelNormal = normalize(MVOut.Normal);
     float3 NormalizeLightDirection = normalize(-LightDirection);
-    float DotValue = max(dot(ModelNormal, NormalizeLightDirection), 0.0);
     
     FMaterial Material;
     Material.BaseColor = BaseColor;
+    
+    float DotValue = 0;
+    DotValue = max(dot(ModelNormal, NormalizeLightDirection), 0.0);
+    if (MaterialType == 0)//兰伯特
+    {
+        DotValue = max(dot(ModelNormal, NormalizeLightDirection), 0.0);
+    }
+    else if (MaterialType == 1)//半兰伯特
+    {
+        float DiffuseReflection = dot(ModelNormal, NormalizeLightDirection);
+        DotValue = max((DiffuseReflection * 0.5f + 0.5f), 0.0); //[-1,1] => [0,1]
+    }
+	
+	// 最终颜色
     MVOut.Color = Material.BaseColor * DotValue + AmbientLight * Material.BaseColor;
 	
     

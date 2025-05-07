@@ -48,6 +48,7 @@
     <ClCompile Include="EngineCode\Mesh\ConeMesh.cpp" />
     <ClCompile Include="EngineCode\Mesh\Core\Material\Material.cpp" />
     <ClCompile Include="EngineCode\Mesh\Core\Material\MaterialConstantBuffer.cpp" />
+    <ClCompile Include="EngineCode\Mesh\Core\Material\MaterialType.cpp" />
     <ClCompile Include="EngineCode\Mesh\Core\Mesh.cpp" />
     <ClCompile Include="EngineCode\Mesh\Core\MeshManager.cpp" />
     <ClCompile Include="EngineCode\Mesh\Core\MeshType.cpp" />
@@ -145,6 +146,7 @@
     <ClInclude Include="EngineCode\Mesh\ConeMesh.h" />
     <ClInclude Include="EngineCode\Mesh\Core\Material\Material.h" />
     <ClInclude Include="EngineCode\Mesh\Core\Material\MaterialConstantBuffer.h" />
+    <ClInclude Include="EngineCode\Mesh\Core\Material\MaterialType.h" />
     <ClInclude Include="EngineCode\Mesh\Core\Mesh.h" />
     <ClInclude Include="EngineCode\Mesh\Core\MeshManager.h" />
     <ClInclude Include="EngineCode\Mesh\Core\MeshType.h" />

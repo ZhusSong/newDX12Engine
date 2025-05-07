@@ -178,6 +178,9 @@ void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& View
 				{
 					fvector_4d InBaseColor = InMaterial->GetBaseColor();
 					MaterialConstantBuffer.BaseColor = XMFLOAT4(InBaseColor.x, InBaseColor.y, InBaseColor.z, InBaseColor.w);
+
+					//类型输入
+					MaterialConstantBuffer.MaterialType = InMaterial->GetMaterialType();
 				}
 			}
 			MaterialConstantBufferViews.Update(i, &MaterialConstantBuffer);

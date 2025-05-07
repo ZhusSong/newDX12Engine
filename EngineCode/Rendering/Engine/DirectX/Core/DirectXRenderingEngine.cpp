@@ -85,12 +85,25 @@ int CDirectXRenderingEngine::PostInit()
 			PlaneMesh->SetScale(fvector_3d(6.f, 6.f, 6.f));
 		}
 
+		//兰伯特
 		if (GMesh* SphereMesh = MeshManage->CreateSphereMesh(2.f, 20, 20))
 		{
-			SphereMesh->SetPosition(XMFLOAT3(0.f, 2, 0.f));	
+			SphereMesh->SetPosition(XMFLOAT3(-3.f, 2, 0.f));
 			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
 			{
-				InMaterial->SetBaseColor(fvector_4d(0.8f, 0.5f, 0.7f, 1.f));
+				InMaterial->SetBaseColor(fvector_4d(0.5f, 0.5f, 0.6f, 1.f));
+				InMaterial->SetMaterialType(EMaterialType::Lambert);
+			}
+		}
+
+		//半兰伯特
+		if (GMesh* SphereMesh = MeshManage->CreateSphereMesh(2.f, 20, 20))
+		{
+			SphereMesh->SetPosition(XMFLOAT3(3.f, 2, 0.f));
+			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
+			{
+				InMaterial->SetBaseColor(fvector_4d(0.5f, 0.5f, 0.5f, 1.f));
+				InMaterial->SetMaterialType(EMaterialType::HalfLambert);
 			}
 		}
 
