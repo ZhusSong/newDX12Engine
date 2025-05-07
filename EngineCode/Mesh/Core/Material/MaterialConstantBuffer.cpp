@@ -3,6 +3,7 @@
 #include "../../../Math/EngineMath.h"
 
 FMaterialConstantBuffer::FMaterialConstantBuffer()
-	:TransformInformation(EngineMath::IdentityMatrix4x4())
+	:BaseColor(0.5f, 0.5f, 0.5f, 1.f),
+	TransformInformation(EngineMath::IdentityMatrix4x4())
 {
 }

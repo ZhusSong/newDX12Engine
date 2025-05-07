@@ -1,3 +1,5 @@
+#include "Material.hlsl"
+#include "Light.hlsl"
 
 cbuffer ObjectConstBuffer : register(b0) //b0->b14
 {
@@ -9,8 +11,9 @@ cbuffer ViewportConstBuffer : register(b1)
     float4x4 ViewProjectionMatrix;
 }
 
-cbuffer MaterialConstBuffer : register(b2) 
+cbuffer MaterialConstBuffer : register(b2)
 {
+    float4 BaseColor;
     float4x4 TransformInformation;
 }
 
@@ -44,18 +47,24 @@ MeshVertexOut VertexShaderMain(MeshVertexIn MV)
 	//转法线
     Out.Normal = mul(MV.Normal, (float3x3) WorldMatrix);
 
-    float4 AmbientLight = { 0.15f, 0.15f, 0.25f, 1.0f };
-
-    float3 ModelNormal = normalize(Out.Normal);
-    float3 NormalizeLightDirection = normalize(-LightDirection);
-    float DotValue = max(dot(ModelNormal, NormalizeLightDirection), 0.0);
-
-    Out.Color = MV.Color * DotValue + AmbientLight;
+   
+    Out.Color = MV.Color;
 
     return Out;
 }
 
 float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
 {
+    float4 AmbientLight = { 0.15f, 0.15f, 0.25f, 1.0f };
+
+    float3 ModelNormal = normalize(MVOut.Normal);
+    float3 NormalizeLightDirection = normalize(-LightDirection);
+    float DotValue = max(dot(ModelNormal, NormalizeLightDirection), 0.0);
+    
+    FMaterial Material;
+    Material.BaseColor = BaseColor;
+    MVOut.Color = Material.BaseColor * DotValue + AmbientLight * Material.BaseColor;
+	
+    
     return MVOut.Color;
 }

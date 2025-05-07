@@ -12,6 +12,7 @@
 #include "../../../../Core/CoreObject/CoreMinimalObject.h"
 #include "../../../../Core/World.h"
 #include "../../../../Mesh/Core/MeshManager.h"
+#include "../../../../Mesh/Core/Material/Material.h"
 
 #if defined(_WIN32)
 #include "../../../../Core/WinMainCommandParameters.h"
@@ -86,7 +87,11 @@ int CDirectXRenderingEngine::PostInit()
 
 		if (GMesh* SphereMesh = MeshManage->CreateSphereMesh(2.f, 20, 20))
 		{
-			SphereMesh->SetPosition(XMFLOAT3(0.f, 2, 0.f));
+			SphereMesh->SetPosition(XMFLOAT3(0.f, 2, 0.f));	
+			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
+			{
+				InMaterial->SetBaseColor(fvector_4d(0.8f, 0.5f, 0.7f, 1.f));
+			}
 		}
 
 	/*	if (GMesh* SphereMesh = MeshManage->CreateSphereMesh(2.f, 20, 20))

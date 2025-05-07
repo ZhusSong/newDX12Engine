@@ -5,6 +5,7 @@
 #include "../../../../../Mesh/Core/Mesh.h"
 #include "../../../../../Mesh/Core/Material/MaterialConstantBuffer.h"
 #include "../../../../../Component/Light/Core/LightConstantBuffer.h"
+#include "../../../../../Mesh/Core/Material/Material.h"
 
 bool FGeometry::bRenderingDataExistence(GMesh* InKey)
 {
@@ -173,7 +174,11 @@ void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& View
 			//变换材质
 			FMaterialConstantBuffer MaterialConstantBuffer;
 			{
-
+				if (CMaterial* InMaterial = (*InRenderingData.Mesh->GetMaterials())[0])
+				{
+					fvector_4d InBaseColor = InMaterial->GetBaseColor();
+					MaterialConstantBuffer.BaseColor = XMFLOAT4(InBaseColor.x, InBaseColor.y, InBaseColor.z, InBaseColor.w);
+				}
 			}
 			MaterialConstantBufferViews.Update(i, &MaterialConstantBuffer);
 		

@@ -27,4 +27,6 @@ public:
 public:
 	// 获取材质数量
 	UINT GetMaterialNum()const;
+	// 获取当前材质
+	vector<CMaterial*>* GetMaterials() { return &Materials; }
 };
