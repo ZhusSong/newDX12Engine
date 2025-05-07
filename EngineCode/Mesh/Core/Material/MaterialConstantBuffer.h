@@ -14,5 +14,6 @@ struct FMaterialConstantBuffer
 
 	XMFLOAT4 BaseColor;
 
+	float	 Roughness;
 	XMFLOAT4X4 TransformInformation;
 };

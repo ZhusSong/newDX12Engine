@@ -179,6 +179,9 @@ void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& View
 					fvector_4d InBaseColor = InMaterial->GetBaseColor();
 					MaterialConstantBuffer.BaseColor = XMFLOAT4(InBaseColor.x, InBaseColor.y, InBaseColor.z, InBaseColor.w);
 
+					//粗糙度
+					MaterialConstantBuffer.Roughness = InMaterial->GetRoughness();
+
 					//类型输入
 					MaterialConstantBuffer.MaterialType = InMaterial->GetMaterialType();
 				}
@@ -199,6 +202,9 @@ void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& View
 	XMMATRIX ViewProject = XMMatrixMultiply(ViewMatrix, ProjectMatrix);
 	FViewportTransformation ViewportTransformation;
 	XMStoreFloat4x4(&ViewportTransformation.ViewProjectionMatrix, XMMatrixTranspose(ViewProject));
+	
+	//拿到视口位置
+	ViewportTransformation.ViewportPosition = ViewportInfo.ViewPosition;
 
 	ViewportConstantBufferViews.Update(0, &ViewportTransformation);
 }
