@@ -57,7 +57,7 @@ void GSphereMesh::CreateMesh(FMeshRenderingData& MeshData, float InRadius, uint3
 		XMFLOAT3(0.f, -InRadius, 0.f), XMFLOAT4(Colors::Red)));
 
 	//绘制北极
-	for (uint32_t Index = 0; Index < InAxialSubdivision; ++Index)
+	for (uint32_t Index = 0; Index <= InAxialSubdivision; ++Index)
 	{
 		MeshData.IndexData.push_back(0);
 		MeshData.IndexData.push_back(Index + 1);

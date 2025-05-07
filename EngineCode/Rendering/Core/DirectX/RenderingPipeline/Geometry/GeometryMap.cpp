@@ -124,6 +124,9 @@ void FGeometryMap::Draw(float DeltaTime)
 	// 渲染视口
 	DrawViewport(DeltaTime);
 
+	// 绘制灯光
+	DrawLight(DeltaTime);
+
 	// 渲染模型
 	DrawMesh(DeltaTime);
 }
