@@ -2,6 +2,7 @@
 #include "../../../../../Interface/DirectXDeviceInterfece.h"
 #include "../../../RenderingResourcesUpdate.h"
 #include "../../../../../Shader/Core/Shader.h"
+#include "../RenderingPipelineType.h"
 
 // 渲染流水线状态
 struct FDirectXPipelineState :public IDirectXDeviceInterface_Struct
@@ -27,9 +28,15 @@ public:
 
 	//BuildPSO
 	void Build();
+
+private:
+	//按键捕获
+	void CaptureKeyboardKeys();
+
 private:
 	// 渲染流水线对象
-	ComPtr<ID3D12PipelineState> PSO;
-
+	unordered_map<int, ComPtr<ID3D12PipelineState>> PSO;
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC GPSDesc;
+
+	EPipelineState PipelineState;
 };

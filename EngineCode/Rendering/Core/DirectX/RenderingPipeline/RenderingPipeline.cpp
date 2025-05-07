@@ -37,7 +37,8 @@ void FRenderingPipeline::BuildPipeline()
 	InputElementDesc =
 	{
 		{"POSITION",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},
-		{"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0}
+		{"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
+		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 28, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
 	};
 	// 绑定
 	DirectXPipelineState.BindInputLayout(InputElementDesc.data(), InputElementDesc.size());
@@ -48,8 +49,14 @@ void FRenderingPipeline::BuildPipeline()
 	// 构建常量描述堆
 	GeometryMap.BuildDescriptorHeap();
 
-	// 构建常量缓冲区
-	GeometryMap.BuildConstantBuffer();
+	//构建Mesh常量缓冲区
+	GeometryMap.BuildMeshConstantBuffer();
+
+	//构建材质常量缓冲区
+	GeometryMap.BuildMaterialConstantBuffer();
+
+	//构建灯光常量缓冲区
+	GeometryMap.BuildLightConstantBuffer();
 
 	// 构建视口常量缓冲区视图
 	GeometryMap.BuildViewportConstantBufferView();
@@ -69,9 +76,12 @@ void FRenderingPipeline::Draw(float DeltaTime)
 	RootSignature.PreDraw(DeltaTime);
 
 	GeometryMap.Draw(DeltaTime);
+
+	DirectXPipelineState.Draw(DeltaTime);
 }
 
 void FRenderingPipeline::PostDraw(float DeltaTime)
 {
 	GeometryMap.PostDraw(DeltaTime);
+	DirectXPipelineState.PostDraw(DeltaTime);
 }
