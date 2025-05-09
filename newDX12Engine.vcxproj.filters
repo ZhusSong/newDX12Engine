@@ -562,6 +562,9 @@
     <ClCompile Include="EngineCode\Mesh\Core\Material\MaterialConstantBuffer.cpp">
       <Filter>EngineCode\Mesh\Core\Material</Filter>
     </ClCompile>
+    <ClCompile Include="EngineCode\Mesh\Core\Material\MaterialType.cpp">
+      <Filter>EngineCode\Mesh\Core\Material</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="simple_library\public\simple_library.h">
@@ -888,9 +891,18 @@
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderingPipelineType.h">
       <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline</Filter>
     </ClInclude>
+    <ClInclude Include="EngineCode\Mesh\Core\Material\MaterialType.h">
+      <Filter>EngineCode\Mesh\Core\Material</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\VertexShader.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\Light.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\Material.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
   </ItemGroup>

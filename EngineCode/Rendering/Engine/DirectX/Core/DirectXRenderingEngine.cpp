@@ -106,7 +106,7 @@ int CDirectXRenderingEngine::PostInit()
 				InMaterial->SetMaterialType(EMaterialType::HalfLambert);
 			}
 		}
-		//phong
+		//phong 
 		if (GMesh* SphereMesh = MeshManage->CreateSphereMesh(2.f, 20, 20))
 		{
 			SphereMesh->SetPosition(XMFLOAT3(9.f, 2, 0.f));
@@ -114,6 +114,18 @@ int CDirectXRenderingEngine::PostInit()
 			{
 				InMaterial->SetBaseColor(fvector_4d(0.5f, 0.5f, 0.5f, 1.f));
 				InMaterial->SetMaterialType(EMaterialType::Phong);
+
+				InMaterial->SetRoughness(0.9f);
+			}
+		}
+		//phong Fresnel
+		if (GMesh* SphereMesh = MeshManage->CreateSphereMesh(2.f, 20, 20))
+		{
+			SphereMesh->SetPosition(XMFLOAT3(9.f, 8, 0.f));
+			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
+			{
+				InMaterial->SetBaseColor(fvector_4d(0.5f, 0.5f, 0.5f, 1.f));
+				InMaterial->SetMaterialType(EMaterialType::Fresnel);
 
 				InMaterial->SetRoughness(0.9f);
 			}

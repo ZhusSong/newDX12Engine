@@ -27,8 +27,10 @@ void GSphereMesh::CreateMesh(FMeshRenderingData& MeshData, float InRadius, uint3
 	float ThetaValue = XM_2PI / InHeightSubdivision;
 	float BetaValue = XM_PI / InAxialSubdivision;
 
+	// 添加顶部
 	MeshData.VertexData.push_back(FVertex(
-		XMFLOAT3(0.f, InRadius, 0.f), XMFLOAT4(Colors::Red)));
+		XMFLOAT3(0.f, InRadius, 0.f), XMFLOAT4(Colors::Red),
+		XMFLOAT3(0.0f,1.0f,0.0f)));
 
 	for (uint32_t i = 1; i < InAxialSubdivision; ++i)
 	{
@@ -53,8 +55,10 @@ void GSphereMesh::CreateMesh(FMeshRenderingData& MeshData, float InRadius, uint3
 		}
 	}
 
+	// 添加底部
 	MeshData.VertexData.push_back(FVertex(
-		XMFLOAT3(0.f, -InRadius, 0.f), XMFLOAT4(Colors::Red)));
+		XMFLOAT3(0.f, -InRadius, 0.f), XMFLOAT4(Colors::Red),
+		XMFLOAT3(0.0f, -1.0f, 0.0f)));
 
 	//绘制北极
 	for (uint32_t Index = 0; Index <= InAxialSubdivision; ++Index)

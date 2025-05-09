@@ -97,7 +97,15 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
             Specular = pow(max(dot(ViewDirection, ReflectDirection), 0.f), M);
         }
     }
-	
+    else if (MaterialType == 100)// 菲尼尔
+    {
+        float3 ViewDirection = normalize(ViewportPosition.xyz - MVOut.WorldPosition.xyz);
+
+        float3 F0 = { 0.1f,0.1f,0.1f};
+        
+        Specular.xyz = FresnelSchlickMethod(F0, ModelNormal,ViewDirection,5).xyz;
+
+    }
 	// 最终颜色
     MVOut.Color = Material.BaseColor * DotValue + //漫反射
 		AmbientLight * Material.BaseColor + //间接光
