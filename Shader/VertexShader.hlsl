@@ -168,6 +168,18 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
         float3 ViewDirection = normalize(ViewportPosition.xyz - MVOut.WorldPosition.xyz);
         float3 F0 = { 0.05f, 0.05f, 0.05f };
         Specular.xyz = FresnelSchlickMethod(F0, ModelNormal, ViewDirection, 3).xyz;
+        
+        // 反射
+        float3 ReflectDirection = normalize(-reflect(NormalizeLightDirection, ModelNormal));
+            
+        // 高光
+        if (DotValue > 0.f)
+        {
+            float MaterialShininess = 1.f - saturate(MaterialRoughness);
+            float M = MaterialShininess * 60.f;
+
+            Specular = Specular + pow(max(dot(ViewDirection, ReflectDirection), 0.f), M) / 0.032f;
+        }
 
     }
     else if (MaterialType == 100)// Fresnel 菲尼尔
