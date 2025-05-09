@@ -176,7 +176,7 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
         if (DotValue > 0.f)
         {
             float MaterialShininess = 1.f - saturate(MaterialRoughness);
-            float M = MaterialShininess * 60.f;
+            float M = MaterialShininess * 80.f;
 
             Specular = Specular + pow(max(dot(ViewDirection, ReflectDirection), 0.f), M) / 0.032f;
         }

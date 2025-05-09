@@ -46,7 +46,7 @@ void Update(CEngine* InEngine)
 	float DeltaTime = 0.03f;
 	InEngine->Tick(DeltaTime);
 
-	//Sleep(30);
+	//Sleep(DeltaTime);
 }
 
 int Exit(CEngine* InEngine)
