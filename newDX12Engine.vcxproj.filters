@@ -457,9 +457,6 @@
     <ClCompile Include="EngineCode\Core\Camera.cpp">
       <Filter>EngineCode\Core</Filter>
     </ClCompile>
-    <ClCompile Include="EngineCode\Core\Viewport.cpp">
-      <Filter>EngineCode\Core</Filter>
-    </ClCompile>
     <ClCompile Include="EngineCode\Component\Input\InputType.cpp">
       <Filter>EngineCode\Component\Input</Filter>
     </ClCompile>
@@ -772,9 +769,6 @@
       <Filter>EngineCode\Component\Core</Filter>
     </ClInclude>
     <ClInclude Include="EngineCode\Core\Camera.h">
-      <Filter>EngineCode\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="EngineCode\Core\Viewport.h">
       <Filter>EngineCode\Core</Filter>
     </ClInclude>
     <ClInclude Include="EngineCode\CodeReflection\CodeReflectionMacroTag.h">

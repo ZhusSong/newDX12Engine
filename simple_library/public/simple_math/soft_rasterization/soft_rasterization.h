@@ -6,7 +6,6 @@
 namespace soft_rasterization
 {
 	////////////////////////////对象
-	//万物皆为对象
 	class SIMPLE_LIBRARY_API fobject
 	{
 		friend class fengine;

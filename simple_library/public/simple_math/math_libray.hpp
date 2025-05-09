@@ -1,5 +1,5 @@
 #pragma once
-
+// 2025.4 李
 namespace math_libray
 {
 	template<typename T>

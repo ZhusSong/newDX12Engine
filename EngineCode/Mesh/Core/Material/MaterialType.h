@@ -11,5 +11,6 @@ enum EMaterialType
 	GradualBanded,   // 渐变卡通材质
 	FinalBanded,   // 融合卡通材质
 	Fresnel=100, //测试用，并非单独材质
+	Back,
 	Max,
 };

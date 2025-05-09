@@ -34,7 +34,6 @@
     <ClCompile Include="EngineCode\Core\CoreObject\CoreMinimalObject.cpp" />
     <ClCompile Include="EngineCode\Core\CoreObject\GuidInterface.cpp" />
     <ClCompile Include="EngineCode\Core\Engine.cpp" />
-    <ClCompile Include="EngineCode\Core\Viewport.cpp" />
     <ClCompile Include="EngineCode\Core\Viewport\Viewport.cpp" />
     <ClCompile Include="EngineCode\Core\Viewport\ViewportInfo.cpp" />
     <ClCompile Include="EngineCode\Core\Viewport\ViewportTransformation.cpp" />
@@ -129,7 +128,6 @@
     <ClInclude Include="EngineCode\Core\CoreObject\CoreMinimalObject.h" />
     <ClInclude Include="EngineCode\Core\CoreObject\GuidInterface.h" />
     <ClInclude Include="EngineCode\Core\Engine.h" />
-    <ClInclude Include="EngineCode\Core\Viewport.h" />
     <ClInclude Include="EngineCode\Core\Viewport\Viewport.h" />
     <ClInclude Include="EngineCode\Core\Viewport\ViewportInfo.h" />
     <ClInclude Include="EngineCode\Core\Viewport\ViewportTransformation.h" />

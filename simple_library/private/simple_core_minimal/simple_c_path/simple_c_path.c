@@ -1,4 +1,4 @@
-// Copyright (C) RenZhai.2022.All Rights Reserved.
+// 2025.4 李
 #include "simple_library/public/simple_core_minimal/simple_c_path/simple_path.h"
 #include "simple_library/public/simple_core_minimal/simple_c_core/simple_c_array/simple_c_array_string.h"
 
@@ -37,7 +37,6 @@ void get_path_clean_filename(char *buf, const char *path_buf)
 
 void normalization_path(char *path_buf)
 {	
-	//这种替换似乎有点问题 
 	//replace_char_inline(path_buf,'\\','/');
 	
 	int len = strlen(path_buf);
