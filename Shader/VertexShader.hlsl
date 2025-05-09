@@ -73,16 +73,16 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
     DotValue = max(dot(ModelNormal, NormalizeLightDirection), 0.0);
     
     float4 Specular = { 0.f, 0.f, 0.f, 1.f };
-    if (MaterialType == 0)//兰伯特
+    if (MaterialType == 0)// Lambert 兰伯特
     {
         DotValue = max(dot(ModelNormal, NormalizeLightDirection), 0.0);
     }
-    else if (MaterialType == 1)//半兰伯特
+    else if (MaterialType == 1)// Half Lambert半兰伯特
     {
         float DiffuseReflection = dot(ModelNormal, NormalizeLightDirection);
         DotValue = max((DiffuseReflection * 0.5f + 0.5f), 0.0); //[-1,1] => [0,1]
     }
-    else if (MaterialType == 2)//phong
+    else if (MaterialType == 2)// Phong
     {
         float3 ReflectDirection = normalize(-reflect(NormalizeLightDirection, ModelNormal));
         float3 ViewDirection = normalize(ViewportPosition.xyz - MVOut.WorldPosition.xyz);
@@ -97,7 +97,40 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
             Specular = pow(max(dot(ViewDirection, ReflectDirection), 0.f), M);
         }
     }
-    else if (MaterialType == 100)// 菲尼尔
+    else if (MaterialType == 3)// binn phong
+    {
+        float3 ViewDirection= normalize(ViewportPosition.xyz - MVOut.WorldPosition.xyz);
+        float3 HalfDirection = normalize(ViewDirection + NormalizeLightDirection);
+
+        DotValue = max(dot(ModelNormal, NormalizeLightDirection), 0.0);
+
+        if (DotValue > 0.f)
+        {
+            float MaterialShininess = 1.f - saturate(MaterialRoughness);
+            float M = MaterialShininess * 100.f;
+
+            Specular = pow(max(dot(HalfDirection, ModelNormal), 0.f), M);
+        }
+    }
+    else if (MaterialType == 4)// wrap 早期模拟皮肤材质
+    {
+        float WrapValue =1.5f; // 1.0f=half lambert 
+        float DiffuseReflection = dot(ModelNormal, NormalizeLightDirection);
+        DotValue = max((DiffuseReflection + WrapValue) / (1.0f + WrapValue), 0.0); //[-1,1] => [0,1]
+    }
+    else if (MaterialType == 5)// Minnaert 早期模拟月球材质
+    {
+        float3 ViewDirection = normalize(ViewportPosition.xyz - MVOut.WorldPosition.xyz);
+        
+        float DotLight = max(dot(ModelNormal, NormalizeLightDirection), 0.0f);
+        float DotView = max(dot(ModelNormal, ViewDirection), 0.0f);
+        
+        float MeterialShiness = 1.0f - saturate(MaterialRoughness);
+        float M = MeterialShiness*1.0f;
+        DotValue = saturate(DotLight * pow(DotLight * DotView, M)); //[-1,1] => [0,1]
+   
+    }
+    else if (MaterialType == 100)// Fresnel 菲尼尔
     {
         float3 ViewDirection = normalize(ViewportPosition.xyz - MVOut.WorldPosition.xyz);
 
