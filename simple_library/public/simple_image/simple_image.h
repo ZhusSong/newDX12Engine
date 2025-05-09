@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 // 2025.4 李
 #include "simple_library/public/simple_cpp_core_minimal/simple_cpp_core_minimal.h"
 #include "simple_library/public/simple_image/Core/simple_image_type.h"

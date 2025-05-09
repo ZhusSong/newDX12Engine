@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "simple_cpp_shared_ptr_type.h"
 
 template<class T>

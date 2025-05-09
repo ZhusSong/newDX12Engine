@@ -1,4 +1,4 @@
-/*
+﻿/*
 www.sourceforge.net/projects/tinyxml
 Original code by Lee Thomason (www.grinninglizard.com)
 // 2025.4 李

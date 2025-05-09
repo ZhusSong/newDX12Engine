@@ -1,4 +1,4 @@
-#include "WindowsEngine.h"
+﻿#include "WindowsEngine.h"
 #include "../Debug/EngineDebug.h"
 #include "../Config//EngineRenderConfig.h"
 #include "../Rendering/Core/Rendering.h"

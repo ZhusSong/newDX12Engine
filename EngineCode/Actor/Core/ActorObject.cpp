@@ -1,6 +1,7 @@
-#include "ActorObject.h"
+﻿#include "ActorObject.h"
 #include "../../Component/TransformComponent.h"
 
+// Actor对象
 GActorObject::GActorObject()
 {
 	TransformComponent = CreateObject<CTransformComponent>(new CTransformComponent());

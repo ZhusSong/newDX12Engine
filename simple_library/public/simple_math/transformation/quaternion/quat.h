@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "simple_library/public/simple_library_macro.h"
 
 struct fvector_3d;

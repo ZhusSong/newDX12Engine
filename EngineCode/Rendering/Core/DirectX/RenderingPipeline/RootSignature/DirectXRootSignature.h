@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../../../../../Interface/DirectXDeviceInterfece.h"
 
 // 根签名结构体

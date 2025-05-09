@@ -1,4 +1,4 @@
-// 2025.4 李
+﻿// 2025.4 李
 #include "simple_library/public/simple_math/transformation/primitives/line.h"
 #include "simple_library/public/simple_math/math_utils.h"
 

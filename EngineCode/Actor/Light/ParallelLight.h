@@ -1,4 +1,4 @@
-// 平行光actor、
+﻿// 平行光actor、
 #pragma once
 #include "../Core/ActorObject.h"
 #include "../../Component/Light/ParallelLightComponent.h"

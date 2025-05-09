@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <locale.h>
 
 	//区域性/语言名称

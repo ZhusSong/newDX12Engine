@@ -1,4 +1,4 @@
-// 2025.4 李
+﻿// 2025.4 李
 #include "simple_library/public/simple_core_minimal/simple_c_core/simple_c_string_algorithm/string_algorithm.h"
 
 bool remove_char_end(char *str, char sub_str)

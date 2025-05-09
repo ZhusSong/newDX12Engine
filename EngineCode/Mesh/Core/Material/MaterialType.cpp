@@ -1,2 +1,2 @@
-// 材质类型
+﻿// 材质类型
 #include "MaterialType.h"

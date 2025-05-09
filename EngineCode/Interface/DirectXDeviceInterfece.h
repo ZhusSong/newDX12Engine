@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../Core/Engine.h"
 
 #if defined(_WIN32)

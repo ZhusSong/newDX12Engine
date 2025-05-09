@@ -1,4 +1,4 @@
-// 2025.4 李
+﻿// 2025.4 李
 #include "simple_library/public/simple_math/transformation/vector/vector_color.h"
 
 fvector_color::fvector_color()

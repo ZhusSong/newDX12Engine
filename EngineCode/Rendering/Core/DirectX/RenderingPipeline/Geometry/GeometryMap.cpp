@@ -1,4 +1,4 @@
-#include "GeometryMap.h"
+﻿#include "GeometryMap.h"
 #include "../../../Buffer/ConstructBuffer.h"
 #include "../../../../../Mesh/Core/ObjectTransform.h"
 #include "../../../../../Core/Viewport/ViewportTransformation.h"

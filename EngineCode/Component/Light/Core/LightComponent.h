@@ -1,4 +1,4 @@
-// 灯光组件
+﻿// 灯光组件
 #pragma once
 #include "../../TransformComponent.h"
 

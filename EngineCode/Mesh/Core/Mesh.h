@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../../Rendering/Core/Rendering.h"
 #include "MeshType.h"
 #include "../../Actor/Core/ActorObject.h"

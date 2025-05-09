@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../../../Core/CoreObject/CoreMinimalObject.h"
 #include "MaterialType.h"
 

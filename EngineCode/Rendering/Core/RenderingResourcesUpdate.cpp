@@ -1,4 +1,4 @@
-#include "RenderingResourcesUpdate.h"
+﻿#include "RenderingResourcesUpdate.h"
 
 FRenderingResourcesUpdate::FRenderingResourcesUpdate()
 {

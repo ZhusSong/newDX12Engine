@@ -890,13 +890,13 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="Shader\Material.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
     <FxCompile Include="Shader\VertexShader.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
     <FxCompile Include="Shader\Light.hlsl">
-      <Filter>Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="Shader\Material.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
   </ItemGroup>

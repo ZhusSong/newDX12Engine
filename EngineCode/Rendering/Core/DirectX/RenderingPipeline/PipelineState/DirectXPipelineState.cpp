@@ -1,4 +1,4 @@
-#include "DirectXPipelineState.h"
+﻿#include "DirectXPipelineState.h"
 #include "../../../../../Rendering/Engine/DirectX/Core/DirectXRenderingEngine.h"
 #include "../../../../../Windows/WindowsEngine.h"
 

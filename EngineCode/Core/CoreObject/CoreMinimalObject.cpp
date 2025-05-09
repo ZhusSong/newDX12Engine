@@ -1,4 +1,4 @@
-#include "CoreMinimalObject.h"
+﻿#include "CoreMinimalObject.h"
 
 // 全局对象池
 vector<CCoreMinimalObject*> GObjects;

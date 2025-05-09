@@ -1,4 +1,4 @@
-// 2025.4 李
+﻿// 2025.4 李
 #pragma once
 #include <map>
 #include "../simple_core_minimal/simple_c_guid/simple_guid.h"

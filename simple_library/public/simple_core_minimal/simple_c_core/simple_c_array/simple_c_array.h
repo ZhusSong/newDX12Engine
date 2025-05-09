@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 // 2025.4 李
 #include "simple_c_array_string.h"
 

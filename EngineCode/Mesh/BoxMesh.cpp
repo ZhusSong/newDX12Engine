@@ -1,4 +1,4 @@
-#include "BoxMesh.h"
+﻿#include "BoxMesh.h"
 #include "Core/MeshType.h"
 
 void GBoxMesh::Init()

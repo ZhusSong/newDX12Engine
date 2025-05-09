@@ -21,7 +21,7 @@ cbuffer MaterialConstBuffer : register(b2)
     float4x4 TransformInformation;
 }
 
-cbuffer LightConstBuffer : register(b3) 
+cbuffer LightConstBuffer : register(b3)
 {
     float3 LightIntensity;
     float3 LightDirection;
@@ -99,7 +99,7 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
     }
     else if (MaterialType == 3)// binn phong
     {
-        float3 ViewDirection= normalize(ViewportPosition.xyz - MVOut.WorldPosition.xyz);
+        float3 ViewDirection = normalize(ViewportPosition.xyz - MVOut.WorldPosition.xyz);
         float3 HalfDirection = normalize(ViewDirection + NormalizeLightDirection);
 
         DotValue = max(dot(ModelNormal, NormalizeLightDirection), 0.0);
@@ -114,7 +114,7 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
     }
     else if (MaterialType == 4)// wrap 早期模拟皮肤材质
     {
-        float WrapValue =1.5f; // 1.0f=half lambert 
+        float WrapValue = 1.5f; // 1.0f=half lambert 
         float DiffuseReflection = dot(ModelNormal, NormalizeLightDirection);
         DotValue = max((DiffuseReflection + WrapValue) / (1.0f + WrapValue), 0.0); //[-1,1] => [0,1]
     }
@@ -126,14 +126,14 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
         float DotView = max(dot(ModelNormal, ViewDirection), 0.0f);
         
         float MeterialShiness = 1.0f - saturate(MaterialRoughness);
-        float M = MeterialShiness*1.0f;
+        float M = MeterialShiness * 1.0f;
         DotValue = saturate(DotLight * pow(DotLight * DotView, M)); //[-1,1] => [0,1]
    
     }
     else if (MaterialType == 6)// Banded 卡通材质
     {
         // add half lambert
-        float DiffuseReflection = (dot(ModelNormal, NormalizeLightDirection) + 1.0f)*0.5f;
+        float DiffuseReflection = (dot(ModelNormal, NormalizeLightDirection) + 1.0f) * 0.5f;
         
         
         float Layered = 4.0f;
@@ -186,9 +186,9 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
     {
         float3 ViewDirection = normalize(ViewportPosition.xyz - MVOut.WorldPosition.xyz);
 
-        float3 F0 = { 0.1f,0.1f,0.1f};
+        float3 F0 = { 0.1f, 0.1f, 0.1f };
         
-        Specular.xyz = FresnelSchlickMethod(F0, ModelNormal,ViewDirection,5).xyz;
+        Specular.xyz = FresnelSchlickMethod(F0, ModelNormal, ViewDirection, 5).xyz;
 
     }
 	// 最终颜色

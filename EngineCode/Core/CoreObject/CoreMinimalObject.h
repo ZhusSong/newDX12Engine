@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "../../Windows/WindowsPlatform.h"
 #include "../../CodeReflection/CodeReflectionMacroTag.h"

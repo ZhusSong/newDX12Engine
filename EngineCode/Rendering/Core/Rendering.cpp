@@ -1,4 +1,4 @@
-#include "Rendering.h"
+﻿#include "Rendering.h"
 #include "../../Debug/EngineDebug.h"
 #include "../../Windows/WindowsEngine.h"
 #include "../../Rendering/Engine/DirectX/Core/DirectXRenderingEngine.h"

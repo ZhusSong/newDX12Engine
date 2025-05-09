@@ -1,4 +1,4 @@
-// 材质
+﻿// 材质
 #include "Material.h"
 
 CMaterial::CMaterial()

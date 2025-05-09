@@ -1,4 +1,4 @@
-#include "DirectXDescriptorHeap.h"
+﻿#include "DirectXDescriptorHeap.h"
 
 // 构建CBV栈描述
 void FDirectXDescriptorHeap::Build(UINT InNumDescriptor)

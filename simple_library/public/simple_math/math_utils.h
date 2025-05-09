@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <vector>
 
 #include "../simple_library_macro.h"

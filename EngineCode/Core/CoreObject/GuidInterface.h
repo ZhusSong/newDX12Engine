@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../../EngineMinimal.h"
 
 //提供一个对象的GUID

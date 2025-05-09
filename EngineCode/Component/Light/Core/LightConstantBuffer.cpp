@@ -1,4 +1,4 @@
-// 灯光常量缓冲区
+﻿// 灯光常量缓冲区
 #include "LightConstantBuffer.h"
 
 FLightConstantBuffer::FLightConstantBuffer()

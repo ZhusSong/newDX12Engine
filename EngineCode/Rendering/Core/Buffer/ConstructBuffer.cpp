@@ -1,3 +1,4 @@
+﻿// 2025.4.李
 #include "ConstructBuffer.h"
 #include "../../../Debug/EngineDebug.h"
 

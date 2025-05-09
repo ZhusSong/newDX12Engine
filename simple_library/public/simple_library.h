@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 
 #ifdef CLOSE_DISABLE_DEBUG_INFOR

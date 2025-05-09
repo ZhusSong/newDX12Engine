@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../../../../../Interface/DirectXDeviceInterfece.h"
 #include "../../../../../Mesh/Core/MeshType.h"
 #include "RenderingData.h"

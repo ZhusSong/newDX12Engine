@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "simple_library/public/simple_math/transformation/vector/vector_2d.h"
 #include "simple_library/public/simple_math/transformation/vector/vector_4d.h"
 #include "simple_library/public/simple_library_macro.h"

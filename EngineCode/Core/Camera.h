@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../Actor/Core/ActorObject.h"
 #include "Viewport/Viewport.h"
 #include "../CodeReflection/CodeReflectionMacroTag.h"

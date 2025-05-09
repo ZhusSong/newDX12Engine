@@ -1,4 +1,4 @@
-// 2025.4 李
+﻿// 2025.4 李
 #include "simple_library/public/simple_math/transformation/vector/vector_2id.h"
 #include <math.h>
 fvector_2id::fvector_2id()

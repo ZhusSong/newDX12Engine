@@ -1,4 +1,4 @@
-#include "TransformComponent.h"
+﻿#include "TransformComponent.h"
 
 // 初始化Transform组件
 CTransformComponent::CTransformComponent()

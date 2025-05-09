@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "CoreObject/CoreMinimalObject.h"
 
 #if defined(_WIN32)

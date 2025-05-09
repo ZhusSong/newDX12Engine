@@ -1,4 +1,4 @@
-/*
+﻿/*
 www.sourceforge.net/projects/tinyxml
 // 2025.4 李
 This software is provided 'as-is', without any express or implied

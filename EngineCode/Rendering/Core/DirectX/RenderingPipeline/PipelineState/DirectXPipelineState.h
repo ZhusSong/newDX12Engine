@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../../../../../Interface/DirectXDeviceInterfece.h"
 #include "../../../RenderingResourcesUpdate.h"
 #include "../../../../../Shader/Core/Shader.h"

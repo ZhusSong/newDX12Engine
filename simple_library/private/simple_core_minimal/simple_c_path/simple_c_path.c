@@ -1,4 +1,4 @@
-// 2025.4 李
+﻿// 2025.4 李
 #include "simple_library/public/simple_core_minimal/simple_c_path/simple_path.h"
 #include "simple_library/public/simple_core_minimal/simple_c_core/simple_c_array/simple_c_array_string.h"
 

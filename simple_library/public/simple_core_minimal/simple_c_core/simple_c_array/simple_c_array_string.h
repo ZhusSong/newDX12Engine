@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 // 2025.4 李
 #include "Core/simple_array_c_macro.h"
 

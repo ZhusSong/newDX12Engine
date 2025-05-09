@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../../Core/RenderingEngine.h"
 #include "../../../../Core/Viewport/ViewportInfo.h"
 
