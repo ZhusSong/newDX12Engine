@@ -130,6 +130,46 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
         DotValue = saturate(DotLight * pow(DotLight * DotView, M)); //[-1,1] => [0,1]
    
     }
+    else if (MaterialType == 6)// Banded 卡通材质
+    {
+        // add half lambert
+        float DiffuseReflection = (dot(ModelNormal, NormalizeLightDirection) + 1.0f)*0.5f;
+        
+        
+        float Layered = 4.0f;
+        
+        DotValue = floor(DiffuseReflection * Layered) / Layered;
+
+    }
+    else if (MaterialType == 7)// GradualBanded 卡通材质
+    {
+        float4 Color2 = { 245.f / 255.f, 88.f / 255.f, .0f, 1.f };
+        // add half lambert
+        
+        float LightDotValue = dot(ModelNormal, NormalizeLightDirection);
+        float DiffuseReflection = (LightDotValue + 1.0f) * 0.5f;
+        
+       
+        float Layered = 7.0f;
+        DotValue = floor(DiffuseReflection * Layered) / Layered;
+
+        Material.BaseColor = lerp(Color2, Material.BaseColor, LightDotValue);
+
+    }
+    else if (MaterialType == 8)// FinalBanded 卡通材质
+    {
+        // add half lambert
+        float DiffuseReflection = (dot(ModelNormal, NormalizeLightDirection) + 1.f) * 0.5f;
+
+        float Layered = 4.f;
+
+        DotValue = floor(DiffuseReflection * Layered) / Layered;
+
+        float3 ViewDirection = normalize(ViewportPosition.xyz - MVOut.WorldPosition.xyz);
+        float3 F0 = { 0.05f, 0.05f, 0.05f };
+        Specular.xyz = FresnelSchlickMethod(F0, ModelNormal, ViewDirection, 3).xyz;
+
+    }
     else if (MaterialType == 100)// Fresnel 菲尼尔
     {
         float3 ViewDirection = normalize(ViewportPosition.xyz - MVOut.WorldPosition.xyz);
