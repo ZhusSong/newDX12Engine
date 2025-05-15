@@ -31,6 +31,7 @@ struct MeshVertexIn
     float3 Position : POSITION;
     float4 Color : COLOR;
     float3 Normal : NORMAL;
+    float3 UTangent : TANGENT;
 };
 
 struct MeshVertexOut
@@ -39,6 +40,7 @@ struct MeshVertexOut
     float4 Position : SV_POSITION;
     float4 Color : COLOR;
     float3 Normal : NORMAL;
+    float3 UTangent : TANGENT;
 };
 
 MeshVertexOut VertexShaderMain(MeshVertexIn MV)
@@ -50,6 +52,7 @@ MeshVertexOut VertexShaderMain(MeshVertexIn MV)
 
 	//变换到齐次剪辑空间
     Out.Position = mul(Out.WorldPosition, ViewProjectionMatrix);
+    Out.Color.rgb = MV.Normal.rgb;
 
 	//转法线
     Out.Normal = mul(MV.Normal, (float3x3) WorldMatrix);
@@ -70,9 +73,8 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
     Material.BaseColor = BaseColor;
     
     float DotValue = 0;
-    DotValue = max(dot(ModelNormal, NormalizeLightDirection), 0.0);
-    
     float4 Specular = { 0.f, 0.f, 0.f, 1.f };
+    
     if (MaterialType == 0)// Lambert 兰伯特
     {
         DotValue = max(dot(ModelNormal, NormalizeLightDirection), 0.0);
@@ -104,6 +106,7 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
 
         DotValue = max(dot(ModelNormal, NormalizeLightDirection), 0.0);
 
+        // 高光
         if (DotValue > 0.f)
         {
             float MaterialShininess = 1.f - saturate(MaterialRoughness);
@@ -160,11 +163,13 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
     {
         // add half lambert
         float DiffuseReflection = (dot(ModelNormal, NormalizeLightDirection) + 1.f) * 0.5f;
-
+        
+		// 分层思想
         float Layered = 4.f;
 
         DotValue = floor(DiffuseReflection * Layered) / Layered;
-
+        
+		// 菲尼尔效果
         float3 ViewDirection = normalize(ViewportPosition.xyz - MVOut.WorldPosition.xyz);
         float3 F0 = { 0.05f, 0.05f, 0.05f };
         Specular.xyz = FresnelSchlickMethod(F0, ModelNormal, ViewDirection, 3).xyz;
@@ -181,6 +186,63 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
             Specular = Specular + pow(max(dot(ViewDirection, ReflectDirection), 0.f), M) / 0.032f;
         }
 
+    }
+    else if (MaterialType == 9)//   back  玉石透射材质
+    {
+        //phong
+        float3 ReflectDirection = normalize(-reflect(NormalizeLightDirection, ModelNormal));
+        float3 ViewDirection = normalize(ViewportPosition.xyz - MVOut.WorldPosition.xyz);
+        
+       //wrap
+        float WrapValue = 1.2f;
+        float DiffuseReflection = dot(ModelNormal, NormalizeLightDirection);
+        DotValue = max((DiffuseReflection + WrapValue) / (1.f + WrapValue), 0.0); //[-1,1] => [0,1]
+
+        
+       //高光
+        if (DotValue > 0.f)
+        {
+            float MaterialShininess = 1.f - saturate(MaterialRoughness);
+            float M = MaterialShininess * 100.f;
+
+            Specular = pow(max(dot(ViewDirection, ReflectDirection), 0.f), M);
+        }
+
+		//模拟透射效果
+        float SSSValue = 1.3f;
+        float TransmissionIntensity = 2.f;
+        float TransmissionScope = 1.5f;
+
+        float3 LightNormalizeValue = -normalize(ModelNormal * SSSValue + NormalizeLightDirection);
+        DotValue = DotValue + pow(saturate(dot(LightNormalizeValue, ViewDirection)), TransmissionScope) * TransmissionIntensity;
+    }
+    else if (MaterialType == 10) //各向异性 Kajiya-Kay Shading Model（卡吉雅模型）
+    {
+      // 后续添加
+    }
+    else if (MaterialType == 11)
+    {
+        float3 ViewDirection = normalize(ViewportPosition.xyz - MVOut.WorldPosition.xyz);
+		
+        float NormalLight = saturate(dot(ModelNormal, NormalizeLightDirection)); //兰伯特
+        float NormalView = saturate(dot(ModelNormal, ViewDirection));
+
+        float Phiri =
+			length(ViewDirection - ModelNormal * NormalView) *
+			length(NormalizeLightDirection - ModelNormal * NormalLight);
+		
+        float ACosNormalView = acos(NormalView); //[0,1]
+        float ACosNormalLight = acos(NormalLight);
+
+        float Alpha = max(ACosNormalView, ACosNormalLight);
+        float Beta = min(ACosNormalView, ACosNormalLight);
+
+        float MyRoughness = pow(MaterialRoughness, 2);
+
+        float A = 1 - 0.5f * (MyRoughness / (MyRoughness + 0.33f));
+        float B = 0.45f * (MyRoughness / (MyRoughness + 0.09f));
+
+        DotValue = NormalLight * (A + B * max(0, Phiri) * sin(Alpha) * tan(Beta));
     }
     else if (MaterialType == 100)// Fresnel 菲尼尔
     {

@@ -88,10 +88,9 @@ int CDirectXRenderingEngine::PostInit()
 		//兰伯特
 		if (GMesh* SphereMesh = MeshManage->CreateSphereMesh(2.f, 20, 20))
 		{
-			SphereMesh->SetPosition(XMFLOAT3(-9.f, 2, 0.f));
+			SphereMesh->SetPosition(XMFLOAT3(-3.f, 2, 0.f));
 			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
 			{
-				InMaterial->SetBaseColor(fvector_4d(0.5f, 0.5f, 0.5f, 1.f));
 				InMaterial->SetMaterialType(EMaterialType::Lambert);
 			}
 		}
@@ -99,35 +98,45 @@ int CDirectXRenderingEngine::PostInit()
 		//半兰伯特
 		if (GMesh* SphereMesh = MeshManage->CreateSphereMesh(2.f, 20, 20))
 		{
-			SphereMesh->SetPosition(XMFLOAT3(-9.f, 8, 0.f));
+			SphereMesh->SetPosition(XMFLOAT3(-3.f, 8, 0.f));
 			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
 			{
-				InMaterial->SetBaseColor(fvector_4d(0.5f, 0.5f, 0.5f, 1.f));
+				InMaterial->SetBaseColor(fvector_4d(
+					221.f / 255.f,
+					154.f / 255.f,
+					255.f / 255.f, 1.f));
+
 				InMaterial->SetMaterialType(EMaterialType::HalfLambert);
 			}
 		}
 		// wrap
 		if (GMesh* SphereMesh = MeshManage->CreateSphereMesh(2.f, 20, 20))
 		{
-			SphereMesh->SetPosition(XMFLOAT3(-3.f, 2.0f, 0.f));
+			SphereMesh->SetPosition(XMFLOAT3(-3.f, 14, 0.f));
 			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
 			{
-				InMaterial->SetBaseColor(fvector_4d(0.5f, 0.5f, 0.5f, 1.f));
-				InMaterial->SetMaterialType(EMaterialType::Wrap);
+				InMaterial->SetBaseColor(fvector_4d(
+					234.f / 255.f,
+					154.f / 255.f,
+					139.f / 255.f, 1.f));
 
-				InMaterial->SetRoughness(0.9f);
+				InMaterial->SetMaterialType(EMaterialType::Wrap);
 			}
 		}
 		// Minnaert
 		if (GMesh* SphereMesh = MeshManage->CreateSphereMesh(2.f, 20, 20))
 		{
-			SphereMesh->SetPosition(XMFLOAT3(-3.f, 8, 0.f));
+			SphereMesh->SetPosition(XMFLOAT3(-9.f, 2, 0.f));
 			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
 			{
-				InMaterial->SetBaseColor(fvector_4d(0.5f, 0.5f, 0.5f, 1.f));
+				InMaterial->SetBaseColor(fvector_4d(
+					0.9f,
+					0.9f,
+					1.0f, 1.f));
+
 				InMaterial->SetMaterialType(EMaterialType::Minnaert);
 
-				InMaterial->SetRoughness(0.9f);
+				InMaterial->SetRoughness(0.95f);
 			}
 		}
 		// Banded
@@ -136,10 +145,12 @@ int CDirectXRenderingEngine::PostInit()
 			SphereMesh->SetPosition(XMFLOAT3(3.f, 2, 0.f));
 			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
 			{
-				InMaterial->SetBaseColor(fvector_4d(0.7f, 0.7f, 1.0f, 1.f));
+				InMaterial->SetBaseColor(fvector_4d(
+					0.7f,
+					0.7f,
+					1.4f, 1.f));
 				InMaterial->SetMaterialType(EMaterialType::Banded);
 
-				InMaterial->SetRoughness(0.9f);
 			}
 		}
 		// Gradual Banded
@@ -148,10 +159,12 @@ int CDirectXRenderingEngine::PostInit()
 			SphereMesh->SetPosition(XMFLOAT3(3.f, 8, 0.f));
 			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
 			{
-				InMaterial->SetBaseColor(fvector_4d(0.7f, 0.7f, 1.0f, 1.f));
+				InMaterial->SetBaseColor(fvector_4d(
+					247.f / 255.f,
+					150.f / 255.f,
+					85.f / 255.f, 1.f));
 				InMaterial->SetMaterialType(EMaterialType::GradualBanded);
 
-				InMaterial->SetRoughness(0.9f);
 			}
 		}
 		// Final Banded
@@ -160,10 +173,14 @@ int CDirectXRenderingEngine::PostInit()
 			SphereMesh->SetPosition(XMFLOAT3(3.f, 14, 0.f));
 			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
 			{
-				InMaterial->SetBaseColor(fvector_4d(0.7f, 0.7f, 1.0f, 1.f));
+				InMaterial->SetBaseColor(fvector_4d(
+					213.f / 255.f,
+					132.f / 255.f,
+					234.f / 255.f, 1.f));
+
 				InMaterial->SetMaterialType(EMaterialType::FinalBanded);
 
-				InMaterial->SetRoughness(0.9f);
+				InMaterial->SetRoughness(0.6f);
 			}
 		}
 		//phong 
@@ -172,10 +189,15 @@ int CDirectXRenderingEngine::PostInit()
 			SphereMesh->SetPosition(XMFLOAT3(9.f, 2, 0.f));
 			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
 			{
-				InMaterial->SetBaseColor(fvector_4d(0.5f, 0.5f, 0.5f, 1.f));
+				//模拟黄铜
+				InMaterial->SetBaseColor(fvector_4d(
+					191.f / 255.f,
+					173.f / 255.f,
+					111.f / 255.f, 1.f));
+
 				InMaterial->SetMaterialType(EMaterialType::Phong);
 
-				InMaterial->SetRoughness(0.9f);
+				InMaterial->SetRoughness(0.8f);
 			}
 		}
 		//phong Fresnel
@@ -197,8 +219,12 @@ int CDirectXRenderingEngine::PostInit()
 			SphereMesh->SetPosition(XMFLOAT3(9.f, 14, 0.f));
 			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
 			{
-				InMaterial->SetBaseColor(fvector_4d(0.5f, 0.5f, 0.5f, 1.f));
-				InMaterial->SetMaterialType(EMaterialType::BinnPhong);
+				InMaterial->SetBaseColor(fvector_4d(
+					220.f / 255.f,
+					223.f / 255.f,
+					227.f / 255.f, 1.f));
+
+				InMaterial->SetMaterialType(EMaterialType::Phong);
 
 				InMaterial->SetRoughness(0.9f);
 			}
@@ -211,17 +237,41 @@ int CDirectXRenderingEngine::PostInit()
 			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
 			{
 				InMaterial->SetBaseColor(fvector_4d(
-					2.f/255.f,
-					214.f/255.f,
-					17.f/255.f,
-					1.f
-				));
+					2.f / 255.f,
+					214.f / 255.f,
+					17.f / 255.f, 
+					1.f));
 				InMaterial->SetMaterialType(EMaterialType::Back);
 
-				InMaterial->SetRoughness(0.9f);
+				InMaterial->SetRoughness(0.2f);
 			}
 		}
-		
+		// 各向异性 Kajiya-Kay Shading Model（卡吉雅模型）
+		if (GMesh* SphereMesh = MeshManage->CreateSphereMesh(2.f, 20, 20))
+		{
+			SphereMesh->SetPosition(XMFLOAT3(15.f, 8, 0.f));
+			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
+			{
+				
+				InMaterial->SetMaterialType(EMaterialType::AnisotropyKajiyaKay);
+
+			}
+		}
+		// OrenNayar
+		if (GMesh* SphereMesh = MeshManage->CreateSphereMesh(2.f, 20, 20))
+		{
+			SphereMesh->SetPosition(XMFLOAT3(15.f, 14, 0.f));
+			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
+			{
+				InMaterial->SetBaseColor(fvector_4d(
+					0.7f,
+					0.7f,
+					1.4f, 1.f));
+				InMaterial->SetMaterialType(EMaterialType::OrenNayar);
+
+				InMaterial->SetRoughness(0.7f);
+			}
+		}
 	/*	if (GMesh* SphereMesh = MeshManage->CreateSphereMesh(2.f, 20, 20))
 		{
 			SphereMesh->SetPosition(XMFLOAT3(1, 2, 4));
