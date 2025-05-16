@@ -2,7 +2,7 @@
 #include "../Actor/Core/ActorObject.h"
 #include "Viewport/Viewport.h"
 #include "../CodeReflection/CodeReflectionMacroTag.h"
-#include "../Interface/DirectXDeviceInterfece.h"
+#include "../Interface/DirectXDeviceInterface.h"
 
 enum ECmeraType;
 struct FInputKey;

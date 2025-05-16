@@ -1,4 +1,4 @@
-﻿#include "DirectXDeviceInterfece.h"
+﻿#include "DirectXDeviceInterface.h"
 #include "../Windows/WindowsEngine.h"
 #include "../Rendering/Engine/DirectX/Core/DirectXRenderingEngine.h"
 
@@ -25,6 +25,22 @@ ComPtr<ID3D12Device> IDirectXDeviceInterface::GetD3dDevice()
 		{
 			return InEngine->GetRenderingEngine()->D3dDevice;
 		}
+	}
+
+	return NULL;
+}
+
+CMeshManager* IDirectXDeviceInterface::GetMeshManager()
+{
+	return GetEngine()->GetMeshManager();
+}
+
+
+CWorld* IDirectXDeviceInterface::GetWorld()
+{
+	if (CWindowsEngine* InEngine = GetEngine())
+	{
+		return InEngine->GetWorld();
 	}
 
 	return NULL;
@@ -116,43 +132,53 @@ CEngine* IDirectXDeviceInterfece::GetEngine()
 
 ComPtr<ID3D12Fence> IDirectXDeviceInterface_Struct::GetFence()
 {
-	return Interfece.GetFence();
+	return Interface.GetFence();
 }
 
 ComPtr<ID3D12Device> IDirectXDeviceInterface_Struct::GetD3dDevice()
 {
-	return Interfece.GetD3dDevice();
+	return Interface.GetD3dDevice();
+}
+
+CMeshManager* IDirectXDeviceInterface_Struct::GetMeshManager()
+{
+	return Interface.GetMeshManager();
+}
+
+CWorld* IDirectXDeviceInterface_Struct::GetWorld()
+{
+	return Interface.GetWorld();
 }
 
 ComPtr<ID3D12GraphicsCommandList> IDirectXDeviceInterface_Struct::GetGraphicsCommandList()
 {
-	return Interfece.GetGraphicsCommandList();
+	return Interface.GetGraphicsCommandList();
 }
 
 ComPtr<ID3D12CommandAllocator> IDirectXDeviceInterface_Struct::GetCommandAllocator()
 {
-	return Interfece.GetCommandAllocator();
+	return Interface.GetCommandAllocator();
 }
 
 ComPtr<ID3D12CommandQueue> IDirectXDeviceInterface_Struct::GetCommandQueue()
 {
-	return Interfece.GetCommandQueue();
+	return Interface.GetCommandQueue();
 }
 
 UINT64 IDirectXDeviceInterface_Struct::GetCurrentFenceIndex()
 {
-	return Interfece.GetCurrentFenceIndex();
+	return Interface.GetCurrentFenceIndex();
 }
 
 HWND IDirectXDeviceInterface_Struct::GetMianWindowsHandle()
 {
-	return Interfece.GetMainWindowsHandle();
+	return Interface.GetMainWindowsHandle();
 }
 
 #if defined(_WIN32)
 CWindowsEngine* IDirectXDeviceInterface_Struct::GetEngine()
 {
-	return Interfece.GetEngine();
+	return Interface.GetEngine();
 }
 #else
 CEngine* IDirectXDeviceInterfece_Struct::GetEngine()

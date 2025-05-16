@@ -6,7 +6,7 @@ FRenderingPipeline::FRenderingPipeline()
 
 }
 // 创建mesh
-void FRenderingPipeline::BuildMesh(GMesh* InMesh, const FMeshRenderingData& MeshData)
+void FRenderingPipeline::BuildMesh(CMeshComponent* InMesh, const FMeshRenderingData& MeshData)
 {
 	GeometryMap.BuildMesh(InMesh, MeshData);
 }

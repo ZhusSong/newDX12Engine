@@ -9,9 +9,8 @@ class GBoxMesh :public GMesh
 public:
 	virtual void Init();
 
-	virtual void BuildMesh(const FMeshRenderingData* InRenderingData);
 
 	virtual void Draw(float DeltaTime);
 
-	void CreateMesh(FMeshRenderingData& MeshData, float InHeight, float InWidth, float InDepth);
+	void CreateMesh(float InHeight, float InWidth, float InDepth);
 };

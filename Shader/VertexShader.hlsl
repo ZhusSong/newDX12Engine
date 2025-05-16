@@ -53,24 +53,47 @@ MeshVertexOut VertexShaderMain(MeshVertexIn MV)
 	//变换到齐次剪辑空间
     Out.Position = mul(Out.WorldPosition, ViewProjectionMatrix);
     Out.Color.rgb = MV.Normal.rgb;
-
-	//转法线
-    Out.Normal = mul(MV.Normal, (float3x3) WorldMatrix);
-
-    Out.Color = MV.Color;
+    
+    // 是否以自身法线显示
+    if (MaterialType == 13)
+    {
+        Out.Normal = MV.Normal;
+    }
+    else
+    {
+		// 转法线
+        Out.Normal = mul(MV.Normal, (float3x3) WorldMatrix);
+    }
+    // 切线
+    Out.UTangent = MV.UTangent;
 
     return Out;
 }
 
 float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
 {
+    FMaterial Material;
+    Material.BaseColor = BaseColor;
+    
+    // 不收光照影响的BaseColor
+    if (MaterialType == 12)
+    {
+        return Material.BaseColor;
+    }
+    else if (MaterialType == 13)
+    {
+        return float4(MVOut.Normal, 1.f);
+    }
+    else if (MaterialType == 14)
+    {
+        return float4(MVOut.Normal, 1.f);
+    }
+    
     float4 AmbientLight = { 0.15f, 0.15f, 0.25f, 1.0f };
 
     float3 ModelNormal = normalize(MVOut.Normal);
     float3 NormalizeLightDirection = normalize(-LightDirection);
     
-    FMaterial Material;
-    Material.BaseColor = BaseColor;
     
     float DotValue = 0;
     float4 Specular = { 0.f, 0.f, 0.f, 1.f };
@@ -220,6 +243,8 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
     {
       // 后续添加
     }
+    
+    //GDC 模拟粗糙表面
     else if (MaterialType == 11)
     {
         float3 ViewDirection = normalize(ViewportPosition.xyz - MVOut.WorldPosition.xyz);
@@ -244,6 +269,18 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
 
         DotValue = NormalLight * (A + B * max(0, Phiri) * sin(Alpha) * tan(Beta));
     }
+    //else if (MaterialType == 20)// PBR
+    //{
+    //    float3 L = NormalizeLightDirection;
+    //    float3 V = normalize(ViewportPosition.xyz - MVOut.WorldPosition.xyz);
+    //    float3 H = normalize(V + L);
+    //    float3 N = ModelNormal;
+      
+    //    float PI = 3.1415926;
+        
+    //    float Roughness = 0.9F;
+    //    float Metallic = 0.3f;
+    //}
     else if (MaterialType == 100)// Fresnel 菲尼尔
     {
         float3 ViewDirection = normalize(ViewportPosition.xyz - MVOut.WorldPosition.xyz);
@@ -253,6 +290,10 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
         Specular.xyz = FresnelSchlickMethod(F0, ModelNormal, ViewDirection, 5).xyz;
 
     }
+    
+    
+    
+    
 	// 最终颜色
     MVOut.Color = Material.BaseColor * DotValue + //漫反射
 		AmbientLight * Material.BaseColor + //间接光

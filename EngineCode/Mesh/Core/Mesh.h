@@ -2,31 +2,45 @@
 #include "../../Rendering/Core/Rendering.h"
 #include "MeshType.h"
 #include "../../Actor/Core/ActorObject.h"
+#include "../../Interface/DirectXDeviceInterface.h"
 
 class CTransformComponent;
+class CMeshComponent;
 class CMaterial;
+
 // 游戏对象网格接口
-class GMesh :public GActorObject, public IRenderingInterface
+class GMesh :
+	public GActorObject, 
+	public IRenderingInterface,
+	public IDirectXDeviceInterface
 {
+	typedef GActorObject Super;
+
 	CVARIABLE()
 		CTransformComponent* TransformComponent;
 
 	CVARIABLE()
-		vector<CMaterial*> Materials;
+		CMeshComponent* MeshComponent;
 public:
 	GMesh();
 
 	virtual void Init();
 
-	virtual void BuildMesh(const FMeshRenderingData* InRenderingData);
 
 	virtual void PreDraw(float DeltaTime);
 	virtual void Draw(float DeltaTime);
 	virtual void PostDraw(float DeltaTime);
 
 public:
-	// 获取材质数量
+	virtual void SetPosition(const XMFLOAT3& InNewPosition);
+	virtual void SetRotation(const fvector_3d& InRotation);
+	virtual void SetScale(const fvector_3d& InNewScale);
+public:
+	virtual CMeshComponent* GetMeshComponent() { return MeshComponent; }
+protected:
+	virtual void SetMeshComponent(CMeshComponent* InMeshComponent);
+public:
 	UINT GetMaterialNum()const;
-	// 获取当前材质
-	vector<CMaterial*>* GetMaterials() { return &Materials; }
+
+	vector<CMaterial*>* GetMaterials();
 };

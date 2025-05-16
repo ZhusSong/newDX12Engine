@@ -28,6 +28,14 @@
     <ClCompile Include="EngineCode\Component\Light\Core\LightComponent.cpp" />
     <ClCompile Include="EngineCode\Component\Light\Core\LightConstantBuffer.cpp" />
     <ClCompile Include="EngineCode\Component\Light\ParallelLightComponent.cpp" />
+    <ClCompile Include="EngineCode\Component\Mesh\BoxMeshComponent.cpp" />
+    <ClCompile Include="EngineCode\Component\Mesh\ConeMeshComponent.cpp" />
+    <ClCompile Include="EngineCode\Component\Mesh\Core\MeshComponent.cpp" />
+    <ClCompile Include="EngineCode\Component\Mesh\CustomMeshComponent.cpp" />
+    <ClCompile Include="EngineCode\Component\Mesh\CylinderMeshComponent.cpp" />
+    <ClCompile Include="EngineCode\Component\Mesh\PlaneMeshComponent.cpp" />
+    <ClCompile Include="EngineCode\Component\Mesh\ShellMeshComponent.cpp" />
+    <ClCompile Include="EngineCode\Component\Mesh\SphereMeshComponent.cpp" />
     <ClCompile Include="EngineCode\Component\TransformComponent.cpp" />
     <ClCompile Include="EngineCode\Config\EngineRenderConfig.cpp" />
     <ClCompile Include="EngineCode\Core\Camera.cpp" />
@@ -41,7 +49,7 @@
     <ClCompile Include="EngineCode\Core\World.cpp" />
     <ClCompile Include="EngineCode\DX12Engine.cpp" />
     <ClCompile Include="EngineCode\EngineFactory.cpp" />
-    <ClCompile Include="EngineCode\Interface\DirectXDeviceInterfece.cpp" />
+    <ClCompile Include="EngineCode\Interface\DirectXDeviceInterface.cpp" />
     <ClCompile Include="EngineCode\Math\EngineMath.cpp" />
     <ClCompile Include="EngineCode\Mesh\BoxMesh.cpp" />
     <ClCompile Include="EngineCode\Mesh\ConeMesh.cpp" />
@@ -121,6 +129,14 @@
     <ClInclude Include="EngineCode\Component\Light\Core\LightComponent.h" />
     <ClInclude Include="EngineCode\Component\Light\Core\LightConstantBuffer.h" />
     <ClInclude Include="EngineCode\Component\Light\ParallelLightComponent.h" />
+    <ClInclude Include="EngineCode\Component\Mesh\BoxMeshComponent.h" />
+    <ClInclude Include="EngineCode\Component\Mesh\ConeMeshComponent.h" />
+    <ClInclude Include="EngineCode\Component\Mesh\Core\MeshComponent.h" />
+    <ClInclude Include="EngineCode\Component\Mesh\CustomMeshComponent.h" />
+    <ClInclude Include="EngineCode\Component\Mesh\CylinderMeshComponent.h" />
+    <ClInclude Include="EngineCode\Component\Mesh\PlaneMeshComponent.h" />
+    <ClInclude Include="EngineCode\Component\Mesh\ShellMeshComponent.h" />
+    <ClInclude Include="EngineCode\Component\Mesh\SphereMeshComponent.h" />
     <ClInclude Include="EngineCode\Component\TransformComponent.h" />
     <ClInclude Include="EngineCode\Config\EngineRenderConfig.h" />
     <ClInclude Include="EngineCode\Core\Camera.h" />
@@ -138,7 +154,7 @@
     <ClInclude Include="EngineCode\Debug\Log\SimpleLog.h" />
     <ClInclude Include="EngineCode\EngineFactory.h" />
     <ClInclude Include="EngineCode\EngineMinimal.h" />
-    <ClInclude Include="EngineCode\Interface\DirectXDeviceInterfece.h" />
+    <ClInclude Include="EngineCode\Interface\DirectXDeviceInterface.h" />
     <ClInclude Include="EngineCode\Math\EngineMath.h" />
     <ClInclude Include="EngineCode\Mesh\BoxMesh.h" />
     <ClInclude Include="EngineCode\Mesh\ConeMesh.h" />

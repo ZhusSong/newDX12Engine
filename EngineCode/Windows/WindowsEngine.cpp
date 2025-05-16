@@ -11,6 +11,7 @@
 #include "../Core/CoreObject/CoreMinimalObject.h"
 #include "../Core/World.h"
 #include "../Core/Camera.h"
+#include "../Mesh//Core//MeshManager.h"
 
 #include "../Rendering/Engine/DirectX/DirectX12RenderingEngine.h"
 
@@ -54,6 +55,7 @@ int CWindowsEngine::Init(FWinMainCommandParameters InParameters)
 	RenderingEngine->Init(InParameters);
 
 	World = CreateObject<CWorld>(new CWorld());
+	RenderingEngine->World = World;
 
 	Engine_Log("Engine initialization complete.");
 
@@ -127,6 +129,11 @@ int CWindowsEngine::PostExit()
 
 	Engine_Log("Engine post exit complete.");
 	return 0;
+}
+
+CMeshManager* CWindowsEngine::GetMeshManager()
+{
+	return RenderingEngine->GetMeshManager();
 }
 
 bool CWindowsEngine::InitWindows(FWinMainCommandParameters InParameters)

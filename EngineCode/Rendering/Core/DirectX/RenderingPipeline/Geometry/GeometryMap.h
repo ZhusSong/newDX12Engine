@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "../../../../../Interface/DirectXDeviceInterfece.h"
+#include "../../../../../Interface/DirectXDeviceInterface.h"
 #include "../../../../../Mesh/Core/MeshType.h"
 #include "RenderingData.h"
 #include "../DescriptorHeap/DirectXDescriptorHeap.h"
@@ -12,8 +12,8 @@ struct FGeometry :public IDirectXDeviceInterface_Struct
 	friend struct FGeometryMap;
 
 	// 判断当前是否存在渲染数据
-	bool bRenderingDataExistence(GMesh* InKey);
-	void BuildMesh(GMesh* InMesh, const FMeshRenderingData& MeshData);
+	bool bRenderingDataExistence(CMeshComponent* InKey);
+	void BuildMesh(CMeshComponent* InMesh, const FMeshRenderingData& MeshData);
 
 	void Build();
 
@@ -49,7 +49,7 @@ struct FGeometryMap :public IDirectXDeviceInterface_Struct
 
 	void UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo);
 
-	void BuildMesh(GMesh* InMesh, const FMeshRenderingData& MeshData);
+	void BuildMesh(CMeshComponent* InMesh, const FMeshRenderingData& MeshData);
 
 	// 构建模型
 	void Build();

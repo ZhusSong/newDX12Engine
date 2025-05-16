@@ -2,12 +2,15 @@
 #include "../../Core/RenderingEngine.h"
 #include "../../../../Core/Viewport/ViewportInfo.h"
 
-class CMeshManage;
+class CMeshManager;
+class CWorld;
+
 // DirectX的渲染引擎，继承自渲染引擎基类
 class CDirectXRenderingEngine :public CRenderingEngine
 {
 	// 设置DirectX渲染接口类为友元，使其能够访问protected对象
 	friend class IDirectXDeviceInterface;
+	friend class CWindowsEngine;
 public:
 	CDirectXRenderingEngine();
 	~CDirectXRenderingEngine();
@@ -36,6 +39,9 @@ public:
 	DXGI_FORMAT GetDepthStencilFormat() const { return DepthStencilFormat; }
 	UINT GetDXGISampleCount()const;
 	UINT GetDXGISampleQuality()const;
+
+	CMeshManager* GetMeshManager() { return MeshManager; }
+
 protected:
 	// 封装D3D初始化与GPU/CPU同步
 	void WaitGPUCommandQueueComplete();
@@ -45,7 +51,8 @@ protected:
 
 protected:
 	// mesh管理
-	CMeshManage* MeshManage;
+	CMeshManager* MeshManager;
+	CWorld* World;
 protected:
 	// 帧同步与交换链缓冲区索引
 	UINT64 CurrentFenceIndex;

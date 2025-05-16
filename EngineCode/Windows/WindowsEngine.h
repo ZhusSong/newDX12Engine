@@ -3,8 +3,10 @@
 #if defined(_WIN32)
 #include "../../EngineCode/Core/Engine.h"
 #include "../Rendering/Engine/Core/RenderingEngine.h"
+
 class CDirectXRenderingEngine;
 class CWorld;
+class CMeshManager;
 
 class CWindowsEngine:public CEngine
 {
@@ -27,7 +29,9 @@ public:
 	virtual int PostExit();
 
 	CDirectXRenderingEngine* GetRenderingEngine() { return RenderingEngine; }
-
+public:
+	CMeshManager* GetMeshManager();
+	CWorld* GetWorld() { return World; }
 public:
 
 	bool InitWindows(FWinMainCommandParameters InParameters);

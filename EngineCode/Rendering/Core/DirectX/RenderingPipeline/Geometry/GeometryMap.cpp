@@ -6,8 +6,9 @@
 #include "../../../../../Mesh/Core/Material/MaterialConstantBuffer.h"
 #include "../../../../../Component/Light/Core/LightConstantBuffer.h"
 #include "../../../../../Mesh/Core/Material/Material.h"
+#include "../../../../../Component/Mesh/Core/MeshComponent.h"
 
-bool FGeometry::bRenderingDataExistence(GMesh* InKey)
+bool FGeometry::bRenderingDataExistence(CMeshComponent* InKey)
 {
 	for (auto& Tmp : DescribeMeshRenderingData)
 	{
@@ -19,7 +20,7 @@ bool FGeometry::bRenderingDataExistence(GMesh* InKey)
 
 	return false;
 }
-void FGeometry::BuildMesh(GMesh* InMesh, const FMeshRenderingData& MeshData)
+void FGeometry::BuildMesh(CMeshComponent* InMesh, const FMeshRenderingData& MeshData)
 {
 	// 判断当前模型数据是否已添加过
 	if (!bRenderingDataExistence(InMesh))
@@ -209,7 +210,7 @@ void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& View
 	ViewportConstantBufferViews.Update(0, &ViewportTransformation);
 }
 
-void FGeometryMap::BuildMesh(GMesh* InMesh, const FMeshRenderingData& MeshData)
+void FGeometryMap::BuildMesh(CMeshComponent* InMesh, const FMeshRenderingData& MeshData)
 {
 	FGeometry& Geometry = Geometrys[0];
 
@@ -354,7 +355,8 @@ void FGeometryMap::DrawMesh(float DeltaTime)
 
 
 			// 定义我们要绘制的哪种图元 点 线 面
-			GetGraphicsCommandList()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+			EMaterialDisplayStatusType DisplayStatus = (*InRenderingData.Mesh->GetMaterials())[0]->GetMaterialDisplayStatus();
+			GetGraphicsCommandList()->IASetPrimitiveTopology((D3D_PRIMITIVE_TOPOLOGY)DisplayStatus);
 
 			// 模型起始地址偏移
 			DesMeshHandle.Offset(i, DescriptorOffset);

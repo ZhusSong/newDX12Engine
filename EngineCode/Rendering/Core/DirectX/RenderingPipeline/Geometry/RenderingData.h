@@ -1,8 +1,9 @@
 ﻿#pragma once
-#include "../../../../../Interface/DirectXDeviceInterfece.h"
+#include "../../../../../Interface/DirectXDeviceInterface.h"
 #include "../../../RenderingResourcesUpdate.h"
 
-class GMesh;
+class CMeshComponent;
+
 // 渲染所需数据结构体
 struct FRenderingData :public IDirectXDeviceInterface_Struct
 {
@@ -28,6 +29,6 @@ public:
 
 	XMFLOAT4X4 WorldMatrix;
 
-	GMesh* Mesh;
+	CMeshComponent* Mesh;
 
 };

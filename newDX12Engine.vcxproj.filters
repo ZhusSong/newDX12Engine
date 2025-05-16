@@ -290,6 +290,12 @@
     <Filter Include="EngineCode\Mesh\Core\Material">
       <UniqueIdentifier>{0e7d84d5-8a1d-4d5e-9b47-1d3fe6e8d7dc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="EngineCode\Component\Mesh">
+      <UniqueIdentifier>{f093962b-d3d1-4b8e-b725-608a461961de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Component\Mesh\Core">
+      <UniqueIdentifier>{b296f8c3-32a0-494b-a0ff-e758fe123f79}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="simple_library\private\simple_math\soft_rasterization\soft_rasterization.cpp">
@@ -502,7 +508,7 @@
     <ClCompile Include="EngineCode\Component\Input\Input.cpp">
       <Filter>EngineCode\Component\Input</Filter>
     </ClCompile>
-    <ClCompile Include="EngineCode\Interface\DirectXDeviceInterfece.cpp">
+    <ClCompile Include="EngineCode\Interface\DirectXDeviceInterface.cpp">
       <Filter>EngineCode\Interface</Filter>
     </ClCompile>
     <ClCompile Include="EngineCode\Rendering\Core\Buffer\ConstructBuffer.cpp">
@@ -561,6 +567,30 @@
     </ClCompile>
     <ClCompile Include="EngineCode\Mesh\Core\Material\MaterialType.cpp">
       <Filter>EngineCode\Mesh\Core\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Mesh\Core\MeshComponent.cpp">
+      <Filter>EngineCode\Component\Mesh\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Mesh\ShellMeshComponent.cpp">
+      <Filter>EngineCode\Component\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Mesh\BoxMeshComponent.cpp">
+      <Filter>EngineCode\Component\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Mesh\ConeMeshComponent.cpp">
+      <Filter>EngineCode\Component\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Mesh\CustomMeshComponent.cpp">
+      <Filter>EngineCode\Component\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Mesh\CylinderMeshComponent.cpp">
+      <Filter>EngineCode\Component\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Mesh\PlaneMeshComponent.cpp">
+      <Filter>EngineCode\Component\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Mesh\SphereMeshComponent.cpp">
+      <Filter>EngineCode\Component\Mesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -822,7 +852,7 @@
     <ClInclude Include="EngineCode\Component\Input\Input.h">
       <Filter>EngineCode\Component\Input</Filter>
     </ClInclude>
-    <ClInclude Include="EngineCode\Interface\DirectXDeviceInterfece.h">
+    <ClInclude Include="EngineCode\Interface\DirectXDeviceInterface.h">
       <Filter>EngineCode\Interface</Filter>
     </ClInclude>
     <ClInclude Include="EngineCode\Rendering\Core\Buffer\ConstructBuffer.h">
@@ -887,6 +917,30 @@
     </ClInclude>
     <ClInclude Include="EngineCode\Mesh\Core\Material\MaterialType.h">
       <Filter>EngineCode\Mesh\Core\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Mesh\Core\MeshComponent.h">
+      <Filter>EngineCode\Component\Mesh\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Mesh\ShellMeshComponent.h">
+      <Filter>EngineCode\Component\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Mesh\BoxMeshComponent.h">
+      <Filter>EngineCode\Component\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Mesh\ConeMeshComponent.h">
+      <Filter>EngineCode\Component\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Mesh\CustomMeshComponent.h">
+      <Filter>EngineCode\Component\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Mesh\CylinderMeshComponent.h">
+      <Filter>EngineCode\Component\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Mesh\PlaneMeshComponent.h">
+      <Filter>EngineCode\Component\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Mesh\SphereMeshComponent.h">
+      <Filter>EngineCode\Component\Mesh</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

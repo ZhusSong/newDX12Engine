@@ -7,12 +7,19 @@ class CWindowsEngine;
 class CEngine;
 #endif
 
+class CMeshManager;
+class CWorld;
+
 // 提供渲染内容的接口
 class IDirectXDeviceInterface
 {
 public:
 	ComPtr<ID3D12Fence> GetFence();
 	ComPtr<ID3D12Device> GetD3dDevice();
+
+	CMeshManager* GetMeshManager();
+	CWorld* GetWorld();
+
 
 	ComPtr<ID3D12GraphicsCommandList> GetGraphicsCommandList();
 	ComPtr<ID3D12CommandAllocator> GetCommandAllocator();
@@ -36,6 +43,9 @@ public:
 	ComPtr<ID3D12Fence> GetFence();
 	ComPtr<ID3D12Device> GetD3dDevice();
 
+	CMeshManager* GetMeshManager();
+	CWorld* GetWorld();
+
 	ComPtr<ID3D12GraphicsCommandList> GetGraphicsCommandList();
 	ComPtr<ID3D12CommandAllocator> GetCommandAllocator();
 	ComPtr<ID3D12CommandQueue> GetCommandQueue();
@@ -51,5 +61,5 @@ public:
 
 private:
 	// 创建接口的实例
-	IDirectXDeviceInterface Interfece;
+	IDirectXDeviceInterface Interface;
 };

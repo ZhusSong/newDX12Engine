@@ -9,9 +9,9 @@ class GPlaneMesh :public GMesh
 public:
 	virtual void Init();
 
-	virtual void BuildMesh(const FMeshRenderingData* InRenderingData);
 
 	virtual void Draw(float DeltaTime);
 
-	void CreateMesh(FMeshRenderingData& MeshData, float InHeight, float InWidth, uint32_t InHeightSubdivide, uint32_t InWidthSubdivide);
+
+	void CreateMesh(float InHeight, float InWidth, uint32_t InHeightSubdivide, uint32_t InWidthSubdivide);
 };

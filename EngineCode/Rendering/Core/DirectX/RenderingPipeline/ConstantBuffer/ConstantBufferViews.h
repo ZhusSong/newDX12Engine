@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "../../../../../Interface/DirectXDeviceInterfece.h"
+#include "../../../../../Interface/DirectXDeviceInterface.h"
 #include "../../../RenderingResourcesUpdate.h"
 
 // 常量缓冲区视图结构体

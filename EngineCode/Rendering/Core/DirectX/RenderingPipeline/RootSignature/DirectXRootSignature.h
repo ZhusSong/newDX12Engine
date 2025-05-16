@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "../../../../../Interface/DirectXDeviceInterfece.h"
+#include "../../../../../Interface/DirectXDeviceInterface.h"
 
 // 根签名结构体
 struct FDirectXRootSignature :public IDirectXDeviceInterface_Struct

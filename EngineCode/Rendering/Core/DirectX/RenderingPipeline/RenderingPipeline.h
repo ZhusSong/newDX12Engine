@@ -1,20 +1,21 @@
 ﻿#pragma once
-#include "../../../../Interface/DirectXDeviceInterfece.h"
+#include "../../../../Interface/DirectXDeviceInterface.h"
 #include "Geometry/GeometryMap.h"
 #include "../../../../Shader/Core/Shader.h"
 #include "PipelineState/DirectXPipelineState.h"
 #include "RootSignature/DirectXRootSignature.h"
 #include "../../../../Core/Viewport/ViewportInfo.h"
 
+class CMeshComponent;
+
 // 渲染流水线基类
-class GMesh; 
 class FRenderingPipeline :public IDirectXDeviceInterface
 {
 public:
 	FRenderingPipeline();
 
 	// 构建Mesh
-	void BuildMesh(GMesh* InMesh, const FMeshRenderingData& MeshData);
+	void BuildMesh(CMeshComponent* InMesh, const FMeshRenderingData& MeshData);
 
 	virtual void UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo);
 

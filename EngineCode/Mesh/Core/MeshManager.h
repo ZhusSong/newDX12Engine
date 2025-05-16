@@ -4,18 +4,19 @@
 #include "../../Shader/Core/Shader.h"
 #include "MeshType.h"
 #include "Mesh.h"
-#include "../../Interface/DirectXDeviceInterfece.h"
+#include "../../Interface/DirectXDeviceInterface.h"
 #include "../../Core/Viewport/ViewportInfo.h"
 #include "../../Rendering/Core/DirectX/RenderingPipeline/RenderingPipeline.h"
 
 class FRenderingResourcesUpdate;
+class CMeshComponent;
 
-class CMeshManage :public CCoreMinimalObject, 
+class CMeshManager :public CCoreMinimalObject, 
 				   public IRenderingInterface,
 				   public IDirectXDeviceInterface
 {
 public:
-	CMeshManage();
+	CMeshManager();
 
 	virtual void Init();
 
@@ -29,40 +30,40 @@ public:
 	/*D3D12_VERTEX_BUFFER_VIEW GetVertexBufferView();
 	D3D12_INDEX_BUFFER_VIEW GetIndexBufferView();*/
 public:
-	GMesh* CreateBoxMesh(
+	CMeshComponent* CreateBoxMeshComponent(
 		float InHeight,
 		float InWidth,
 		float InDepth);
 
-	GMesh* CreateConeMesh(
+	CMeshComponent* CreateConeMeshComponent(
 		float InRadius,
 		float InHeight,
 		uint32_t InAxialSubdivision,
 		uint32_t InHeightSubdivision);
 
-	GMesh* CreateCylinderMesh(
+	CMeshComponent* CreateCylinderMeshComponent(
 		float InTopRadius,
 		float InBottomRadius,
 		float InHeight,
 		uint32_t InAxialSubdivision,
 		uint32_t InHeightSubdivision);
 
-	GMesh* CreatePlaneMesh(
+	CMeshComponent* CreatePlaneMeshComponent(
 		float InHeight,
 		float InWidth,
 		uint32_t InHeightSubdivide,
 		uint32_t InWidthSubdivide);
 
-	GMesh* CreateSphereMesh(
+	CMeshComponent* CreateSphereMeshComponent(
 		float InRadius,
 		uint32_t InAxialSubdivision,
 		uint32_t InHeightSubdivision);
 
-	GMesh* CreateMesh(string& InPath);
+	CMeshComponent* CreateMeshComponent(string& InPath);
 
 protected:
 	template<class T, typename ...ParamTypes>
-	T* CreateMesh(ParamTypes &&...Params);
+	T* CreateMeshComponent(ParamTypes &&...Params);
 
 protected:
 	FRenderingPipeline RenderingPipeline;
