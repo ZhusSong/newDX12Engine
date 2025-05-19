@@ -2,6 +2,7 @@
 #include "../../Core/RenderingEngine.h"
 #include "../../../../Core/Viewport/ViewportInfo.h"
 
+class CLightManager;
 class CMeshManager;
 class CWorld;
 
@@ -41,6 +42,7 @@ public:
 	UINT GetDXGISampleQuality()const;
 
 	CMeshManager* GetMeshManager() { return MeshManager; }
+	CLightManager* GetLightManager() { return LightManager; }
 
 protected:
 	// 封装D3D初始化与GPU/CPU同步
@@ -50,7 +52,8 @@ protected:
 	void PostInitDirect3D();
 
 protected:
-	// mesh管理
+	// Manager管理
+	CLightManager* LightManager;
 	CMeshManager* MeshManager;
 	CWorld* World;
 protected:

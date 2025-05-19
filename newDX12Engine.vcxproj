@@ -50,6 +50,7 @@
     <ClCompile Include="EngineCode\DX12Engine.cpp" />
     <ClCompile Include="EngineCode\EngineFactory.cpp" />
     <ClCompile Include="EngineCode\Interface\DirectXDeviceInterface.cpp" />
+    <ClCompile Include="EngineCode\Manager\LightManager.cpp" />
     <ClCompile Include="EngineCode\Math\EngineMath.cpp" />
     <ClCompile Include="EngineCode\Mesh\BoxMesh.cpp" />
     <ClCompile Include="EngineCode\Mesh\ConeMesh.cpp" />
@@ -155,6 +156,7 @@
     <ClInclude Include="EngineCode\EngineFactory.h" />
     <ClInclude Include="EngineCode\EngineMinimal.h" />
     <ClInclude Include="EngineCode\Interface\DirectXDeviceInterface.h" />
+    <ClInclude Include="EngineCode\Manager\LightManager.h" />
     <ClInclude Include="EngineCode\Math\EngineMath.h" />
     <ClInclude Include="EngineCode\Mesh\BoxMesh.h" />
     <ClInclude Include="EngineCode\Mesh\ConeMesh.h" />

@@ -30,6 +30,19 @@ ComPtr<ID3D12Device> IDirectXDeviceInterface::GetD3dDevice()
 	return NULL;
 }
 
+CLightManager* IDirectXDeviceInterface::GetLightManager()
+{
+	if (CWindowsEngine* InEngine = GetEngine())
+	{
+		if (InEngine->GetRenderingEngine())
+		{
+			return InEngine->GetRenderingEngine()->GetLightManager();
+		}
+	}
+
+	return NULL;
+}
+
 CMeshManager* IDirectXDeviceInterface::GetMeshManager()
 {
 	return GetEngine()->GetMeshManager();
@@ -138,6 +151,11 @@ ComPtr<ID3D12Fence> IDirectXDeviceInterface_Struct::GetFence()
 ComPtr<ID3D12Device> IDirectXDeviceInterface_Struct::GetD3dDevice()
 {
 	return Interface.GetD3dDevice();
+}
+
+CLightManager* IDirectXDeviceInterface_Struct::GetLightManager()
+{
+	return Interface.GetLightManager();
 }
 
 CMeshManager* IDirectXDeviceInterface_Struct::GetMeshManager()

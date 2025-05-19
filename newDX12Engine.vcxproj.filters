@@ -296,6 +296,9 @@
     <Filter Include="EngineCode\Component\Mesh\Core">
       <UniqueIdentifier>{b296f8c3-32a0-494b-a0ff-e758fe123f79}</UniqueIdentifier>
     </Filter>
+    <Filter Include="EngineCode\LightManager">
+      <UniqueIdentifier>{bb5d3e07-b5b6-426c-a3ed-9356c093d0d5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="simple_library\private\simple_math\soft_rasterization\soft_rasterization.cpp">
@@ -591,6 +594,9 @@
     </ClCompile>
     <ClCompile Include="EngineCode\Component\Mesh\SphereMeshComponent.cpp">
       <Filter>EngineCode\Component\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Manager\LightManager.cpp">
+      <Filter>EngineCode\LightManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -941,6 +947,9 @@
     </ClInclude>
     <ClInclude Include="EngineCode\Component\Mesh\SphereMeshComponent.h">
       <Filter>EngineCode\Component\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Manager\LightManager.h">
+      <Filter>EngineCode\LightManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

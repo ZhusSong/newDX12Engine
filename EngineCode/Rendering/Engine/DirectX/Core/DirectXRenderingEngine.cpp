@@ -16,6 +16,9 @@
 #include "../../../../Core/World.h"
 #include "../../../../Component/Mesh/Core/MeshComponent.h"
 
+#include "../../../../Manager/LightManager.h"
+#include "../../../../Actor/Light/ParallelLight.h"
+
 #if defined(_WIN32)
 #include "../../../../Core/WinMainCommandParameters.h"
 
@@ -43,11 +46,13 @@ CDirectXRenderingEngine::CDirectXRenderingEngine()
 	bTick = false;
 
 	MeshManager = new CMeshManager();
+	LightManager = CreateObject<CLightManager>(new CLightManager());
 }
 
 CDirectXRenderingEngine::~CDirectXRenderingEngine()
 {
 	delete MeshManager;
+	delete LightManager;
 }
 
 int CDirectXRenderingEngine::PreInit(FWinMainCommandParameters InParameters)
@@ -81,6 +86,14 @@ int CDirectXRenderingEngine::PostInit()
 			BoxMesh->SetRotation(fvector_3d(60.f, 1.f, 20.f));
 		}
 		*/
+		// 创建灯光
+		if (GParallelLight* ParallelLight = World->CreateActorObject<GParallelLight>())
+		{
+			ParallelLight->SetPosition(XMFLOAT3(0.f, 2.f, 10.f));
+			ParallelLight->SetRotation(fvector_3d(0.f, 0.f, 0.f));
+		}
+
+
 
 		if (GPlaneMesh* InPlaneMesh = World->CreateActorObject<GPlaneMesh>())
 		{
@@ -307,32 +320,32 @@ int CDirectXRenderingEngine::PostInit()
 		//	}
 		//}
 		
-		// 以线框显示
-		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
-		{
-			SphereMesh->CreateMesh(2.f, 50, 50);
-			SphereMesh->SetPosition(XMFLOAT3(21.f, 2, 0.f));
-			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
-			{
-				InMaterial->SetMaterialDisplayStatus(EMaterialDisplayStatusType::WireframeDisplay);
-				InMaterial->SetMaterialType(EMaterialType::BaseColor);
-				InMaterial->SetBaseColor(fvector_4d(1.f, 1.f, 1.f, 1.f));
+		//// 以线框显示
+		// 有bug
+		//if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
+		//{
+		//	SphereMesh->CreateMesh(2.f, 50, 50);
+		//	SphereMesh->SetPosition(XMFLOAT3(21.f, 2, 0.f));
+		//	if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
+		//	{
+		//		InMaterial->SetMaterialDisplayStatus(EMaterialDisplayStatusType::WireframeDisplay);
+		//		InMaterial->SetMaterialType(EMaterialType::BaseColor);
+		//		InMaterial->SetBaseColor(fvector_4d(1.f, 1.f, 1.f, 1.f));
+		//	}
+		//}
 
-			}
-		}
-
-		// 以顶点模型显示
-		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
-		{
-			SphereMesh->CreateMesh(2.f, 50, 50);
-			SphereMesh->SetPosition(XMFLOAT3(21.f, 8, 0.f));
-			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
-			{
-				InMaterial->SetMaterialType(EMaterialType::BaseColor);
-				InMaterial->SetBaseColor(fvector_4d(1.f, 1.f, 1.f, 1.f));
-				InMaterial->SetMaterialDisplayStatus(EMaterialDisplayStatusType::PointDisplay);
-			}
-		}
+		//// 以顶点模型显示
+		//if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
+		//{
+		//	SphereMesh->CreateMesh(2.f, 50, 50);
+		//	SphereMesh->SetPosition(XMFLOAT3(21.f, 8, 0.f));
+		//	if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
+		//	{
+		//		InMaterial->SetMaterialType(EMaterialType::BaseColor);
+		//		InMaterial->SetBaseColor(fvector_4d(1.f, 1.f, 1.f, 1.f));
+		//		InMaterial->SetMaterialDisplayStatus(EMaterialDisplayStatusType::PointDisplay);
+		//	}
+		//}
 		// 以法线显示
 		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 		{

@@ -24,7 +24,9 @@ cbuffer MaterialConstBuffer : register(b2) //b0->b14
 cbuffer LightConstBuffer : register(b3)
 {
     float3 LightIntensity;
+    float xx;
     float3 LightDirection;
+    float xx1;
 }
 struct MeshVertexIn
 {

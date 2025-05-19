@@ -8,6 +8,9 @@
 #include "../../../../../Mesh/Core/Material/Material.h"
 #include "../../../../../Component/Mesh/Core/MeshComponent.h"
 
+#include "../../../../../Manager/LightManager.h"
+#include "../../../../../Component/Light/Core/LightComponent.h"
+
 bool FGeometry::bRenderingDataExistence(CMeshComponent* InKey)
 {
 	for (auto& Tmp : DescribeMeshRenderingData)
@@ -194,11 +197,19 @@ void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& View
 	}
 
 	//更新灯光
-	FLightConstantBuffer LightConstantBuffer;
+	for (size_t i = 0; i < GetLightManager()->Lights.size(); i++)
 	{
+		FLightConstantBuffer LightConstantBuffer;
+		{
+			if (CLightComponent* InLightComponent = GetLightManager()->Lights[0])
+			{
+				LightConstantBuffer.LightDirection = InLightComponent->GetForwardVector();
+			}
+		}
 
+		LightConstantBufferViews.Update(i, &LightConstantBuffer);
 	}
-	LightConstantBufferViews.Update(0, &LightConstantBuffer);
+
 
 	// 更新视口
 	XMMATRIX ViewProject = XMMatrixMultiply(ViewMatrix, ProjectMatrix);
