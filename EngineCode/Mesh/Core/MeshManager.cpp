@@ -93,7 +93,6 @@ T* CMeshManager::CreateMeshComponent(ParamTypes && ...Params)
     FMeshRenderingData MeshData;
     MyMesh->CreateMesh(MeshData, forward<ParamTypes>(Params)...);
 
-    MyMesh->BeginInit();
 
     //构建mesh
     RenderingPipeline.BuildMesh(MyMesh, MeshData);

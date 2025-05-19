@@ -12,10 +12,10 @@ cbuffer ViewportConstBuffer : register(b1)
     float4x4 ViewProjectionMatrix;
 }
 
-cbuffer MaterialConstBuffer : register(b2)
+cbuffer MaterialConstBuffer : register(b2) //b0->b14
 {
     int MaterialType;
-    
+
     float4 BaseColor;
     float MaterialRoughness;
     float4x4 TransformInformation;

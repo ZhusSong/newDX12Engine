@@ -316,7 +316,6 @@ int CDirectXRenderingEngine::PostInit()
 			{
 				InMaterial->SetMaterialDisplayStatus(EMaterialDisplayStatusType::WireframeDisplay);
 				InMaterial->SetMaterialType(EMaterialType::BaseColor);
-
 				InMaterial->SetBaseColor(fvector_4d(1.f, 1.f, 1.f, 1.f));
 
 			}
@@ -329,9 +328,9 @@ int CDirectXRenderingEngine::PostInit()
 			SphereMesh->SetPosition(XMFLOAT3(21.f, 8, 0.f));
 			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
 			{
-				InMaterial->SetMaterialDisplayStatus(EMaterialDisplayStatusType::PointDisplay);
 				InMaterial->SetMaterialType(EMaterialType::BaseColor);
 				InMaterial->SetBaseColor(fvector_4d(1.f, 1.f, 1.f, 1.f));
+				InMaterial->SetMaterialDisplayStatus(EMaterialDisplayStatusType::PointDisplay);
 			}
 		}
 		// 以法线显示
@@ -354,28 +353,9 @@ int CDirectXRenderingEngine::PostInit()
 			    InMaterial->SetMaterialType(EMaterialType::WorldNormal);
 			}
 		}
-	/*	if (GMesh* SphereMesh = MeshManage->CreateSphereMesh(2.f, 20, 20))
-		{
-			SphereMesh->SetPosition(XMFLOAT3(1, 2, 4));
-			SphereMesh->SetScale(fvector_3d(3.f, 3.f, 3.f));
-		}*/
-
-	/*	if (GMesh* CylinderMesh = MeshManage->CreateCylinderMesh(1.f, 1.f, 5.f, 20, 20))
-		{
-			CylinderMesh->SetPosition(XMFLOAT3(1, -2, -4));
-		}
-
-		if (GMesh* ConeMesh = MeshManage->CreateConeMesh(1.f, 5.f, 20, 20))
-		{
-			ConeMesh->SetPosition(XMFLOAT3(-1, 1, 9));
-			ConeMesh->SetRotation(fvector_3d(90.f, 1.f, 20.f));
-		}*/
-		//构建Mesh
-		
 	}
 
 	MeshManager->BuildMesh();
-
 
 	ANALYSIS_HRESULT(GraphicsCommandList->Close());
 
@@ -404,6 +384,7 @@ void CDirectXRenderingEngine::Tick(float DeltaTime)
 		D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
 
 	GraphicsCommandList->ResourceBarrier(1, &ResourceBarrierPresent);
+
 
 	//需要每帧执行
 	//绑定矩形框

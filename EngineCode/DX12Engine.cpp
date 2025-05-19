@@ -41,7 +41,7 @@ int Init(CEngine* InEngine, HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cm
 	return ReturnValue;
 }
 
-void Update(CEngine* InEngine)
+void Tick(CEngine* InEngine)
 {
 	float DeltaTime = 0.03f;
 	InEngine->Tick(DeltaTime);
@@ -113,7 +113,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, in
 			}
 			else
 			{
-				Update(Engine);
+				Tick(Engine);
 			}
 		}
 

@@ -66,12 +66,12 @@ int CWindowsEngine::PostInit()
 {
 	Engine_Log("Engine post initialization complete.");
 
-	RenderingEngine->PostInit();
 
 	for (auto& Tmp : GObjects)
 	{
 		Tmp->BeginInit();
 	}
+	RenderingEngine->PostInit();
 
 	return 0;
 }
@@ -126,7 +126,6 @@ int CWindowsEngine::PostExit()
 	FEngineRenderConfig::Destroy();
 	RenderingEngine->PostExit();
 
-
 	Engine_Log("Engine post exit complete.");
 	return 0;
 }
@@ -135,6 +134,7 @@ CMeshManager* CWindowsEngine::GetMeshManager()
 {
 	return RenderingEngine->GetMeshManager();
 }
+
 
 bool CWindowsEngine::InitWindows(FWinMainCommandParameters InParameters)
 {
