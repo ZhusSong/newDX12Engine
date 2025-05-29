@@ -88,15 +88,15 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
         return float4(MVOut.Normal, 1.f);
     }
     
+    // 环境光
     float4 AmbientLight = { 0.15f, 0.15f, 0.25f, 1.0f };
 
     float3 ModelNormal = normalize(MVOut.Normal);
     //float3 NormalizeLightDirection = normalize(-LightDirection);
     
     float DotValue = 0;
-
-    float4 LightStrength = { 0.f,0.f,0.f,1.f };
-
+    
+	float4 LightStrengths = { 0.f,0.f,0.f,1.f };
 
     float4 Specular = { 0.f, 0.f, 0.f, 1.f };
     
@@ -104,8 +104,11 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
 	{
         if (length(SceneLights[i].LightIntensity.xyz) > 0.f)
 		    {
-			    float3 NormalizeLightDirection = normalize(-SceneLights[i].LightDirection);
-	
+			    float3 NormalizeLightDirection = normalize(GetLightDirection(SceneLights[i],MVOut.WorldPosition));
+
+			    float4 LightStrength = ComputeLightStrength(SceneLights[i], ModelNormal, MVOut.WorldPosition, NormalizeLightDirection);
+
+
                 if (MaterialType == 0)// Lambert 兰伯特
                 {
 				    DotValue = pow(max(dot(ModelNormal, NormalizeLightDirection), 0.0),2.f);
@@ -297,17 +300,17 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
 
                 }
                 
-			LightStrength = LightStrength + float4(SceneLights[i].LightIntensity.xyz, 1.f) * DotValue;
-			LightStrength.w = 1.f;
+		    LightStrengths += LightStrength * DotValue * float4(SceneLights[i].LightIntensity,1.f);
+			LightStrengths.w = 1.f;
         }
     }
     
     
     
 	// 最终颜色
-    MVOut.Color = Material.BaseColor *  LightStrength + //漫反射
-		AmbientLight * Material.BaseColor + //间接光
-		Specular * Material.BaseColor; //高光
+    MVOut.Color = LightStrengths*(Material.BaseColor // 受灯光影响的基础色
+		+ Specular * Material.BaseColor)+            // 高光
+	    AmbientLight * Material.BaseColor;  //间接光
 	
     
     return MVOut.Color;

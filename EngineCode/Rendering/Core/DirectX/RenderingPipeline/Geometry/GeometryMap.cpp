@@ -4,7 +4,10 @@
 #include "../../../../../Core/Viewport/ViewportTransformation.h"
 #include "../../../../../Mesh/Core/Mesh.h"
 #include "../../../../../Mesh/Core/Material/MaterialConstantBuffer.h"
+
 #include "../../../../../Component/Light/Core/LightConstantBuffer.h"
+#include "../../../../../Component/Light/SpotLightComponent.h"
+
 #include "../../../../../Mesh/Core/Material/Material.h"
 #include "../../../../../Component/Mesh/Core/MeshComponent.h"
 
@@ -205,6 +208,23 @@ void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& View
 			fvector_3d LightIntensity = InLightComponent->GetLightIntensity();
 			LightConstantBuffer.SceneLights[i].LightIntensity = XMFLOAT3(LightIntensity.x, LightIntensity.y, LightIntensity.z);
 			LightConstantBuffer.SceneLights[i].LightDirection = InLightComponent->GetForwardVector();
+		
+
+			LightConstantBuffer.SceneLights[i].Position = InLightComponent->GetPosition();
+			LightConstantBuffer.SceneLights[i].LightType = InLightComponent->GetLightType();
+		
+			switch (InLightComponent->GetLightType())
+			{
+			case ELightType::SpotLight:
+			{
+				if (CSpotLightComponent* InSpotLightComponent = dynamic_cast<CSpotLightComponent*>(InLightComponent))
+				{
+					LightConstantBuffer.SceneLights[i].StartAttenuation = InSpotLightComponent->GetStartAttenuation();
+					LightConstantBuffer.SceneLights[i].EndAttenuation = InSpotLightComponent->GetEndAttenuation();
+				}
+				break;
+			}
+			}
 		}
 	}
 	LightConstantBufferViews.Update(0, &LightConstantBuffer);

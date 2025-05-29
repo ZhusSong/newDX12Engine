@@ -18,6 +18,7 @@
 
 #include "../../../../Manager/LightManager.h"
 #include "../../../../Actor/Light/ParallelLight.h"
+#include "../../../../Actor/Light/SpotLight.h"
 
 #if defined(_WIN32)
 #include "../../../../Core/WinMainCommandParameters.h"
@@ -87,7 +88,16 @@ int CDirectXRenderingEngine::PostInit()
 		}
 		*/
 		// 创建灯光
-		if (GParallelLight* ParallelLight = World->CreateActorObject<GParallelLight>())
+		// 点光源
+		if (GSpotLight* SpotLight = World->CreateActorObject<GSpotLight>())
+		{
+			SpotLight->SetPosition(XMFLOAT3(0.f, -5.f, 0.f));
+			SpotLight->SetRotation(fvector_3d(0.f, 0.f, 0.f));
+
+			SpotLight->SetLightIntensity(fvector_3d(10.f, 10.f, 10.f));
+			SpotLight->SetEndAttenuation(150.f);
+		}
+	/*	if (GParallelLight* ParallelLight = World->CreateActorObject<GParallelLight>())
 		{
 			ParallelLight->SetPosition(XMFLOAT3(0.f, 2.f, 10.f));
 			ParallelLight->SetRotation(fvector_3d(0.f, 0.f, 0.f));
@@ -96,7 +106,7 @@ int CDirectXRenderingEngine::PostInit()
 		{
 			ParallelLight->SetPosition(XMFLOAT3(10.f, 2.f, 10.f));
 			ParallelLight->SetRotation(fvector_3d(-90.f, 0.f,0.f));
-		}
+		}*/
 
 
 		if (GPlaneMesh* InPlaneMesh = World->CreateActorObject<GPlaneMesh>())

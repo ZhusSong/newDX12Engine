@@ -22,6 +22,7 @@ public:
 public:
 	CMeshComponent* GetLightMesh() { return LightMesh; }
 	const fvector_3d& GetLightIntensity() { return LightIntensity; }
+	ELightType GetLightType() const { return LightType; }
 
 public:
 	virtual void SetPosition(const XMFLOAT3& InNewPosition);

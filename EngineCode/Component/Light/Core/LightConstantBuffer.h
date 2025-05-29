@@ -4,12 +4,24 @@
 
 struct FLight
 {
+	FLight();
+
+
 	// 灯光强度
 	XMFLOAT3 LightIntensity;
-	float XX = 0.f;
+	// 开始衰减时的值
+	float StartAttenuation;
+
 	// 灯光方向
 	XMFLOAT3 LightDirection;
-	float XX1 = 0.f;
+	// 最终衰减的值
+	float EndAttenuation;
+
+	// 灯光位置
+	XMFLOAT3 Position;
+
+	// 灯光种类
+	int	   LightType;
 };
 struct FLightConstantBuffer
 {
