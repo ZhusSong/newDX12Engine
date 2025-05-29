@@ -1,22 +1,14 @@
-﻿// 平行光actor、
-#pragma once
-#include "../Core/ActorObject.h"
+﻿#pragma once
+#include "Core/Light.h"
 #include "../../Component/Light/ParallelLightComponent.h"
 
 //G -> Game
-class GParallelLight :public GActorObject
+class GParallelLight :public GLight
 {
-	typedef GActorObject Super;
+	typedef GLight Super;
 
-	CVARIABLE()
-		CParallelLightComponent* ParallelLightComponent;
 public:
 	GParallelLight();
 
 	virtual void Tick(float DeltaTime);
-public:
-	virtual void SetPosition(const XMFLOAT3& InNewPosition);
-	virtual void SetRotation(const fvector_3d& InRotation);
-	virtual void SetScale(const fvector_3d& InNewScale);
-
 };

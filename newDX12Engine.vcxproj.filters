@@ -299,6 +299,9 @@
     <Filter Include="EngineCode\LightManager">
       <UniqueIdentifier>{bb5d3e07-b5b6-426c-a3ed-9356c093d0d5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="EngineCode\Actor\Light\Core">
+      <UniqueIdentifier>{4338979b-2caa-4fe8-8e33-3bbc4971a389}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="simple_library\private\simple_math\soft_rasterization\soft_rasterization.cpp">
@@ -597,6 +600,15 @@
     </ClCompile>
     <ClCompile Include="EngineCode\Manager\LightManager.cpp">
       <Filter>EngineCode\LightManager</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Actor\Light\SpotLight.cpp">
+      <Filter>EngineCode\Actor\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Actor\Light\Core\Light.cpp">
+      <Filter>EngineCode\Actor\Light\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Light\SpotLightComponent.cpp">
+      <Filter>EngineCode\Component\Light</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -950,6 +962,18 @@
     </ClInclude>
     <ClInclude Include="EngineCode\Manager\LightManager.h">
       <Filter>EngineCode\LightManager</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Actor\Light\SpotLight.h">
+      <Filter>EngineCode\Actor\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Actor\Light\Core\Light.h">
+      <Filter>EngineCode\Actor\Light\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Light\SpotLightComponent.h">
+      <Filter>EngineCode\Component\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Light\Core\LightType.h">
+      <Filter>EngineCode\Component\Light\Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

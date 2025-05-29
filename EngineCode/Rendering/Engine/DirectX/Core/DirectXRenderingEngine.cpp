@@ -92,7 +92,11 @@ int CDirectXRenderingEngine::PostInit()
 			ParallelLight->SetPosition(XMFLOAT3(0.f, 2.f, 10.f));
 			ParallelLight->SetRotation(fvector_3d(0.f, 0.f, 0.f));
 		}
-
+		if (GParallelLight* ParallelLight = World->CreateActorObject<GParallelLight>())
+		{
+			ParallelLight->SetPosition(XMFLOAT3(10.f, 2.f, 10.f));
+			ParallelLight->SetRotation(fvector_3d(-90.f, 0.f,0.f));
+		}
 
 
 		if (GPlaneMesh* InPlaneMesh = World->CreateActorObject<GPlaneMesh>())
@@ -252,7 +256,7 @@ int CDirectXRenderingEngine::PostInit()
 					223.f / 255.f,
 					227.f / 255.f, 1.f));
 
-				InMaterial->SetMaterialType(EMaterialType::Phong);
+				InMaterial->SetMaterialType(EMaterialType::BinnPhong);
 
 				InMaterial->SetRoughness(0.9f);
 			}
@@ -321,7 +325,7 @@ int CDirectXRenderingEngine::PostInit()
 		//}
 		
 		//// 以线框显示
-		// 有bug
+		//// 有bug
 		//if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 		//{
 		//	SphereMesh->CreateMesh(2.f, 50, 50);

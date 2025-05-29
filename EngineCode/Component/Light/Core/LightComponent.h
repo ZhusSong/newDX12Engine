@@ -3,6 +3,7 @@
 #pragma once
 #include "../../TransformComponent.h"
 #include "../../../Interface/DirectXDeviceInterface.h"
+#include "LightType.h"
 
 class CMeshComponent;
 class CLightComponent :public CTransformComponent, public IDirectXDeviceInterface
@@ -16,8 +17,13 @@ public:
 
 	virtual ~CLightComponent();
 
+	// 设置灯光强度
+	void SetLightIntensity(const fvector_3d& InNewLightIntensity) { LightIntensity - InNewLightIntensity; }
+public:
 	CMeshComponent* GetLightMesh() { return LightMesh; }
+	const fvector_3d& GetLightIntensity() { return LightIntensity; }
 
+public:
 	virtual void SetPosition(const XMFLOAT3& InNewPosition);
 	virtual void SetRotation(const fvector_3d& InNewRotation);
 	virtual void SetScale(const fvector_3d& InNewScale);
@@ -28,4 +34,9 @@ public:
 
 protected:
 	void SetLightMesh(CMeshComponent* InLightMesh);
+
+
+protected:
+	fvector_3d LightIntensity;
+	ELightType LightType;
 };

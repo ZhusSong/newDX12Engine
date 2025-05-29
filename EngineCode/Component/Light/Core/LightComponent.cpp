@@ -5,13 +5,13 @@
 
 
 CLightComponent::CLightComponent()
+	:LightIntensity(1.f, 1.f, 1.f)
 {
 	GetLightManager()->AddLight(this);
 }
 
 CLightComponent::~CLightComponent()
 {
-	//ﾒﾔｺﾙﾗ・
 }
 
 void CLightComponent::SetPosition(const XMFLOAT3& InNewPosition)
