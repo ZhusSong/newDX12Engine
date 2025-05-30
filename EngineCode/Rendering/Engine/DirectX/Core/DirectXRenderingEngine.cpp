@@ -16,9 +16,11 @@
 #include "../../../../Core/World.h"
 #include "../../../../Component/Mesh/Core/MeshComponent.h"
 
+// 灯光相关
 #include "../../../../Manager/LightManager.h"
 #include "../../../../Actor/Light/ParallelLight.h"
 #include "../../../../Actor/Light/SpotLight.h"
+#include "../../../../Actor/Light/PointLight.h"
 
 #if defined(_WIN32)
 #include "../../../../Core/WinMainCommandParameters.h"
@@ -88,21 +90,31 @@ int CDirectXRenderingEngine::PostInit()
 		}
 		*/
 		// 创建灯光
-		// 点光源
-		if (GSpotLight* SpotLight = World->CreateActorObject<GSpotLight>())
-		{
-			SpotLight->SetPosition(XMFLOAT3(0.f, -5.f, 0.f));
-			SpotLight->SetRotation(fvector_3d(0.f, 0.f, 0.f));
+		// 聚光灯
+		// if (GSpotLight* SpotLight = World->CreateActorObject<GSpotLight>())
+		//{
+		//	SpotLight->SetPosition(XMFLOAT3(0.f, 5.f, 10.f));
+		//	SpotLight->SetRotation(fvector_3d(0.f, 0.f, 0.f));
 
-			SpotLight->SetLightIntensity(fvector_3d(10.f, 10.f, 10.f));
-			SpotLight->SetEndAttenuation(150.f);
+		//	SpotLight->SetLightIntensity(fvector_3d(10.f, 10.f, 10.f));
+		//	//SpotLight->SetStartAttenuation(1.f);
+		//	SpotLight->SetEndAttenuation(20.f);
+		//}
+		// 点光源
+		if (GPointLight* PointLight = World->CreateActorObject<GPointLight>())
+		{
+			PointLight->SetPosition(XMFLOAT3(0.f, 10.f, -10.f));
+			PointLight->SetRotation(fvector_3d(0.f, 0.f, 0.f));
+
+			PointLight->SetLightIntensity(fvector_3d(7.f, 7.f, 7.f));
+			PointLight->SetEndAttenuation(20.f);
 		}
 	/*	if (GParallelLight* ParallelLight = World->CreateActorObject<GParallelLight>())
 		{
 			ParallelLight->SetPosition(XMFLOAT3(0.f, 2.f, 10.f));
 			ParallelLight->SetRotation(fvector_3d(0.f, 0.f, 0.f));
-		}
-		if (GParallelLight* ParallelLight = World->CreateActorObject<GParallelLight>())
+		}*/
+	/*	if (GParallelLight* ParallelLight = World->CreateActorObject<GParallelLight>())
 		{
 			ParallelLight->SetPosition(XMFLOAT3(10.f, 2.f, 10.f));
 			ParallelLight->SetRotation(fvector_3d(-90.f, 0.f,0.f));
@@ -111,7 +123,7 @@ int CDirectXRenderingEngine::PostInit()
 
 		if (GPlaneMesh* InPlaneMesh = World->CreateActorObject<GPlaneMesh>())
 		{
-			InPlaneMesh->CreateMesh(4.f, 3.f, 20, 20);
+			InPlaneMesh->CreateMesh(8.f, 6.f, 20, 20);
 
 			InPlaneMesh->SetPosition(XMFLOAT3(0.f, -4.f, 0.f));
 			InPlaneMesh->SetScale(fvector_3d(10.f, 10.f, 10.f));

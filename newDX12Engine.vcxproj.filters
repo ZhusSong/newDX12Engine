@@ -610,6 +610,18 @@
     <ClCompile Include="EngineCode\Component\Light\SpotLightComponent.cpp">
       <Filter>EngineCode\Component\Light</Filter>
     </ClCompile>
+    <ClCompile Include="EngineCode\Component\Light\Core\RangeLightComponent.cpp">
+      <Filter>EngineCode\Component\Light\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Actor\Light\Core\RangeLight.cpp">
+      <Filter>EngineCode\Actor\Light\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Actor\Light\PointLight.cpp">
+      <Filter>EngineCode\Actor\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Light\PointLightComponent.cpp">
+      <Filter>EngineCode\Component\Light</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="simple_library\public\simple_library.h">
@@ -974,6 +986,18 @@
     </ClInclude>
     <ClInclude Include="EngineCode\Component\Light\Core\LightType.h">
       <Filter>EngineCode\Component\Light\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Light\Core\RangeLightComponent.h">
+      <Filter>EngineCode\Component\Light\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Actor\Light\Core\RangeLight.h">
+      <Filter>EngineCode\Actor\Light\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Actor\Light\PointLight.h">
+      <Filter>EngineCode\Actor\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Light\PointLightComponent.h">
+      <Filter>EngineCode\Component\Light</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -5,14 +5,14 @@
 #include "../../../../../Mesh/Core/Mesh.h"
 #include "../../../../../Mesh/Core/Material/MaterialConstantBuffer.h"
 
-#include "../../../../../Component/Light/Core/LightConstantBuffer.h"
-#include "../../../../../Component/Light/SpotLightComponent.h"
 
 #include "../../../../../Mesh/Core/Material/Material.h"
 #include "../../../../../Component/Mesh/Core/MeshComponent.h"
 
 #include "../../../../../Manager/LightManager.h"
 #include "../../../../../Component/Light/Core/LightComponent.h"
+#include "../../../../../Component/Light/Core/LightConstantBuffer.h"
+#include "../../../../../Component/Light/SpotLightComponent.h"
 
 bool FGeometry::bRenderingDataExistence(CMeshComponent* InKey)
 {
@@ -215,15 +215,16 @@ void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& View
 		
 			switch (InLightComponent->GetLightType())
 			{
-			case ELightType::SpotLight:
-			{
-				if (CSpotLightComponent* InSpotLightComponent = dynamic_cast<CSpotLightComponent*>(InLightComponent))
+				case ELightType::PointLight:
+				case ELightType::SpotLight:
 				{
-					LightConstantBuffer.SceneLights[i].StartAttenuation = InSpotLightComponent->GetStartAttenuation();
-					LightConstantBuffer.SceneLights[i].EndAttenuation = InSpotLightComponent->GetEndAttenuation();
+					if (CRangeLightComponent* InRangeLightComponent = dynamic_cast<CRangeLightComponent*>(InLightComponent))
+					{
+						LightConstantBuffer.SceneLights[i].StartAttenuation = InRangeLightComponent->GetStartAttenuation();
+						LightConstantBuffer.SceneLights[i].EndAttenuation = InRangeLightComponent->GetEndAttenuation();
+					}
+					break;
 				}
-				break;
-			}
 			}
 		}
 	}

@@ -1,15 +1,15 @@
 ﻿// 25.5.29 李
 //  点光源组件
-#include "SpotLightComponent.h"
+#include "PointLightComponent.h"
 #include "../../Mesh/Core/MeshManager.h"
 #include "../../Component/Mesh/Core/MeshComponent.h"
 #include "../../Mesh/Core/Material/Material.h"
 
-CSpotLightComponent::CSpotLightComponent()
+CPointLightComponent::CPointLightComponent()
 	:Super()
 {
-
-	string MeshPath = "../newDX12Engine/Asset/SpotMesh.obj";
+	// 加载模型
+	string MeshPath = "../newDX12Engine/Asset/PointMesh.obj";
 	SetLightMesh(GetMeshManager()->CreateMeshComponent(MeshPath));
 
 
@@ -23,5 +23,5 @@ CSpotLightComponent::CSpotLightComponent()
 		}
 	}
 
-	LightType = ELightType::SpotLight;
+	LightType = ELightType::PointLight;
 }

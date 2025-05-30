@@ -18,7 +18,7 @@ public:
 	virtual ~CLightComponent();
 
 	// 设置灯光强度
-	void SetLightIntensity(const fvector_3d& InNewLightIntensity) { LightIntensity - InNewLightIntensity; }
+	void SetLightIntensity(const fvector_3d& InNewLightIntensity);
 public:
 	CMeshComponent* GetLightMesh() { return LightMesh; }
 	const fvector_3d& GetLightIntensity() { return LightIntensity; }

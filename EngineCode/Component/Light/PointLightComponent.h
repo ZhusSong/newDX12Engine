@@ -1,11 +1,11 @@
 ﻿// 25.5.29 李 
-// 聚光灯组件
+// 点光源组件
 #pragma once
 #include "Core/RangeLightComponent.h"
 
-class CSpotLightComponent :public CRangeLightComponent
+class CPointLightComponent :public CRangeLightComponent
 {
 	typedef CRangeLightComponent Super;
 public:
-	CSpotLightComponent();
+	CPointLightComponent();
 };

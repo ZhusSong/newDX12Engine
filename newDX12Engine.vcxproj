@@ -21,7 +21,9 @@
   <ItemGroup>
     <ClCompile Include="EngineCode\Actor\Core\ActorObject.cpp" />
     <ClCompile Include="EngineCode\Actor\Light\Core\Light.cpp" />
+    <ClCompile Include="EngineCode\Actor\Light\Core\RangeLight.cpp" />
     <ClCompile Include="EngineCode\Actor\Light\ParallelLight.cpp" />
+    <ClCompile Include="EngineCode\Actor\Light\PointLight.cpp" />
     <ClCompile Include="EngineCode\Actor\Light\SpotLight.cpp" />
     <ClCompile Include="EngineCode\Component\Core\Component.cpp" />
     <ClCompile Include="EngineCode\Component\InputComponent.cpp" />
@@ -29,7 +31,9 @@
     <ClCompile Include="EngineCode\Component\Input\InputType.cpp" />
     <ClCompile Include="EngineCode\Component\Light\Core\LightComponent.cpp" />
     <ClCompile Include="EngineCode\Component\Light\Core\LightConstantBuffer.cpp" />
+    <ClCompile Include="EngineCode\Component\Light\Core\RangeLightComponent.cpp" />
     <ClCompile Include="EngineCode\Component\Light\ParallelLightComponent.cpp" />
+    <ClCompile Include="EngineCode\Component\Light\PointLightComponent.cpp" />
     <ClCompile Include="EngineCode\Component\Light\SpotLightComponent.cpp" />
     <ClCompile Include="EngineCode\Component\Mesh\BoxMeshComponent.cpp" />
     <ClCompile Include="EngineCode\Component\Mesh\ConeMeshComponent.cpp" />
@@ -125,7 +129,9 @@
   <ItemGroup>
     <ClInclude Include="EngineCode\Actor\Core\ActorObject.h" />
     <ClInclude Include="EngineCode\Actor\Light\Core\Light.h" />
+    <ClInclude Include="EngineCode\Actor\Light\Core\RangeLight.h" />
     <ClInclude Include="EngineCode\Actor\Light\ParallelLight.h" />
+    <ClInclude Include="EngineCode\Actor\Light\PointLight.h" />
     <ClInclude Include="EngineCode\Actor\Light\SpotLight.h" />
     <ClInclude Include="EngineCode\CodeReflection\CodeReflectionMacroTag.h" />
     <ClInclude Include="EngineCode\Component\Core\Component.h" />
@@ -135,7 +141,9 @@
     <ClInclude Include="EngineCode\Component\Light\Core\LightComponent.h" />
     <ClInclude Include="EngineCode\Component\Light\Core\LightConstantBuffer.h" />
     <ClInclude Include="EngineCode\Component\Light\Core\LightType.h" />
+    <ClInclude Include="EngineCode\Component\Light\Core\RangeLightComponent.h" />
     <ClInclude Include="EngineCode\Component\Light\ParallelLightComponent.h" />
+    <ClInclude Include="EngineCode\Component\Light\PointLightComponent.h" />
     <ClInclude Include="EngineCode\Component\Light\SpotLightComponent.h" />
     <ClInclude Include="EngineCode\Component\Mesh\BoxMeshComponent.h" />
     <ClInclude Include="EngineCode\Component\Mesh\ConeMeshComponent.h" />
