@@ -9,9 +9,7 @@ class GPlaneMesh :public GMesh
 public:
 	virtual void Init();
 
-
 	virtual void Draw(float DeltaTime);
-
 
 	void CreateMesh(float InHeight, float InWidth, uint32_t InHeightSubdivide, uint32_t InWidthSubdivide);
 };

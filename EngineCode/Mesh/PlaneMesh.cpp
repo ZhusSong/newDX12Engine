@@ -10,7 +10,6 @@ void GPlaneMesh::Init()
 
 }
 
-
 void GPlaneMesh::Draw(float DeltaTime)
 {
 	Super::Draw(DeltaTime);

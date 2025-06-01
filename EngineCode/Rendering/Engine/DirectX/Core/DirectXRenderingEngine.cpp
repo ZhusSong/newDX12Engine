@@ -48,7 +48,7 @@ CDirectXRenderingEngine::CDirectXRenderingEngine()
 
 	bTick = false;
 
-	MeshManager = new CMeshManager();
+	MeshManager = CreateObject<CMeshManager>(new CMeshManager());
 	LightManager = CreateObject<CLightManager>(new CLightManager());
 }
 
@@ -90,25 +90,25 @@ int CDirectXRenderingEngine::PostInit()
 		}
 		*/
 		// 创建灯光
-		// 聚光灯
-		// if (GSpotLight* SpotLight = World->CreateActorObject<GSpotLight>())
-		//{
-		//	SpotLight->SetPosition(XMFLOAT3(0.f, 5.f, 10.f));
-		//	SpotLight->SetRotation(fvector_3d(0.f, 0.f, 0.f));
+		// // 聚光灯
+		if (GSpotLight* SpotLight = World->CreateActorObject<GSpotLight>())
+		{
+			SpotLight->SetPosition(XMFLOAT3(0.f, 10.f, 10.f));
+			SpotLight->SetRotation(fvector_3d(0.f, 0.f, 0.f));
 
-		//	SpotLight->SetLightIntensity(fvector_3d(10.f, 10.f, 10.f));
-		//	//SpotLight->SetStartAttenuation(1.f);
-		//	SpotLight->SetEndAttenuation(20.f);
-		//}
+			SpotLight->SetLightIntensity(fvector_3d(17.f, 17.f, 17.f));
+			//SpotLight->SetStartAttenuation(1.f);
+			SpotLight->SetEndAttenuation(130.f);
+		}
 		// 点光源
-		if (GPointLight* PointLight = World->CreateActorObject<GPointLight>())
+	/*	if (GPointLight* PointLight = World->CreateActorObject<GPointLight>())
 		{
 			PointLight->SetPosition(XMFLOAT3(0.f, 10.f, -10.f));
 			PointLight->SetRotation(fvector_3d(0.f, 0.f, 0.f));
 
 			PointLight->SetLightIntensity(fvector_3d(7.f, 7.f, 7.f));
 			PointLight->SetEndAttenuation(20.f);
-		}
+		}*/
 	/*	if (GParallelLight* ParallelLight = World->CreateActorObject<GParallelLight>())
 		{
 			ParallelLight->SetPosition(XMFLOAT3(0.f, 2.f, 10.f));
@@ -123,10 +123,10 @@ int CDirectXRenderingEngine::PostInit()
 
 		if (GPlaneMesh* InPlaneMesh = World->CreateActorObject<GPlaneMesh>())
 		{
-			InPlaneMesh->CreateMesh(8.f, 6.f, 20, 20);
+			InPlaneMesh->CreateMesh(4.f, 3.f, 20, 20);
 
-			InPlaneMesh->SetPosition(XMFLOAT3(0.f, -4.f, 0.f));
-			InPlaneMesh->SetScale(fvector_3d(10.f, 10.f, 10.f));
+			InPlaneMesh->SetPosition(XMFLOAT3(0.f, -12.f, 0.f));
+			InPlaneMesh->SetScale(fvector_3d(50.f, 50.f, 50.f));
 		}
 
 		//兰伯特
@@ -346,32 +346,32 @@ int CDirectXRenderingEngine::PostInit()
 		//	}
 		//}
 		
-		//// 以线框显示
-		//// 有bug
-		//if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
-		//{
-		//	SphereMesh->CreateMesh(2.f, 50, 50);
-		//	SphereMesh->SetPosition(XMFLOAT3(21.f, 2, 0.f));
-		//	if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
-		//	{
-		//		InMaterial->SetMaterialDisplayStatus(EMaterialDisplayStatusType::WireframeDisplay);
-		//		InMaterial->SetMaterialType(EMaterialType::BaseColor);
-		//		InMaterial->SetBaseColor(fvector_4d(1.f, 1.f, 1.f, 1.f));
-		//	}
-		//}
+			//以线框显示
+		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
+		{
+			SphereMesh->CreateMesh(2.f, 50, 50);
+			SphereMesh->SetPosition(XMFLOAT3(9.f, 18, 0.f));
+			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
+			{
+				InMaterial->SetMaterialDisplayStatus(EMaterialDisplayStatusType::WireframeDisplay);
+				InMaterial->SetMaterialType(EMaterialType::BaseColor);
+				InMaterial->SetBaseColor(fvector_4d(1.f, 1.f, 1.f, 1.f));
 
-		//// 以顶点模型显示
-		//if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
-		//{
-		//	SphereMesh->CreateMesh(2.f, 50, 50);
-		//	SphereMesh->SetPosition(XMFLOAT3(21.f, 8, 0.f));
-		//	if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
-		//	{
-		//		InMaterial->SetMaterialType(EMaterialType::BaseColor);
-		//		InMaterial->SetBaseColor(fvector_4d(1.f, 1.f, 1.f, 1.f));
-		//		InMaterial->SetMaterialDisplayStatus(EMaterialDisplayStatusType::PointDisplay);
-		//	}
-		//}
+			}
+		}
+
+		//以点显示
+		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
+		{
+			SphereMesh->CreateMesh(2.f, 50, 50);
+			SphereMesh->SetPosition(XMFLOAT3(-3.f, 18, 0.f));
+			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
+			{
+				InMaterial->SetMaterialDisplayStatus(EMaterialDisplayStatusType::PointDisplay);
+				InMaterial->SetMaterialType(EMaterialType::BaseColor);
+				InMaterial->SetBaseColor(fvector_4d(1.f, 1.f, 1.f, 1.f));
+			}
+		}
 		// 以法线显示
 		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 		{

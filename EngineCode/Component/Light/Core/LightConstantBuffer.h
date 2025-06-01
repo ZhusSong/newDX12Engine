@@ -6,7 +6,6 @@ struct FLight
 {
 	FLight();
 
-
 	// 灯光强度
 	XMFLOAT3 LightIntensity;
 	// 开始衰减时的值

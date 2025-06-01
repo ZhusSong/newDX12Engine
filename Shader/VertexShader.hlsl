@@ -96,23 +96,22 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
     
     float DotValue = 0;
     
-	float4 LightStrengths = { 0.f,0.f,0.f,1.f };
-
+    float4 LightStrengths = { 0.f, 0.f, 0.f, 1.f };
     float4 Specular = { 0.f, 0.f, 0.f, 1.f };
     
     for (int i = 0; i < 16; i++)
 	{
         if (length(SceneLights[i].LightIntensity.xyz) > 0.f)
 		    {
-			    float3 NormalizeLightDirection = normalize(GetLightDirection(SceneLights[i],MVOut.WorldPosition));
+                float3 NormalizeLightDirection = normalize(GetLightDirection(SceneLights[i], MVOut.WorldPosition));
 
-			    float4 LightStrength = ComputeLightStrength(SceneLights[i], ModelNormal, MVOut.WorldPosition, NormalizeLightDirection);
+                float4 LightStrength = ComputeLightStrength(SceneLights[i], ModelNormal, MVOut.WorldPosition, NormalizeLightDirection);
 
 
                 if (MaterialType == 0)// Lambert 兰伯特
                 {
-				    DotValue = pow(max(dot(ModelNormal, NormalizeLightDirection), 0.0),2.f);
-		        }
+                    DotValue = pow(max(dot(ModelNormal, NormalizeLightDirection), 0.0), 2.f);
+                }
                 else if (MaterialType == 1)// Half Lambert半兰伯特
                 {
                     float DiffuseReflection = dot(ModelNormal, NormalizeLightDirection);
@@ -123,15 +122,12 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
                     float3 ReflectDirection = normalize(-reflect(NormalizeLightDirection, ModelNormal));
                     float3 ViewDirection = normalize(ViewportPosition.xyz - MVOut.WorldPosition.xyz);
 
-				    DotValue = pow(max(dot(ModelNormal, NormalizeLightDirection), 0.0), 2.f);
+                    DotValue = pow(max(dot(ModelNormal, NormalizeLightDirection), 0.0), 2.f);
 
-                    if (DotValue > 0.f)
-                    {
-                        float MaterialShininess = 1.f - saturate(MaterialRoughness);
-                        float M = MaterialShininess * 100.f;
+                    float MaterialShininess = 1.f - saturate(MaterialRoughness);
+                    float M = MaterialShininess * 100.f;
 
-                        Specular = pow(max(dot(ViewDirection, ReflectDirection), 0.f), M);
-                    }
+                    Specular = (M + 2.0f) * pow(max(dot(ViewDirection, ReflectDirection), 0.f), M) / 3.1415926;
                 }
                 else if (MaterialType == 3)// binn phong
                 {
@@ -167,55 +163,62 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
                 }
                 else if (MaterialType == 6)// Banded 卡通材质
                 {
-                    // add half lambert
-                    float DiffuseReflection = (dot(ModelNormal, NormalizeLightDirection) + 1.0f) * 0.5f;
+                    if (i == 0)
+                    {
+                        // add half lambert
+                        float DiffuseReflection = (dot(ModelNormal, NormalizeLightDirection) + 1.0f) * 0.5f;
         
         
-                    float Layered = 4.0f;
-        
-                    DotValue = floor(DiffuseReflection * Layered) / Layered;
+                        float Layered = 4.0f;
+                        DotValue = floor(DiffuseReflection * Layered) / Layered;
+                    }
 
                 }
                 else if (MaterialType == 7)// GradualBanded 卡通材质
                 {
-                    float4 Color2 = { 245.f / 255.f, 88.f / 255.f, .0f, 1.f };
-                    // add half lambert
-        
-                    float LightDotValue = dot(ModelNormal, NormalizeLightDirection);
-                    float DiffuseReflection = (LightDotValue + 1.0f) * 0.5f;
-        
-       
-                    float Layered = 7.0f;
-                    DotValue = floor(DiffuseReflection * Layered) / Layered;
+                    if (i == 0)
+                    {
+                        float4 Color2 = { 245.f / 255.f, 88.f / 255.f, .0f, 1.f };
 
-                    Material.BaseColor = lerp(Color2, Material.BaseColor, LightDotValue);
+					    //灯光点乘值
+                        float LightDotValue = dot(ModelNormal, NormalizeLightDirection);
+
+                        float DiffuseReflection = (LightDotValue + 1.f) * 0.5f;
+
+                        float Layered = 7.f;
+                        DotValue = floor(DiffuseReflection * Layered) / Layered;
+
+                        Material.BaseColor = lerp(Color2, Material.BaseColor, LightDotValue);
+                    }
 
                 }
                 else if (MaterialType == 8)// FinalBanded 卡通材质
                 {
-                    // add half lambert
-                    float DiffuseReflection = (dot(ModelNormal, NormalizeLightDirection) + 1.f) * 0.5f;
-        
-		            // 分层思想
-                    float Layered = 4.f;
-
-                    DotValue = floor(DiffuseReflection * Layered) / Layered;
-        
-		            // 菲尼尔效果
-                    float3 ViewDirection = normalize(ViewportPosition.xyz - MVOut.WorldPosition.xyz);
-                    float3 F0 = { 0.05f, 0.05f, 0.05f };
-                    Specular.xyz = FresnelSchlickMethod(F0, ModelNormal, ViewDirection, 3).xyz;
-        
-                    // 反射
-                    float3 ReflectDirection = normalize(-reflect(NormalizeLightDirection, ModelNormal));
-            
-                    // 高光
-                    if (DotValue > 0.f)
+                    if (i == 0)
                     {
-                        float MaterialShininess = 1.f - saturate(MaterialRoughness);
-                        float M = MaterialShininess * 80.f;
+					    //融入半兰伯特思想
+                        float DiffuseReflection = (dot(ModelNormal, NormalizeLightDirection) + 1.f) * 0.5f;
 
-                        Specular = Specular + pow(max(dot(ViewDirection, ReflectDirection), 0.f), M) / 0.032f;
+					    //分层思想
+                        float Layered = 4.f;
+                        DotValue = floor(DiffuseReflection * Layered) / Layered;
+
+					    //菲尼尔效果
+                        float3 ViewDirection = normalize(ViewportPosition.xyz - MVOut.WorldPosition.xyz);
+                        float3 F0 = { 0.05f, 0.05f, 0.05f };
+                        Specular.xyz = FresnelSchlickMethod(F0, ModelNormal, ViewDirection, 3).xyz;
+
+					    //反射
+                        float3 ReflectDirection = normalize(-reflect(NormalizeLightDirection, ModelNormal));
+
+					    //高光
+                        if (DotValue > 0.f)
+                        {
+                            float MaterialShininess = 1.f - saturate(MaterialRoughness);
+                            float M = MaterialShininess * 60.f;
+
+                            Specular = Specular + pow(max(dot(ViewDirection, ReflectDirection), 0.f), M) / 0.0314f;
+                        }
                     }
 
                 }
@@ -300,17 +303,18 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
 
                 }
                 
-		    LightStrengths += LightStrength * DotValue * float4(SceneLights[i].LightIntensity,1.f);
-			LightStrengths.w = 1.f;
+            LightStrengths += LightStrength * DotValue * float4(SceneLights[i].LightIntensity, 1.f);
+            LightStrengths.w = 1.f;
         }
     }
     
     
     
 	// 最终颜色
-    MVOut.Color = LightStrengths*(Material.BaseColor // 受灯光影响的基础色
-		+ Specular * Material.BaseColor)+            // 高光
-	    AmbientLight * Material.BaseColor;  //间接光
+    MVOut.Color = LightStrengths * (Material.BaseColor //漫反射
+		+ Specular * Material.BaseColor) + //高光
+
+		AmbientLight * Material.BaseColor; //间接光
 	
     
     return MVOut.Color;

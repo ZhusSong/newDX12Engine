@@ -10,10 +10,10 @@
 
 class FRenderingResourcesUpdate;
 class CMeshComponent;
-
-class CMeshManager :public CCoreMinimalObject, 
-				   public IRenderingInterface,
-				   public IDirectXDeviceInterface
+class CMeshManager
+	:public CCoreMinimalObject
+	, public IRenderingInterface
+	, public IDirectXDeviceInterface
 {
 public:
 	CMeshManager();
@@ -67,31 +67,4 @@ protected:
 
 protected:
 	FRenderingPipeline RenderingPipeline;
-
-
-	/*ComPtr<ID3DBlob> CPUVertexBufferPtr;
-	ComPtr<ID3DBlob> CPUIndexBufferPtr;
-
-	ComPtr<ID3D12Resource> GPUVertexBufferPtr;
-	ComPtr<ID3D12Resource> GPUIndexBufferPtr;
-
-	ComPtr<ID3D12Resource> VertexBufferTmpPtr;
-	ComPtr<ID3D12Resource> IndexBufferTmpPtr;
-
-	ComPtr<ID3D12RootSignature>  RootSignature;
-	ComPtr<ID3D12DescriptorHeap> CBVHeap;
-
-	shared_ptr<FRenderingResourcesUpdate> ObjectConstants;
-	shared_ptr<FRenderingResourcesUpdate> ViewportConstants;*/
-//
-//	
-//protected:
-//	UINT VertexSizeInBytes;
-//	UINT VertexStrideInBytes;
-//
-//	UINT IndexSizeInBytes;
-//	DXGI_FORMAT IndexFormat;
-//	UINT IndexSize;
-//
-//	XMFLOAT4X4 WorldMatrix;
 };

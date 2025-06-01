@@ -999,15 +999,15 @@
     <ClInclude Include="EngineCode\Component\Light\PointLightComponent.h">
       <Filter>EngineCode\Component\Light</Filter>
     </ClInclude>
+    <ClInclude Include="Shader\Light.hlsl">
+      <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader\Material.hlsl">
+      <Filter>Shader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Shader\Material.hlsl">
-      <Filter>Shader</Filter>
-    </FxCompile>
     <FxCompile Include="Shader\VertexShader.hlsl">
-      <Filter>Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="Shader\Light.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
   </ItemGroup>
