@@ -96,9 +96,12 @@ int CDirectXRenderingEngine::PostInit()
 			SpotLight->SetPosition(XMFLOAT3(0.f, 10.f, 10.f));
 			SpotLight->SetRotation(fvector_3d(0.f, 0.f, 0.f));
 
-			SpotLight->SetLightIntensity(fvector_3d(17.f, 17.f, 17.f));
+			SpotLight->SetLightIntensity(fvector_3d(1.3f, 1.3f, 1.3f));
 			//SpotLight->SetStartAttenuation(1.f);
 			SpotLight->SetEndAttenuation(130.f);
+
+			SpotLight->SetConicalInnerCorner(40.f);
+			SpotLight->SetConicalOuterCorner(60.f);
 		}
 		// 点光源
 	/*	if (GPointLight* PointLight = World->CreateActorObject<GPointLight>())
@@ -345,33 +348,36 @@ int CDirectXRenderingEngine::PostInit()
 
 		//	}
 		//}
-		
+		if (GetCurrentGPU() == NVIDIA)
+		{
 			//以线框显示
-		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
-		{
-			SphereMesh->CreateMesh(2.f, 50, 50);
-			SphereMesh->SetPosition(XMFLOAT3(9.f, 18, 0.f));
-			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
+			if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 			{
-				InMaterial->SetMaterialDisplayStatus(EMaterialDisplayStatusType::WireframeDisplay);
-				InMaterial->SetMaterialType(EMaterialType::BaseColor);
-				InMaterial->SetBaseColor(fvector_4d(1.f, 1.f, 1.f, 1.f));
+				SphereMesh->CreateMesh(2.f, 50, 50);
+				SphereMesh->SetPosition(XMFLOAT3(9.f, 18, 0.f));
+				if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
+				{
+					InMaterial->SetMaterialDisplayStatus(EMaterialDisplayStatusType::WireframeDisplay);
+					InMaterial->SetMaterialType(EMaterialType::BaseColor);
+					InMaterial->SetBaseColor(fvector_4d(1.f, 1.f, 1.f, 1.f));
 
+				}
+			}
+
+			//以点显示
+			if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
+			{
+				SphereMesh->CreateMesh(2.f, 50, 50);
+				SphereMesh->SetPosition(XMFLOAT3(-3.f, 18, 0.f));
+				if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
+				{
+					InMaterial->SetMaterialDisplayStatus(EMaterialDisplayStatusType::PointDisplay);
+					InMaterial->SetMaterialType(EMaterialType::BaseColor);
+					InMaterial->SetBaseColor(fvector_4d(1.f, 1.f, 1.f, 1.f));
+				}
 			}
 		}
-
-		//以点显示
-		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
-		{
-			SphereMesh->CreateMesh(2.f, 50, 50);
-			SphereMesh->SetPosition(XMFLOAT3(-3.f, 18, 0.f));
-			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
-			{
-				InMaterial->SetMaterialDisplayStatus(EMaterialDisplayStatusType::PointDisplay);
-				InMaterial->SetMaterialType(EMaterialType::BaseColor);
-				InMaterial->SetBaseColor(fvector_4d(1.f, 1.f, 1.f, 1.f));
-			}
-		}
+		
 		// 以法线显示
 		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 		{
@@ -504,6 +510,39 @@ D3D12_CPU_DESCRIPTOR_HANDLE CDirectXRenderingEngine::GetCurrentSwapBufferView() 
 D3D12_CPU_DESCRIPTOR_HANDLE CDirectXRenderingEngine::GetCurrentDepthStencilView() const
 {
 	return DSVHeap->GetCPUDescriptorHandleForHeapStart();
+}
+
+CurrentGPU CDirectXRenderingEngine::GetCurrentGPU()
+{
+	IDXGIAdapter* pAdapter = nullptr;
+	for (UINT i = 0;  DXGIFactory->EnumAdapters(i, &pAdapter) != DXGI_ERROR_NOT_FOUND; ++i) {
+		DXGI_ADAPTER_DESC desc;
+		if (SUCCEEDED(pAdapter->GetDesc(&desc))) {
+			std::wcout << L"GPU #" << i << ": " << desc.Description << std::endl;
+
+			// 检查厂商 ID
+			switch (desc.VendorId) {
+			case 0x10DE: // NVIDIA
+				Engine_Log("Vendor: NVIDIA");
+				return NVIDIA;
+				break;
+			case 0x1002: // AMD
+				Engine_Log("Vendor: AMD");
+				return AMD;
+				break;
+			case 0x8086: // Intel
+				Engine_Log("Vendor: INTEL");
+				return INTEL;
+				break;
+			default:
+				Engine_Log("Vendor: UNKNOWN");
+				return UNKNOWN;
+			}
+		}
+		pAdapter->Release();
+	}
+
+	return UNKNOWN;
 }
 
 UINT CDirectXRenderingEngine::GetDXGISampleCount() const

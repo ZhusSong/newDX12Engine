@@ -2,6 +2,9 @@
 #include "simple_library/public/simple_core_minimal/simple_c_path/simple_path.h"
 #include "simple_library/public/simple_core_minimal/simple_c_core/simple_c_array/simple_c_array_string.h"
 
+#define MAX_PATH_LEN 1024
+#define MAX_DEPTH 10
+
 void get_path_directory_inline(char *path_buf)
 {
 	normalization_path(path_buf);// \\ /
@@ -94,3 +97,67 @@ void get_path_clean_filename_w(wchar_t* buf, const wchar_t* path_buf)
 	wcscpy(buf, value);
 	destroy_wstring(&c_string);
 }
+
+// 通过shader文件名来获取shader文件
+wchar_t* get_shader_path_shader_name(const  wchar_t* shaderFileName)
+{
+	wchar_t absFilePath[MAX_PATH_LEN] = { 0 };
+	wchar_t currentDir[MAX_PATH_LEN] = { 0 };
+
+	// 获取当前源文件的绝对路径（__FILEW__ 需要支持，若无可自行改成转换）
+	if (!GetFullPathNameW(__FILEW__, MAX_PATH_LEN, absFilePath, NULL)) {
+		return NULL;
+	}
+
+	// 去掉文件名，保留目录
+	wcscpy(currentDir, absFilePath);
+	for (int i = (int)wcslen(currentDir) - 1; i >= 0; i--) {
+		if (currentDir[i] == L'\\' || currentDir[i] == L'/') {
+			currentDir[i] = L'\0';
+			break;
+		}
+	}
+
+	for (int depth = 0; depth < MAX_DEPTH; depth++) {
+		// 拼接路径 currentDir + "\Shader\" + shaderFileName
+		wchar_t shaderDir[MAX_PATH_LEN] = { 0 };
+		wcscpy(shaderDir, currentDir);
+		size_t len = wcslen(shaderDir);
+		if (len > 0 && shaderDir[len - 1] != L'\\' && shaderDir[len - 1] != L'/') {
+			wcscat(shaderDir, L"\\");
+		}
+		wcscat(shaderDir, L"Shader\\");
+		wcscat(shaderDir, shaderFileName);
+
+		// 检查文件是否存在
+		DWORD attr = GetFileAttributesW(shaderDir);
+		if (attr != INVALID_FILE_ATTRIBUTES && !(attr & FILE_ATTRIBUTE_DIRECTORY)) {
+			// 找到，复制路径返回
+			size_t pathLen = wcslen(shaderDir);
+			wchar_t* result = (wchar_t*)malloc((pathLen + 1) * sizeof(wchar_t));
+			if (!result) return NULL;
+			wcscpy(result, shaderDir);
+			return result;
+		}
+
+		// 向上一级目录，去掉最后一个目录名
+		bool movedUp = false;
+		size_t dirLen = wcslen(currentDir);
+		for (int i = (int)dirLen - 1; i >= 0; i--) {
+			if (currentDir[i] == L'\\' || currentDir[i] == L'/') {
+				currentDir[i] = L'\0';
+				movedUp = true;
+				break;
+			}
+		}
+		if (!movedUp) {
+			// 到顶层，没找到
+			break;
+		}
+	}
+
+	// 找不到
+	return NULL;
+}
+
+

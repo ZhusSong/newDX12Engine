@@ -26,10 +26,11 @@ void FRenderingPipeline::BuildPipeline()
 	DirectXPipelineState.BindRootSignature(RootSignature.GetRootSignature());
 
 	// 构建Shader
-	// HLSL
-	VertexShader.BuildShaders(L"../newDX12Engine/Shader/VertexShader.hlsl", "VertexShaderMain", "vs_5_0");
-	PixelShader.BuildShaders(L"../newDX12Engine/Shader/VertexShader.hlsl", "PixelShaderMain", "ps_5_0");
-	
+	// HLSLdd
+	VertexShader.BuildShaderByName(L"VertexShader.hlsl", "VertexShaderMain", "vs_5_0");
+	PixelShader.BuildShaderByName(L"VertexShader.hlsl", "PixelShaderMain", "ps_5_0");
+	//VertexShader.BuildShaders(L"../newDX12Engine/Shader/VertexShader.hlsl", "VertexShaderMain", "vs_5_0");
+	//PixelShader.BuildShaders(L"../newDX12Engine/Shader/VertexShader.hlsl", "PixelShaderMain", "ps_5_0");
 	// 绑定
 	DirectXPipelineState.BindShader(VertexShader, PixelShader);
 

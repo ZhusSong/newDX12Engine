@@ -3,7 +3,7 @@
 
 CRangeLightComponent::CRangeLightComponent()
 	:Super()
-	, StartAttenuation(1.f)
-	, EndAttenuation(10.f)
+	, StartAttenuation(10.f)
+	, EndAttenuation(100.f)
 {
 }

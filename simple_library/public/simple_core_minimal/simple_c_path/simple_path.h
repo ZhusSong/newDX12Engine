@@ -12,4 +12,6 @@ void normalization_directory(char *buf, const char *path_buf);
 char* get_full_path(char* in_path_buf, int in_buff_len,const char *in_path);
 
 void get_path_clean_filename_w(wchar_t* buf, const wchar_t* path_buf);
+
+wchar_t* get_shader_path_shader_name(const wchar_t* shaderFileName);
 _CRT_END_C_HEADER

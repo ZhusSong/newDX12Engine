@@ -34,6 +34,9 @@ public:
 	ID3D12Resource* GetCurrentSwapBuff() const;
 	D3D12_CPU_DESCRIPTOR_HANDLE GetCurrentSwapBufferView() const;
 	D3D12_CPU_DESCRIPTOR_HANDLE GetCurrentDepthStencilView() const;
+
+	// 检测当前gpu是nvidia还是amd
+	CurrentGPU GetCurrentGPU();
 public:
 	// 提供当前渲染目标的格式、抗锯齿（MSAA）参数
 	DXGI_FORMAT GetBackBufferFormat() const { return BackBufferFormat; }

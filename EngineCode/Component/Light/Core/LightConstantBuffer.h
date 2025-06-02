@@ -21,6 +21,15 @@ struct FLight
 
 	// 灯光种类
 	int	   LightType;
+
+	// 聚光灯内角(弧度制)
+	float  ConicalInnerCorner;
+	// 聚光灯外角(弧度制)
+	float  ConicalOuterCorner;
+
+	// 后续添加
+	float xx1;
+	float xx2;
 };
 struct FLightConstantBuffer
 {

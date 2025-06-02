@@ -18,7 +18,7 @@ CPointLightComponent::CPointLightComponent()
 		if (CMaterial* InMaterial = (*GetLightMesh()->GetMaterials())[0])
 		{
 			InMaterial->SetMaterialType(EMaterialType::BaseColor);
-			InMaterial->SetMaterialDisplayStatus(EMaterialDisplayStatusType::WireframeDisplay);
+			InMaterial->SetMaterialDisplayStatus(EMaterialDisplayStatusType::TriangleDisplay);
 			InMaterial->SetBaseColor(fvector_4d(1.0f, 0.7f, 1.0f, 1.0f));
 		}
 	}

@@ -12,4 +12,10 @@ public:
 
 	virtual void Tick(float DeltaTime);
 
+	float GetConicalInnerCorner() const;
+	float GetConicalOuterCorner() const;
+
+	void SetConicalInnerCorner(float InConicalInnerCorner);
+	void SetConicalOuterCorner(float InConicalOuterCorner);
+
 };

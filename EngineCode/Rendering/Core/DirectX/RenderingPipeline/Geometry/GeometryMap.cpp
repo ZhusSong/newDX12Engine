@@ -117,6 +117,16 @@ void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& View
 					LightConstantBuffer.SceneLights[i].StartAttenuation = InRangeLightComponent->GetStartAttenuation();
 					LightConstantBuffer.SceneLights[i].EndAttenuation = InRangeLightComponent->GetEndAttenuation();
 				}
+
+				if (InLightComponent->GetLightType() == ELightType::SpotLight)
+				{
+					if (CSpotLightComponent* InSpotLightComponent = dynamic_cast<CSpotLightComponent*>(InLightComponent))
+					{
+						LightConstantBuffer.SceneLights[i].ConicalInnerCorner = math_utils::angle_to_radian(InSpotLightComponent->GetConicalInnerCorner());
+						LightConstantBuffer.SceneLights[i].ConicalOuterCorner = math_utils::angle_to_radian(InSpotLightComponent->GetConicalOuterCorner());
+					}
+				}
+
 				break;
 			}
 			}

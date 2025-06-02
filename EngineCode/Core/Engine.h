@@ -5,6 +5,13 @@
 #include "WinMainCommandParameters.h"
 #endif
 
+enum CurrentGPU
+{
+	NVIDIA,
+	AMD,
+	INTEL,
+	UNKNOWN,
+};
 // 引擎框架定义
 class CEngine:public CCoreMinimalObject
 {

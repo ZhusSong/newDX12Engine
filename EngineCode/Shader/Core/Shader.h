@@ -9,6 +9,8 @@ public:
 	SIZE_T GetBufferSize() const;
 
 	void BuildShaders(const wstring& InFileName, const string& InEntryFunName, const string& InShadersVersion);
+
+	void BuildShaderByName(const wstring& InFileName, const string& InEntryFunName, const string& InShadersVersion);
 private:
 	ComPtr<ID3DBlob> ShaderCode;
 };
