@@ -302,6 +302,9 @@
     <Filter Include="EngineCode\Actor\Light\Core">
       <UniqueIdentifier>{4338979b-2caa-4fe8-8e33-3bbc4971a389}</UniqueIdentifier>
     </Filter>
+    <Filter Include="EngineCode\Rendering\DirectX12">
+      <UniqueIdentifier>{83a4da36-920e-4228-88c3-424b78decfad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="simple_library\private\simple_math\soft_rasterization\soft_rasterization.cpp">
@@ -622,6 +625,9 @@
     <ClCompile Include="EngineCode\Component\Light\PointLightComponent.cpp">
       <Filter>EngineCode\Component\Light</Filter>
     </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\DirectX12\DDSTextureLoader.cpp">
+      <Filter>EngineCode\Rendering\DirectX12</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="simple_library\public\simple_library.h">
@@ -776,9 +782,6 @@
     </ClInclude>
     <ClInclude Include="EngineCode\Windows\WindowsMessageProcessing.h">
       <Filter>EngineCode\Windows</Filter>
-    </ClInclude>
-    <ClInclude Include="EngineCode\d3dx12.h">
-      <Filter>EngineCode</Filter>
     </ClInclude>
     <ClInclude Include="EngineCode\EngineFactory.h">
       <Filter>EngineCode</Filter>
@@ -1004,6 +1007,12 @@
     </ClInclude>
     <ClInclude Include="Shader\Material.hlsl">
       <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\DirectX12\d3dx12.h">
+      <Filter>EngineCode\Rendering\DirectX12</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\DirectX12\DDSTextureLoader.h">
+      <Filter>EngineCode\Rendering\DirectX12</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

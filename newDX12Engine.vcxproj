@@ -82,6 +82,7 @@
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RootSignature\DirectXRootSignature.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\Rendering.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\RenderingResourcesUpdate.cpp" />
+    <ClCompile Include="EngineCode\Rendering\DirectX12\DDSTextureLoader.cpp" />
     <ClCompile Include="EngineCode\Rendering\Engine\Core\RenderingEngine.cpp" />
     <ClCompile Include="EngineCode\Rendering\Engine\DirectX\Core\DirectXRenderingEngine.cpp" />
     <ClCompile Include="EngineCode\Rendering\Engine\DirectX\DirectX12RenderingEngine.cpp" />
@@ -165,7 +166,6 @@
     <ClInclude Include="EngineCode\Core\Viewport\ViewportTransformation.h" />
     <ClInclude Include="EngineCode\Core\WinMainCommandParameters.h" />
     <ClInclude Include="EngineCode\Core\World.h" />
-    <ClInclude Include="EngineCode\d3dx12.h" />
     <ClInclude Include="EngineCode\Debug\EngineDebug.h" />
     <ClInclude Include="EngineCode\Debug\Log\SimpleLog.h" />
     <ClInclude Include="EngineCode\EngineFactory.h" />
@@ -197,6 +197,8 @@
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RootSignature\DirectXRootSignature.h" />
     <ClInclude Include="EngineCode\Rendering\Core\Rendering.h" />
     <ClInclude Include="EngineCode\Rendering\Core\RenderingResourcesUpdate.h" />
+    <ClInclude Include="EngineCode\Rendering\DirectX12\d3dx12.h" />
+    <ClInclude Include="EngineCode\Rendering\DirectX12\DDSTextureLoader.h" />
     <ClInclude Include="EngineCode\Rendering\Engine\Core\RenderingEngine.h" />
     <ClInclude Include="EngineCode\Rendering\Engine\DirectX\Core\DirectXRenderingEngine.h" />
     <ClInclude Include="EngineCode\Rendering\Engine\DirectX\DirectX12RenderingEngine.h" />
@@ -273,6 +275,9 @@
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">PixelShaderMain</EntryPointName>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
   </ItemGroup>
   <PropertyGroup Label="Globals">

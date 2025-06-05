@@ -6,7 +6,7 @@ struct FDirectXRootSignature :public IDirectXDeviceInterface_Struct
 {
 	FDirectXRootSignature();
 
-	void BuildRootSignature();
+	void BuildRootSignature(UINT InTextureNum = 1);
 
 	void PreDraw(float DeltaTime);
 	void Draw(float DeltaTime);
@@ -15,4 +15,5 @@ struct FDirectXRootSignature :public IDirectXDeviceInterface_Struct
 	ID3D12RootSignature* GetRootSignature() { return RootSignature.Get(); }
 private:
 	ComPtr<ID3D12RootSignature> RootSignature;
+	FStaticSamplerObject StaticSamplerObject;
 };

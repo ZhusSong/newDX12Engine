@@ -72,12 +72,12 @@ int Exit(CEngine* InEngine)
 		return ReturnValue;
 	}
 
+
 	return ReturnValue;
 }
 
+
 CEngine* Engine = NULL;
-
-
 //hInstance 当前实例
 //prevInstance 上次的实例
 //cmdLine 传递命令

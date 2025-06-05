@@ -476,6 +476,11 @@ void CDirectXRenderingEngine::Tick(float DeltaTime)
 
 int CDirectXRenderingEngine::PreExit()
 {
+	
+
+	
+
+
 	Engine_Log("Engine post exit complete.");
 	return 0;
 }
@@ -489,7 +494,38 @@ int CDirectXRenderingEngine::Exit()
 
 int CDirectXRenderingEngine::PostExit()
 {
+	
+
+	
+	
+	
+
 	FEngineRenderConfig::Destroy();
+
+
+	// 退出前检查是否有未释放的资源
+	ComPtr<ID3D12DebugDevice> debugDevice;
+	if (SUCCEEDED(D3dDevice->QueryInterface(IID_PPV_ARGS(&debugDevice))))
+	{
+		debugDevice->ReportLiveDeviceObjects(D3D12_RLDO_DETAIL);
+	}
+
+	// 释放所有d3d资源
+	DXGIFactory.Reset();
+	Fence.Reset();
+	CommandQueue.Reset();
+	CommandAllocator.Reset();
+	GraphicsCommandList.Reset();
+	SwapChain.Reset();
+	RTVHeap.Reset();
+	DSVHeap.Reset();
+	DepthStencilBuffer.Reset();
+	D3dDevice.Reset();
+
+	for (int i = 0; i < FEngineRenderConfig::GetRenderConfig()->SwapChainCount; i++)
+	{
+		SwapChainBuffer[i].Reset();
+	}
 
 	Engine_Log("Engine post exit complete.");
 	return 0;
@@ -518,7 +554,7 @@ CurrentGPU CDirectXRenderingEngine::GetCurrentGPU()
 	for (UINT i = 0;  DXGIFactory->EnumAdapters(i, &pAdapter) != DXGI_ERROR_NOT_FOUND; ++i) {
 		DXGI_ADAPTER_DESC desc;
 		if (SUCCEEDED(pAdapter->GetDesc(&desc))) {
-			std::wcout << L"GPU #" << i << ": " << desc.Description << std::endl;
+			//std::wcout << L"GPU #" << i << ": " << desc.Description << std::endl;
 
 			// 检查厂商 ID
 			switch (desc.VendorId) {

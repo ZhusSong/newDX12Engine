@@ -44,29 +44,29 @@ struct MeshVertexOut
 
 MeshVertexOut VertexShaderMain(MeshVertexIn MV)
 {
-    MeshVertexOut Out;
+    MeshVertexOut MOut;
 
    //世界坐标
-    Out.WorldPosition = mul(float4(MV.Position, 1.f), WorldMatrix);
+    MOut.WorldPosition = mul(float4(MV.Position, 1.f), WorldMatrix);
 
 	//变换到齐次剪辑空间
-    Out.Position = mul(Out.WorldPosition, ViewProjectionMatrix);
-    Out.Color.rgb = MV.Normal.rgb;
+    MOut.Position = mul(MOut.WorldPosition, ViewProjectionMatrix);
+    MOut.Color.rgb = MV.Normal.rgb;
     
     // 是否以自身法线显示
     if (MaterialType == 13)
     {
-        Out.Normal = MV.Normal;
+        MOut.Normal = MV.Normal;
     }
     else
     {
 		// 转法线
-        Out.Normal = mul(MV.Normal, (float3x3) WorldMatrix);
+        MOut.Normal = mul(MV.Normal, (float3x3) WorldMatrix);
     }
     // 切线
-    Out.UTangent = MV.UTangent;
+    MOut.UTangent = MV.UTangent;
 
-    return Out;
+    return MOut;
 }
 
 float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
@@ -101,11 +101,11 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
     
     for (int i = 0; i < 16; i++)
 	{
-        if (length(SceneLights[i].LightIntensity.xyz) > 0.f)
+        if (length(SceneLights[i].LightIntensity) > 0.f)
 		    {
-                float3 NormalizeLightDirection = normalize(GetLightDirection(SceneLights[i], MVOut.WorldPosition));
+                float3 NormalizeLightDirection = normalize(GetLightDirection(SceneLights[i], MVOut.WorldPosition.xyz));
 
-                float4 LightStrength = ComputeLightStrength(SceneLights[i], ModelNormal, MVOut.WorldPosition, NormalizeLightDirection);
+                float4 LightStrength = ComputeLightStrength(SceneLights[i], ModelNormal, MVOut.WorldPosition.xyz, NormalizeLightDirection.xyz);
 
 
                 if (MaterialType == 0)// Lambert 兰伯特

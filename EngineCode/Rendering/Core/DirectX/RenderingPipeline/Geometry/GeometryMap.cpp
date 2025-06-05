@@ -40,6 +40,8 @@ void FGeometryMap::PostDraw(float DeltaTime)
 
 }
 
+
+
 void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo)
 {
 	XMMATRIX ViewMatrix = XMLoadFloat4x4(&ViewportInfo.ViewMatrix);

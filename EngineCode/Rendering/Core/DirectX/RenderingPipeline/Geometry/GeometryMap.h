@@ -47,6 +47,7 @@ struct FGeometryMap :public IDirectXDeviceInterface_Struct
 	void Draw(float DeltaTime);
 	void PostDraw(float DeltaTime);
 
+
 	void UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo);
 
 	void BuildMesh(CMeshComponent* InMesh, const FMeshRenderingData& MeshData);
