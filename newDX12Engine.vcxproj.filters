@@ -305,6 +305,9 @@
     <Filter Include="EngineCode\Rendering\DirectX12">
       <UniqueIdentifier>{83a4da36-920e-4228-88c3-424b78decfad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="EngineCode\Rendering\Core\DirectX\StaticSampler">
+      <UniqueIdentifier>{a7f706b5-a383-49c5-85a2-a00b17df3e5d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="simple_library\private\simple_math\soft_rasterization\soft_rasterization.cpp">
@@ -627,6 +630,24 @@
     </ClCompile>
     <ClCompile Include="EngineCode\Rendering\DirectX12\DDSTextureLoader.cpp">
       <Filter>EngineCode\Rendering\DirectX12</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\RenderingTextureResourcesUpdate.cpp">
+      <Filter>EngineCode\Rendering\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Mesh\Core\ShellMeshComponent.cpp">
+      <Filter>EngineCode\Component\Mesh\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Mesh\PipeMeshComponent.cpp">
+      <Filter>EngineCode\Component\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Mesh\PyramidMeshComponent.cpp">
+      <Filter>EngineCode\Component\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Mesh\TorusMeshComponent.cpp">
+      <Filter>EngineCode\Component\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\StaticSampler\StaticSamplerObject.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\StaticSampler</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1013,6 +1034,30 @@
     </ClInclude>
     <ClInclude Include="EngineCode\Rendering\DirectX12\DDSTextureLoader.h">
       <Filter>EngineCode\Rendering\DirectX12</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\RenderingTextureResourcesUpdate.h">
+      <Filter>EngineCode\Rendering\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader\ShaderFunctionLibrary.hlsl">
+      <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader\ShaderCommon.hlsl">
+      <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Mesh\Core\ShellMeshComponent.h">
+      <Filter>EngineCode\Component\Mesh\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Mesh\PipeMeshComponent.h">
+      <Filter>EngineCode\Component\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Mesh\PyramidMeshComponent.h">
+      <Filter>EngineCode\Component\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Mesh\TorusMeshComponent.h">
+      <Filter>EngineCode\Component\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\StaticSampler\StaticSamplerObject.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\StaticSampler</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

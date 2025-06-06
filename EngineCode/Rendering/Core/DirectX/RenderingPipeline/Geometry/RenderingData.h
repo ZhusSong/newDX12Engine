@@ -29,6 +29,9 @@ public:
 
 	XMFLOAT4X4 WorldMatrix;
 
+	// 纹理数据
+	XMFLOAT4X4 TextureTransform;
+
 	CMeshComponent* Mesh;
 
 };

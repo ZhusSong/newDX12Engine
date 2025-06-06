@@ -59,7 +59,7 @@ void FShader::BuildShaderByName(const wstring& InFileName, const string& InEntry
 	{
 		Engine_Log_Error("%s", (char*)ErrorShaderMsg->GetBufferPointer());
 	}
-
+	ErrorShaderMsg.Reset();
 	//失败就奔溃了
 	ANALYSIS_HRESULT(R);
 

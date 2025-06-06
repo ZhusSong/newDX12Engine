@@ -205,8 +205,7 @@ bool remove_char_form_start(char* str, char sub_str)
 	return false;
 }
 
-// "wearwetryy wrwq asdgddawtdgh"
-// "as"
+
 int find_string(const char *str, char const* sub_str,int start_pos)
 {
 	int len = strlen(sub_str);

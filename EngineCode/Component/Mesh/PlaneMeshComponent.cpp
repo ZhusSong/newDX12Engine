@@ -24,6 +24,10 @@ void CPlaneMeshComponent::CreateMesh(FMeshRenderingData& MeshData, float InHeigh
 	float HeightSubdivideValue = SubdivideValue(InHeight, InHeightSubdivide);
 	float WidthSubdivideValue = SubdivideValue(InWidth, InWidthSubdivide);
 
+	float HorizontalAverageSubdivision = 1.f / ((float)InWidthSubdivide - 1.f);
+	float VerticalAverageSubdivision = 1.f / ((float)InHeightSubdivide - 1.f);
+
+
 	//绘制点的位置
 	for (uint32_t i = 0; i < InHeightSubdivide; ++i)
 	{
@@ -36,9 +40,9 @@ void CPlaneMeshComponent::CreateMesh(FMeshRenderingData& MeshData, float InHeigh
 					X,//x
 					0.f,//y
 					Z), //z
-				XMFLOAT4(Colors::Gray)
-				// 法线
-				, XMFLOAT3(0.f, 1.f, 0.f)));
+				XMFLOAT4(Colors::Gray),
+				XMFLOAT3(0.f, 1.f, 0.f),//法线
+				XMFLOAT2(VerticalAverageSubdivision * i, HorizontalAverageSubdivision * j)));//UVﾗﾔｶｯﾕｹｿｪ
 		}
 	}
 

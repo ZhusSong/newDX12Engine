@@ -20,11 +20,19 @@ FRenderingResourcesUpdate::~FRenderingResourcesUpdate()
 /// <param name="InDevice">当前D3D设备</param>
 /// <param name="InElemetSize">对象内存空间</param>
 /// <param name="InElemetCount">对象数</param>
-void FRenderingResourcesUpdate::Init(ID3D12Device* InDevice, UINT InElemetSize, UINT InElemetCount)
+void FRenderingResourcesUpdate::Init(ID3D12Device* InDevice, UINT InElemetSize, UINT InElemetCount, bool bConstBuffer)
 {
 	assert(InDevice);
 
-	ElementSize = GetConstantBufferByteSize(InElemetSize);
+	if (bConstBuffer)
+	{
+		ElementSize = GetConstantBufferByteSize(InElemetSize);
+	}
+	else
+	{
+		ElementSize = InElemetSize;
+	}
+
 
 	CD3DX12_HEAP_PROPERTIES HeapPropertie = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
 	CD3DX12_RESOURCE_DESC ResourceDesc = CD3DX12_RESOURCE_DESC::Buffer(ElementSize * InElemetCount);

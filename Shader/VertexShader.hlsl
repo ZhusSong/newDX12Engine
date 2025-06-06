@@ -1,60 +1,39 @@
 #include "Material.hlsl"
 #include "Light.hlsl"
 
-cbuffer ObjectConstBuffer : register(b0) //b0->b14
-{
-    float4x4 WorldMatrix;
-}
-
-cbuffer ViewportConstBuffer : register(b1)
-{
-    float4 ViewportPosition;
-    float4x4 ViewProjectionMatrix;
-}
-
-cbuffer MaterialConstBuffer : register(b2) //b0->b14
-{
-    int MaterialType;
-
-    float4 BaseColor;
-    float MaterialRoughness;
-    float4x4 TransformInformation;
-}
-
-cbuffer LightConstBuffer : register(b3)
-{
-	Light SceneLights[16];
-}
 struct MeshVertexIn
 {
-    float3 Position : POSITION;
-    float4 Color : COLOR;
-    float3 Normal : NORMAL;
-    float3 UTangent : TANGENT;
+	float3 Position : POSITION;
+	float4 Color : COLOR;
+	float3 Normal : NORMAL;
+	float3 UTangent: TANGENT;
+	float2 TexCoord: TEXCOORD;
 };
 
 struct MeshVertexOut
 {
-    float4 WorldPosition : POSITION;
-    float4 Position : SV_POSITION;
-    float4 Color : COLOR;
-    float3 Normal : NORMAL;
-    float3 UTangent : TANGENT;
+	float4 WorldPosition : POSITION;
+	float4 Position : SV_POSITION;
+	float4 Color : COLOR;
+	float3 Normal : NORMAL;
+	float3 UTangent : TANGENT;
+	float2 TexCoord: TEXCOORD;
 };
 
 MeshVertexOut VertexShaderMain(MeshVertexIn MV)
 {
-    MeshVertexOut MOut;
+  	MaterialConstBuffer MatConstBuffer = Materials[MaterialIndex];
+
+	MeshVertexOut MOut;
 
    //世界坐标
     MOut.WorldPosition = mul(float4(MV.Position, 1.f), WorldMatrix);
 
 	//变换到齐次剪辑空间
     MOut.Position = mul(MOut.WorldPosition, ViewProjectionMatrix);
-    MOut.Color.rgb = MV.Normal.rgb;
     
     // 是否以自身法线显示
-    if (MaterialType == 13)
+    if (MatConstBuffer.MaterialType == 13)
     {
         MOut.Normal = MV.Normal;
     }
@@ -64,16 +43,24 @@ MeshVertexOut VertexShaderMain(MeshVertexIn MV)
         MOut.Normal = mul(MV.Normal, (float3x3) WorldMatrix);
     }
     // 切线
-    MOut.UTangent = MV.UTangent;
+    MOut.UTangent = mul(MV.UTangent, (float3x3)WorldMatrix);
+
+    // 纹理
+    float4 MyTexCoord = mul(float4(MV.TexCoord,0.0f,1.f), ObjectTextureTransform);
+	MOut.TexCoord = mul(MyTexCoord, MatConstBuffer.TransformInformation).xy;
 
     return MOut;
 }
 
 float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
 {
-    FMaterial Material;
-    Material.BaseColor = BaseColor;
+    MaterialConstBuffer MatConstBuffer = Materials[MaterialIndex];
+
+	FMaterial Material;
     
+    // 得到纹理
+	Material.BaseColor = GetMaterialBaseColor(MatConstBuffer, MVOut.TexCoord);
+
     // 不收光照影响的BaseColor
     if (MaterialType == 12)
     {
@@ -303,8 +290,12 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
 
                 }
                 
-            LightStrengths += LightStrength * DotValue * float4(SceneLights[i].LightIntensity, 1.f);
-            LightStrengths.w = 1.f;
+          	LightStrengths += saturate(LightStrength * DotValue * float4(SceneLights[i].LightIntensity,1.f));
+			LightStrengths.w = 1.f;
+
+            LightStrengths = saturate(LightStrengths);
+			Specular = saturate(Specular);
+			Material.BaseColor = saturate(Material.BaseColor);
         }
     }
     

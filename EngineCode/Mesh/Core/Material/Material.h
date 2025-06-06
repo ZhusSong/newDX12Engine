@@ -29,11 +29,12 @@ public:	CMaterial();
 	  FORCEINLINE EMaterialType GetMaterialType()const { return MaterialType; }
 
 
+	  // 得到渲染模板
 	  FORCEINLINE D3D_PRIMITIVE_TOPOLOGY GetMaterialDisplayStatus()const {
 		  switch (MaterialDisplayStatus){
 
 		  case EMaterialDisplayStatusType::DefaultDisplay:
-				  return  D3D_PRIMITIVE_TOPOLOGY_UNDEFINED;
+			  return  D3D_PRIMITIVE_TOPOLOGY_UNDEFINED;
 		  case EMaterialDisplayStatusType::PointDisplay:
 			  return  D3D_PRIMITIVE_TOPOLOGY_POINTLIST;
 		  case EMaterialDisplayStatusType::WireframeDisplay:

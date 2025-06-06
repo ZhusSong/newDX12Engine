@@ -41,6 +41,7 @@ void FRenderingPipeline::BuildPipeline()
 		{"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
 		{"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 28, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
 		{"TANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 40, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+		{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 52, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },  // UV
 	};
 	// 绑定
 	DirectXPipelineState.BindInputLayout(InputElementDesc.data(), InputElementDesc.size());
@@ -55,7 +56,7 @@ void FRenderingPipeline::BuildPipeline()
 	GeometryMap.BuildMeshConstantBuffer();
 
 	//构建材质常量缓冲区
-	GeometryMap.BuildMaterialConstantBuffer();
+	GeometryMap.BuildMaterialShaderResourceView();
 
 	//构建灯光常量缓冲区
 	GeometryMap.BuildLightConstantBuffer();

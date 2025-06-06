@@ -38,11 +38,15 @@
     <ClCompile Include="EngineCode\Component\Mesh\BoxMeshComponent.cpp" />
     <ClCompile Include="EngineCode\Component\Mesh\ConeMeshComponent.cpp" />
     <ClCompile Include="EngineCode\Component\Mesh\Core\MeshComponent.cpp" />
+    <ClCompile Include="EngineCode\Component\Mesh\Core\ShellMeshComponent.cpp" />
     <ClCompile Include="EngineCode\Component\Mesh\CustomMeshComponent.cpp" />
     <ClCompile Include="EngineCode\Component\Mesh\CylinderMeshComponent.cpp" />
+    <ClCompile Include="EngineCode\Component\Mesh\PipeMeshComponent.cpp" />
     <ClCompile Include="EngineCode\Component\Mesh\PlaneMeshComponent.cpp" />
+    <ClCompile Include="EngineCode\Component\Mesh\PyramidMeshComponent.cpp" />
     <ClCompile Include="EngineCode\Component\Mesh\ShellMeshComponent.cpp" />
     <ClCompile Include="EngineCode\Component\Mesh\SphereMeshComponent.cpp" />
+    <ClCompile Include="EngineCode\Component\Mesh\TorusMeshComponent.cpp" />
     <ClCompile Include="EngineCode\Component\TransformComponent.cpp" />
     <ClCompile Include="EngineCode\Config\EngineRenderConfig.cpp" />
     <ClCompile Include="EngineCode\Core\Camera.cpp" />
@@ -80,8 +84,10 @@
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\PipelineState\DirectXPipelineState.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderingPipeline.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RootSignature\DirectXRootSignature.cpp" />
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\StaticSampler\StaticSamplerObject.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\Rendering.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\RenderingResourcesUpdate.cpp" />
+    <ClCompile Include="EngineCode\Rendering\Core\RenderingTextureResourcesUpdate.cpp" />
     <ClCompile Include="EngineCode\Rendering\DirectX12\DDSTextureLoader.cpp" />
     <ClCompile Include="EngineCode\Rendering\Engine\Core\RenderingEngine.cpp" />
     <ClCompile Include="EngineCode\Rendering\Engine\DirectX\Core\DirectXRenderingEngine.cpp" />
@@ -149,11 +155,15 @@
     <ClInclude Include="EngineCode\Component\Mesh\BoxMeshComponent.h" />
     <ClInclude Include="EngineCode\Component\Mesh\ConeMeshComponent.h" />
     <ClInclude Include="EngineCode\Component\Mesh\Core\MeshComponent.h" />
+    <ClInclude Include="EngineCode\Component\Mesh\Core\ShellMeshComponent.h" />
     <ClInclude Include="EngineCode\Component\Mesh\CustomMeshComponent.h" />
     <ClInclude Include="EngineCode\Component\Mesh\CylinderMeshComponent.h" />
+    <ClInclude Include="EngineCode\Component\Mesh\PipeMeshComponent.h" />
     <ClInclude Include="EngineCode\Component\Mesh\PlaneMeshComponent.h" />
+    <ClInclude Include="EngineCode\Component\Mesh\PyramidMeshComponent.h" />
     <ClInclude Include="EngineCode\Component\Mesh\ShellMeshComponent.h" />
     <ClInclude Include="EngineCode\Component\Mesh\SphereMeshComponent.h" />
+    <ClInclude Include="EngineCode\Component\Mesh\TorusMeshComponent.h" />
     <ClInclude Include="EngineCode\Component\TransformComponent.h" />
     <ClInclude Include="EngineCode\Config\EngineRenderConfig.h" />
     <ClInclude Include="EngineCode\Core\Camera.h" />
@@ -195,8 +205,10 @@
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderingPipeline.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderingPipelineType.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RootSignature\DirectXRootSignature.h" />
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\StaticSampler\StaticSamplerObject.h" />
     <ClInclude Include="EngineCode\Rendering\Core\Rendering.h" />
     <ClInclude Include="EngineCode\Rendering\Core\RenderingResourcesUpdate.h" />
+    <ClInclude Include="EngineCode\Rendering\Core\RenderingTextureResourcesUpdate.h" />
     <ClInclude Include="EngineCode\Rendering\DirectX12\d3dx12.h" />
     <ClInclude Include="EngineCode\Rendering\DirectX12\DDSTextureLoader.h" />
     <ClInclude Include="EngineCode\Rendering\Engine\Core\RenderingEngine.h" />
@@ -269,6 +281,20 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Mat_main</EntryPointName>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <FileType>Document</FileType>
+    </ClInclude>
+    <ClInclude Include="Shader\ShaderCommon.hlsl">
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+      <FileType>Document</FileType>
+    </ClInclude>
+    <ClInclude Include="Shader\ShaderFunctionLibrary.hlsl">
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <FileType>Document</FileType>
     </ClInclude>
     <FxCompile Include="Shader\VertexShader.hlsl">

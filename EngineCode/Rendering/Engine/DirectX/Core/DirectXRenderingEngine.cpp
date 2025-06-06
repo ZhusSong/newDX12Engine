@@ -130,6 +130,11 @@ int CDirectXRenderingEngine::PostInit()
 
 			InPlaneMesh->SetPosition(XMFLOAT3(0.f, -12.f, 0.f));
 			InPlaneMesh->SetScale(fvector_3d(50.f, 50.f, 50.f));
+			if (CMaterial* InMaterial = (*InPlaneMesh->GetMaterials())[0])
+			{
+				InMaterial->SetBaseColor(fvector_4d(1.f));
+				InMaterial->SetMaterialType(EMaterialType::Lambert);
+			}
 		}
 
 		//兰伯特

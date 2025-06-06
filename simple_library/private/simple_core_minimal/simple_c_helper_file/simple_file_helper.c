@@ -299,54 +299,21 @@ void remove_directory_all(const char* file_dir)
 
 	destroy_def_c_paths_v2(&tmp_paths);
 }
-
-void find_files(char const *in_path, def_c_paths *str, bool b_recursion,bool b_include_folder)
+void find_files(char const* in_path, def_c_paths* str, bool b_recursion)
 {
-	char in_path_buff[512] = { 0 };
+	struct _finddata_t finddata;
 
-	strcpy(in_path_buff, in_path);
-	int my_len = strlen(in_path)-1;
-
-	if (my_len > 0)
+	long hfile = 0;
+	char tmp_path[8196] = { 0 };
+	strcpy(tmp_path, in_path);
+	strcat(tmp_path, "\\*");
+	if ((hfile = _findfirst(tmp_path, &finddata)) != -1)
 	{
-		if (in_path_buff[my_len] == '/')
+		do
 		{
-			remove_char_form_end(in_path_buff, '/');
-		}
-
-#ifdef  _WIN64
-		intptr_t hfile = 0;
-#else
-#ifdef _WIN32    
-		long hfile = 0;
-#endif 
-#endif 
-
-		char tmp_path[1024] = { 0 };
-		strcpy(tmp_path, in_path_buff);
-
-		if (b_include_folder)
-		{
-			strcpy(str->paths[str->index], in_path_buff);
-			strcat(str->paths[str->index++], separator);
-		}
-
-		//拼接
-		strcat(tmp_path, separator);
-		strcat(tmp_path, wildcard);
-		if ((hfile =
-#ifdef _WIN64
-			_findfirst64
-#else
-#ifdef WIN32	
-			_findfirst
-#endif // _WIN64
-#endif // _WIN32
-			(tmp_path, &finddata)) != -1)
-		{
-			do
+			if (finddata.attrib & _A_SUBDIR)
 			{
-				if (finddata.attrib & _A_SUBDIR)
+				if (b_recursion)
 				{
 					if (strcmp(finddata.name, ".") == 0 ||
 						strcmp(finddata.name, "..") == 0)
@@ -354,35 +321,23 @@ void find_files(char const *in_path, def_c_paths *str, bool b_recursion,bool b_i
 						continue;
 					}
 
-					char new_path[1024] = { 0 };
-					strcpy(new_path, in_path_buff);
-					strcat(new_path, separator);
-					strcat(new_path, finddata.name);
+					char new_path[8196] = { 0 };
+						strcpy(new_path, in_path);
+						strcat(new_path, "\\");
+						strcat(new_path, finddata.name);
 
-					if (b_recursion)
-					{
-						find_files(new_path, str, b_recursion, b_include_folder);
-					}
+						find_files(new_path, str, b_recursion);
 				}
-				else
-				{
-					strcpy(str->paths[str->index], in_path_buff);
-					strcat(str->paths[str->index], separator);
-					strcat(str->paths[str->index++], finddata.name);
-				}
+			}
+			else
+			{
+				strcpy(str->paths[str->index], in_path);
+				strcat(str->paths[str->index], "\\");
+				strcat(str->paths[str->index++], finddata.name);
+			}
 
-			} while (
-#ifdef _WIN64
-				_findnext64
-#else
-#ifdef _WIN32
-
-				_findnext
-#endif
-#endif
-				(hfile, &finddata) == 0);
-			_findclose(hfile);
-		}
+		} while (_findnext(hfile, &finddata) == 0);
+		_findclose(hfile);
 	}
 }
 
