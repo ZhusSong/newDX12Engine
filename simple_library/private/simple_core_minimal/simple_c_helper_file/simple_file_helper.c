@@ -2,6 +2,7 @@
 #include "../../../public/simple_core_minimal/simple_c_helper_file/simple_file_helper.h"
 #include "../../../public/simple_core_minimal/simple_c_core/simple_c_array/simple_c_array_string.h"
 
+
 //用于检测ShellExecute的返回值信息
 bool check_ShellExecute_ret(int ret)
 {
@@ -101,43 +102,38 @@ int copy_file(char *Src, char *Dest)
 void find_files(char const *in_path, def_c_paths *str, bool b_recursion)
 {
 	struct _finddata_t finddata;
+	intptr_t hfile; // 使用 intptr_t 而非 long（更安全）
 
-	long hfile = 0;
-	char tmp_path[8196] = { 0 };
-	strcpy(tmp_path, in_path);
-	strcat(tmp_path, "\\*");
-	if ((hfile = _findfirst(tmp_path, &finddata)) != -1)
-	{
-		do
-		{
-			if (finddata.attrib & _A_SUBDIR)
-			{
-				if (b_recursion)
-				{
-					if (strcmp(finddata.name, ".") == 0 ||
-						strcmp(finddata.name, "..") == 0)
-					{
-						continue;
-					}
+	char tmp_path[MAX_PATH] = { 0 };
+	snprintf(tmp_path, MAX_PATH, "%s\\*", in_path);
 
-					char new_path[8196] = { 0 };
-					strcpy(new_path, in_path);
-					strcat(new_path, "\\");
-					strcat(new_path, finddata.name);
-
-					find_files(new_path, str, b_recursion);
-				}
-			}
-			else
-			{
-				strcpy(str->paths[str->index], in_path);
-				strcat(str->paths[str->index], "\\");
-				strcat(str->paths[str->index++], finddata.name);
-			}
-
-		} while (_findnext(hfile, &finddata) == 0);
-		_findclose(hfile);
+	if ((hfile = _findfirst(tmp_path, &finddata)) == -1L) {
+		perror("_findfirst failed");
+		return;
 	}
+
+	do {
+		if (finddata.attrib & _A_SUBDIR) {
+			if (b_recursion &&
+				strcmp(finddata.name, ".") != 0 &&
+				strcmp(finddata.name, "..") != 0) {
+				char new_path[MAX_PATH] = { 0 };
+				snprintf(new_path, MAX_PATH, "%s\\%s", in_path, finddata.name);
+				find_files(new_path, str, b_recursion);
+			}
+		}
+		else {
+			if (str->index < 8196) {
+				snprintf(str->paths[str->index], MAX_PATH, "%s\\%s", in_path, finddata.name);
+				str->index++;
+			}
+			else {
+				printf("WARNING: Maximum path storage reached. Skipping...\n");
+			}
+		}
+	} while (_findnext(hfile, &finddata) == 0);
+
+	_findclose(hfile);
 }
 
 bool create_file(char const *filename)
