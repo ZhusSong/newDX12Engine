@@ -102,19 +102,15 @@
     <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_guid\simple_guid.c" />
     <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_helper_file\simple_file_helper.c" />
     <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_path\simple_c_path.c" />
-    <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_time\simple_c_locale_list.c" />
     <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_time\simple_c_time.c" />
     <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_windows\simple_c_windows_register.c" />
     <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_windows\simple_c_windows_setting.c" />
     <ClCompile Include="simple_library\private\simple_cpp_core_minimal\simple_cpp_helper_file\simple_cpp_helper_file.cpp" />
     <ClCompile Include="simple_library\private\simple_cpp_core_minimal\simple_cpp_string_algorithm\simple_cpp_string_algorithm.cpp" />
     <ClCompile Include="simple_library\private\simple_c_log\simple_c_log.c" />
-    <ClCompile Include="simple_library\private\simple_image\Core\simple_image_bmp.cpp" />
     <ClCompile Include="simple_library\private\simple_image\simple_image.cpp" />
     <ClCompile Include="simple_library\private\simple_math\math_utils.cpp" />
     <ClCompile Include="simple_library\private\simple_math\simple_math.c" />
-    <ClCompile Include="simple_library\private\simple_math\simple_math.cpp" />
-    <ClCompile Include="simple_library\private\simple_math\soft_rasterization\soft_rasterization.cpp" />
     <ClCompile Include="simple_library\private\simple_math\transformation\matrix\matrix_2x2.cpp" />
     <ClCompile Include="simple_library\private\simple_math\transformation\matrix\matrix_3x3.cpp" />
     <ClCompile Include="simple_library\private\simple_math\transformation\matrix\matrix_4x3.cpp" />
@@ -251,7 +247,6 @@
     <ClInclude Include="simple_library\public\simple_math\math_utils.h" />
     <ClInclude Include="simple_library\public\simple_math\simple_core_math.h" />
     <ClInclude Include="simple_library\public\simple_math\simple_math.h" />
-    <ClInclude Include="simple_library\public\simple_math\soft_rasterization\soft_rasterization.h" />
     <ClInclude Include="simple_library\public\simple_math\transformation\matrix\matrix_2x2.h" />
     <ClInclude Include="simple_library\public\simple_math\transformation\matrix\matrix_3x3.h" />
     <ClInclude Include="simple_library\public\simple_math\transformation\matrix\matrix_4x3.h" />

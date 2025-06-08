@@ -1,6 +1,6 @@
 ﻿#pragma once
-// 2025.4 李
-#include "simple_library/public/simple_core_minimal/simple_c_core/simple_core_minimal.h"
+// 25.6.8 李
+#include "../../simple_core_minimal.h"
 
 #define SIMPLE_ARRAY_C_STRUCT(array_c_name,data_type) \
 typedef struct array_c_name##_type \

@@ -18,7 +18,7 @@ struct FGeometry :public IDirectXDeviceInterface_Struct
 
 	void Build();
 
-	UINT GetDrawObjectNumber() const { return DescribeMeshRenderingData.size(); }
+	UINT GetDrawObjectNumber() const { return  (UINT)DescribeMeshRenderingData.size(); }
 
 	// 得到顶点与索引缓冲区视图
 	D3D12_VERTEX_BUFFER_VIEW GetVertexBufferView();
@@ -40,6 +40,7 @@ protected:
 };
 
 
+//提供渲染内容的接口
 struct FGeometryMap :public IDirectXDeviceInterface_Struct
 {
 	FGeometryMap();

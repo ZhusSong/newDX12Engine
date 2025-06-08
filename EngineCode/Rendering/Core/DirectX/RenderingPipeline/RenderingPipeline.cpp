@@ -1,11 +1,10 @@
 ﻿#include "RenderingPipeline.h"
 
- // 渲染流水线
 FRenderingPipeline::FRenderingPipeline()
 {
 
 }
-// 创建mesh
+
 void FRenderingPipeline::BuildMesh(CMeshComponent* InMesh, const FMeshRenderingData& MeshData)
 {
 	GeometryMap.BuildMesh(InMesh, MeshData);
@@ -18,7 +17,7 @@ void FRenderingPipeline::UpdateCalculations(float DeltaTime, const FViewportInfo
 
 void FRenderingPipeline::BuildPipeline()
 {
-	// 先进行重置
+	//初始化GPS描述
 	DirectXPipelineState.ResetGPSDesc();
 
 	//读取贴图纹理
@@ -36,19 +35,12 @@ void FRenderingPipeline::BuildPipeline()
 		"TEXTURE2D_MAP_NUM",_itoa(GeometryMap.GetDrawTextureResourcesNumber(),TextureNumBuff,10),
 		NULL,NULL,
 	};
+
 	VertexShader.BuildShaders(L"../newDX12Engine/Shader/VertexShader.hlsl", "VertexShaderMain", "vs_5_1", ShaderMacro);
 	PixelShader.BuildShaders(L"../newDX12Engine/Shader/VertexShader.hlsl", "PixelShaderMain", "ps_5_1", ShaderMacro);
-
-
-	/*VertexShader.BuildShaderByName(L"VertexShader.hlsl", "VertexShaderMain", "vs_5_1", ShaderMacro);
-	PixelShader.BuildShaderByName(L"VertexShader.hlsl", "PixelShaderMain", "ps_5_0");*/
-
-	//VertexShader.BuildShaders(L"../newDX12Engine/Shader/VertexShader.hlsl", "VertexShaderMain", "vs_5_0");
-	//PixelShader.BuildShaders(L"../newDX12Engine/Shader/VertexShader.hlsl", "PixelShaderMain", "ps_5_0");
-	// 绑定
 	DirectXPipelineState.BindShader(VertexShader, PixelShader);
 
-	// 输入布局
+	//输入布局
 	InputElementDesc =
 	{
 		{"POSITION",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},
@@ -57,16 +49,15 @@ void FRenderingPipeline::BuildPipeline()
 		{"TANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 40, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
 		{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 52, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
 	};
-	// 绑定
 	DirectXPipelineState.BindInputLayout(InputElementDesc.data(), InputElementDesc.size());
 
-	// 构建模型
+	//构建模型
 	GeometryMap.Build();
 
-	// 构建常量描述堆
+	//构建常量描述堆
 	GeometryMap.BuildDescriptorHeap();
 
-	//构建Mesh常量缓冲区
+	//构建常量缓冲区
 	GeometryMap.BuildMeshConstantBuffer();
 
 	//构建材质常量缓冲区
@@ -75,12 +66,13 @@ void FRenderingPipeline::BuildPipeline()
 	//构建灯光常量缓冲区
 	GeometryMap.BuildLightConstantBuffer();
 
-	// 构建视口常量缓冲区视图
+	//构建我们的视口常量缓冲区视图
 	GeometryMap.BuildViewportConstantBufferView();
 
 	//构建贴图
 	GeometryMap.BuildTextureConstantBuffer();
-	// 构建管线
+
+	//构建我们的管线
 	DirectXPipelineState.Build();
 }
 

@@ -1,8 +1,7 @@
-﻿// 2025.4 李
-#ifndef _CRT_SECURE_NO_WARNINGS
+﻿#ifndef _CRT_SECURE_NO_WARNINGS
 #define _CRT_SECURE_NO_WARNINGS
 #endif
-#include "simple_library/public/simple_math/transformation/vector/vector_2d.h"
+#include "../../../../public/simple_math/transformation/vector/vector_2d.h"
 #include <stdio.h>
 #include <math.h>
 
@@ -27,11 +26,6 @@ fvector_2d::fvector_2d(float in_value)
 {
 }
 
-float fvector_2d::len()
-{
-	return sqrtf(x * x + y * y);
-}
-
 float fvector_2d::dot(const fvector_2d& a, const fvector_2d& b)
 {
 	return b.x * a.x + b.y * a.y;
@@ -50,5 +44,5 @@ char *fvector_2d::to_string(char* buff)const
 
 void fvector_2d::normalize()
 {
-	*this /= len();
+	*this /= sqrtf(x * x + y * y);
 }

@@ -1,4 +1,5 @@
-﻿#pragma once
+﻿// 25.6.8 李
+#pragma once
 #include "simple_cpp_shared_ptr_type.h"
 
 template<class T>

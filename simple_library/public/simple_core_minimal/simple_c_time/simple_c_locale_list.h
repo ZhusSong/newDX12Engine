@@ -1,4 +1,5 @@
-﻿#pragma once
+﻿// 25.6.8 李
+#pragma once
 #include <locale.h>
 
 	//区域性/语言名称

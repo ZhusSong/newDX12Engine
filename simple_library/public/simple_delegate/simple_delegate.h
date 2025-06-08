@@ -1,4 +1,4 @@
-﻿// 2025.4 李
+﻿// 25.6.8 李
 #pragma once
 #include <map>
 #include "../simple_core_minimal/simple_c_guid/simple_guid.h"
@@ -7,7 +7,7 @@ template< class TReturn, typename ...ParamTypes>
 class FDelegateBase
 {
 public:
-	virtual TReturn Execute(ParamTypes &&...Params)
+	virtual TReturn Execute(ParamTypes ...Params)
 	{
 		return TReturn();
 	}
@@ -23,9 +23,9 @@ public:
 		, Funcation(InFuncation)
 	{}
 
-	virtual TReturn Execute(ParamTypes &&...Params)
+	virtual TReturn Execute(ParamTypes ...Params)
 	{
-		return (Object->*Funcation)(std::forward<ParamTypes>(Params)...);
+		return (Object->*Funcation)(Params...);
 	}
 
 private:
@@ -41,13 +41,13 @@ public:
 		:Funcation(InFuncation)
 	{}
 
-	virtual TReturn Execute(ParamTypes &&...Params)
+	virtual TReturn Execute(ParamTypes ...Params)
 	{
-		return (*Funcation)(std::forward<ParamTypes>(Params)...);
+		return (*Funcation)(Params...);
 	}
 
 private:
-	TReturn(*Funcation)(ParamTypes ...);
+	TReturn(* Funcation)(ParamTypes ...);
 };
 
 template<class TReturn, typename ...ParamTypes>
@@ -90,18 +90,18 @@ public:
 
 public:
 	template<class TObjectType>
-	void Bind(TObjectType* InObject, TReturn(TObjectType::* InFuncation)(ParamTypes ...))
+	void Bind(TObjectType *InObject, TReturn(TObjectType::* InFuncation)(ParamTypes ...))
 	{
 		ReleaseDelegate();
 
-		CurrentDelegatePtr = new FObjectDelegate<TObjectType, TReturn, ParamTypes...>(InObject, InFuncation);
+		CurrentDelegatePtr = new FObjectDelegate<TObjectType,TReturn, ParamTypes...>(InObject, InFuncation);
 	}
 
-	void Bind(TReturn(*InFuncation)(ParamTypes...))
+	void Bind(TReturn(* InFuncation)(ParamTypes...))
 	{
 		ReleaseDelegate();
 
-		CurrentDelegatePtr = new FFunctionDelegate<TReturn, ParamTypes...>(InFuncation);
+		CurrentDelegatePtr = new FFunctionDelegate<TReturn,ParamTypes...>(InFuncation);
 	}
 
 	bool IsBound()
@@ -109,12 +109,12 @@ public:
 		return CurrentDelegatePtr != nullptr;
 	}
 
-	virtual TReturn Execute(ParamTypes &&...Params)
+	virtual TReturn Execute(ParamTypes ...Params)
 	{
-		return CurrentDelegatePtr->Execute(std::forward<ParamTypes>(Params)...);
+		return CurrentDelegatePtr->Execute(Params...);
 	}
 
-	FDelegate<TReturn, ParamTypes...>& operator=(const FDelegate<TReturn, ParamTypes...>& InDelegate)
+	FDelegate<TReturn, ParamTypes...> &operator=(const FDelegate<TReturn, ParamTypes...> &InDelegate)
 	{
 		CurrentDelegatePtr = InDelegate.CurrentDelegatePtr;
 		return *this;
@@ -139,7 +139,7 @@ struct FDelegateHandle
 		create_guid(&Guid);
 	}
 
-	friend bool operator<(const FDelegateHandle& K1, const FDelegateHandle& K2)
+	friend bool operator<(const FDelegateHandle &K1,const FDelegateHandle &K2)
 	{
 		return K1.Guid.a < K2.Guid.a;
 	}
@@ -148,14 +148,14 @@ struct FDelegateHandle
 };
 
 template<class TReturn, typename ...ParamTypes>
-class FMulticastDelegate :public std::map<FDelegateHandle, FDelegate<TReturn, ParamTypes...>>
+class FMulticastDelegate :public std::map<FDelegateHandle,FDelegate<TReturn, ParamTypes...>>
 {
 	typedef FDelegate<TReturn, ParamTypes...> TDelegate;
 public:
 	FMulticastDelegate()
 	{}
 
-	void RemoveDelegate(const FDelegateHandle& InGuid)
+	void RemoveDelegate(const FDelegateHandle &InGuid)
 	{
 		this->erase(InGuid);
 	}
@@ -166,15 +166,15 @@ public:
 		//生成GUID
 		FDelegateHandle Handle;
 
-		this->insert(std::make_pair(Handle, TDelegate()));//添加
+		this->insert(std::make_pair(Handle,TDelegate()));//添加
 
-		TDelegate& InDelegate = this->at(Handle);
+		TDelegate &InDelegate = this->at(Handle);
 		InDelegate.Bind(InObject, InFuncation);
 
 		return Handle;
 	}
 
-	const FDelegateHandle& AddFunction(TReturn(*InFuncation)(ParamTypes...))
+	const FDelegateHandle &AddFunction(TReturn(*InFuncation)(ParamTypes...))
 	{
 		FDelegateHandle Handle;
 		this->insert(std::make_pair(Handle, TDelegate()));//添加
@@ -185,12 +185,13 @@ public:
 		return Handle;
 	}
 
-	void Broadcast(ParamTypes &&...Params)
+	void Broadcast(ParamTypes ...Params)
 	{
-		for (auto& Tmp : *this)
+		for (auto &Tmp :*this)
 		{
-			Tmp.second.Execute(std::forward<ParamTypes>(Params)...);
-		}
+			//Tmp.second.Execute(std::forward<ParamTypes>(Params)...);
+			Tmp.second.Execute(Params...);
+		}		
 	}
 
 	void ReleaseDelegates()

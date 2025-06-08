@@ -29,7 +29,7 @@ public:
 	void LoadTextureResources(const wstring& InFilename);
 	void BuildTextureConstantBuffer(ID3D12DescriptorHeap* InHeap, int Offset = 0);
 
-	FORCEINLINE UINT Size() const { return TexturesMapping.size(); }
+	FORCEINLINE UINT Size() const { return (UINT)TexturesMapping.size(); }
 
 	std::unique_ptr<FRenderingTexture>* FindRenderingTexture(const std::string& InKey);
 

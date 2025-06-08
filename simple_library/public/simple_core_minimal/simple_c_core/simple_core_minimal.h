@@ -1,5 +1,5 @@
 ﻿#pragma once
-
+// 25.6.8 李
 //#ifndef WIN32_LEAN_AND_MEAN 
 //#define WIN32_LEAN_AND_MEAN 
 //#endif

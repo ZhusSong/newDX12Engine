@@ -296,9 +296,6 @@
     <Filter Include="EngineCode\Component\Mesh\Core">
       <UniqueIdentifier>{b296f8c3-32a0-494b-a0ff-e758fe123f79}</UniqueIdentifier>
     </Filter>
-    <Filter Include="EngineCode\LightManager">
-      <UniqueIdentifier>{bb5d3e07-b5b6-426c-a3ed-9356c093d0d5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="EngineCode\Actor\Light\Core">
       <UniqueIdentifier>{4338979b-2caa-4fe8-8e33-3bbc4971a389}</UniqueIdentifier>
     </Filter>
@@ -308,11 +305,11 @@
     <Filter Include="EngineCode\Rendering\Core\DirectX\StaticSampler">
       <UniqueIdentifier>{a7f706b5-a383-49c5-85a2-a00b17df3e5d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="EngineCode\Manager">
+      <UniqueIdentifier>{bb5d3e07-b5b6-426c-a3ed-9356c093d0d5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="simple_library\private\simple_math\soft_rasterization\soft_rasterization.cpp">
-      <Filter>simple_library\private\simple_math\soft_rasterization</Filter>
-    </ClCompile>
     <ClCompile Include="simple_library\private\simple_math\transformation\matrix\matrix_2x2.cpp">
       <Filter>simple_library\private\simple_math\transformation\matrix</Filter>
     </ClCompile>
@@ -364,9 +361,6 @@
     <ClCompile Include="simple_library\private\simple_math\simple_math.c">
       <Filter>simple_library\private\simple_math</Filter>
     </ClCompile>
-    <ClCompile Include="simple_library\private\simple_math\simple_math.cpp">
-      <Filter>simple_library\private\simple_math</Filter>
-    </ClCompile>
     <ClCompile Include="simple_library\private\simple_c_log\simple_c_log.c">
       <Filter>simple_library\private\simple_c_log</Filter>
     </ClCompile>
@@ -385,9 +379,6 @@
     <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_path\simple_c_path.c">
       <Filter>simple_library\private\simple_core_minimal\simple_c_path</Filter>
     </ClCompile>
-    <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_time\simple_c_locale_list.c">
-      <Filter>simple_library\private\simple_core_minimal\simple_c_time</Filter>
-    </ClCompile>
     <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_time\simple_c_time.c">
       <Filter>simple_library\private\simple_core_minimal\simple_c_time</Filter>
     </ClCompile>
@@ -405,9 +396,6 @@
     </ClCompile>
     <ClCompile Include="simple_library\private\simple_image\simple_image.cpp">
       <Filter>simple_library\private\simple_image</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\private\simple_image\Core\simple_image_bmp.cpp">
-      <Filter>simple_library\private\simple_image\Core</Filter>
     </ClCompile>
     <ClCompile Include="simple_library\third_party_library\tinyxml\tinystr.cpp">
       <Filter>simple_library\third_party_library\tinyxml</Filter>
@@ -602,7 +590,7 @@
       <Filter>EngineCode\Component\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="EngineCode\Manager\LightManager.cpp">
-      <Filter>EngineCode\LightManager</Filter>
+      <Filter>EngineCode\Manager</Filter>
     </ClCompile>
     <ClCompile Include="EngineCode\Actor\Light\SpotLight.cpp">
       <Filter>EngineCode\Actor\Light</Filter>
@@ -737,9 +725,6 @@
     </ClInclude>
     <ClInclude Include="simple_library\public\simple_math\simple_math.h">
       <Filter>simple_library\public\simple_math</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_math\soft_rasterization\soft_rasterization.h">
-      <Filter>simple_library\public\simple_math\soft_rasterization</Filter>
     </ClInclude>
     <ClInclude Include="simple_library\public\simple_math\transformation\matrix\matrix_2x2.h">
       <Filter>simple_library\public\simple_math\transformation\matrix</Filter>
@@ -1000,7 +985,7 @@
       <Filter>EngineCode\Component\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="EngineCode\Manager\LightManager.h">
-      <Filter>EngineCode\LightManager</Filter>
+      <Filter>EngineCode\Manager</Filter>
     </ClInclude>
     <ClInclude Include="EngineCode\Actor\Light\SpotLight.h">
       <Filter>EngineCode\Actor\Light</Filter>

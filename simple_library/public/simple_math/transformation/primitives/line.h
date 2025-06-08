@@ -1,11 +1,10 @@
 ﻿#pragma once
 #include "../vector/vector_2d.h"
 #include "../vector/vector_4d.h"
-#include "simple_library/public/simple_library_macro.h"
 
 namespace primitives
 {
-	struct SIMPLE_LIBRARY_API fline
+	struct fline
 	{
 		fline();
 

@@ -1,5 +1,5 @@
 ﻿#pragma once
-// 2025.4 李
+// 25.6.8 李
 #include "Core/simple_array_c_macro.h"
 
 typedef struct
@@ -24,11 +24,11 @@ _CRT_BEGIN_C_HEADER
 
  void printf_string(simple_c_string *array_c);
 
- char*get_string(int in_index,simple_c_string *array_c);
+ char *get_string(int in_index,simple_c_string *array_c);
 
  void dismantling_string(const char *in_data, const char *str_sub, simple_c_string *array_c);
 
- char*dismantling_string_by_index(int index, const char *split_str, const char *sub_str, char *buf);
+ char *dismantling_string_by_index(int index, const char *split_str, const char *sub_str, char *buf);
 
  bool is_exist(char const *  in_data, simple_c_string *array_c);
  

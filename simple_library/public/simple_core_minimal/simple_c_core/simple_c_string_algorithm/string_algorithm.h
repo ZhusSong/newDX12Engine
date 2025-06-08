@@ -1,43 +1,15 @@
 ﻿#pragma once
-
-#include "simple_library/public/simple_core_minimal/simple_c_core/simple_core_minimal.h"
-
+// 25.6.8 李
+#include "../simple_core_minimal.h"
+ 
 _CRT_BEGIN_C_HEADER
 void remove_string_start(char *str, char const* sub_str);
 
-//从后往前找
-int find_string_from_end(const char* str, char const* sub_str, int start_pos);
-
-//从前往后找
 int find_string(const char *str, char const* sub_str,int start_pos);
 
-//只移除第一个
-bool remove_char_start(char *str, char sub_str);
+void remove_char_start(char *str, char sub_str);
 
-//从前往后找，找到了就移除
-bool remove_char_form_start(char* str, char sub_str);
-
-//移除最后面
-bool remove_char_end(char *str, char sub_str);
-
-//从后面往前找，找到了就移除
-bool remove_char_form_end(char* str, char sub_str);
-
-//判定字符串是否包含
-bool c_str_contain(const char* buff_str,const char *sub_str);
-
-//前后空格都修掉
-void trim_start_and_end_inline(char* buff);
-
-bool string_equal(const char* str_1, const char* str_2);
-
-//去除前面的空格
-void trim_start_inline(char *buff);
-//去除后面的空格
-void trim_end_inline(char *buff);
-
-//拆分
-bool split(const char *buf,const char* str_split,char *l,char *r, bool bcontain_str_split);
+void remove_char_end(char *str, char sub_str);
 
 void remove_all_char_end(char *str, char sub_str);
 
@@ -61,7 +33,7 @@ void wremove_string_start(wchar_t *str, wchar_t const* sub_str);
 
 int wfind_string(wchar_t *str, wchar_t const* sub_str);
 
-void  wremove_wchar_start(wchar_t *str, wchar_t sub_str);
+void wremove_wchar_start(wchar_t *str, wchar_t sub_str);
 
 void wremove_wchar_end(wchar_t *str, wchar_t sub_str);
 

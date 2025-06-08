@@ -1,7 +1,7 @@
-﻿#pragma once
+﻿// 25.6.8 李
+#pragma once
 #include <iostream>
 #include <sstream>
-#include <functional>
 #include <thread>
 #include <string>
 #include <mutex>
@@ -13,7 +13,4 @@
 #include <list>
 #include <chrono>
 #include <unordered_map>
-
 #include "shared/simple_cpp_shared_ptr.h"//智能指针
-#include "simple_cpp_helper_file/simple_cpp_helper_file.h"
-#include "simple_cpp_string_algorithm/simple_cpp_string_algorithm.h"

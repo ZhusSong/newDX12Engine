@@ -1,10 +1,8 @@
-﻿// 2025.4 李
-#ifndef _CRT_SECURE_NO_WARNINGS
+﻿#ifndef _CRT_SECURE_NO_WARNINGS
 #define _CRT_SECURE_NO_WARNINGS
 #endif // !_CRT_SECURE_NO_WARNINGS
 
-#include "simple_library/public/simple_math/transformation/vector/vector_4d.h"
-#include "simple_library/public/simple_math/transformation/vector/vector_3d.h"
+#include "../../../../public/simple_math/transformation/vector/vector_4d.h"
 #include <math.h>
 #include <stdio.h>
 
@@ -15,14 +13,6 @@ fvector_4d::fvector_4d(float in_value)
 	, w(in_value)
 {
 
-}
-
-fvector_4d::fvector_4d(const fvector_3d& in_v)
-	:x(in_v.x)
-	,y(in_v.y)
-	,z(in_v.z)
-	,w(1.f)
-{
 }
 
 fvector_4d::fvector_4d(float a, float b, float c, float d)
@@ -49,7 +39,7 @@ fvector_4d fvector_4d::cross_product(const fvector_4d& a, const fvector_4d& b)
 }
 char* fvector_4d::to_string(char* buff)const
 {
-	sprintf(buff, "%f,%f,%f,%f", x, y,z,w);
+	sprintf(buff, "(x=%f,y=%f,z=%f,w=%f)", x, y,z,w);
 	return buff;
 }
 

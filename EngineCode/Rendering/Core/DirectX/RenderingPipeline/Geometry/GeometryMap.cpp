@@ -2,17 +2,14 @@
 #include "../../../Buffer/ConstructBuffer.h"
 #include "../../../../../Mesh/Core/ObjectTransform.h"
 #include "../../../../../Core/Viewport/ViewportTransformation.h"
-
 #include "../../../../../Mesh/Core/Mesh.h"
 #include "../../../../../Mesh/Core/Material/MaterialConstantBuffer.h"
-#include "../../../../../Mesh/Core/Material/Material.h"
-#include "../../../../../Component/Mesh/Core/MeshComponent.h"
-
-#include "../../../../../Manager/LightManager.h"
-#include "../../../../../Component/Light/Core/LightComponent.h"
 #include "../../../../../Component/Light/Core/LightConstantBuffer.h"
 #include "../../../../../Component/Light/SpotLightComponent.h"
-
+#include "../../../../../Mesh/Core/Material/Material.h"
+#include "../../../../../Component/Mesh/Core/MeshComponent.h"
+#include "../../../../../Manager/LightManager.h"
+#include "../../../../../Component/Light/Core/LightComponent.h"
 #include "../../../RenderingTextureResourcesUpdate.h"
 
 FGeometryMap::FGeometryMap()
@@ -29,19 +26,19 @@ void FGeometryMap::PreDraw(float DeltaTime)
 
 void FGeometryMap::Draw(float DeltaTime)
 {
-	// 渲染视口
+	//渲染视口
 	DrawViewport(DeltaTime);
 
-	// 绘制灯光
+	//绘制灯光
 	DrawLight(DeltaTime);
 
-	// 绘制贴图
+	//绘制贴图
 	DrawTexture(DeltaTime);
 
-	// 绘制材质
+	//绘制材质
 	DrawMaterial(DeltaTime);
 
-	// 渲染模型
+	//渲染模型
 	DrawMesh(DeltaTime);
 }
 
@@ -50,16 +47,14 @@ void FGeometryMap::PostDraw(float DeltaTime)
 
 }
 
-
-
 void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo)
 {
 	XMMATRIX ViewMatrix = XMLoadFloat4x4(&ViewportInfo.ViewMatrix);
 	XMMATRIX ProjectMatrix = XMLoadFloat4x4(&ViewportInfo.ProjectMatrix);
 
-	for (auto& Tmp : Geometrys)
+	for (auto& Tmp : Geometrys)//暂时先这么写
 	{
-		for (size_t i = 0; i < Tmp.second.DescribeMeshRenderingData.size(); i++)
+		for (int i = 0; i < Tmp.second.DescribeMeshRenderingData.size(); i++)
 		{
 			FRenderingData& InRenderingData = Tmp.second.DescribeMeshRenderingData[i];
 
@@ -80,19 +75,17 @@ void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& View
 			}
 
 			//更新模型位置
-			XMMATRIX ATRIXWorld = XMLoadFloat4x4(&InRenderingData.WorldMatrix); 
-
-			// 更新贴图
+			XMMATRIX ATRIXWorld = XMLoadFloat4x4(&InRenderingData.WorldMatrix);
 			XMMATRIX ATRIXTextureTransform = XMLoadFloat4x4(&InRenderingData.TextureTransform);
 
 			FObjectTransform ObjectTransformation;
 			XMStoreFloat4x4(&ObjectTransformation.World, XMMatrixTranspose(ATRIXWorld));
 			XMStoreFloat4x4(&ObjectTransformation.TextureTransformation, XMMatrixTranspose(ATRIXTextureTransform));
 
-			// 获取材质Index
-			if (auto& InMat = (*InRenderingData.Mesh->GetMaterials())[0])
+			//收集材质Index
+			if (auto& InMater = (*InRenderingData.Mesh->GetMaterials())[0])
 			{
-				ObjectTransformation.MaterialIndex = InMat->GetMaterialIndex();
+				ObjectTransformation.MaterialIndex = InMater->GetMaterialIndex();
 			}
 
 			MeshConstantBufferViews.Update(i, &ObjectTransformation);
@@ -152,32 +145,32 @@ void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& View
 	ViewportConstantBufferViews.Update(0, &ViewportTransformation);
 }
 
-
 void FGeometryMap::UpdateMaterialShaderResourceView(float DeltaTime, const FViewportInfo& ViewportInfo)
 {
 	FMaterialConstantBuffer MaterialConstantBuffer;
 	for (size_t i = 0; i < Materials.size(); i++)
 	{
+		//变换材质
 		if (CMaterial* InMaterial = Materials[i])
 		{
 			if (InMaterial->IsDirty())
 			{
-				// BaseColor
+				//BaseColor
 				fvector_4d InBaseColor = InMaterial->GetBaseColor();
 				MaterialConstantBuffer.BaseColor = XMFLOAT4(InBaseColor.x, InBaseColor.y, InBaseColor.z, InBaseColor.w);
 
 				fvector_3d InSpecularColor = InMaterial->GetSpecularColor();
 				MaterialConstantBuffer.SpecularColor = XMFLOAT3(InSpecularColor.x, InSpecularColor.y, InSpecularColor.z);
 
-				// 粗糙度
+				//粗糙度
 				MaterialConstantBuffer.Roughness = InMaterial->GetRoughness();
 
-				// 类型输入
+				//类型输入
 				MaterialConstantBuffer.MaterialType = InMaterial->GetMaterialType();
 
-				// 外部资源导入
+				//外部资源导入
 				{
-					// BaseColor
+					//这个是BaseColor
 					if (auto BaseColorTextureResourcesPtr = RenderingTextureResources->FindRenderingTexture(InMaterial->GetBaseColorIndexKey()))
 					{
 						MaterialConstantBuffer.BaseColorIndex = (*BaseColorTextureResourcesPtr)->RenderingTextureID;
@@ -187,7 +180,7 @@ void FGeometryMap::UpdateMaterialShaderResourceView(float DeltaTime, const FView
 						MaterialConstantBuffer.BaseColorIndex = -1;
 					}
 
-					// 法线
+					//法线
 					if (auto NormalTextureResourcesPtr = RenderingTextureResources->FindRenderingTexture(InMaterial->GetNormalIndexKey()))
 					{
 						MaterialConstantBuffer.NormalIndex = (*NormalTextureResourcesPtr)->RenderingTextureID;
@@ -196,6 +189,7 @@ void FGeometryMap::UpdateMaterialShaderResourceView(float DeltaTime, const FView
 					{
 						MaterialConstantBuffer.NormalIndex = -1;
 					}
+
 
 					//高光
 					if (auto SpecularTextureResourcesPtr = RenderingTextureResources->FindRenderingTexture(InMaterial->GetSpecularKey()))
@@ -208,7 +202,7 @@ void FGeometryMap::UpdateMaterialShaderResourceView(float DeltaTime, const FView
 					}
 				}
 
-				// 材质矩阵
+				//材质矩阵
 				XMMATRIX MaterialTransform = XMLoadFloat4x4(&InMaterial->GetMaterialTransform());
 				XMStoreFloat4x4(&MaterialConstantBuffer.TransformInformation,
 					XMMatrixTranspose(MaterialTransform));
@@ -221,14 +215,12 @@ void FGeometryMap::UpdateMaterialShaderResourceView(float DeltaTime, const FView
 	}
 }
 
-
 void FGeometryMap::BuildMesh(CMeshComponent* InMesh, const FMeshRenderingData& MeshData)
 {
 	FGeometry& Geometry = Geometrys[0];
 
 	Geometry.BuildMesh(InMesh, MeshData);
 }
-
 
 void FGeometryMap::LoadTexture()
 {
@@ -265,10 +257,11 @@ void FGeometryMap::Build()
 void FGeometryMap::BuildDescriptorHeap()
 {
 	//+1摄像机
-	DescriptorHeap.Build(GetDrawMeshObjectNumber() +
-		1 + // 摄像机
+	DescriptorHeap.Build(
+		GetDrawMeshObjectNumber() +
+		1 + //摄像机
 		GetDrawLightObjectNumber() +
-		GetDrawTextureResourcesNumber()); // 贴图
+		GetDrawTextureResourcesNumber());//贴图
 }
 
 void FGeometryMap::BuildMeshConstantBuffer()
@@ -285,11 +278,14 @@ void FGeometryMap::BuildMeshConstantBuffer()
 
 void FGeometryMap::BuildMaterialShaderResourceView()
 {
+	//创建常量缓冲区
 	MaterialConstantBufferViews.CreateConstant(
 		sizeof(FMaterialConstantBuffer),
 		GetDrawMaterialObjectNumber(),
 		false);
 
+	//收集材质
+	//正真更新Shader-Index
 	for (auto& Tmp : Geometrys)
 	{
 		for (size_t i = 0; i < Tmp.second.DescribeMeshRenderingData.size(); i++)
@@ -299,8 +295,8 @@ void FGeometryMap::BuildMaterialShaderResourceView()
 			{
 				for (size_t j = 0; j < InMaterials->size(); j++)
 				{
-					// ShaderIndex
-					(*InMaterials)[j]->SetMaterialIndex(Materials.size());
+					//做ShaderIndex所有
+					(*InMaterials)[j]->SetMaterialIndex((int)Materials.size());
 
 					Materials.push_back((*InMaterials)[j]);
 				}
@@ -317,7 +313,7 @@ void FGeometryMap::BuildLightConstantBuffer()
 	//Handle
 	CD3DX12_CPU_DESCRIPTOR_HANDLE DesHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(GetHeap()->GetCPUDescriptorHandleForHeapStart());
 
-	//构建灯光常量缓冲区
+	//构建常量缓冲区
 	LightConstantBufferViews.BuildConstantBuffer(
 		DesHandle,
 		GetDrawLightObjectNumber(),
@@ -359,9 +355,8 @@ void FGeometryMap::BuildTextureConstantBuffer()
 		DescriptorHeap.GetHeap(),
 		GetDrawMeshObjectNumber() +
 		GetDrawLightObjectNumber() +
-		1);  // 视口
+		1);//视口
 }
-
 
 void FGeometryMap::BuildViewportConstantBufferView()
 {
@@ -429,14 +424,9 @@ void FGeometryMap::DrawMesh(float DeltaTime)
 			D3D_PRIMITIVE_TOPOLOGY DisplayStatus = (*InRenderingData.Mesh->GetMaterials())[0]->GetMaterialDisplayStatus();
 			GetGraphicsCommandList()->IASetPrimitiveTopology(DisplayStatus);
 
-
 			//模型起始地址偏移
-			DesMeshHandle.Offset(i, DescriptorOffset);
+			DesMeshHandle.Offset((INT)i, DescriptorOffset);
 			GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(0, DesMeshHandle);
-
-			////材质起始地址偏移
-			//DesMaterialHandle.Offset(i + GetDrawMeshObjectNumber(), DescriptorOffset);
-			//GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(2, DesMaterialHandle);
 
 			//真正的绘制
 			GetGraphicsCommandList()->DrawIndexedInstanced(
@@ -449,14 +439,12 @@ void FGeometryMap::DrawMesh(float DeltaTime)
 	}
 }
 
-
 void FGeometryMap::DrawMaterial(float DeltaTime)
 {
 	GetGraphicsCommandList()->SetGraphicsRootShaderResourceView(
 		4,
 		MaterialConstantBufferViews.GetBuffer()->GetGPUVirtualAddress());
 }
-
 
 void FGeometryMap::DrawTexture(float DeltaTime)
 {
@@ -469,7 +457,6 @@ void FGeometryMap::DrawTexture(float DeltaTime)
 
 	GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(3, DesHandle);
 }
-
 
 bool FGeometry::bRenderingDataExistence(CMeshComponent* InKey)
 {
@@ -494,11 +481,11 @@ void FGeometry::BuildMesh(CMeshComponent* InMesh, const FMeshRenderingData& Mesh
 		//基础注册
 		InRenderingData.Mesh = InMesh;
 
-		InRenderingData.IndexSize = MeshData.IndexData.size();
-		InRenderingData.VertexSize = MeshData.VertexData.size();
+		InRenderingData.IndexSize = (UINT)MeshData.IndexData.size();
+		InRenderingData.VertexSize = (UINT)MeshData.VertexData.size();
 
-		InRenderingData.IndexOffsetPosition = MeshRenderingData.IndexData.size();
-		InRenderingData.VertexOffsetPosition = MeshRenderingData.VertexData.size();
+		InRenderingData.IndexOffsetPosition = (UINT)MeshRenderingData.IndexData.size();
+		InRenderingData.VertexOffsetPosition = (UINT)MeshRenderingData.VertexData.size();
 
 		//高效的插入
 		//索引的合并

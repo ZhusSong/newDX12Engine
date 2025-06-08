@@ -1,5 +1,5 @@
-﻿// 2025.4 李
-#include "simple_library/public/simple_core_minimal/simple_c_core/simple_c_array/simple_c_array_string.h"
+﻿// 25.6.8 李
+#include "../../../../public/simple_core_minimal/simple_c_core/simple_c_array/simple_c_array_string.h"
 
 void init_string(simple_c_string *array_c)
 {
@@ -63,7 +63,7 @@ char * dismantling_string_by_index(int index, const char *split_str, const char 
 	simple_c_string c_str_param;
 	dismantling_string(split_str, sub_str, &c_str_param);
 	char *p = get_string(index, &c_str_param);
-	remove_char_form_end(p, '\n');
+	remove_char_end(p, '\n');
 
 	strcpy(buf, p);
 	destroy_string(&c_str_param);

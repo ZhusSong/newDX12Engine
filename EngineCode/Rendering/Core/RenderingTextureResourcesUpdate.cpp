@@ -86,7 +86,7 @@ std::unique_ptr<FRenderingTexture>* FRenderingTextureResourcesUpdate::FindRender
 
 		char_to_wchar_t(TexturePath, 1024, InString);
 
-		if (TexturesMapping.find(TexturePath) != TexturesMapping.end())
+		if (TexturesMapping.find(TexturePath) != TexturesMapping.end())//key
 		{
 			return &TexturesMapping[TexturePath];
 		}

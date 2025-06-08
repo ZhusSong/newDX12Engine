@@ -1,5 +1,5 @@
 ﻿#pragma once
-// 2025.4 李
+// 25.6.8 李
 #include "simple_c_array_string.h"
 
 //_CRT_BEGIN_C_HEADER
