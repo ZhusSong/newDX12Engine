@@ -1,4 +1,5 @@
-﻿#include "RenderingTextureResourcesUpdate.h"
+﻿// 25.6.6 李
+#include "RenderingTextureResourcesUpdate.h"
 
 const wchar_t DDS[] = L".dds";
 const wchar_t Asset[] = L"/Asset/";
@@ -9,14 +10,14 @@ void FRenderingTextureResourcesUpdate::LoadTextureResources(const wstring& InFil
 	unique_ptr<FRenderingTexture> MyTexture = std::make_unique<FRenderingTexture>();
 	MyTexture->Filename = InFilename;
 
-	// sd.txt
+	//sd.txt
 	wchar_t Filename[1024] = { 0 };
 	get_path_clean_filename_w(Filename, MyTexture->Filename.c_str());
 	wremove_string_start(Filename, DDS);
 
 	MyTexture->Name = Filename;
 
-	// 读取dds纹理数据
+	//读取DDS数据
 	CreateDDSTextureFromFile12(
 		GetD3dDevice().Get(),
 		GetGraphicsCommandList().Get(),
@@ -71,7 +72,6 @@ void FRenderingTextureResourcesUpdate::BuildTextureConstantBuffer(ID3D12Descript
 			Tmp.second->Data.Get(),
 			&ShaderResourceViewDesc, Handle);
 
-		// 每创建一个纹理资源就进行一次偏移
 		Handle.Offset(1, DescriptorOffset);
 	}
 }
@@ -80,13 +80,13 @@ std::unique_ptr<FRenderingTexture>* FRenderingTextureResourcesUpdate::FindRender
 {
 	if (!InKey.empty())
 	{
-		//ｿ櫤ﾖｷ錥ｪｻｯ
+		//宽字符转化
 		const char* InString = InKey.c_str();
 		wchar_t TexturePath[1024] = { 0 };
 
 		char_to_wchar_t(TexturePath, 1024, InString);
 
-		if (TexturesMapping.find(TexturePath) != TexturesMapping.end())//key
+		if (TexturesMapping.find(TexturePath) != TexturesMapping.end())
 		{
 			return &TexturesMapping[TexturePath];
 		}
@@ -94,17 +94,17 @@ std::unique_ptr<FRenderingTexture>* FRenderingTextureResourcesUpdate::FindRender
 		{
 			for (auto& Tmp : TexturesMapping)
 			{
-				if (Tmp.second->Filename == TexturePath)//ﾂｷｾｶ
+				if (Tmp.second->Filename == TexturePath)//路径
 				{
 					return &Tmp.second;
 				}
 
-				if (Tmp.second->AssetFilename == TexturePath)//ﾗﾊﾔｴﾂｷｾｶ
+				if (Tmp.second->AssetFilename == TexturePath)//资源路径
 				{
 					return &Tmp.second;
 				}
 
-				if (Tmp.second->SimpleAssetFilename == TexturePath)//ｼ･ｵﾄﾗﾊﾔｴﾂｷｾｶ
+				if (Tmp.second->SimpleAssetFilename == TexturePath)//简单的资源路径
 				{
 					return &Tmp.second;
 				}

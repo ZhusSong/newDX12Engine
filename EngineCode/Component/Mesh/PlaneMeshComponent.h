@@ -1,6 +1,6 @@
 ﻿// 25.5.16 李
 #pragma once
-#include "ShellMeshComponent.h"
+#include "Core/ShellMeshComponent.h"
 
 class CPlaneMeshComponent :public CShellMeshComponent
 {

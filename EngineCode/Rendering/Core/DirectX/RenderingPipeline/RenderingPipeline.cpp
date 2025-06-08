@@ -21,14 +21,28 @@ void FRenderingPipeline::BuildPipeline()
 	// 先进行重置
 	DirectXPipelineState.ResetGPSDesc();
 
-	// 构建根签名
-	RootSignature.BuildRootSignature();
+	//读取贴图纹理
+	GeometryMap.LoadTexture();
+
+	//构建根签名
+	RootSignature.BuildRootSignature(GeometryMap.GetDrawTextureResourcesNumber());
 	DirectXPipelineState.BindRootSignature(RootSignature.GetRootSignature());
 
-	// 构建Shader
-	// HLSLdd
-	VertexShader.BuildShaderByName(L"VertexShader.hlsl", "VertexShaderMain", "vs_5_0");
-	PixelShader.BuildShaderByName(L"VertexShader.hlsl", "PixelShaderMain", "ps_5_0");
+	//构建Shader
+	//HLSL
+	char TextureNumBuff[10] = { 0 };
+	D3D_SHADER_MACRO ShaderMacro[] =
+	{
+		"TEXTURE2D_MAP_NUM",_itoa(GeometryMap.GetDrawTextureResourcesNumber(),TextureNumBuff,10),
+		NULL,NULL,
+	};
+	VertexShader.BuildShaders(L"../newDX12Engine/Shader/VertexShader.hlsl", "VertexShaderMain", "vs_5_1", ShaderMacro);
+	PixelShader.BuildShaders(L"../newDX12Engine/Shader/VertexShader.hlsl", "PixelShaderMain", "ps_5_1", ShaderMacro);
+
+
+	/*VertexShader.BuildShaderByName(L"VertexShader.hlsl", "VertexShaderMain", "vs_5_1", ShaderMacro);
+	PixelShader.BuildShaderByName(L"VertexShader.hlsl", "PixelShaderMain", "ps_5_0");*/
+
 	//VertexShader.BuildShaders(L"../newDX12Engine/Shader/VertexShader.hlsl", "VertexShaderMain", "vs_5_0");
 	//PixelShader.BuildShaders(L"../newDX12Engine/Shader/VertexShader.hlsl", "PixelShaderMain", "ps_5_0");
 	// 绑定
@@ -41,7 +55,7 @@ void FRenderingPipeline::BuildPipeline()
 		{"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
 		{"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 28, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
 		{"TANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 40, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
-		{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 52, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },  // UV
+		{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 52, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
 	};
 	// 绑定
 	DirectXPipelineState.BindInputLayout(InputElementDesc.data(), InputElementDesc.size());
@@ -64,6 +78,8 @@ void FRenderingPipeline::BuildPipeline()
 	// 构建视口常量缓冲区视图
 	GeometryMap.BuildViewportConstantBufferView();
 
+	//构建贴图
+	GeometryMap.BuildTextureConstantBuffer();
 	// 构建管线
 	DirectXPipelineState.Build();
 }

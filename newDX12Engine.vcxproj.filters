@@ -583,9 +583,6 @@
     <ClCompile Include="EngineCode\Component\Mesh\Core\MeshComponent.cpp">
       <Filter>EngineCode\Component\Mesh\Core</Filter>
     </ClCompile>
-    <ClCompile Include="EngineCode\Component\Mesh\ShellMeshComponent.cpp">
-      <Filter>EngineCode\Component\Mesh</Filter>
-    </ClCompile>
     <ClCompile Include="EngineCode\Component\Mesh\BoxMeshComponent.cpp">
       <Filter>EngineCode\Component\Mesh</Filter>
     </ClCompile>
@@ -648,6 +645,15 @@
     </ClCompile>
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\StaticSampler\StaticSamplerObject.cpp">
       <Filter>EngineCode\Rendering\Core\DirectX\StaticSampler</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Mesh\PipeMesh.cpp">
+      <Filter>EngineCode\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Mesh\PyramidMesh.cpp">
+      <Filter>EngineCode\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Mesh\TorusMesh.cpp">
+      <Filter>EngineCode\Mesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -975,9 +981,6 @@
     <ClInclude Include="EngineCode\Component\Mesh\Core\MeshComponent.h">
       <Filter>EngineCode\Component\Mesh\Core</Filter>
     </ClInclude>
-    <ClInclude Include="EngineCode\Component\Mesh\ShellMeshComponent.h">
-      <Filter>EngineCode\Component\Mesh</Filter>
-    </ClInclude>
     <ClInclude Include="EngineCode\Component\Mesh\BoxMeshComponent.h">
       <Filter>EngineCode\Component\Mesh</Filter>
     </ClInclude>
@@ -1023,12 +1026,6 @@
     <ClInclude Include="EngineCode\Component\Light\PointLightComponent.h">
       <Filter>EngineCode\Component\Light</Filter>
     </ClInclude>
-    <ClInclude Include="Shader\Light.hlsl">
-      <Filter>Shader</Filter>
-    </ClInclude>
-    <ClInclude Include="Shader\Material.hlsl">
-      <Filter>Shader</Filter>
-    </ClInclude>
     <ClInclude Include="EngineCode\Rendering\DirectX12\d3dx12.h">
       <Filter>EngineCode\Rendering\DirectX12</Filter>
     </ClInclude>
@@ -1037,12 +1034,6 @@
     </ClInclude>
     <ClInclude Include="EngineCode\Rendering\Core\RenderingTextureResourcesUpdate.h">
       <Filter>EngineCode\Rendering\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Shader\ShaderFunctionLibrary.hlsl">
-      <Filter>Shader</Filter>
-    </ClInclude>
-    <ClInclude Include="Shader\ShaderCommon.hlsl">
-      <Filter>Shader</Filter>
     </ClInclude>
     <ClInclude Include="EngineCode\Component\Mesh\Core\ShellMeshComponent.h">
       <Filter>EngineCode\Component\Mesh\Core</Filter>
@@ -1058,6 +1049,27 @@
     </ClInclude>
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\StaticSampler\StaticSamplerObject.h">
       <Filter>EngineCode\Rendering\Core\DirectX\StaticSampler</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Mesh\PipeMesh.h">
+      <Filter>EngineCode\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Mesh\PyramidMesh.h">
+      <Filter>EngineCode\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Mesh\TorusMesh.h">
+      <Filter>EngineCode\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader\ShaderCommon.hlsl">
+      <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader\Material.hlsl">
+      <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader\Light.hlsl">
+      <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader\ShaderFunctionLibrary.hlsl">
+      <Filter>Shader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

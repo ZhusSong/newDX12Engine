@@ -41,41 +41,41 @@ namespace simple_cpp_helper_file
 				int end_offset = 0;
 
 				auto cpy_string = [&](int i)->bool
-				{
-					//记录上次的开始
-					start_offset = end_offset;
-					end_offset = i;
-
-					//拿到长度
-					int len = end_offset - start_offset;
-
-					//添加一个字符串
-					out_array.push_back(std::string());
-					std::string& pre_line_buff_string = out_array[out_array.size() - 1];
-					if (len > 0)
 					{
-						//先划分缓冲区
-						pre_line_buff_string.resize(len);
+						//记录上次的开始
+						start_offset = end_offset;
+						end_offset = i;
 
-						//拿到每条string数据
-						char* pre_line = const_cast<char*>(pre_line_buff_string.c_str());
+						//拿到长度
+						int len = end_offset - start_offset;
 
-						//减去/n的那个
-						len -= end_str_line_offset;
+						//添加一个字符串
+						out_array.push_back(std::string());
+						std::string& pre_line_buff_string = out_array[out_array.size() - 1];
+						if (len > 0)
+						{
+							//先划分缓冲区
+							pre_line_buff_string.resize(len);
 
-						//开始拷贝
-						char* content = strncpy(
-							pre_line,
-							&file_buff[start_offset + end_str_line_offset],
-							len);
+							//拿到每条string数据
+							char* pre_line = const_cast<char*>(pre_line_buff_string.c_str());
 
-						//跳过 /n
-						end_str_line_offset = 1;
-						return true;
-					}
+							//减去/n的那个
+							len -= end_str_line_offset;
 
-					return false;
-				};
+							//开始拷贝
+							char* content = strncpy(
+								pre_line,
+								&file_buff[start_offset + end_str_line_offset],
+								len);
+
+							//跳过 /n
+							end_str_line_offset = 1;
+							return true;
+						}
+
+						return false;
+					};
 
 				//一行行的切割字符串
 				for (int i = 0; i < file_size + 1; i++)
@@ -112,78 +112,79 @@ namespace simple_cpp_helper_file
 
 	bool SIMPLE_LIBRARY_API save_file_to_strings(const std::string& in_path, const std::vector<std::string>& in_array)
 	{
-		//文件是否存在
-		if (!is_file_exists(in_path.c_str()))
-		{
-			//准备好路径
-			char path_directory[1024] = { 0 };
-			get_path_directory(path_directory, in_path.c_str());
+		return false;
+			////文件是否存在
+			//if (!is_file_exists(in_path.c_str()))
+			//{
+			//	//准备好路径
+			//	char path_directory[1024] = { 0 };
+			//	get_path_directory(path_directory, in_path.c_str());
 
-			//先创建路径
-			if (create_file_directory(path_directory))
-			{
-				//创建对应的文件
-				create_file(in_path.c_str());
-			}
-		}
+			//	//先创建路径
+			//	if (create_file_directory(path_directory))
+			//	{
+			//		//创建对应的文件
+			//		create_file(in_path.c_str());
+			//	}
+			//}
 
-		//获取一共多少
-		int final_num = 0;
-		for (auto& tmp : in_array)
-		{
-			final_num += strlen(tmp.c_str());
-		}
+			////获取一共多少
+			//int final_num = 0;
+			//for (auto& tmp : in_array)
+			//{
+			//	final_num += strlen(tmp.c_str());
+			//}
 
-		//为/n留下空间
-		final_num += in_array.size();
+			////为/n留下空间
+			//final_num += in_array.size();
 
-		//先划分一个缓冲区
-		std::string final_str;
-		//+1 是\0结尾
-		final_str.resize(final_num + 1);
+			////先划分一个缓冲区
+			//std::string final_str;
+			////+1 是\0结尾
+			//final_str.resize(final_num + 1);
 
-		//判定按照什么方式结尾
-		int start_pos = 0;
-		for (auto& tmp : in_array)
-		{
-			int tmp_str_len = strlen(tmp.c_str());
-			if (simple_cpp_string_algorithm::index_valid(final_str.size(), start_pos))
-			{
-				char* ptr = &final_str[start_pos];
-				strcpy(ptr, tmp.c_str());
+			////判定按照什么方式结尾
+			//int start_pos = 0;
+			//for (auto& tmp : in_array)
+			//{
+			//	int tmp_str_len = strlen(tmp.c_str());
+			//	if (simple_cpp_string_algorithm::index_valid(final_str.size(), start_pos))
+			//	{
+			//		char* ptr = &final_str[start_pos];
+			//		strcpy(ptr, tmp.c_str());
 
-				int offset = 0;
-				if (ptr[tmp_str_len - 1] == '\0')
-				{
-					int index = 1;
-					//check
-					while (ptr[tmp_str_len - index] == '\0')
-					{
-						index++;
-					}
+			//		int offset = 0;
+			//		if (ptr[tmp_str_len - 1] == '\0')
+			//		{
+			//			int index = 1;
+			//			//check
+			//			while (ptr[tmp_str_len - index] == '\0')
+			//			{
+			//				index++;
+			//			}
 
-					for (int i = index; i > 0; i--)
-					{
-						ptr[tmp_str_len - i] = ' ';
-					}
+			//			for (int i = index; i > 0; i--)
+			//			{
+			//				ptr[tmp_str_len - i] = ' ';
+			//			}
 
-					ptr[tmp_str_len - index] = '\n';
-				}
-				else
-				{
-					offset++;
-					ptr[tmp_str_len] = '\n';
-				}
+			//			ptr[tmp_str_len - index] = '\n';
+			//		}
+			//		else
+			//		{
+			//			offset++;
+			//			ptr[tmp_str_len] = '\n';
+			//		}
 
-				start_pos += (tmp_str_len + offset);
-			}
-		}
+			//		start_pos += (tmp_str_len + offset);
+			//	}
+			//}
 
-		final_str[final_num] = '\0';
+			//final_str[final_num] = '\0';
 
-		char* buff = const_cast<char*>(final_str.c_str());
+			//char* buff = const_cast<char*>(final_str.c_str());
 
-		return save_file_buff(in_path.c_str(), buff);;
+			//return save_file_buff(in_path.c_str(), buff);;
 	}
 
 	bool load_file_to_bytes(const std::string& in_path, std::vector<unsigned char>& out_array)

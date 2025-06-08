@@ -4,7 +4,8 @@
 
 class CMaterial :public CCoreMinimalObject
 {
-public:	CMaterial();
+public:	
+	  CMaterial();
 
 	  // 设置材质显示状态
 	  void SetMaterialDisplayStatus(EMaterialDisplayStatusType InDisplayStatus);
@@ -15,18 +16,27 @@ public:	CMaterial();
 	  // 设置基材质种类
 	  void SetMaterialType(const EMaterialType& InMaterialType);
 
+	  // 设置光滑度
+	  void SetRoughness(const float InNewRoughness);
+
+	  void SetSpecular(const std::string& InAssetFilename);
+
+	  void SetSpecular(const fvector_3d& InVector);
+
+
 	  void SetBaseColor(const std::string& InAssetFilename);
 	  void SetNormal(const std::string& InAssetFilename);
 	  void SetDirty(bool bNewDirty);
 	  void SetMaterialIndex(int InNewIndex);
 
-	  // 设置光滑度
-	  void SetRoughness(const float InNewRoughness);
 
 	  FORCEINLINE float GetRoughness()const { return Roughness; }
 	  FORCEINLINE fvector_4d GetBaseColor()const { return BaseColor; }
 
+	  FORCEINLINE fvector_3d GetSpecularColor()const { return SpecularColor; }
+	  
 	  FORCEINLINE EMaterialType GetMaterialType()const { return MaterialType; }
+
 
 
 	  // 得到渲染模板
@@ -50,16 +60,22 @@ public:	CMaterial();
 	  FORCEINLINE bool IsDirty() const { return bDirty; }
 	  FORCEINLINE const std::string& GetBaseColorIndexKey() const { return BaseColorIndexKey; }
 	  FORCEINLINE const std::string& GetNormalIndexKey() const { return NormalIndexKey; }
+	  FORCEINLINE const std::string& GetSpecularKey() const { return SpecularIndexKey; }
+
 	  FORCEINLINE int GetMaterialIndex() const { return MaterialIndex; }
 private:
 	bool bDirty;
 	int MaterialIndex;
+
 	fvector_4d BaseColor;
+	fvector_3d SpecularColor;
+
 	float	   Roughness;
 	EMaterialType MaterialType;
 
 	std::string BaseColorIndexKey;
 	std::string NormalIndexKey;
+	std::string SpecularIndexKey;
 
 	EMaterialDisplayStatusType MaterialDisplayStatus;
 	XMFLOAT4X4 MaterialTransform;

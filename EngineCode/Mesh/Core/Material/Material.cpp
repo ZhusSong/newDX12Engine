@@ -28,6 +28,27 @@ void CMaterial::SetBaseColor(const fvector_4d& InBaseColor)
 	SetDirty(true);
 }
 
+void CMaterial::SetBaseColor(const std::string& InAssetFilename)
+{
+	BaseColorIndexKey = InAssetFilename;
+
+	SetDirty(true);
+}
+
+void CMaterial::SetSpecular(const std::string& InAssetFilename)
+{
+	SpecularIndexKey = InAssetFilename;
+
+	SetDirty(true);
+}
+
+void CMaterial::SetSpecular(const fvector_3d& InVector)
+{
+	SpecularColor = InVector;
+
+	SetDirty(true);
+}
+
 void CMaterial::SetMaterialType(const EMaterialType& InMaterialType)
 {
 	MaterialType = InMaterialType;
@@ -42,12 +63,6 @@ void CMaterial::SetRoughness(const float InNewRoughness)
 	SetDirty(true);
 }
 
-void CMaterial::SetBaseColor(const std::string& InAssetFilename)
-{
-	BaseColorIndexKey = InAssetFilename;
-
-	SetDirty(true);
-}
 
 void CMaterial::SetNormal(const std::string& InAssetFilename)
 {

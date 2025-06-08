@@ -40,16 +40,7 @@ void get_path_clean_filename(char *buf, const char *path_buf)
 
 void normalization_path(char *path_buf)
 {	
-	//replace_char_inline(path_buf,'\\','/');
-	
-	int len = strlen(path_buf);
-	for (int i = 0; path_buf[i] != 0 && i < len; i++)
-	{
-		if (path_buf[i] == 92) 
-		{
-			path_buf[i] = '/';
-		}
-	}
+	replace_char_inline(path_buf, '\\', '/');
 }
 
 void normalization_directory(char *buf, const char *path_buf)

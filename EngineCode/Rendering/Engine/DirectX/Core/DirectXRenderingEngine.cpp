@@ -3,12 +3,17 @@
 #include "../../../../Debug/EngineDebug.h"
 #include "../../../../Config/EngineRenderConfig.h"
 #include "../../../../Rendering/Core/Rendering.h"
+
 #include "../../../../Mesh/BoxMesh.h"
 #include "../../../../Mesh/SphereMesh.h"
 #include "../../../../Mesh/CylinderMesh.h"
 #include "../../../../Mesh/ConeMesh.h"
 #include "../../../../Mesh/PlaneMesh.h"
 #include "../../../../Mesh/CustomMesh.h"
+#include "../../../../Mesh/PyramidMesh.h"
+#include "../../../../Mesh/PipeMesh.h"
+#include "../../../../Mesh/TorusMesh.h"
+
 #include "../../../../Core/CoreObject/CoreMinimalObject.h"
 #include "../../../../Core/World.h"
 #include "../../../../Mesh/Core/MeshManager.h"
@@ -35,7 +40,7 @@
 
 CDirectXRenderingEngine::CDirectXRenderingEngine()
 	:CurrentFenceIndex(0)
-	, M4XQualityLevels(0)
+	, M4XQualityLevels(1)
 	, bMSAA4XEnabled(false)
 	, BackBufferFormat(DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM)
 	, DepthStencilFormat(DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT)
@@ -123,6 +128,72 @@ int CDirectXRenderingEngine::PostInit()
 			ParallelLight->SetRotation(fvector_3d(-90.f, 0.f,0.f));
 		}*/
 
+
+		//三楞锥
+		if (GPyramidMesh* InPyramidMesh = World->CreateActorObject<GPyramidMesh>())
+		{
+			InPyramidMesh->CreateMesh(EPyramidNumberSides::Pyramid_3, 1);
+			InPyramidMesh->SetPosition(XMFLOAT3(-1.f, -8, 20.f));
+			InPyramidMesh->SetRotation(fvector_3d(0.f, 90.f, 0.f));
+			if (CMaterial* InMaterial = (*InPyramidMesh->GetMaterials())[0])
+			{
+				InMaterial->SetBaseColor(fvector_4d(4.f, 0.f, 0.f, 1.f));
+				InMaterial->SetMaterialType(EMaterialType::HalfLambert);
+			}
+		}
+
+		//Pipe模型
+		if (GPipeMesh* InPipeMesh = World->CreateActorObject<GPipeMesh>())
+		{
+			InPipeMesh->CreateMesh(3.f, 3.f, 6.f, 1.f, 20.f, 20.f);
+			InPipeMesh->SetPosition(XMFLOAT3(-9.f, -9, 20.f));
+			if (CMaterial* InMaterial = (*InPipeMesh->GetMaterials())[0])
+			{
+				//InMaterial->SetBaseColor(fvector_4d(5.f));
+				//InMaterial->SetMaterialDisplayStatus(EMaterialDisplayStatusType::WireframeDisplay);
+				InMaterial->SetMaterialType(EMaterialType::HalfLambert);
+			}
+		}
+
+		//锥形
+		if (GConeMesh* InConeMesh = World->CreateActorObject<GConeMesh>())
+		{
+			InConeMesh->CreateMesh(2.f, 3.f, 20.f, 20.f);
+
+			InConeMesh->SetPosition(XMFLOAT3(7.f, -11.f, 20.f));
+			InConeMesh->SetScale(fvector_3d(1.f, 1.f, 1.f));
+			if (CMaterial* InMaterial = (*InConeMesh->GetMaterials())[0])
+			{
+				//	InMaterial->SetBaseColor(fvector_4d(1.f));
+				InMaterial->SetMaterialType(EMaterialType::HalfLambert);
+			}
+		}
+
+		if (GBoxMesh* InBoxMesh = World->CreateActorObject<GBoxMesh>())
+		{
+			InBoxMesh->CreateMesh(5.f, 5.f, 5.f);
+
+			InBoxMesh->SetPosition(XMFLOAT3(22.f, -10.f, 20.f));
+			InBoxMesh->SetScale(fvector_3d(1.f, 1.f, 1.f));
+			if (CMaterial* InMaterial = (*InBoxMesh->GetMaterials())[0])
+			{
+				//	InMaterial->SetBaseColor(fvector_4d(0.5f));
+				InMaterial->SetMaterialType(EMaterialType::HalfLambert);
+			}
+		}
+
+		if (GCylinderMesh* InCylinderMesh = World->CreateActorObject<GCylinderMesh>())
+		{
+			InCylinderMesh->CreateMesh(2.f, 2.f, 5.f, 20.f, 20.f);
+
+			InCylinderMesh->SetPosition(XMFLOAT3(14.f, -10.f, 20.f));
+			InCylinderMesh->SetScale(fvector_3d(1.f, 1.f, 1.f));
+			if (CMaterial* InMaterial = (*InCylinderMesh->GetMaterials())[0])
+			{
+				InMaterial->SetBaseColor(fvector_4d(0.5f));
+				InMaterial->SetMaterialType(EMaterialType::HalfLambert);
+			}
+		}
 
 		if (GPlaneMesh* InPlaneMesh = World->CreateActorObject<GPlaneMesh>())
 		{
@@ -401,6 +472,78 @@ int CDirectXRenderingEngine::PostInit()
 			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
 			{
 			    InMaterial->SetMaterialType(EMaterialType::WorldNormal);
+			}
+		}
+		//显示BaseColor贴图1
+		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
+		{
+			SphereMesh->CreateMesh(2.f, 50, 50);
+			SphereMesh->SetPosition(XMFLOAT3(-9.f, -3, 0.f));
+			SphereMesh->SetRotation(fvector_3d(0.f, -90.f, 0.f));
+			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
+			{
+				InMaterial->SetBaseColor("Wood");
+				InMaterial->SetNormal("Wood_NRM");
+				InMaterial->SetBaseColor(fvector_4d(1.f));
+				InMaterial->SetRoughness(4.f);
+				InMaterial->SetMaterialType(EMaterialType::OrenNayar);
+			}
+		}
+
+		//显示BaseColor贴图2
+		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
+		{
+			SphereMesh->CreateMesh(2.f, 50, 50);
+			SphereMesh->SetPosition(XMFLOAT3(-3.f, -3, 0.f));
+			SphereMesh->SetRotation(fvector_3d(0.f, -90.f, 0.f));
+			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
+			{
+				InMaterial->SetBaseColor("../RenZhaiEngine/Asset/Texture/MMOARPG.dds");
+				InMaterial->SetBaseColor(fvector_4d(0.7f));
+				InMaterial->SetNormal("MMOARPG_NRM");
+				InMaterial->SetMaterialType(EMaterialType::OrenNayar);
+			}
+		}
+
+		////显示BaseColor贴图2
+		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
+		{
+			SphereMesh->CreateMesh(2.f, 50, 50);
+			SphereMesh->SetPosition(XMFLOAT3(3.f, -3, 0.f));
+			SphereMesh->SetRotation(fvector_3d(0.f, -90.f, 0.f));
+			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
+			{
+				InMaterial->SetBaseColor("Texture'/Project/Texture/Earth.Earth'");
+				InMaterial->SetBaseColor(fvector_4d(0.7f));
+				InMaterial->SetSpecular(fvector_3d(1.f));
+				InMaterial->SetMaterialType(EMaterialType::BinnPhong);
+			}
+		}
+
+		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
+		{
+			SphereMesh->CreateMesh(2.f, 100, 100);
+			SphereMesh->SetPosition(XMFLOAT3(9.f, -3, 0.f));
+			SphereMesh->SetRotation(fvector_3d(0.f, 90.f, 0.f));
+			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
+			{
+				InMaterial->SetNormal("Wood2_Nor");
+				//InMaterial->SetBaseColor("Wood2");
+				InMaterial->SetMaterialType(EMaterialType::BinnPhong);
+			}
+		}
+
+		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
+		{
+			SphereMesh->CreateMesh(2.f, 100, 100);
+			SphereMesh->SetPosition(XMFLOAT3(15.f, -3, 0.f));
+			SphereMesh->SetRotation(fvector_3d(0.f, 90.f, 0.f));
+			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
+			{
+				InMaterial->SetNormal("Wood2_Nor");
+				//InMaterial->SetBaseColor("Wood2");
+				InMaterial->SetSpecular("Wood2_SPEC");
+				InMaterial->SetMaterialType(EMaterialType::BinnPhong);
 			}
 		}
 	}

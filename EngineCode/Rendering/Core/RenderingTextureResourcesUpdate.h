@@ -16,7 +16,7 @@ struct FRenderingTexture
 	wstring Name;// 贴图名
 	wstring Filename;// 路径
 	wstring AssetFilename;// 资源文件夹路径 Texture'Asset/Texture/Hello.Hello'
-	wstring SimpleAssetFilename;//  Asset/Texture/Hello.Hello
+	wstring SimpleAssetFilename;//  简易路径 Asset/Texture/Hello.Hello
 
 	UINT RenderingTextureID;  // 贴图ID
 };

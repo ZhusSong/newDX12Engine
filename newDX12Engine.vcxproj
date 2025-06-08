@@ -44,7 +44,6 @@
     <ClCompile Include="EngineCode\Component\Mesh\PipeMeshComponent.cpp" />
     <ClCompile Include="EngineCode\Component\Mesh\PlaneMeshComponent.cpp" />
     <ClCompile Include="EngineCode\Component\Mesh\PyramidMeshComponent.cpp" />
-    <ClCompile Include="EngineCode\Component\Mesh\ShellMeshComponent.cpp" />
     <ClCompile Include="EngineCode\Component\Mesh\SphereMeshComponent.cpp" />
     <ClCompile Include="EngineCode\Component\Mesh\TorusMeshComponent.cpp" />
     <ClCompile Include="EngineCode\Component\TransformComponent.cpp" />
@@ -74,8 +73,11 @@
     <ClCompile Include="EngineCode\Mesh\Core\ObjectTransform.cpp" />
     <ClCompile Include="EngineCode\Mesh\CustomMesh.cpp" />
     <ClCompile Include="EngineCode\Mesh\CylinderMesh.cpp" />
+    <ClCompile Include="EngineCode\Mesh\PipeMesh.cpp" />
     <ClCompile Include="EngineCode\Mesh\PlaneMesh.cpp" />
+    <ClCompile Include="EngineCode\Mesh\PyramidMesh.cpp" />
     <ClCompile Include="EngineCode\Mesh\SphereMesh.cpp" />
+    <ClCompile Include="EngineCode\Mesh\TorusMesh.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\Buffer\ConstructBuffer.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\ConstantBuffer\ConstantBufferViews.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DescriptorHeap\DirectXDescriptorHeap.cpp" />
@@ -161,7 +163,6 @@
     <ClInclude Include="EngineCode\Component\Mesh\PipeMeshComponent.h" />
     <ClInclude Include="EngineCode\Component\Mesh\PlaneMeshComponent.h" />
     <ClInclude Include="EngineCode\Component\Mesh\PyramidMeshComponent.h" />
-    <ClInclude Include="EngineCode\Component\Mesh\ShellMeshComponent.h" />
     <ClInclude Include="EngineCode\Component\Mesh\SphereMeshComponent.h" />
     <ClInclude Include="EngineCode\Component\Mesh\TorusMeshComponent.h" />
     <ClInclude Include="EngineCode\Component\TransformComponent.h" />
@@ -194,8 +195,11 @@
     <ClInclude Include="EngineCode\Mesh\Core\ObjectTransform.h" />
     <ClInclude Include="EngineCode\Mesh\CustomMesh.h" />
     <ClInclude Include="EngineCode\Mesh\CylinderMesh.h" />
+    <ClInclude Include="EngineCode\Mesh\PipeMesh.h" />
     <ClInclude Include="EngineCode\Mesh\PlaneMesh.h" />
+    <ClInclude Include="EngineCode\Mesh\PyramidMesh.h" />
     <ClInclude Include="EngineCode\Mesh\SphereMesh.h" />
+    <ClInclude Include="EngineCode\Mesh\TorusMesh.h" />
     <ClInclude Include="EngineCode\Rendering\Core\Buffer\ConstructBuffer.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\ConstantBuffer\ConstantBufferViews.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DescriptorHeap\DirectXDescriptorHeap.h" />
@@ -300,7 +304,7 @@
     <FxCompile Include="Shader\VertexShader.hlsl">
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">PixelShaderMain</EntryPointName>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.1</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
