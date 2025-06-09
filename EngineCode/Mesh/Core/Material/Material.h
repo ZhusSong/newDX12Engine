@@ -44,11 +44,14 @@ public:
 		  switch (MaterialDisplayStatus){
 
 		  case EMaterialDisplayStatusType::DefaultDisplay:
-			  return  D3D_PRIMITIVE_TOPOLOGY_UNDEFINED;
+			  return  D3D_PRIMITIVE_TOPOLOGY_UNDEFINED; 
+
 		  case EMaterialDisplayStatusType::PointDisplay:
 			  return  D3D_PRIMITIVE_TOPOLOGY_POINTLIST;
+
 		  case EMaterialDisplayStatusType::WireframeDisplay:
 			  return  D3D_PRIMITIVE_TOPOLOGY_LINELIST;
+
 		  case EMaterialDisplayStatusType::TriangleDisplay:
 			  return  D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 		  default:

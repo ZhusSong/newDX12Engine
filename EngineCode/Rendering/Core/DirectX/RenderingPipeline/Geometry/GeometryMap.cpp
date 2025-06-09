@@ -422,7 +422,7 @@ void FGeometryMap::DrawMesh(float DeltaTime)
 
 			//定义我们要绘制的哪种图元 点 线 面
 			D3D_PRIMITIVE_TOPOLOGY DisplayStatus = (*InRenderingData.Mesh->GetMaterials())[0]->GetMaterialDisplayStatus();
-			GetGraphicsCommandList()->IASetPrimitiveTopology(DisplayStatus);
+			GetGraphicsCommandList()->IASetPrimitiveTopology((D3D_PRIMITIVE_TOPOLOGY)DisplayStatus);
 
 			//模型起始地址偏移
 			DesMeshHandle.Offset((INT)i, DescriptorOffset);

@@ -635,9 +635,6 @@ int CDirectXRenderingEngine::PreExit()
 {
 	
 
-	
-
-
 	Engine_Log("Engine post exit complete.");
 	return 0;
 }

@@ -24,32 +24,32 @@ MeshVertexOut VertexShaderMain(MeshVertexIn MV)
 {
     MaterialConstBuffer MatConstBuffer = Materials[MaterialIndex];
 
-    MeshVertexOut Out;
+    MeshVertexOut MOut;
 
 	//世界坐标
-    Out.WorldPosition = mul(float4(MV.Position, 1.f), WorldMatrix);
+    MOut.WorldPosition = mul(float4(MV.Position, 1.f), WorldMatrix);
 
 	//变换到齐次剪辑空间
-    Out.Position = mul(Out.WorldPosition, ViewProjectionMatrix);
+    MOut.Position = mul(MOut.WorldPosition, ViewProjectionMatrix);
 
     if (MatConstBuffer.MaterialType == 13)
     {
-        Out.Normal = MV.Normal;
+        MOut.Normal = MV.Normal;
     }
     else
     {
 		//转法线
-        Out.Normal = mul(MV.Normal, (float3x3) WorldMatrix);
+        MOut.Normal = mul(MV.Normal, (float3x3) WorldMatrix);
     }
 	
 	//切线
-    Out.UTangent = mul(MV.UTangent, (float3x3) WorldMatrix);
+    MOut.UTangent = mul(MV.UTangent, (float3x3) WorldMatrix);
 
 	//ui坐标
     float4 MyTexCoord = mul(float4(MV.TexCoord, 0.0f, 1.f), ObjectTextureTransform);
-    Out.TexCoord = mul(MyTexCoord, MatConstBuffer.TransformInformation).xy;
+    MOut.TexCoord = mul(MyTexCoord, MatConstBuffer.TransformInformation).xy;
 
-    return Out;
+    return MOut;
 }
 
 float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET

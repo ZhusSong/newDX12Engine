@@ -1,6 +1,6 @@
 ﻿// 25.6.8 李
 #pragma once
-#include "../simple_core_minimal/simple_c_core/simple_core_minimal.h"
+#include "simple_library/public/simple_core_minimal/simple_c_core/simple_core_minimal.h"
 
 _CRT_BEGIN_C_HEADER
 enum e_error
@@ -11,13 +11,15 @@ enum e_error
 	SIMPLE_C_ERROR,
 };
 
-const char *get_log_filename();
-const char *get_log_path();
+const char* get_log_filename();
+const char* get_log_path();
 
-void init_log_system(const char *path);
+void init_log_system(const char* path);
 
 //log
-bool log_wirte(enum e_error error, char *format, ...);
+bool log_wirte(enum e_error error, char* format, ...);
+char* get_error_str(enum e_error error, char* buff);
+int get_log_str(enum e_error error, char* buff, const char* content_buff);
 
 #define log_system(type,format,...) \
 { \
