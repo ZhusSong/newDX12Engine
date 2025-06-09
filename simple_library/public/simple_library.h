@@ -32,7 +32,8 @@
 #include "simple_delegate/simple_delegate.h"
 
 //net
-#include "simple_channel/simple_net_drive.h"
+
+#include "simple_cpp_core_minimal/simple_cpp_core_minimal.h"
 
 //math
 #include "simple_math/simple_core_math.h"

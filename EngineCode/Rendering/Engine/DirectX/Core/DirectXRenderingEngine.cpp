@@ -95,7 +95,7 @@ int CDirectXRenderingEngine::PostInit()
 		}
 		*/
 		// 创建灯光
-		////  聚光灯
+		//  聚光灯
 		//if (GSpotLight* SpotLight = World->CreateActorObject<GSpotLight>())
 		//{
 		//	SpotLight->SetPosition(XMFLOAT3(0.f, 10.f, 10.f));
@@ -109,7 +109,7 @@ int CDirectXRenderingEngine::PostInit()
 		//	SpotLight->SetConicalOuterCorner(60.f);
 		//}
 		// 点光源
-	/*	if (GPointLight* PointLight = World->CreateActorObject<GPointLight>())
+		/*if (GPointLight* PointLight = World->CreateActorObject<GPointLight>())
 		{
 			PointLight->SetPosition(XMFLOAT3(0.f, 10.f, -10.f));
 			PointLight->SetRotation(fvector_3d(0.f, 0.f, 0.f));
@@ -117,29 +117,34 @@ int CDirectXRenderingEngine::PostInit()
 			PointLight->SetLightIntensity(fvector_3d(7.f, 7.f, 7.f));
 			PointLight->SetEndAttenuation(20.f);
 		}*/
+		// 平行光
 		if (GParallelLight* ParallelLight = World->CreateActorObject<GParallelLight>())
 		{
-			ParallelLight->SetPosition(XMFLOAT3(10.f, -10.f, 10.f));
+			ParallelLight->SetPosition(XMFLOAT3(10.f, -10.f, 30.f));
 			ParallelLight->SetRotation(fvector_3d(0.f, 0.f, 0.f));
 
 			ParallelLight->SetLightIntensity(fvector_3d(1.1f, 1.1f, 1.1f));
 		}
-	/*	if (GParallelLight* ParallelLight = World->CreateActorObject<GParallelLight>())
+	
+
+		if (GTorusMesh* InTorusMesh = World->CreateActorObject<GTorusMesh>())
 		{
-			ParallelLight->SetPosition(XMFLOAT3(10.f, 2.f, 10.f));
-			ParallelLight->SetRotation(fvector_3d(-90.f, 0.f,0.f));
-		}*/
+			InTorusMesh->CreateMesh(6.f, 2.f, 40, 40);
+			InTorusMesh->SetPosition(XMFLOAT3(-22.f, -8, 20.f));
+			if (CMaterial* InMaterial = (*InTorusMesh->GetMaterials())[0])
+			{
+				InMaterial->SetMaterialType(EMaterialType::HalfLambert);
+			}
+		}
 
-
-		//三楞锥
+		//棱锥
 		if (GPyramidMesh* InPyramidMesh = World->CreateActorObject<GPyramidMesh>())
 		{
 			InPyramidMesh->CreateMesh(EPyramidNumberSides::Pyramid_3, 1);
 			InPyramidMesh->SetPosition(XMFLOAT3(-1.f, -8, 20.f));
-			InPyramidMesh->SetRotation(fvector_3d(0.f, 90.f, 0.f));
+			//InPyramidMesh->SetRotation(fvector_3d(0.f, 90.f, 0.f));
 			if (CMaterial* InMaterial = (*InPyramidMesh->GetMaterials())[0])
 			{
-				InMaterial->SetBaseColor(fvector_4d(4.f, 0.f, 0.f, 1.f));
 				InMaterial->SetMaterialType(EMaterialType::HalfLambert);
 			}
 		}
@@ -147,10 +152,11 @@ int CDirectXRenderingEngine::PostInit()
 		//Pipe模型
 		if (GPipeMesh* InPipeMesh = World->CreateActorObject<GPipeMesh>())
 		{
-			InPipeMesh->CreateMesh(3.f, 3.f, 6.f, 1.f, 20.f, 20.f);
+			InPipeMesh->CreateMesh(3.f, 3.f, 6.f, 1.f, 20, 20);
 			InPipeMesh->SetPosition(XMFLOAT3(-9.f, -9, 20.f));
 			if (CMaterial* InMaterial = (*InPipeMesh->GetMaterials())[0])
 			{
+				//InMaterial->SetBaseColor(fvector_4d(1.f));
 				//InMaterial->SetBaseColor(fvector_4d(5.f));
 				//InMaterial->SetMaterialDisplayStatus(EMaterialDisplayStatusType::WireframeDisplay);
 				InMaterial->SetMaterialType(EMaterialType::HalfLambert);
@@ -160,12 +166,13 @@ int CDirectXRenderingEngine::PostInit()
 		//锥形
 		if (GConeMesh* InConeMesh = World->CreateActorObject<GConeMesh>())
 		{
-			InConeMesh->CreateMesh(2.f, 3.f, 20.f, 20.f);
+			InConeMesh->CreateMesh(2.f, 3.f, 20, 20);
 
 			InConeMesh->SetPosition(XMFLOAT3(7.f, -11.f, 20.f));
 			InConeMesh->SetScale(fvector_3d(1.f, 1.f, 1.f));
 			if (CMaterial* InMaterial = (*InConeMesh->GetMaterials())[0])
 			{
+				//InMaterial->SetBaseColor(fvector_4d(1.f));
 				//	InMaterial->SetBaseColor(fvector_4d(1.f));
 				InMaterial->SetMaterialType(EMaterialType::HalfLambert);
 			}
@@ -179,6 +186,7 @@ int CDirectXRenderingEngine::PostInit()
 			InBoxMesh->SetScale(fvector_3d(1.f, 1.f, 1.f));
 			if (CMaterial* InMaterial = (*InBoxMesh->GetMaterials())[0])
 			{
+				//InMaterial->SetBaseColor(fvector_4d(1.f));
 				//	InMaterial->SetBaseColor(fvector_4d(0.5f));
 				InMaterial->SetMaterialType(EMaterialType::HalfLambert);
 			}
@@ -186,13 +194,13 @@ int CDirectXRenderingEngine::PostInit()
 
 		if (GCylinderMesh* InCylinderMesh = World->CreateActorObject<GCylinderMesh>())
 		{
-			InCylinderMesh->CreateMesh(2.f, 2.f, 5.f, 20.f, 20.f);
+			InCylinderMesh->CreateMesh(2.f, 2.f, 5.f, 20, 20);
 
 			InCylinderMesh->SetPosition(XMFLOAT3(14.f, -10.f, 20.f));
 			InCylinderMesh->SetScale(fvector_3d(1.f, 1.f, 1.f));
 			if (CMaterial* InMaterial = (*InCylinderMesh->GetMaterials())[0])
 			{
-				InMaterial->SetBaseColor(fvector_4d(0.5f));
+				//InMaterial->SetBaseColor(fvector_4d(1.f));
 				InMaterial->SetMaterialType(EMaterialType::HalfLambert);
 			}
 		}
@@ -488,7 +496,7 @@ int CDirectXRenderingEngine::PostInit()
 				InMaterial->SetNormal("Wood_NRM");
 				InMaterial->SetBaseColor(fvector_4d(1.f));
 				InMaterial->SetRoughness(4.f);
-				InMaterial->SetMaterialType(EMaterialType::OrenNayar);
+				InMaterial->SetMaterialType(EMaterialType::HalfLambert);
 			}
 		}
 
@@ -500,10 +508,9 @@ int CDirectXRenderingEngine::PostInit()
 			SphereMesh->SetRotation(fvector_3d(0.f, -90.f, 0.f));
 			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
 			{
-				InMaterial->SetBaseColor("../RenZhaiEngine/Asset/Texture/MMOARPG.dds");
-				InMaterial->SetBaseColor(fvector_4d(0.7f));
+				InMaterial->SetBaseColor("MMOARPG");
 				InMaterial->SetNormal("MMOARPG_NRM");
-				InMaterial->SetMaterialType(EMaterialType::OrenNayar);
+				InMaterial->SetMaterialType(EMaterialType::HalfLambert);
 			}
 		}
 
@@ -515,7 +522,7 @@ int CDirectXRenderingEngine::PostInit()
 			SphereMesh->SetRotation(fvector_3d(0.f, -90.f, 0.f));
 			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
 			{
-				InMaterial->SetBaseColor("Texture'/Project/Texture/Earth.Earth'");
+				InMaterial->SetBaseColor("Earth");
 				InMaterial->SetBaseColor(fvector_4d(0.7f));
 				InMaterial->SetSpecular(fvector_3d(1.f));
 				InMaterial->SetMaterialType(EMaterialType::BinnPhong);
@@ -1000,8 +1007,8 @@ void CDirectXRenderingEngine::PostInitDirect3D()
 	//描述视口尺寸
 	ViewprotInfo.TopLeftX = 0;
 	ViewprotInfo.TopLeftY = 0;
-	ViewprotInfo.Width = FEngineRenderConfig::GetRenderConfig()->ScrrenWidth;
-	ViewprotInfo.Height = FEngineRenderConfig::GetRenderConfig()->ScrrenHight;
+	ViewprotInfo.Width = (FLOAT)FEngineRenderConfig::GetRenderConfig()->ScrrenWidth;
+	ViewprotInfo.Height = (FLOAT)FEngineRenderConfig::GetRenderConfig()->ScrrenHight;
 	ViewprotInfo.MinDepth = 0.f;
 	ViewprotInfo.MaxDepth = 1.f;
 

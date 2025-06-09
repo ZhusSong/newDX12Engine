@@ -5,7 +5,9 @@ SamplerState TextureSampler: register(s0);
 SamplerState AnisotropicSampler : register(s1);
 
 
-#define TEXTURE2D_MAP_NUM 10
+#ifndef TEXTURE2D_MAP_NUM
+#define TEXTURE2D_MAP_NUM 20  
+#endif
 
 Texture2D SimpleTexture2DMap[TEXTURE2D_MAP_NUM] : register(t3);
 

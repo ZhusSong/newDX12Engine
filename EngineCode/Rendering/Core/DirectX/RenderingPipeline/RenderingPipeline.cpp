@@ -29,7 +29,7 @@ void FRenderingPipeline::BuildPipeline()
 
 	//构建Shader
 	//HLSL
-	char TextureNumBuff[10] = { 0 };
+	char TextureNumBuff[20] = { 0 };
 	D3D_SHADER_MACRO ShaderMacro[] =
 	{
 		"TEXTURE2D_MAP_NUM",_itoa(GeometryMap.GetDrawTextureResourcesNumber(),TextureNumBuff,10),

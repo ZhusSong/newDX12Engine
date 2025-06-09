@@ -1,4 +1,5 @@
 
+// 构建TBN矩阵
 float3x3 GetBuildTBNMatrix(float3 InUnitWorldNormal,float3 InWorldTangent)
 {
 	float3 N = InUnitWorldNormal;
