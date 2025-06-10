@@ -111,13 +111,23 @@ T* CMeshManager::CreateMeshComponent(ParamTypes && ...Params)
 {
     T* MyMesh = CreateObject<T>(new T());
 
-    //提取模型资源
-    FMeshRenderingData MeshData;
-    MyMesh->CreateMesh(MeshData, forward<ParamTypes>(Params)...);
+    size_t HashKey = 0;
+    MyMesh->BuildKey(HashKey, forward<ParamTypes>(Params)...);
 
+    FRenderingData RenderingData;
+    if (RenderingPipeline.FindMeshRenderingDataByHash(HashKey, RenderingData))
+    {
+        RenderingPipeline.DuplicateMesh(MyMesh, RenderingData);
+    }
+    else
+    {
+        //提取模型资源
+        FMeshRenderingData MeshData;
+        MyMesh->CreateMesh(MeshData, forward<ParamTypes>(Params)...);
 
-    //构建mesh
-    RenderingPipeline.BuildMesh(MyMesh, MeshData);
+        //构建mesh
+        RenderingPipeline.BuildMesh(HashKey, MyMesh, MeshData);
+    }
 
     MyMesh->Init();
 

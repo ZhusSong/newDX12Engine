@@ -68,3 +68,14 @@ void CBoxMeshComponent::CreateMesh(FMeshRenderingData& MeshData, float InHeight,
 	MeshData.IndexData.push_back(20); MeshData.IndexData.push_back(21); MeshData.IndexData.push_back(22);
 	MeshData.IndexData.push_back(20); MeshData.IndexData.push_back(22); MeshData.IndexData.push_back(23);
 }
+
+
+void CBoxMeshComponent::BuildKey(size_t& OutHashKey, float InHeight, float InWidth, float InDepth)
+{
+	std::hash<float> FloatHash;
+
+	OutHashKey = 1;
+	OutHashKey += FloatHash(InHeight);
+	OutHashKey += FloatHash(InWidth);
+	OutHashKey += FloatHash(InDepth);
+}

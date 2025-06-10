@@ -14,7 +14,11 @@ struct FGeometry :public IDirectXDeviceInterface_Struct
 
 	// 判断当前是否存在渲染数据
 	bool bRenderingDataExistence(CMeshComponent* InKey);
-	void BuildMesh(CMeshComponent* InMesh, const FMeshRenderingData& MeshData);
+
+	// 通过hash值构建模型
+	void BuildMesh(const size_t InMeshHash, CMeshComponent* InMesh, const FMeshRenderingData& MeshData);
+	void DuplicateMesh(CMeshComponent* InMesh, const FRenderingData& MeshData);
+	bool FindMeshRenderingDataByHash(const size_t& InHash, FRenderingData& MeshData);
 
 	void Build();
 
@@ -54,8 +58,10 @@ struct FGeometryMap :public IDirectXDeviceInterface_Struct
 
 	void UpdateMaterialShaderResourceView(float DeltaTime, const FViewportInfo& ViewportInfo);
 
-	void BuildMesh(CMeshComponent* InMesh, const FMeshRenderingData& MeshData);
 
+	void BuildMesh(const size_t InMeshHash, CMeshComponent* InMesh, const FMeshRenderingData& MeshData);
+	void DuplicateMesh(CMeshComponent* InMesh, const FRenderingData& MeshData);
+	bool FindMeshRenderingDataByHash(const size_t& InHash, FRenderingData& MeshData);
 	void LoadTexture();
 	// 构建模型
 	void Build();

@@ -214,3 +214,18 @@ void CPipeMeshComponent::CreateMesh(
 		}
 	}
 }
+
+
+void CPipeMeshComponent::BuildKey(size_t& OutHashKey, float InTopRadius, float InBottomRadius, float InHeight, float InThickness, uint32_t InAxialSubdivision, uint32_t InHeightSubdivision)
+{
+	std::hash<float> FloatHash;
+	std::hash<int> IntHash;
+
+	OutHashKey = 5;
+	OutHashKey += FloatHash(InHeight);
+	OutHashKey += FloatHash(InBottomRadius);
+	OutHashKey += FloatHash(InTopRadius);
+
+	OutHashKey += IntHash._Do_hash(InAxialSubdivision);
+	OutHashKey += IntHash._Do_hash(InHeightSubdivision);
+}

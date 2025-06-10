@@ -215,12 +215,33 @@ void FGeometryMap::UpdateMaterialShaderResourceView(float DeltaTime, const FView
 	}
 }
 
-void FGeometryMap::BuildMesh(CMeshComponent* InMesh, const FMeshRenderingData& MeshData)
+void FGeometryMap::BuildMesh(const size_t InMeshHash, CMeshComponent* InMesh, const FMeshRenderingData& MeshData)
 {
 	FGeometry& Geometry = Geometrys[0];
 
-	Geometry.BuildMesh(InMesh, MeshData);
+	Geometry.BuildMesh(InMeshHash, InMesh, MeshData);
 }
+
+void FGeometryMap::DuplicateMesh(CMeshComponent* InMesh, const FRenderingData& MeshData)
+{
+	FGeometry& Geometry = Geometrys[0];
+
+	Geometry.DuplicateMesh(InMesh, MeshData);
+}
+
+bool FGeometryMap::FindMeshRenderingDataByHash(const size_t& InHash, FRenderingData& MeshData)
+{
+	for (auto& Tmp : Geometrys)
+	{
+		if (Tmp.second.FindMeshRenderingDataByHash(InHash, MeshData))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 
 void FGeometryMap::LoadTexture()
 {
@@ -471,7 +492,7 @@ bool FGeometry::bRenderingDataExistence(CMeshComponent* InKey)
 	return false;
 }
 
-void FGeometry::BuildMesh(CMeshComponent* InMesh, const FMeshRenderingData& MeshData)
+void FGeometry::BuildMesh(const size_t InMeshHash, CMeshComponent* InMesh, const FMeshRenderingData& MeshData)
 {
 	if (!bRenderingDataExistence(InMesh))
 	{
@@ -480,12 +501,13 @@ void FGeometry::BuildMesh(CMeshComponent* InMesh, const FMeshRenderingData& Mesh
 
 		//基础注册
 		InRenderingData.Mesh = InMesh;
+		InRenderingData.MeshHash = InMeshHash;
 
-		InRenderingData.IndexSize = (UINT)MeshData.IndexData.size();
-		InRenderingData.VertexSize = (UINT)MeshData.VertexData.size();
+		InRenderingData.IndexSize = MeshData.IndexData.size();
+		InRenderingData.VertexSize = MeshData.VertexData.size();
 
-		InRenderingData.IndexOffsetPosition = (UINT)MeshRenderingData.IndexData.size();
-		InRenderingData.VertexOffsetPosition = (UINT)MeshRenderingData.VertexData.size();
+		InRenderingData.IndexOffsetPosition = MeshRenderingData.IndexData.size();
+		InRenderingData.VertexOffsetPosition = MeshRenderingData.VertexData.size();
 
 		//高效的插入
 		//索引的合并
@@ -500,6 +522,32 @@ void FGeometry::BuildMesh(CMeshComponent* InMesh, const FMeshRenderingData& Mesh
 			MeshData.VertexData.begin(),
 			MeshData.VertexData.end());
 	}
+}
+
+void FGeometry::DuplicateMesh(CMeshComponent* InMesh, const FRenderingData& MeshData)
+{
+	if (!bRenderingDataExistence(InMesh))
+	{
+		DescribeMeshRenderingData.push_back(MeshData);
+		FRenderingData& InRenderingData = DescribeMeshRenderingData[DescribeMeshRenderingData.size() - 1];
+
+		//基础注册
+		InRenderingData.Mesh = InMesh;
+	}
+}
+
+bool FGeometry::FindMeshRenderingDataByHash(const size_t& InHash, FRenderingData& MeshData)
+{
+	for (auto& Tmp : DescribeMeshRenderingData)
+	{
+		if (Tmp.MeshHash == InHash)
+		{
+			MeshData = Tmp;
+			return true;
+		}
+	}
+
+	return false;
 }
 
 void FGeometry::Build()

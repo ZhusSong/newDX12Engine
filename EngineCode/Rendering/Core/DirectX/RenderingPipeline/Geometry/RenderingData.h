@@ -21,6 +21,9 @@ public:
 	UINT VertexTypeSize;
 	UINT IndexTypeSize;
 
+
+	size_t MeshHash;
+
 public:
 	UINT GetVertexSizeInBytes()const { return VertexSize * VertexTypeSize; }
 	UINT GetIndexSizeInBytes()const { return IndexSize * IndexTypeSize; }

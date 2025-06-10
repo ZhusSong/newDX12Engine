@@ -21,10 +21,10 @@ void CCustomMeshComponent::CreateMesh(FMeshRenderingData& MeshData, string& InPa
 
 	if (!LoadObjFromBuff(Buff, FileSize, MeshData))
 	{
-
+		Engine_Log_Error("Cant load obj!");
 	}
 
-	delete Buff;
+	Buff = nullptr;
 }
 
 bool CCustomMeshComponent::LoadObjFromBuff(char* InBuff, uint32_t InBuffSize, FMeshRenderingData& MeshData)
@@ -111,4 +111,12 @@ bool CCustomMeshComponent::LoadObjFromBuff(char* InBuff, uint32_t InBuffSize, FM
 	}
 
 	return false;
+}
+
+void CCustomMeshComponent::BuildKey(size_t& OutHashKey, std::string& InPath)
+{
+	std::hash<string> FloatHash;
+
+	OutHashKey = 3;
+	OutHashKey += FloatHash(InPath);
 }

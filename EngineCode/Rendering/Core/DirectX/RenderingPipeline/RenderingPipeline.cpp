@@ -5,10 +5,21 @@ FRenderingPipeline::FRenderingPipeline()
 
 }
 
-void FRenderingPipeline::BuildMesh(CMeshComponent* InMesh, const FMeshRenderingData& MeshData)
+void FRenderingPipeline::BuildMesh(const size_t InMeshHash, CMeshComponent* InMesh, const FMeshRenderingData& MeshData)
 {
-	GeometryMap.BuildMesh(InMesh, MeshData);
+	GeometryMap.BuildMesh(InMeshHash, InMesh, MeshData);
 }
+
+void FRenderingPipeline::DuplicateMesh(CMeshComponent* InMesh, const FRenderingData& MeshData)
+{
+	GeometryMap.DuplicateMesh(InMesh, MeshData);
+}
+
+bool FRenderingPipeline::FindMeshRenderingDataByHash(const size_t& InHash, FRenderingData& MeshData)
+{
+	return GeometryMap.FindMeshRenderingDataByHash(InHash, MeshData);
+}
+
 
 void FRenderingPipeline::UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo)
 {

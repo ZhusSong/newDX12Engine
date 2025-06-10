@@ -136,3 +136,17 @@ void CCylinderMeshComponent::CreateMesh(FMeshRenderingData& MeshData, float InTo
 		}
 	}
 }
+
+void CCylinderMeshComponent::BuildKey(size_t& OutHashKey, float InTopRadius, float InBottomRadius, float InHeight, uint32_t InAxialSubdivision, uint32_t InHeightSubdivision)
+{
+	std::hash<float> FloatHash;
+	std::hash<int> IntHash;
+
+	OutHashKey = 4;
+	OutHashKey += FloatHash(InHeight);
+	OutHashKey += FloatHash(InBottomRadius);
+	OutHashKey += FloatHash(InTopRadius);
+
+	OutHashKey += IntHash._Do_hash(InAxialSubdivision);
+	OutHashKey += IntHash._Do_hash(InHeightSubdivision);
+}
