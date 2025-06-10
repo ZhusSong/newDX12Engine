@@ -58,11 +58,10 @@ void CMeshManager::PreDraw(float DeltaTime)
     RenderingPipeline.PreDraw(DeltaTime);
 }
 
-CMeshComponent* CMeshManager::CreateSphereMeshComponent(float InRadius, uint32_t InAxialSubdivision, uint32_t InHeightSubdivision)
+CMeshComponent* CMeshManager::CreateSphereMeshComponent(float InRadius, uint32_t InAxialSubdivision, uint32_t InHeightSubdivision, bool bReverse)
 {
-    return CreateMeshComponent<CSphereMeshComponent>(InRadius, InAxialSubdivision, InHeightSubdivision);
+    return CreateMeshComponent<CSphereMeshComponent>(InRadius, InAxialSubdivision, InHeightSubdivision, bReverse);
 }
-
 
 CMeshComponent* CMeshManager::CreatePyramidMeshComponent(EPyramidNumberSides InPyramidNumberSidesType, uint32_t InHeightSubdivide, uint32_t InSize)
 {
@@ -109,13 +108,13 @@ CMeshComponent* CMeshManager::CreatePlaneMeshComponent(float InHeight, float InW
 template<class T, typename ...ParamTypes>
 T* CMeshManager::CreateMeshComponent(ParamTypes && ...Params)
 {
-    T* MyMesh = CreateObject<T>(new T());
+    T* MyMesh = CreateObject<T>(new T());//NewObject
 
     size_t HashKey = 0;
     MyMesh->BuildKey(HashKey, forward<ParamTypes>(Params)...);
 
     FRenderingData RenderingData;
-    if (RenderingPipeline.FindMeshRenderingDataByHash(HashKey, RenderingData))
+    if (RenderingPipeline.FindMeshRenderingDataByHash(HashKey, RenderingData, (int)MyMesh->GetRenderLayerType()))
     {
         RenderingPipeline.DuplicateMesh(MyMesh, RenderingData);
     }

@@ -4,6 +4,7 @@
 
 CMeshComponent::CMeshComponent()
 {
+	MeshRenderLayerType = EMeshRenderLayerType::RENDERLAYER_OPAQUE;
 	Materials.push_back(CreateObject<CMaterial>(new CMaterial()));
 }
 

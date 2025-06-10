@@ -109,28 +109,29 @@ int CDirectXRenderingEngine::PostInit()
 		//	SpotLight->SetConicalOuterCorner(60.f);
 		//}
 		// 点光源
-		/*if (GPointLight* PointLight = World->CreateActorObject<GPointLight>())
+		if (GPointLight* PointLight = World->CreateActorObject<GPointLight>())
 		{
-			PointLight->SetPosition(XMFLOAT3(0.f, 10.f, -10.f));
+			PointLight->SetPosition(XMFLOAT3(0.f, -6.f, 10.f));
 			PointLight->SetRotation(fvector_3d(0.f, 0.f, 0.f));
 
-			PointLight->SetLightIntensity(fvector_3d(7.f, 7.f, 7.f));
-			PointLight->SetEndAttenuation(20.f);
-		}*/
-		// 平行光
-		if (GParallelLight* ParallelLight = World->CreateActorObject<GParallelLight>())
-		{
-			ParallelLight->SetPosition(XMFLOAT3(10.f, -10.f, 30.f));
-			ParallelLight->SetRotation(fvector_3d(0.f, 0.f, 0.f));
-
-			ParallelLight->SetLightIntensity(fvector_3d(1.1f, 1.1f, 1.1f));
+			PointLight->SetLightIntensity(fvector_3d(0.9f));
+			PointLight->SetEndAttenuation(100.f);
 		}
+		//// 平行光
+		//if (GParallelLight* ParallelLight = World->CreateActorObject<GParallelLight>())
+		//{
+		//	ParallelLight->SetPosition(XMFLOAT3(10.f, -10.f, 30.f));
+		//	ParallelLight->SetRotation(fvector_3d(0.f, 0.f, 0.f));
+
+		//	ParallelLight->SetLightIntensity(fvector_3d(1.1f, 1.1f, 1.1f));
+		//}
 	
 
 		if (GTorusMesh* InTorusMesh = World->CreateActorObject<GTorusMesh>())
 		{
-			InTorusMesh->CreateMesh(6.f, 2.f, 40, 40);
+			InTorusMesh->CreateMesh(6.f, 2.f, 40.f, 40.f);
 			InTorusMesh->SetPosition(XMFLOAT3(-22.f, -8, 20.f));
+			InTorusMesh->SetScale(fvector_3d(1.f));
 			if (CMaterial* InMaterial = (*InTorusMesh->GetMaterials())[0])
 			{
 				InMaterial->SetMaterialType(EMaterialType::HalfLambert);
@@ -142,6 +143,8 @@ int CDirectXRenderingEngine::PostInit()
 		{
 			InPyramidMesh->CreateMesh(EPyramidNumberSides::Pyramid_3, 1);
 			InPyramidMesh->SetPosition(XMFLOAT3(-1.f, -8, 20.f));
+			InPyramidMesh->SetRotation(fvector_3d(0.f, 90.f, 0.f));
+			InPyramidMesh->SetScale(fvector_3d(1.f));
 			//InPyramidMesh->SetRotation(fvector_3d(0.f, 90.f, 0.f));
 			if (CMaterial* InMaterial = (*InPyramidMesh->GetMaterials())[0])
 			{
@@ -213,7 +216,6 @@ int CDirectXRenderingEngine::PostInit()
 			InPlaneMesh->SetScale(fvector_3d(50.f, 50.f, 50.f));
 			if (CMaterial* InMaterial = (*InPlaneMesh->GetMaterials())[0])
 			{
-				InMaterial->SetBaseColor(fvector_4d(1.f));
 				InMaterial->SetMaterialType(EMaterialType::Lambert);
 			}
 		}
@@ -436,32 +438,32 @@ int CDirectXRenderingEngine::PostInit()
 		//}
 		if (GetCurrentGPU() == NVIDIA)
 		{
-			//以线框显示
-			if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
-			{
-				SphereMesh->CreateMesh(2.f, 50, 50);
-				SphereMesh->SetPosition(XMFLOAT3(9.f, 18, 0.f));
-				if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
-				{
-					InMaterial->SetMaterialDisplayStatus(EMaterialDisplayStatusType::WireframeDisplay);
-					InMaterial->SetMaterialType(EMaterialType::BaseColor);
-					InMaterial->SetBaseColor(fvector_4d(1.f, 1.f, 1.f, 1.f));
+			////以线框显示
+			//if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
+			//{
+			//	SphereMesh->CreateMesh(2.f, 50, 50);
+			//	SphereMesh->SetPosition(XMFLOAT3(9.f, 18, 0.f));
+			//	if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
+			//	{
+			//		InMaterial->SetMaterialDisplayStatus(EMaterialDisplayStatusType::WireframeDisplay);
+			//		InMaterial->SetMaterialType(EMaterialType::BaseColor);
+			//		InMaterial->SetBaseColor(fvector_4d(1.f, 1.f, 1.f, 1.f));
 
-				}
-			}
+			//	}
+			//}
 
-			//以点显示
-			if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
-			{
-				SphereMesh->CreateMesh(2.f, 50, 50);
-				SphereMesh->SetPosition(XMFLOAT3(-3.f, 18, 0.f));
-				if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
-				{
-					InMaterial->SetMaterialDisplayStatus(EMaterialDisplayStatusType::PointDisplay);
-					InMaterial->SetMaterialType(EMaterialType::BaseColor);
-					InMaterial->SetBaseColor(fvector_4d(1.f, 1.f, 1.f, 1.f));
-				}
-			}
+			////以点显示
+			//if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
+			//{
+			//	SphereMesh->CreateMesh(2.f, 50, 50);
+			//	SphereMesh->SetPosition(XMFLOAT3(-3.f, 18, 0.f));
+			//	if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
+			//	{
+			//		InMaterial->SetMaterialDisplayStatus(EMaterialDisplayStatusType::PointDisplay);
+			//		InMaterial->SetMaterialType(EMaterialType::BaseColor);
+			//		InMaterial->SetBaseColor(fvector_4d(1.f, 1.f, 1.f, 1.f));
+			//	}
+			//}
 		}
 		
 		// 以法线显示
@@ -555,6 +557,22 @@ int CDirectXRenderingEngine::PostInit()
 				InMaterial->SetMaterialType(EMaterialType::BinnPhong);
 			}
 		}
+
+		// 天空盒
+		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
+		{
+			SphereMesh->CreateMesh(2.f, 100, 100, true);
+			SphereMesh->SetPosition(XMFLOAT3(0.f, 0, 0.f));
+			//SphereMesh->SetRotation(fvector_3d(0.f, 90.f, 0.f));
+			SphereMesh->SetScale(fvector_3d(400.f));
+			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
+			{
+				InMaterial->SetBaseColor("EpicQuadPanorama_CC");
+				InMaterial->SetSpecular(fvector_3d(1.f));
+				InMaterial->SetMaterialType(EMaterialType::BaseColor);
+			}
+		}
+
 	}
 
 	MeshManager->BuildMesh();
@@ -633,8 +651,6 @@ void CDirectXRenderingEngine::Tick(float DeltaTime)
 
 int CDirectXRenderingEngine::PreExit()
 {
-	
-
 	Engine_Log("Engine post exit complete.");
 	return 0;
 }
@@ -648,12 +664,6 @@ int CDirectXRenderingEngine::Exit()
 
 int CDirectXRenderingEngine::PostExit()
 {
-	
-
-	
-	
-	
-
 	FEngineRenderConfig::Destroy();
 
 

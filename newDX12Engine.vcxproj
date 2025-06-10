@@ -85,6 +85,11 @@
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\Geometry\RenderingData.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\PipelineState\DirectXPipelineState.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderingPipeline.cpp" />
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\Core\RenderLayer.cpp" />
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayerManager.cpp" />
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\AlphaTestRenderLayer.cpp" />
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\OpaqueRenderLayer.cpp" />
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\TransparentRenderLayer.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RootSignature\DirectXRootSignature.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\StaticSampler\StaticSamplerObject.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\Rendering.cpp" />
@@ -153,6 +158,7 @@
     <ClInclude Include="EngineCode\Component\Mesh\BoxMeshComponent.h" />
     <ClInclude Include="EngineCode\Component\Mesh\ConeMeshComponent.h" />
     <ClInclude Include="EngineCode\Component\Mesh\Core\MeshComponent.h" />
+    <ClInclude Include="EngineCode\Component\Mesh\Core\MeshComponentType.h" />
     <ClInclude Include="EngineCode\Component\Mesh\Core\ShellMeshComponent.h" />
     <ClInclude Include="EngineCode\Component\Mesh\CustomMeshComponent.h" />
     <ClInclude Include="EngineCode\Component\Mesh\CylinderMeshComponent.h" />
@@ -204,6 +210,11 @@
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\PipelineState\DirectXPipelineState.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderingPipeline.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderingPipelineType.h" />
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\Core\RenderLayer.h" />
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayerManager.h" />
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\AlphaTestRenderLayer.h" />
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\OpaqueRenderLayer.h" />
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\TransparentRenderLayer.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RootSignature\DirectXRootSignature.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\StaticSampler\StaticSamplerObject.h" />
     <ClInclude Include="EngineCode\Rendering\Core\Rendering.h" />

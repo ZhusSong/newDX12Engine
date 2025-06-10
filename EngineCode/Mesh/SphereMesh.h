@@ -14,5 +14,5 @@ public:
 	virtual void Draw(float DeltaTime);
 
 
-	void CreateMesh(float InRadius, uint32_t InAxialSubdivision, uint32_t InHeightSubdivision);
+	void CreateMesh(float InRadius, uint32_t InAxialSubdivision, uint32_t InHeightSubdivision, bool bReverse = false);
 };

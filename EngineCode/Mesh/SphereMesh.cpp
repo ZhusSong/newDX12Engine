@@ -18,9 +18,8 @@ void GSphereMesh::Draw(float DeltaTime)
 
 }
 
-void GSphereMesh::CreateMesh(float InRadius, uint32_t InAxialSubdivision, uint32_t InHeightSubdivision)
+void GSphereMesh::CreateMesh(float InRadius, uint32_t InAxialSubdivision, uint32_t InHeightSubdivision, bool bReverse)
 {
-	SetMeshComponent(GetMeshManager()->CreateSphereMeshComponent(InRadius, InAxialSubdivision, InHeightSubdivision));
+	SetMeshComponent(GetMeshManager()->CreateSphereMeshComponent(InRadius, InAxialSubdivision, InHeightSubdivision, bReverse));
 }
-
 

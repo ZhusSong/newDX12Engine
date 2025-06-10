@@ -5,6 +5,7 @@
 #include "PipelineState/DirectXPipelineState.h"
 #include "RootSignature/DirectXRootSignature.h"
 #include "../../../../Core/Viewport/ViewportInfo.h"
+#include "RenderLayer/RenderLayerManager.h"
 
 class CMeshComponent;
 
@@ -18,7 +19,7 @@ public:
 
 	void BuildMesh(const size_t InMeshHash, CMeshComponent* InMesh, const FMeshRenderingData& MeshData);
 	void DuplicateMesh(CMeshComponent* InMesh, const FRenderingData& MeshData);
-	bool FindMeshRenderingDataByHash(const size_t& InHash, FRenderingData& MeshData);
+	bool FindMeshRenderingDataByHash(const size_t& InHash, FRenderingData& MeshData, int InRenderLayerIndex = -1);
 
 	virtual void UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo);
 
@@ -30,11 +31,13 @@ public:
 	virtual void PostDraw(float DeltaTime);
 protected:
 
-	FShader VertexShader;
-	FShader PixelShader;
-	vector<D3D12_INPUT_ELEMENT_DESC> InputElementDesc;
-
+	// 渲染层级
+	FRenderLayerManager RenderLayer;
+	
+	// 渲染流水线状态
 	FDirectXPipelineState DirectXPipelineState;
+	// 根签名
 	FDirectXRootSignature RootSignature;
+	// 几何图形
 	FGeometryMap GeometryMap;
 };

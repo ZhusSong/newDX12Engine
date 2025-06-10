@@ -10,4 +10,7 @@ void get_path_clean_filename(char *buf, const char *path_buf);
 void normalization_directory(char *buf, const char *path_buf);
 
 void get_path_clean_filename_w(wchar_t* buf, const wchar_t* path_buf);
+
+// 通过shader名字获取shader
+wchar_t* get_shader_path_shader_name(const wchar_t* shaderFileName);
 _CRT_END_C_HEADER

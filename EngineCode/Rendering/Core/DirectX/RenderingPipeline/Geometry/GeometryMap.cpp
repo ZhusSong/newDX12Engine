@@ -11,12 +11,20 @@
 #include "../../../../../Manager/LightManager.h"
 #include "../../../../../Component/Light/Core/LightComponent.h"
 #include "../../../RenderingTextureResourcesUpdate.h"
+#include "../RenderLayer/RenderLayerManager.h"
+
+UINT MeshObjectCount = 0;
 
 FGeometryMap::FGeometryMap()
 {
 	Geometrys.insert(pair<int, FGeometry>(0, FGeometry()));
 
 	RenderingTextureResources = std::make_shared<FRenderingTextureResourcesUpdate>();
+}
+
+FGeometryMap::~FGeometryMap()
+{
+	MeshObjectCount = 0;
 }
 
 void FGeometryMap::PreDraw(float DeltaTime)
@@ -49,52 +57,12 @@ void FGeometryMap::PostDraw(float DeltaTime)
 
 void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo)
 {
+	UpdateMaterialShaderResourceView(DeltaTime, ViewportInfo);
+
 	XMMATRIX ViewMatrix = XMLoadFloat4x4(&ViewportInfo.ViewMatrix);
 	XMMATRIX ProjectMatrix = XMLoadFloat4x4(&ViewportInfo.ProjectMatrix);
 
-	for (auto& Tmp : Geometrys)//暂时先这么写
-	{
-		for (int i = 0; i < Tmp.second.DescribeMeshRenderingData.size(); i++)
-		{
-			FRenderingData& InRenderingData = Tmp.second.DescribeMeshRenderingData[i];
-
-			//构造模型的world
-			{
-				XMFLOAT3& Position = InRenderingData.Mesh->GetPosition();
-				fvector_3d Scale = InRenderingData.Mesh->GetScale();
-
-				XMFLOAT3 RightVector = InRenderingData.Mesh->GetRightVector();
-				XMFLOAT3 UPVector = InRenderingData.Mesh->GetUPVector();
-				XMFLOAT3 ForwardVector = InRenderingData.Mesh->GetForwardVector();
-
-				InRenderingData.WorldMatrix = {
-					RightVector.x * Scale.x,	UPVector.x,				ForwardVector.x ,			0.f,
-					RightVector.y,				UPVector.y * Scale.y,	ForwardVector.y,			0.f,
-					RightVector.z,				UPVector.z ,			ForwardVector.z * Scale.z,	0.f,
-					Position.x,					Position.y,				Position.z,					1.f };
-			}
-
-			//更新模型位置
-			XMMATRIX ATRIXWorld = XMLoadFloat4x4(&InRenderingData.WorldMatrix);
-			XMMATRIX ATRIXTextureTransform = XMLoadFloat4x4(&InRenderingData.TextureTransform);
-
-			FObjectTransform ObjectTransformation;
-			XMStoreFloat4x4(&ObjectTransformation.World, XMMatrixTranspose(ATRIXWorld));
-			XMStoreFloat4x4(&ObjectTransformation.TextureTransformation, XMMatrixTranspose(ATRIXTextureTransform));
-
-			//收集材质Index
-			if (auto& InMater = (*InRenderingData.Mesh->GetMaterials())[0])
-			{
-				ObjectTransformation.MaterialIndex = InMater->GetMaterialIndex();
-			}
-
-			MeshConstantBufferViews.Update(i, &ObjectTransformation);
-		}
-	}
-
-	UpdateMaterialShaderResourceView(DeltaTime, ViewportInfo);
-
-	//更新灯光
+	// 更新灯光
 	FLightConstantBuffer LightConstantBuffer;
 	for (size_t i = 0; i < GetLightManager()->Lights.size(); i++)
 	{
@@ -217,23 +185,25 @@ void FGeometryMap::UpdateMaterialShaderResourceView(float DeltaTime, const FView
 
 void FGeometryMap::BuildMesh(const size_t InMeshHash, CMeshComponent* InMesh, const FMeshRenderingData& MeshData)
 {
-	FGeometry& Geometry = Geometrys[0];
-
-	Geometry.BuildMesh(InMeshHash, InMesh, MeshData);
+	for (auto& Tmp : Geometrys)
+	{
+		Tmp.second.BuildMesh(InMeshHash, InMesh, MeshData, Tmp.first);
+	}
 }
 
 void FGeometryMap::DuplicateMesh(CMeshComponent* InMesh, const FRenderingData& MeshData)
 {
-	FGeometry& Geometry = Geometrys[0];
-
-	Geometry.DuplicateMesh(InMesh, MeshData);
+	for (auto& Tmp : Geometrys)
+	{
+		Tmp.second.DuplicateMesh(InMesh, MeshData, Tmp.first);
+	}
 }
 
-bool FGeometryMap::FindMeshRenderingDataByHash(const size_t& InHash, FRenderingData& MeshData)
+bool FGeometryMap::FindMeshRenderingDataByHash(const size_t& InHash, FRenderingData& MeshData, int InRenderLayerIndex)
 {
 	for (auto& Tmp : Geometrys)
 	{
-		if (Tmp.second.FindMeshRenderingDataByHash(InHash, MeshData))
+		if (Tmp.second.FindMeshRenderingDataByHash(InHash, MeshData, InRenderLayerIndex))
 		{
 			return true;
 		}
@@ -241,8 +211,6 @@ bool FGeometryMap::FindMeshRenderingDataByHash(const size_t& InHash, FRenderingD
 
 	return false;
 }
-
-
 void FGeometryMap::LoadTexture()
 {
 	def_c_paths Paths;
@@ -299,42 +267,40 @@ void FGeometryMap::BuildMeshConstantBuffer()
 
 void FGeometryMap::BuildMaterialShaderResourceView()
 {
-	//创建常量缓冲区
-	MaterialConstantBufferViews.CreateConstant(
-		sizeof(FMaterialConstantBuffer),
-		GetDrawMaterialObjectNumber(),
-		false);
-
-	//收集材质
-	//正真更新Shader-Index
-	for (auto& Tmp : Geometrys)
+	// 收集材质
+	// 更新Shader-Index
+	for (auto& Tmp : FRenderLayerManager::RenderLayers)
 	{
-		for (size_t i = 0; i < Tmp.second.DescribeMeshRenderingData.size(); i++)
+		for (auto& InData : Tmp->RenderDatas)
 		{
-			auto& InData = Tmp.second.DescribeMeshRenderingData[i];
 			if (auto InMaterials = InData.Mesh->GetMaterials())
 			{
 				for (size_t j = 0; j < InMaterials->size(); j++)
 				{
-					//做ShaderIndex所有
-					(*InMaterials)[j]->SetMaterialIndex((int)Materials.size());
+					(*InMaterials)[j]->SetMaterialIndex(Materials.size());
 
 					Materials.push_back((*InMaterials)[j]);
 				}
 			}
 		}
 	}
+
+	// 创建常量缓冲区
+	MaterialConstantBufferViews.CreateConstant(
+		sizeof(FMaterialConstantBuffer),
+		GetDrawMaterialObjectNumber(),
+		false);
 }
 
 void FGeometryMap::BuildLightConstantBuffer()
 {
-	//创建常量缓冲区
+	// 创建常量缓冲区
 	LightConstantBufferViews.CreateConstant(sizeof(FLightConstantBuffer), GetDrawLightObjectNumber());
 
-	//Handle
+	// Handle
 	CD3DX12_CPU_DESCRIPTOR_HANDLE DesHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(GetHeap()->GetCPUDescriptorHandleForHeapStart());
 
-	//构建常量缓冲区
+	// 构建常量缓冲区
 	LightConstantBufferViews.BuildConstantBuffer(
 		DesHandle,
 		GetDrawLightObjectNumber(),
@@ -348,16 +314,7 @@ UINT FGeometryMap::GetDrawMeshObjectNumber()
 
 UINT FGeometryMap::GetDrawMaterialObjectNumber()
 {
-	UINT MaterialNum = 0;
-	for (auto& Tmp : Geometrys)
-	{
-		for (auto& TmpSun : Tmp.second.DescribeMeshRenderingData)
-		{
-			MaterialNum += TmpSun.Mesh->GetMaterialNum();
-		}
-	}
-
-	return MaterialNum;
+	return Materials.size();
 }
 
 UINT FGeometryMap::GetDrawLightObjectNumber()
@@ -419,45 +376,7 @@ void FGeometryMap::DrawViewport(float DeltaTime)
 
 void FGeometryMap::DrawMesh(float DeltaTime)
 {
-	UINT DescriptorOffset = GetD3dDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-
-	//模型构建
-	for (auto& Tmp : Geometrys)
-	{
-		D3D12_VERTEX_BUFFER_VIEW VBV = Tmp.second.GetVertexBufferView();
-		D3D12_INDEX_BUFFER_VIEW IBV = Tmp.second.GetIndexBufferView();
-
-		for (size_t i = 0; i < Tmp.second.DescribeMeshRenderingData.size(); i++)
-		{
-			auto DesMeshHandle = CD3DX12_GPU_DESCRIPTOR_HANDLE(GetHeap()->GetGPUDescriptorHandleForHeapStart());
-
-			FRenderingData& InRenderingData = Tmp.second.DescribeMeshRenderingData[i];
-
-			GetGraphicsCommandList()->IASetIndexBuffer(&IBV);
-
-			//绑定渲染流水线上的输入槽，可以在输入装配器阶段传入顶点数据
-			GetGraphicsCommandList()->IASetVertexBuffers(
-				0,//起始输入槽 0-15 
-				1,//k k+1 ... k+n-1 
-				&VBV);
-
-			//定义我们要绘制的哪种图元 点 线 面
-			D3D_PRIMITIVE_TOPOLOGY DisplayStatus = (*InRenderingData.Mesh->GetMaterials())[0]->GetMaterialDisplayStatus();
-			GetGraphicsCommandList()->IASetPrimitiveTopology((D3D_PRIMITIVE_TOPOLOGY)DisplayStatus);
-
-			//模型起始地址偏移
-			DesMeshHandle.Offset((INT)i, DescriptorOffset);
-			GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(0, DesMeshHandle);
-
-			//真正的绘制
-			GetGraphicsCommandList()->DrawIndexedInstanced(
-				InRenderingData.IndexSize,//顶点数量
-				1,//绘制实例数量
-				InRenderingData.IndexOffsetPosition,//顶点缓冲区第一个被绘制的索引
-				InRenderingData.VertexOffsetPosition,//GPU 从索引缓冲区读取的第一个索引的位置。
-				0);//在从顶点缓冲区读取每个实例数据之前添加到每个索引的值。
-		}
-	}
+	
 }
 
 void FGeometryMap::DrawMaterial(float DeltaTime)
@@ -479,12 +398,115 @@ void FGeometryMap::DrawTexture(float DeltaTime)
 	GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(3, DesHandle);
 }
 
-bool FGeometry::bRenderingDataExistence(CMeshComponent* InKey)
+
+bool FGeometry::IsRenderingDataExistence(CMeshComponent* InKey)
 {
-	for (auto& Tmp : DescribeMeshRenderingData)
+	if (std::shared_ptr<FRenderLayer> InRenderLayer = FRenderLayerManager::FindByRenderLayer((int)InKey->GetRenderLayerType()))
 	{
-		if (Tmp.Mesh == InKey)
+		for (auto& Tmp : InRenderLayer->RenderDatas)
 		{
+			if (Tmp.Mesh == InKey)
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+void FGeometry::BuildMesh(
+	const size_t InMeshHash,
+	CMeshComponent* InMesh,
+	const FMeshRenderingData& MeshData,
+	int InKey)
+{
+	if (!IsRenderingDataExistence(InMesh))
+	{
+		//找到对应层级
+		if (std::shared_ptr<FRenderLayer> InRenderLayer = FRenderLayerManager::FindByRenderLayer((int)InMesh->GetRenderLayerType()))
+		{
+			InRenderLayer->RenderDatas.push_back(FRenderingData());
+			FRenderingData& InRenderingData = InRenderLayer->RenderDatas[InRenderLayer->RenderDatas.size() - 1];
+
+			//基础注册
+			InRenderingData.MeshObjectIndex = MeshObjectCount++;
+			InRenderingData.Mesh = InMesh;
+			InRenderingData.MeshHash = InMeshHash;
+			InRenderingData.GeometryKey = InKey;
+
+			InRenderingData.IndexSize = MeshData.IndexData.size();
+			InRenderingData.VertexSize = MeshData.VertexData.size();
+
+			InRenderingData.IndexOffsetPosition = MeshRenderingData.IndexData.size();
+			InRenderingData.VertexOffsetPosition = MeshRenderingData.VertexData.size();
+
+			//高效的插入
+			//索引的合并
+			MeshRenderingData.IndexData.insert(
+				MeshRenderingData.IndexData.end(),
+				MeshData.IndexData.begin(),
+				MeshData.IndexData.end());
+
+			//顶点的合并
+			MeshRenderingData.VertexData.insert(
+				MeshRenderingData.VertexData.end(),
+				MeshData.VertexData.begin(),
+				MeshData.VertexData.end());
+		}
+	}
+}
+
+void FGeometry::DuplicateMesh(CMeshComponent* InMesh, const FRenderingData& MeshData, int InKey)
+{
+	if (!IsRenderingDataExistence(InMesh))
+	{
+		if (std::shared_ptr<FRenderLayer> InRenderLayer = FRenderLayerManager::FindByRenderLayer((int)InMesh->GetRenderLayerType()))
+		{
+			InRenderLayer->RenderDatas.push_back(MeshData);
+			FRenderingData& InRenderingData = InRenderLayer->RenderDatas[InRenderLayer->RenderDatas.size() - 1];
+
+			// 基础注册
+			InRenderingData.Mesh = InMesh;
+			InRenderingData.MeshObjectIndex = MeshObjectCount++;
+			InRenderingData.GeometryKey = InKey;
+		}
+	}
+}
+
+bool FGeometry::FindMeshRenderingDataByHash(const size_t& InHash, FRenderingData& MeshData, int InRenderLayerIndex)
+{
+	// 寻找RenderData
+	auto FindMeshRenderingDataByHashSub = [&](std::shared_ptr<FRenderLayer> InRenderLayer)->FRenderingData*
+		{
+			for (auto& SubTmp : InRenderLayer->RenderDatas)
+			{
+				if (SubTmp.MeshHash == InHash)
+				{
+					return &SubTmp;
+				}
+			}
+
+			return NULL;
+		};
+	// 开启暴力遍历
+	if (InRenderLayerIndex == -1)
+	{
+		for (auto& Tmp : FRenderLayerManager::RenderLayers)
+		{
+			if (FRenderingData* InRenderingData = FindMeshRenderingDataByHashSub(Tmp))
+			{
+				MeshData = *InRenderingData;
+				return true;
+			}
+		}
+	}
+	//精准寻找
+	else if (std::shared_ptr<FRenderLayer> InRenderLayer = FRenderLayerManager::FindByRenderLayer(InRenderLayerIndex))
+	{
+		if (FRenderingData* InRenderingData = FindMeshRenderingDataByHashSub(InRenderLayer))
+		{
+			MeshData = *InRenderingData;
 			return true;
 		}
 	}
@@ -492,63 +514,22 @@ bool FGeometry::bRenderingDataExistence(CMeshComponent* InKey)
 	return false;
 }
 
-void FGeometry::BuildMesh(const size_t InMeshHash, CMeshComponent* InMesh, const FMeshRenderingData& MeshData)
+UINT FGeometry::GetDrawObjectNumber() const
 {
-	if (!bRenderingDataExistence(InMesh))
+	return MeshObjectCount;
+
+	int Count = 0;
+	for (auto& Tmp : FRenderLayerManager::RenderLayers)
 	{
-		DescribeMeshRenderingData.push_back(FRenderingData());
-		FRenderingData& InRenderingData = DescribeMeshRenderingData[DescribeMeshRenderingData.size() - 1];
-
-		//基础注册
-		InRenderingData.Mesh = InMesh;
-		InRenderingData.MeshHash = InMeshHash;
-
-		InRenderingData.IndexSize = MeshData.IndexData.size();
-		InRenderingData.VertexSize = MeshData.VertexData.size();
-
-		InRenderingData.IndexOffsetPosition = MeshRenderingData.IndexData.size();
-		InRenderingData.VertexOffsetPosition = MeshRenderingData.VertexData.size();
-
-		//高效的插入
-		//索引的合并
-		MeshRenderingData.IndexData.insert(
-			MeshRenderingData.IndexData.end(),
-			MeshData.IndexData.begin(),
-			MeshData.IndexData.end());
-
-		//顶点的合并
-		MeshRenderingData.VertexData.insert(
-			MeshRenderingData.VertexData.end(),
-			MeshData.VertexData.begin(),
-			MeshData.VertexData.end());
-	}
-}
-
-void FGeometry::DuplicateMesh(CMeshComponent* InMesh, const FRenderingData& MeshData)
-{
-	if (!bRenderingDataExistence(InMesh))
-	{
-		DescribeMeshRenderingData.push_back(MeshData);
-		FRenderingData& InRenderingData = DescribeMeshRenderingData[DescribeMeshRenderingData.size() - 1];
-
-		//基础注册
-		InRenderingData.Mesh = InMesh;
-	}
-}
-
-bool FGeometry::FindMeshRenderingDataByHash(const size_t& InHash, FRenderingData& MeshData)
-{
-	for (auto& Tmp : DescribeMeshRenderingData)
-	{
-		if (Tmp.MeshHash == InHash)
+		for (auto& SubTmp : Tmp->RenderDatas)
 		{
-			MeshData = Tmp;
-			return true;
+			Count++;
 		}
 	}
 
-	return false;
+	return Count;
 }
+
 
 void FGeometry::Build()
 {

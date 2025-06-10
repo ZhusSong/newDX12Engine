@@ -46,7 +46,7 @@ float4 AttenuationPointLights1(Light L,float Distance)
 
     float AttenuationRange = L.EndAttenuation - L.StartAttenuation;
 
-    return LightStrength * (Distance / AttenuationRange);
+    return LightStrength * (1 - Distance / AttenuationRange);
 }
 
 // 计算根据衰减因子的衰减

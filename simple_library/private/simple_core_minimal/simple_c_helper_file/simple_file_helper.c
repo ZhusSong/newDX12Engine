@@ -74,7 +74,7 @@ void init_def_c_paths_w(def_c_paths_w* c_paths)
 
 int copy_file(char *Src, char *Dest)
 {
-	//当前的缓存 缓存1MB大小，如果超过就会出问题 这个会在std C课程里面继续扩展
+	//当前的缓存 缓存1MB大小，如果超过就会出问题 
 	char Buf[1024 * 1024] = { 0 };
 	int FileSize = 0;
 	FILE *FpSrc = NULL;
