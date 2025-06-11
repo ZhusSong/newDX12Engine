@@ -2,6 +2,15 @@
 #include "Core/MeshType.h"
 #include "../Mesh/Core/MeshManager.h"
 
+#include "../Core/Construction/MacroConstruction.h"
+#include "../Component/Mesh/BoxMeshComponent.h"
+
+
+GBoxMesh::GBoxMesh()
+{
+	SetMeshComponent(ConstructionObject<CBoxMeshComponent>());
+}
+
 void GBoxMesh::Init()
 {
 	Super::Init();
@@ -14,7 +23,8 @@ void GBoxMesh::Draw(float DeltaTime)
 	Super::Draw(DeltaTime);
 }
 
+
 void GBoxMesh::CreateMesh(float InHeight, float InWidth, float InDepth)
 {
-	SetMeshComponent(GetMeshManager()->CreateBoxMeshComponent(InHeight, InWidth, InDepth));
+	CREATE_RENDER_DATA(CBoxMeshComponent, InHeight, InWidth, InDepth);
 }

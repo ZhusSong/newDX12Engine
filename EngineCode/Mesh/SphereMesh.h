@@ -8,6 +8,7 @@ class GSphereMesh :public GMesh
 {
 	typedef GMesh Super;
 public:
+	GSphereMesh();
 	virtual void Init();
 
 

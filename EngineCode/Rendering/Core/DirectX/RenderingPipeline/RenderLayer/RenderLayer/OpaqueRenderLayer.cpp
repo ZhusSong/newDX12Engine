@@ -7,6 +7,10 @@ FOpaqueRenderLayer::FOpaqueRenderLayer()
 	RenderPriority = 2000;
 }
 
+void FOpaqueRenderLayer::Draw(float DeltaTime)
+{
+	Super::Draw(DeltaTime);
+}
 void FOpaqueRenderLayer::BuildShader()
 {
 	//构建Shader
@@ -34,4 +38,15 @@ void FOpaqueRenderLayer::BuildShader()
 		{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 52, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
 	};
 	DirectXPipelineState->BindInputLayout(InputElementDesc.data(), InputElementDesc.size());
+}
+
+void FOpaqueRenderLayer::BuildPSO()
+{
+	// 构建管线
+	// 构建一遍线框模式
+	DirectXPipelineState->Build(Wireframe);
+
+	// 构建非透明
+	DirectXPipelineState->SetFillMode(false);
+	DirectXPipelineState->Build(GrayModel);
 }

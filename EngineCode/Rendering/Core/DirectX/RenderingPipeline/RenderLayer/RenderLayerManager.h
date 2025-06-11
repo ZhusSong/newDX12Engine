@@ -22,6 +22,7 @@ public:
 
 	virtual void BuildShader();
 
+	virtual void BuildPSO();
 	//排序
 	virtual void Sort();
 

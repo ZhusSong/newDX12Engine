@@ -49,6 +49,9 @@
     <ClCompile Include="EngineCode\Component\TransformComponent.cpp" />
     <ClCompile Include="EngineCode\Config\EngineRenderConfig.cpp" />
     <ClCompile Include="EngineCode\Core\Camera.cpp" />
+    <ClCompile Include="EngineCode\Core\Construction\ActorMeshConstruction.cpp" />
+    <ClCompile Include="EngineCode\Core\Construction\MeshConstruction.cpp" />
+    <ClCompile Include="EngineCode\Core\Construction\ObjectConstruction.cpp" />
     <ClCompile Include="EngineCode\Core\CoreObject\CoreMinimalObject.cpp" />
     <ClCompile Include="EngineCode\Core\CoreObject\GuidInterface.cpp" />
     <ClCompile Include="EngineCode\Core\Engine.cpp" />
@@ -171,6 +174,10 @@
     <ClInclude Include="EngineCode\Config\EngineRenderConfig.h" />
     <ClInclude Include="EngineCode\Core\Camera.h" />
     <ClInclude Include="EngineCode\Core\CameraType.h" />
+    <ClInclude Include="EngineCode\Core\Construction\ActorMeshConstruction.h" />
+    <ClInclude Include="EngineCode\Core\Construction\MacroConstruction.h" />
+    <ClInclude Include="EngineCode\Core\Construction\MeshConstruction.h" />
+    <ClInclude Include="EngineCode\Core\Construction\ObjectConstruction.h" />
     <ClInclude Include="EngineCode\Core\CoreObject\CoreMinimalObject.h" />
     <ClInclude Include="EngineCode\Core\CoreObject\GuidInterface.h" />
     <ClInclude Include="EngineCode\Core\Engine.h" />
@@ -305,6 +312,9 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+      <FileType>Document</FileType>
+    </ClInclude>
+    <ClInclude Include="Shader\PBR.hlsl">
       <FileType>Document</FileType>
     </ClInclude>
     <FxCompile Include="Shader\VertexShader.hlsl">

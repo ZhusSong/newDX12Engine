@@ -7,6 +7,7 @@ class GCustomMesh :public GMesh
 {
 	typedef GMesh Super;
 public:
+	GCustomMesh();
 	virtual void Init();
 
 

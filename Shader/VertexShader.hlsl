@@ -1,4 +1,5 @@
 #include "Material.hlsl"
+#include "PBR.hlsl"
 
 
 struct MeshVertexIn
@@ -25,7 +26,10 @@ MeshVertexOut VertexShaderMain(MeshVertexIn MV)
     MaterialConstBuffer MatConstBuffer = Materials[MaterialIndex];
 
     MeshVertexOut MOut;
-
+    
+	//颜色
+    MOut.Color = MV.Color;
+    
 	//世界坐标
     MOut.WorldPosition = mul(float4(MV.Position, 1.f), WorldMatrix);
 
@@ -60,11 +64,14 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
 
 	//获取BaseColor
     Material.BaseColor = GetMaterialBaseColor(MatConstBuffer, MVOut.TexCoord);
+    
+	//拿到Specular
+    float4 Specular = GetMaterialSpecular(MatConstBuffer, MVOut.TexCoord);
 
 	//BaseColor
     if (MatConstBuffer.MaterialType == 12)
     {
-        return Material.BaseColor;
+        return Material.BaseColor * Specular + Material.BaseColor + 0.1f;
     }
     else if (MatConstBuffer.MaterialType == 13)
     {
@@ -84,9 +91,7 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
     float DotValue = 0;
 
     float4 LightStrengths = { 0.f, 0.f, 0.f, 1.f };
-
-	//拿到Specular
-    float4 Specular = GetMaterialSpecular(MatConstBuffer, MVOut.TexCoord);
+    
 
     for (int i = 0; i < 16; i++)
     {
@@ -136,7 +141,8 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
 				//c=(m+2.f/PI) 归一化系数 后面会详细讲解推导
                 Specular *= saturate((M + 2.0f) * pow(max(dot(HalfDirection, ModelNormal), 0.f), M) / 3.1415926);
             }
-            else if (MatConstBuffer.MaterialType == 4)//Wrap 早期模拟皮肤的效果
+            //Wrap 早期模拟皮肤的效果 
+            else if (MatConstBuffer.MaterialType == 4)
             {
 				//	float WrapValue = 1.f;//半兰伯特材质
 
@@ -160,7 +166,7 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
             {
                 if (i == 0)
                 {
-					//融入半兰伯特思想
+					//融入半兰伯特
                     float DiffuseReflection = (dot(ModelNormal, NormalizeLightDirection) + 1.f) * 0.5f;
 
                     float Layered = 4.f;
@@ -244,7 +250,7 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
             }
             else if (MatConstBuffer.MaterialType == 10)// kajiya-kay模型
             {
-				//各项异性 - 讲解纹理的时候再补充
+				//各项异性
 				
             }
             else if (MatConstBuffer.MaterialType == 11)//OrenNayar
@@ -271,6 +277,43 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
 
                 DotValue = NormalLight * (A + B * max(0, Phiri) * sin(Alpha) * tan(Beta));
             }
+            else if (MatConstBuffer.MaterialType == 20)//PBR
+            {
+                float3 L = NormalizeLightDirection;
+                float3 V = normalize(ViewportPosition.xyz - MVOut.WorldPosition.xyz);
+                float3 H = normalize(V + L);
+                float3 N = ModelNormal;
+
+                float PI = 3.1415926;
+
+                float Roughness = 0.2f;
+                float3 Metallic = 0.2f;
+				
+                float4 D = GetDistributionGGX(N, H, Roughness);
+
+                float3 F0 = 0.04f;
+                F0 = lerp(F0, MatConstBuffer.BaseColor.rgb, Metallic);
+                float4 F = float4(FresnelSchlickMethod(F0, N, V, 5), 1.0f);
+
+                float4 G = GSmith(N, V, L, Roughness);
+
+
+                float4 Kd = 1 - F;
+                Kd *= 1 - float4(Metallic, 1.f);
+
+                float3 Diffuse = Kd.rgb * GetDiffuseLambert(MatConstBuffer.BaseColor.rgb);
+
+                float NoV = saturate(dot(N, V));
+                float NoL = saturate(dot(N, L));
+
+                float4 Value = (D * F * G) / (4 * (NoV * NoL));
+                Specular = float4(Value.rgb, 1.f);
+
+                float3 Radiance = LightStrength.xyz;
+                float3 MyColor = (Diffuse + Specular.xyz) * NoL * Radiance;
+
+                return float4(MyColor.xyz, 1.0f);
+            }
 			//菲尼尔
             else if (MatConstBuffer.MaterialType == 100)
             {
@@ -282,9 +325,9 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
 				//float3 F0 = { 0.1f,0.1f,0.1f };
 				//Specular.xyz = FresnelSchlickMethod(F0, ModelNormal, ViewDirection, 3).xyz;
             }
-
             LightStrengths += saturate(LightStrength * DotValue * float4(SceneLights[i].LightIntensity, 1.f));
             LightStrengths.w = 1.f;
+
 
 			//把这些属性限制到 0-1
             LightStrengths = saturate(LightStrengths);
@@ -293,11 +336,13 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
         }
     }
 
-	//最终颜色贡献
+    // 最终颜色贡献
     MVOut.Color = LightStrengths * (Material.BaseColor //漫反射
 		+ Specular * Material.BaseColor) + //高光
 
 		AmbientLight * Material.BaseColor; //间接光
 	
+    MVOut.Color.a = Material.BaseColor.a;
+
     return MVOut.Color;
 }

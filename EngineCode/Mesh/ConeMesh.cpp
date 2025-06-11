@@ -2,6 +2,16 @@
 #include "Core/MeshType.h"
 #include "../Mesh/Core/MeshManager.h"
 
+#include "../Component/Mesh/ConeMeshComponent.h"
+#include "../Core/Construction/MacroConstruction.h"
+
+
+GConeMesh::GConeMesh()
+{
+	SetMeshComponent(ConstructionObject<CConeMeshComponent>());
+}
+
+
 void GConeMesh::Init()
 {
 	Super::Init();
@@ -23,5 +33,5 @@ void GConeMesh::CreateMesh(
 	uint32_t InAxialSubdivision,
 	uint32_t InHeightSubdivision)
 {
-	SetMeshComponent(GetMeshManager()->CreateConeMeshComponent(InRadius, InHeight, InAxialSubdivision, InHeightSubdivision));
+	CREATE_RENDER_DATA(CConeMeshComponent, InRadius, InHeight, InAxialSubdivision, InHeightSubdivision);
 }

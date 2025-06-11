@@ -438,9 +438,11 @@ int CDirectXRenderingEngine::PostInit()
 		//}
 		if (GetCurrentGPU() == NVIDIA)
 		{
-			////以线框显示
+			//以线框显示
 			//if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 			//{
+			//	SphereMesh->SetMeshRenderLayerType(EMeshRenderLayerType::RENDERLAYER_OPAQUE);
+
 			//	SphereMesh->CreateMesh(2.f, 50, 50);
 			//	SphereMesh->SetPosition(XMFLOAT3(9.f, 18, 0.f));
 			//	if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
@@ -555,6 +557,32 @@ int CDirectXRenderingEngine::PostInit()
 				//InMaterial->SetBaseColor("Wood2");
 				InMaterial->SetSpecular("Wood2_SPEC");
 				InMaterial->SetMaterialType(EMaterialType::BinnPhong);
+			}
+		}
+		// 透明
+		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
+		{
+			SphereMesh->SetMeshRenderLayerType(EMeshRenderLayerType::RENDERLAYER_TRANSPARENT);
+
+			SphereMesh->CreateMesh(2.f, 100, 100);
+			SphereMesh->SetPosition(XMFLOAT3(21.f, 7, 0.f));
+			SphereMesh->SetRotation(fvector_3d(0.f, 0.f, 0.f));
+			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
+			{
+				InMaterial->SetBaseColor("WireFence");
+				InMaterial->SetMaterialType(EMaterialType::HalfLambert);
+			}
+		}
+		// PBR模型
+		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
+		{
+			SphereMesh->CreateMesh(2.f, 100, 100);
+			SphereMesh->SetPosition(XMFLOAT3(21.f, 2, 0.f));
+			SphereMesh->SetRotation(fvector_3d(0.f, 0.f, 0.f));
+			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
+			{
+				InMaterial->SetBaseColor(fvector_4d(1.f));
+				InMaterial->SetMaterialType(EMaterialType::PBR);
 			}
 		}
 

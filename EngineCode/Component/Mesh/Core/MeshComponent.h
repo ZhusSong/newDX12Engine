@@ -17,7 +17,7 @@ public:
 	virtual void Init();
 
 	virtual void BuildMesh(const FMeshRenderingData* InRenderingData);
-	void SetMeshRenderLayerType(EMeshRenderLayerType InRenderLayerType) { MeshRenderLayerType = MeshRenderLayerType; }
+	void SetMeshRenderLayerType(EMeshRenderLayerType InRenderLayerType);
 
 public:
 	UINT GetMaterialNum()const;

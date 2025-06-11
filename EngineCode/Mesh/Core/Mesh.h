@@ -3,10 +3,12 @@
 #include "MeshType.h"
 #include "../../Actor/Core/ActorObject.h"
 #include "../../Interface/DirectXDeviceInterface.h"
+#include "../Core/MeshManager.h"
 
 class CTransformComponent;
 class CMeshComponent;
 class CMaterial;
+enum EMeshRenderLayerType;
 
 // 游戏对象网格接口
 class GMesh :
@@ -37,6 +39,15 @@ public:
 	virtual void SetScale(const fvector_3d& InNewScale);
 public:
 	virtual CMeshComponent* GetMeshComponent() { return MeshComponent; }
+
+	template<class T>
+	T* GetMeshComponent()
+	{
+		return dynamic_cast<T*>(MeshComponent);
+	}
+
+public:
+	virtual void SetMeshRenderLayerType(EMeshRenderLayerType InRenderLayerType);
 protected:
 	virtual void SetMeshComponent(CMeshComponent* InMeshComponent);
 public:

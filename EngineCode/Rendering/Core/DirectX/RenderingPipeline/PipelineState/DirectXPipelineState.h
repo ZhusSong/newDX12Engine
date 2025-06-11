@@ -26,8 +26,21 @@ public:
 	// 绑定shader
 	void BindShader(const FShader& InVertexShader, const FShader& InPixelShader);
 
+	//构建参数
+	void BuildParam();
+
 	//BuildPSO
-	void Build();
+	void Build(int InPSOType);
+
+	//绘制的时候调用
+	void ResetPSO(int InPSOType);
+
+	// 设置渲染模式
+	void SetFillMode(bool bWireframe);
+
+	// 设置渲染目标
+	void SetRenderTarget(int Index, const D3D12_RENDER_TARGET_BLEND_DESC& InRenderTargetBlend);
+
 
 private:
 	//按键捕获

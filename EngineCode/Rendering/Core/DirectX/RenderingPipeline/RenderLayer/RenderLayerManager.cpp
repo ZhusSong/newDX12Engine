@@ -42,7 +42,13 @@ void FRenderLayerManager::BuildShader()
 		Tmp->BuildShader();
 	}
 }
-
+void FRenderLayerManager::BuildPSO()
+{
+	for (auto& Tmp : RenderLayers)
+	{
+		Tmp->BuildPSO();
+	}
+}
 void FRenderLayerManager::Sort()
 {
 	auto CompRenderLayer = 

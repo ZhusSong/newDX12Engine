@@ -7,6 +7,7 @@ class GConeMesh :public GMesh
 {
 	typedef GMesh Super;
 public:
+	GConeMesh();
 	virtual void Init();
 
 

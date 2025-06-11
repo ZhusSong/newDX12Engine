@@ -15,7 +15,10 @@ void CMeshComponent::Init()
 void CMeshComponent::BuildMesh(const FMeshRenderingData* InRenderingData)
 {
 }
-
+void CMeshComponent::SetMeshRenderLayerType(EMeshRenderLayerType InRenderLayerType)
+{
+	MeshRenderLayerType = InRenderLayerType;
+}
 UINT CMeshComponent::GetMaterialNum() const
 {
 	return Materials.size();

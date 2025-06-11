@@ -2,9 +2,8 @@
 
 enum EPipelineState
 {
-	// 实体
-	GrayModel = 4,
-
-	// 线框
-	Wireframe = 5,
+	Transparent = 0,        //透明
+	AlphaTest,				//alpha测试
+	GrayModel = 4,			//实体
+	Wireframe = 5,			//线框
 };

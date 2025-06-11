@@ -5,10 +5,13 @@
 
 class FTransparentRenderLayer :public FRenderLayer
 {
+	typedef FRenderLayer Super;
 public:
 	FTransparentRenderLayer();
 
+	virtual void Draw(float DeltaTime);
 	virtual void BuildShader();
+	virtual void BuildPSO();
 
 	virtual int GetRenderLayerType() const { return 1; }
 };

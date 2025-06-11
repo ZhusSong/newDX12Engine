@@ -2,6 +2,14 @@
 #include "Core/MeshType.h"
 #include "../Mesh/Core/MeshManager.h"
 
+#include "../Core/Construction/MacroConstruction.h"
+#include "../Component/Mesh/CylinderMeshComponent.h"
+
+GCylinderMesh::GCylinderMesh()
+{
+	SetMeshComponent(ConstructionObject<CCylinderMeshComponent>());
+}
+
 void GCylinderMesh::Init()
 {
 	Super::Init();
@@ -18,5 +26,5 @@ void GCylinderMesh::Draw(float DeltaTime)
 
 void GCylinderMesh::CreateMesh(float InTopRadius, float InBottomRadius, float InHeight, uint32_t InAxialSubdivision, uint32_t InHeightSubdivision)
 {
-	SetMeshComponent(GetMeshManager()->CreateCylinderMeshComponent(InTopRadius, InBottomRadius, InHeight, InAxialSubdivision, InHeightSubdivision));
+	CREATE_RENDER_DATA(CCylinderMeshComponent, InTopRadius, InBottomRadius, InHeight, InAxialSubdivision, InHeightSubdivision);
 }

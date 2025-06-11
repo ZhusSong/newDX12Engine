@@ -82,9 +82,7 @@ public:
 
 	CMeshComponent* CreateMeshComponent(string& InPath);
 
-protected:
-	template<class T, typename ...ParamTypes>
-	T* CreateMeshComponent(ParamTypes &&...Params);
+	FRenderingPipeline& GetRenderingPipeline() { return RenderingPipeline; }
 
 protected:
 	FRenderingPipeline RenderingPipeline;

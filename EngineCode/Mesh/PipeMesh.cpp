@@ -1,6 +1,13 @@
 ﻿#include "PipeMesh.h"
 #include "Core/MeshType.h"
 #include "../Mesh/Core/MeshManager.h"
+#include "../Core/Construction/MacroConstruction.h"
+#include "../Component/Mesh/PipeMeshComponent.h"
+
+GPipeMesh::GPipeMesh()
+{
+	SetMeshComponent(ConstructionObject<CPipeMeshComponent>());
+}
 
 void GPipeMesh::Init()
 {
@@ -14,5 +21,6 @@ void GPipeMesh::Draw(float DeltaTime)
 
 void GPipeMesh::CreateMesh(float InTopRadius, float InBottomRadius, float InHeight, float InThickness, uint32_t InAxialSubdivision, uint32_t InHeightSubdivision)
 {
-	SetMeshComponent(GetMeshManager()->CreatePipeMeshComponent(InTopRadius, InBottomRadius, InHeight, InThickness, InAxialSubdivision, InHeightSubdivision));
+	CREATE_RENDER_DATA(CPipeMeshComponent, InTopRadius, InBottomRadius, InHeight, InThickness, InAxialSubdivision, InHeightSubdivision);
 }
+

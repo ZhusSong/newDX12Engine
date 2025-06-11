@@ -25,6 +25,7 @@ public:
 	virtual void PreDraw(float DeltaTime);
 	virtual void Draw(float DeltaTime);
 	virtual void PostDraw(float DeltaTime);
+	virtual void BuildPSO() {}
 
 	void RegisterRenderLayer();
 
