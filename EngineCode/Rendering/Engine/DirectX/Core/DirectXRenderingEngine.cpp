@@ -114,17 +114,17 @@ int CDirectXRenderingEngine::PostInit()
 			PointLight->SetPosition(XMFLOAT3(0.f, -6.f, 10.f));
 			PointLight->SetRotation(fvector_3d(0.f, 0.f, 0.f));
 
-			PointLight->SetLightIntensity(fvector_3d(0.9f));
+			PointLight->SetLightIntensity(fvector_3d(1.0f, 0.5f, 0.5f));
 			PointLight->SetEndAttenuation(100.f);
 		}
 		//// 平行光
-		//if (GParallelLight* ParallelLight = World->CreateActorObject<GParallelLight>())
-		//{
-		//	ParallelLight->SetPosition(XMFLOAT3(10.f, -10.f, 30.f));
-		//	ParallelLight->SetRotation(fvector_3d(0.f, 0.f, 0.f));
+		if (GParallelLight* ParallelLight = World->CreateActorObject<GParallelLight>())
+		{
+			ParallelLight->SetPosition(XMFLOAT3(10.f, -10.f, 30.f));
+			ParallelLight->SetRotation(fvector_3d(0.f, 0.f, 0.f));
 
-		//	ParallelLight->SetLightIntensity(fvector_3d(1.1f, 1.1f, 1.1f));
-		//}
+			ParallelLight->SetLightIntensity(fvector_3d(1.1f, 1.1f, 1.1f));
+		}
 	
 
 		if (GTorusMesh* InTorusMesh = World->CreateActorObject<GTorusMesh>())

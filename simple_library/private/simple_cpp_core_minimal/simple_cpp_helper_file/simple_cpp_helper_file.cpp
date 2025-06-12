@@ -203,6 +203,6 @@ namespace simple_cpp_helper_file
 
 	bool save_file_to_bytes(const std::string& in_path, const std::vector<unsigned char>& int_array)
 	{
-		return save_data_to_disk(in_path.c_str(), (char*)int_array.data(), int_array.size());
+		return save_data_to_disk(in_path.c_str(), (char*)int_array.data(), (int)int_array.size());
 	}
 }

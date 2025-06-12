@@ -3,13 +3,13 @@
 
 bool remove_char_end(char* str, char sub_str)
 {
-	int len = strlen(str);
+	/*int len = trlen(str);
 
 	if (str[len] == sub_str)
 	{
 		strcpy(&str[len], &str[len + 1]);
 		return true;
-	}
+	}*/
 
 	return false;
 }

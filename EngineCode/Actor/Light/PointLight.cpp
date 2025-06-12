@@ -14,7 +14,7 @@ void GPointLight::Tick(float DeltaTime)
 
 	XMFLOAT3 v3 = GetPosition();
 
-	v3.x -= cos(time) * 0.3f;
+	v3.x -= cos(time) * 0.6f;
 	//v3.z += DeltaTime * 100.f;
 
 	SetPosition(v3);
