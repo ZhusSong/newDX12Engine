@@ -20,7 +20,8 @@ void FTransparentRenderLayer::BuildShader()
 	char TextureNumBuff[10] = { 0 };
 	D3D_SHADER_MACRO ShaderMacro[] =
 	{
-		"TEXTURE2D_MAP_NUM",_itoa(GeometryMap->GetDrawTextureResourcesNumber(),TextureNumBuff,10),
+		"TEXTURE2D_MAP_NUM",_itoa(GeometryMap->GetDrawTexture2DResourcesNumber(),TextureNumBuff,10),
+		"CUBE_MAP_NUM",_itoa(GeometryMap->GetDrawCubeMapResourcesNumber(),TextureNumBuff,10),
 		NULL,NULL,
 	};
 
@@ -42,6 +43,7 @@ void FTransparentRenderLayer::BuildShader()
 
 void FTransparentRenderLayer::BuildPSO()
 {
+	Super::BuildPSO();
 	D3D12_RENDER_TARGET_BLEND_DESC RenderTargetBlendDesc;
 	RenderTargetBlendDesc.BlendEnable = true;
 	RenderTargetBlendDesc.LogicOpEnable = false;

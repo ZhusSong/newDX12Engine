@@ -31,7 +31,8 @@ void FRenderLayer::PreDraw(float DeltaTime)
 
 void FRenderLayer::Draw(float DeltaTime)
 {
-	UINT DescriptorOffset = GetD3dDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	//UINT DescriptorOffset = GetD3dDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	UINT MeshOffset = GeometryMap->MeshConstantBufferViews.GetConstantBufferByteSize();
 
 	//模型构建
 	for (auto& InRenderingData : RenderDatas)
@@ -39,7 +40,8 @@ void FRenderLayer::Draw(float DeltaTime)
 		D3D12_VERTEX_BUFFER_VIEW VBV = GeometryMap->Geometrys[InRenderingData.GeometryKey].GetVertexBufferView();
 		D3D12_INDEX_BUFFER_VIEW IBV = GeometryMap->Geometrys[InRenderingData.GeometryKey].GetIndexBufferView();
 
-		auto DesMeshHandle = CD3DX12_GPU_DESCRIPTOR_HANDLE(GeometryMap->GetHeap()->GetGPUDescriptorHandleForHeapStart());
+		D3D12_GPU_VIRTUAL_ADDRESS FirstVirtualMeshAddress = GeometryMap->MeshConstantBufferViews.GetBuffer()->GetGPUVirtualAddress();
+		//auto DesMeshHandle = CD3DX12_GPU_DESCRIPTOR_HANDLE(GeometryMap->GetHeap()->GetGPUDescriptorHandleForHeapStart());
 
 		GetGraphicsCommandList()->IASetIndexBuffer(&IBV);
 
@@ -51,11 +53,17 @@ void FRenderLayer::Draw(float DeltaTime)
 
 		//定义我们要绘制的哪种图元 点 线 面
 		D3D_PRIMITIVE_TOPOLOGY DisplayStatus = (*InRenderingData.Mesh->GetMaterials())[0]->GetMaterialDisplayStatus();
-		GetGraphicsCommandList()->IASetPrimitiveTopology((D3D_PRIMITIVE_TOPOLOGY)DisplayStatus);
+		GetGraphicsCommandList()->IASetPrimitiveTopology(DisplayStatus);
 
 		//模型起始地址偏移
-		DesMeshHandle.Offset(InRenderingData.MeshObjectIndex, DescriptorOffset);
-		GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(0, DesMeshHandle);
+		/*DesMeshHandle.Offset(InRenderingData.MeshObjectIndex, DescriptorOffset);
+		GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(0, DesMeshHandle);*/
+
+		D3D12_GPU_VIRTUAL_ADDRESS VAddress =
+			FirstVirtualMeshAddress + InRenderingData.MeshObjectIndex * MeshOffset;
+
+		GetGraphicsCommandList()->SetGraphicsRootConstantBufferView(0, VAddress);
+
 
 		//真正的绘制
 		GetGraphicsCommandList()->DrawIndexedInstanced(
@@ -70,6 +78,14 @@ void FRenderLayer::Draw(float DeltaTime)
 void FRenderLayer::PostDraw(float DeltaTime)
 {
 
+}
+
+void FRenderLayer::BuildPSO()
+{
+	BuildShader();
+
+	// 构建参数
+	DirectXPipelineState->BuildParam();
 }
 
 void FRenderLayer::UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo)

@@ -19,7 +19,7 @@ void FViewport::ViewportInit()
         0.25f * XM_PI, 
         AspectRatio,
         1.0f,
-        1000.f
+        10000.f
     );
 
     XMStoreFloat4x4(&ProjectMatrix, Project);

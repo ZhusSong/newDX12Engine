@@ -20,7 +20,7 @@ public:
 	virtual void Draw(float DeltaTime);
 	virtual void PostDraw(float DeltaTime);
 
-	virtual void BuildShader();
+	//virtual void BuildShader();
 
 	virtual void BuildPSO();
 	//排序

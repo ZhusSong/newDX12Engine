@@ -8,4 +8,6 @@ enum EMeshRenderLayerType
 	RENDERLAYER_TRANSPARENT,
 	// alpha测试
 	RENDERLAYER_ALPHATEST,
+	// 背景
+	RENDERLAYER_BACKGROUND,
 };

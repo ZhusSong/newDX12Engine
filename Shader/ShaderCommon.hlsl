@@ -9,7 +9,13 @@ SamplerState AnisotropicSampler : register(s1);
 #define TEXTURE2D_MAP_NUM 20  
 #endif
 
-Texture2D SimpleTexture2DMap[TEXTURE2D_MAP_NUM] : register(t3);
+#ifndef CUBE_MAP_NUM
+#define CUBE_MAP_NUM 20  
+#endif
+
+Texture2D SimpleTexture2DMap[TEXTURE2D_MAP_NUM] : register(t1);
+
+TextureCube  SimpleCubeMap: register(t0);
 
 cbuffer ObjectConstBuffer : register(b0) //b0->b14
 {
@@ -52,4 +58,4 @@ struct MaterialConstBuffer
     float4x4 TransformInformation;
 };
 
-StructuredBuffer<MaterialConstBuffer> Materials : register(t4, Space1);
+StructuredBuffer<MaterialConstBuffer> Materials : register(t0, Space1);

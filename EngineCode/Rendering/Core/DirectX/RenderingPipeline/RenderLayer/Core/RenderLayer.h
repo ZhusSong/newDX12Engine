@@ -25,7 +25,8 @@ public:
 	virtual void PreDraw(float DeltaTime);
 	virtual void Draw(float DeltaTime);
 	virtual void PostDraw(float DeltaTime);
-	virtual void BuildPSO() {}
+
+	virtual void BuildPSO();
 
 	void RegisterRenderLayer();
 
@@ -34,7 +35,7 @@ public:
 	const UINT GetRenderPriority()const { return RenderPriority; }
 
 public:
-	virtual void BuildShader() = 0;
+	virtual void BuildShader() {};
 	virtual int GetRenderLayerType()const = 0;
 protected:
 	UINT RenderPriority;

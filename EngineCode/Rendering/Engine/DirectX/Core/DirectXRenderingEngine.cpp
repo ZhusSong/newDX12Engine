@@ -589,13 +589,16 @@ int CDirectXRenderingEngine::PostInit()
 		// 天空盒
 		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 		{
+			SphereMesh->SetMeshRenderLayerType(EMeshRenderLayerType::RENDERLAYER_BACKGROUND);
+
 			SphereMesh->CreateMesh(2.f, 100, 100, true);
 			SphereMesh->SetPosition(XMFLOAT3(0.f, 0, 0.f));
 			//SphereMesh->SetRotation(fvector_3d(0.f, 90.f, 0.f));
-			SphereMesh->SetScale(fvector_3d(400.f));
+			SphereMesh->SetScale(fvector_3d(4000.f));
 			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
 			{
-				InMaterial->SetBaseColor("EpicQuadPanorama_CC");
+				InMaterial->SetBaseColor(fvector_4d(0.f, 0.f, 0.f, 1.f));
+				InMaterial->SetBaseColor("Hello_CubeMap");
 				InMaterial->SetSpecular(fvector_3d(1.f));
 				InMaterial->SetMaterialType(EMaterialType::BaseColor);
 			}
@@ -702,22 +705,22 @@ int CDirectXRenderingEngine::PostExit()
 		debugDevice->ReportLiveDeviceObjects(D3D12_RLDO_DETAIL);
 	}
 
-	// 释放所有d3d资源
-	DXGIFactory.Reset();
-	Fence.Reset();
-	CommandQueue.Reset();
-	CommandAllocator.Reset();
-	GraphicsCommandList.Reset();
-	SwapChain.Reset();
-	RTVHeap.Reset();
-	DSVHeap.Reset();
-	DepthStencilBuffer.Reset();
-	D3dDevice.Reset();
+	//// 释放所有d3d资源
+	//DXGIFactory.Reset();
+	//Fence.Reset();
+	//CommandQueue.Reset();
+	//CommandAllocator.Reset();
+	//GraphicsCommandList.Reset();
+	//SwapChain.Reset();
+	//RTVHeap.Reset();
+	//DSVHeap.Reset();
+	//DepthStencilBuffer.Reset();
+	//D3dDevice.Reset();
 
-	for (int i = 0; i < FEngineRenderConfig::GetRenderConfig()->SwapChainCount; i++)
-	{
-		SwapChainBuffer[i].Reset();
-	}
+	//for (int i = 0; i < FEngineRenderConfig::GetRenderConfig()->SwapChainCount; i++)
+	//{
+	//	SwapChainBuffer[i].Reset();
+	//}
 
 	Engine_Log("Engine post exit complete.");
 	return 0;

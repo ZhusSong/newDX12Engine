@@ -32,8 +32,11 @@ public:
 	//BuildPSO
 	void Build(int InPSOType);
 
-	//绘制的时候调用
+	// 重置PSO
 	void ResetPSO(int InPSOType);
+
+	// 只供不透明层使用
+	void ResetPSO();
 
 	// 设置渲染模式
 	void SetFillMode(bool bWireframe);
@@ -41,6 +44,9 @@ public:
 	// 设置渲染目标
 	void SetRenderTarget(int Index, const D3D12_RENDER_TARGET_BLEND_DESC& InRenderTargetBlend);
 
+
+	void SetRasterizerState(const CD3DX12_RASTERIZER_DESC& InRasterizerDesc);
+	void SetDepthStencilState(const CD3DX12_DEPTH_STENCIL_DESC& InDepthStencilDesc);
 
 private:
 	//按键捕获

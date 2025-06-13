@@ -26,8 +26,15 @@ class FRenderingTextureResourcesUpdate
 	, public IDirectXDeviceInterface
 {
 public:
+	FRenderingTextureResourcesUpdate();
+
+
 	void LoadTextureResources(const wstring& InFilename);
 	void BuildTextureConstantBuffer(ID3D12DescriptorHeap* InHeap, int Offset = 0);
+public:
+	void BuildParam();
+	void ResetTextureByType(std::unique_ptr<FRenderingTexture>* InTexture);
+	void SetViewDimension(D3D12_SRV_DIMENSION InNewDimension);
 
 	FORCEINLINE UINT Size() const { return (UINT)TexturesMapping.size(); }
 
@@ -35,4 +42,6 @@ public:
 
 protected:
 	std::map<std::wstring, std::unique_ptr<FRenderingTexture>> TexturesMapping;
+
+	D3D12_SHADER_RESOURCE_VIEW_DESC ShaderResourceViewDesc;
 };

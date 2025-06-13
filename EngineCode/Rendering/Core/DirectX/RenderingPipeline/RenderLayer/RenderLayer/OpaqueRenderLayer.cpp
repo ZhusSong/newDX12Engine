@@ -9,6 +9,9 @@ FOpaqueRenderLayer::FOpaqueRenderLayer()
 
 void FOpaqueRenderLayer::Draw(float DeltaTime)
 {
+	// 重置PSO
+	DirectXPipelineState->ResetPSO();
+
 	Super::Draw(DeltaTime);
 }
 void FOpaqueRenderLayer::BuildShader()
@@ -18,8 +21,9 @@ void FOpaqueRenderLayer::BuildShader()
 	char TextureNumBuff[10] = { 0 };
 	D3D_SHADER_MACRO ShaderMacro[] =
 	{
-		"TEXTURE2D_MAP_NUM",_itoa(GeometryMap->GetDrawTextureResourcesNumber(),TextureNumBuff,10),
-		NULL,NULL,
+		"TEXTURE2D_MAP_NUM",_itoa(GeometryMap->GetDrawTexture2DResourcesNumber(),TextureNumBuff,10),
+		"CUBE_MAP_NUM",_itoa(GeometryMap->GetDrawCubeMapResourcesNumber(),TextureNumBuff,10),
+		NULL,NULL,	NULL,NULL,
 	};
 
 	VertexShader.BuildShaders(L"../newDX12Engine/Shader/VertexShader.hlsl", "VertexShaderMain", "vs_5_1", ShaderMacro);
@@ -42,11 +46,12 @@ void FOpaqueRenderLayer::BuildShader()
 
 void FOpaqueRenderLayer::BuildPSO()
 {
+	Super::BuildPSO();
 	// 构建管线
-	// 构建一遍线框模式
-	DirectXPipelineState->Build(Wireframe);
-
-	// 构建非透明
-	DirectXPipelineState->SetFillMode(false);
+	// 构建固体模式
 	DirectXPipelineState->Build(GrayModel);
+
+	// 构建线框
+	DirectXPipelineState->SetFillMode(true);
+	DirectXPipelineState->Build(Wireframe);
 }

@@ -7,6 +7,8 @@
 #include "../../../../../Core/Viewport/ViewportInfo.h"
 
 class CMaterial;
+struct FRenderingTexture;
+
 // 几何体描述
 struct FGeometry :public IDirectXDeviceInterface_Struct
 {
@@ -94,7 +96,10 @@ struct FGeometryMap :public IDirectXDeviceInterface_Struct
 	UINT GetDrawLightObjectNumber();
 
 	// 得到Texture资源数量
-	UINT GetDrawTextureResourcesNumber();
+	UINT GetDrawTexture2DResourcesNumber();
+
+
+	UINT GetDrawCubeMapResourcesNumber();
 
 	// 构建纹理SRV视图
 	void BuildTextureConstantBuffer();
@@ -102,6 +107,9 @@ struct FGeometryMap :public IDirectXDeviceInterface_Struct
 	//构建视口常量缓冲区视图
 	void BuildViewportConstantBufferView();
 
+
+public:
+	std::unique_ptr<FRenderingTexture>* FindRenderingTexture(const std::string& InKey);
 
 public:
 	void DrawLight(float DeltaTime);
@@ -121,6 +129,7 @@ protected:
 	FConstantBufferViews LightConstantBufferViews;
 	FConstantBufferViews ViewportConstantBufferViews;
 
-	std::shared_ptr<class FRenderingTextureResourcesUpdate> RenderingTextureResources;
+	std::shared_ptr<class FRenderingTextureResourcesUpdate> RenderingTexture2DResources;
+	std::shared_ptr<class FRenderingTextureResourcesUpdate> RenderingCubeMapResources;
 	std::vector<CMaterial*> Materials;
 };

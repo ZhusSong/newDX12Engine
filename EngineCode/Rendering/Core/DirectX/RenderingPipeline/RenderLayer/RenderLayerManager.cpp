@@ -2,6 +2,7 @@
 #include "RenderLayer/AlphaTestRenderLayer.h"
 #include "RenderLayer/OpaqueRenderLayer.h"
 #include "RenderLayer/TransparentRenderLayer.h"
+#include "RenderLayer/BackgroundRenderLayer.h"
 
 std::vector<std::shared_ptr<FRenderLayer>> FRenderLayerManager::RenderLayers;
 
@@ -9,7 +10,8 @@ FRenderLayerManager::FRenderLayerManager()
 {
 	RenderLayers.clear();
 
-	CreateRenderLayer<FAlphaTestRenderLayer>();
+	CreateRenderLayer<FBackgroundRenderLayer>();
+	//CreateRenderLayer<FAlphaTestRenderLayer>();
 	CreateRenderLayer<FOpaqueRenderLayer>();
 	CreateRenderLayer<FTransparentRenderLayer>();
 }
@@ -34,14 +36,14 @@ void FRenderLayerManager::UpdateCalculations(float DeltaTime, const FViewportInf
 		Tmp->UpdateCalculations(DeltaTime,ViewportInfo);
 	}
 }
-
-void FRenderLayerManager::BuildShader()
-{
-	for (auto& Tmp : RenderLayers)
-	{
-		Tmp->BuildShader();
-	}
-}
+//
+//void FRenderLayerManager::BuildShader()
+//{
+//	for (auto& Tmp : RenderLayers)
+//	{
+//		Tmp->BuildShader();
+//	}
+//}
 void FRenderLayerManager::BuildPSO()
 {
 	for (auto& Tmp : RenderLayers)
