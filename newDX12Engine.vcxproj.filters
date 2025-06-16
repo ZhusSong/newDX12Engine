@@ -320,6 +320,12 @@
     <Filter Include="EngineCode\Core\Construction">
       <UniqueIdentifier>{43f21d14-0769-40d3-ab08-aa2f2818b59e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="EngineCode\Component\Sky">
+      <UniqueIdentifier>{46cbcb28-dbba-46b1-811f-ce3267abc4e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Actor\Sky">
+      <UniqueIdentifier>{f846dec3-903d-4cc0-a2fa-2dd32338c22a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="simple_library\private\simple_math\transformation\matrix\matrix_2x2.cpp">
@@ -681,6 +687,21 @@
     </ClCompile>
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\BackgroundRenderLayer.cpp">
       <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\RednerLayer</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Sky\FogComponent.cpp">
+      <Filter>EngineCode\Component\Sky</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Sky\SkyConstantBuffer.cpp">
+      <Filter>EngineCode\Component\Sky</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Actor\Sky\Fog.cpp">
+      <Filter>EngineCode\Actor\Sky</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Actor\Sky\Sky.cpp">
+      <Filter>EngineCode\Actor\Sky</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Shader\Core\ShaderType.cpp">
+      <Filter>EngineCode\Shader\Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1083,16 +1104,16 @@
     <ClInclude Include="EngineCode\Mesh\TorusMesh.h">
       <Filter>EngineCode\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="Shader\ShaderCommon.hlsl">
+    <ClInclude Include="Shader\ShaderCommon.hlsli">
       <Filter>Shader</Filter>
     </ClInclude>
-    <ClInclude Include="Shader\Material.hlsl">
+    <ClInclude Include="Shader\Material.hlsli">
       <Filter>Shader</Filter>
     </ClInclude>
-    <ClInclude Include="Shader\Light.hlsl">
+    <ClInclude Include="Shader\Light.hlsli">
       <Filter>Shader</Filter>
     </ClInclude>
-    <ClInclude Include="Shader\ShaderFunctionLibrary.hlsl">
+    <ClInclude Include="Shader\ShaderFunctionLibrary.hlsli">
       <Filter>Shader</Filter>
     </ClInclude>
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayerManager.h">
@@ -1130,6 +1151,24 @@
     </ClInclude>
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\BackgroundRenderLayer.h">
       <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\RednerLayer</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Sky\FogComponent.h">
+      <Filter>EngineCode\Component\Sky</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Sky\SkyConstantBuffer.h">
+      <Filter>EngineCode\Component\Sky</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Actor\Sky\Fog.h">
+      <Filter>EngineCode\Actor\Sky</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Actor\Sky\Sky.h">
+      <Filter>EngineCode\Actor\Sky</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Shader\Core\ShaderType.h">
+      <Filter>EngineCode\Shader\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader\Fog.hlsli">
+      <Filter>Shader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

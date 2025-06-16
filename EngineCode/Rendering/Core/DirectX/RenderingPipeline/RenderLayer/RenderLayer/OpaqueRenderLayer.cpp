@@ -18,21 +18,19 @@ void FOpaqueRenderLayer::BuildShader()
 {
 	//构建Shader
 	//HLSL
-	char TextureNumBuff[10] = { 0 };
-	D3D_SHADER_MACRO ShaderMacro[] =
-	{
-		"TEXTURE2D_MAP_NUM",_itoa(GeometryMap->GetDrawTexture2DResourcesNumber(),TextureNumBuff,10),
-		"CUBE_MAP_NUM",_itoa(GeometryMap->GetDrawCubeMapResourcesNumber(),TextureNumBuff,10),
-		NULL,NULL,	NULL,NULL,
-	};
+	vector<ShaderType::FShaderMacro> ShaderMacro;
+	BuildShaderMacro(ShaderMacro);
 
-	VertexShader.BuildShaders(L"../newDX12Engine/Shader/VertexShader.hlsl", "VertexShaderMain", "vs_5_1", ShaderMacro);
-	PixelShader.BuildShaders(L"../newDX12Engine/Shader/VertexShader.hlsl", "PixelShaderMain", "ps_5_1", ShaderMacro);
+	vector<D3D_SHADER_MACRO> D3DShaderMacro;
+	ShaderType::ToD3DShaderMacro(ShaderMacro, D3DShaderMacro);
+
+	VertexShader.BuildShaders(L"../newDX12Engine/Shader/VertexShader.hlsl", "VertexShaderMain", "vs_5_1", D3DShaderMacro.data());
+	PixelShader.BuildShaders(L"../newDX12Engine/Shader/VertexShader.hlsl", "PixelShaderMain", "ps_5_1", D3DShaderMacro.data());
 	DirectXPipelineState->BindShader(VertexShader, PixelShader);
 
 	
 
-	//输入布局
+	// 输入布局
 	InputElementDesc =
 	{
 		{"POSITION",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},

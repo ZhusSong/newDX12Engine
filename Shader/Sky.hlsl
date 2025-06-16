@@ -1,5 +1,6 @@
 //25.6.13 李
-#include "ShaderCommon.hlsl"
+#include "ShaderCommon.hlsli"
+#include "Fog.hlsli"
 
 struct MeshVertexIn
 {
@@ -32,6 +33,10 @@ MeshVertexOut VertexShaderMain(MeshVertexIn MV)
 
 float4 PixelShaderMain(MeshVertexOut MVOut) :SV_TARGET
 {
-	return SimpleCubeMap.Sample(TextureSampler, MVOut.PositionH);
-	//return float4(0.f,0.f,0.f,1.f);
+	float4 Color = SimpleCubeMap.Sample(TextureSampler, MVOut.PositionH);
+
+	float4 WorldPosition = mul(MVOut.PositionH, WorldMatrix);
+	Color = GetFogValue(Color, WorldPosition);
+
+	return Color;
 }

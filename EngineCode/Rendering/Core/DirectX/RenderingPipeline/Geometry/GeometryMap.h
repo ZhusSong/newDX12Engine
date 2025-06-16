@@ -8,6 +8,7 @@
 
 class CMaterial;
 struct FRenderingTexture;
+class CFogComponent;
 
 // 几何体描述
 struct FGeometry :public IDirectXDeviceInterface_Struct
@@ -63,6 +64,7 @@ struct FGeometryMap :public IDirectXDeviceInterface_Struct
 
 	void UpdateMaterialShaderResourceView(float DeltaTime, const FViewportInfo& ViewportInfo);
 
+	void BuildFog();
 
 	void BuildMesh(const size_t InMeshHash, CMeshComponent* InMesh, const FMeshRenderingData& MeshData);
 	void DuplicateMesh(CMeshComponent* InMesh, const FRenderingData& MeshData);
@@ -77,8 +79,11 @@ struct FGeometryMap :public IDirectXDeviceInterface_Struct
 	// 描述堆
 	void BuildDescriptorHeap();
 
-	//构建常量缓冲区
+	//构建Mesh常量缓冲区
 	void BuildMeshConstantBuffer();
+
+	// 构建雾常量缓冲区
+	void BuildFogConstantBuffer();
 
 	//构建Material常量缓冲区
 	void BuildMaterialShaderResourceView();
@@ -107,6 +112,8 @@ struct FGeometryMap :public IDirectXDeviceInterface_Struct
 	//构建视口常量缓冲区视图
 	void BuildViewportConstantBufferView();
 
+public:
+	bool IsStartUPFog();
 
 public:
 	std::unique_ptr<FRenderingTexture>* FindRenderingTexture(const std::string& InKey);
@@ -117,6 +124,7 @@ public:
 	void DrawMesh(float DeltaTime);
 	void DrawMaterial(float DeltaTime);
 	void DrawTexture(float DeltaTime);
+	void DrawFog(float DeltaTime);
 public:
 	ID3D12DescriptorHeap* GetHeap()const { return DescriptorHeap.GetHeap(); }
 
@@ -124,12 +132,16 @@ protected:
 	map<int, FGeometry> Geometrys;
 	FDirectXDescriptorHeap DescriptorHeap;
 
-	FConstantBufferViews MeshConstantBufferViews;
-	FConstantBufferViews MaterialConstantBufferViews;
-	FConstantBufferViews LightConstantBufferViews;
-	FConstantBufferViews ViewportConstantBufferViews;
+	
+	FConstantBufferViews MeshConstantBufferViews;		//网格常量缓冲区
+	FConstantBufferViews MaterialConstantBufferViews;	//材质常量缓冲区
+	FConstantBufferViews LightConstantBufferViews;		//灯光常量缓冲区
+	FConstantBufferViews ViewportConstantBufferViews;	//视口常量缓冲区
+	FConstantBufferViews FogConstantBufferViews;		//雾常量缓冲区
 
 	std::shared_ptr<class FRenderingTextureResourcesUpdate> RenderingTexture2DResources;
 	std::shared_ptr<class FRenderingTextureResourcesUpdate> RenderingCubeMapResources;
 	std::vector<CMaterial*> Materials;
+
+	CFogComponent* Fog;
 };

@@ -8,7 +8,7 @@ FDirectXRootSignature::FDirectXRootSignature()
 void FDirectXRootSignature::BuildRootSignature(UINT InTextureNum)
 {
     // 构建根签名
-    CD3DX12_ROOT_PARAMETER RootParam[6];
+    CD3DX12_ROOT_PARAMETER RootParam[7];
 
     // Shader描述表
     CD3DX12_DESCRIPTOR_RANGE DescriptorRangeTextureSRV;
@@ -20,19 +20,20 @@ void FDirectXRootSignature::BuildRootSignature(UINT InTextureNum)
     RootParam[0].InitAsConstantBufferView(0);//对象
     RootParam[1].InitAsConstantBufferView(1);//视口
     RootParam[2].InitAsConstantBufferView(2);//灯光
+    RootParam[3].InitAsConstantBufferView(3);//雾
 
     // Shader->t寄存器
-    RootParam[3].InitAsShaderResourceView(0, 1);//材质
+    RootParam[4].InitAsShaderResourceView(0, 1);//材质
 
     // 2D贴图
-    RootParam[4].InitAsDescriptorTable(1, &DescriptorRangeTextureSRV, D3D12_SHADER_VISIBILITY_PIXEL);
-    RootParam[5].InitAsDescriptorTable(1, &DescriptorRangeCubeMapSRV, D3D12_SHADER_VISIBILITY_PIXEL);
+    RootParam[5].InitAsDescriptorTable(1, &DescriptorRangeTextureSRV, D3D12_SHADER_VISIBILITY_PIXEL);
+    RootParam[6].InitAsDescriptorTable(1, &DescriptorRangeCubeMapSRV, D3D12_SHADER_VISIBILITY_PIXEL);
 
     // 构建静态采样
     StaticSamplerObject.BuildStaticSampler();
 
     CD3DX12_ROOT_SIGNATURE_DESC RootSignatureDesc(
-        6,
+        7,
         RootParam,
         StaticSamplerObject.GetSize(),//采样数量
         StaticSamplerObject.GetData(),//采样数据

@@ -4,6 +4,7 @@
 #include "../../../../../../Interface/DirectXDeviceInterface.h"
 #include "../../../../../../Shader/Core/Shader.h"
 #include "../../Geometry/RenderingData.h"
+#include "../../../../../../Shader/Core/ShaderType.h"
 
 struct FDirectXPipelineState;
 struct FGeometryMap;
@@ -29,6 +30,8 @@ public:
 	virtual void BuildPSO();
 
 	void RegisterRenderLayer();
+
+	virtual void BuildShaderMacro(std::vector<ShaderType::FShaderMacro>& InMacro);
 
 	virtual void UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo);
 public:

@@ -18,6 +18,37 @@ void FRenderLayer::RegisterRenderLayer()
 	FRenderLayerManager::RenderLayers.push_back(this->shared_from_this());
 }
 
+void FRenderLayer::BuildShaderMacro(std::vector<ShaderType::FShaderMacro>& InMacro)
+{
+	{
+		ShaderType::FShaderMacro ShaderMacro;
+
+		char TextureNumBuff[10] = { 0 };
+		ShaderMacro.Name = "TEXTURE2D_MAP_NUM";
+		ShaderMacro.Definition = _itoa(GeometryMap->GetDrawTexture2DResourcesNumber(), TextureNumBuff, 10);
+
+		InMacro.push_back(ShaderMacro);
+	}
+
+	{
+		ShaderType::FShaderMacro ShaderMacro;
+
+		char TextureNumBuff[10] = { 0 };
+		ShaderMacro.Name = "CUBE_MAP_NUM";
+		ShaderMacro.Definition = _itoa(GeometryMap->GetDrawCubeMapResourcesNumber(), TextureNumBuff, 10);
+
+		InMacro.push_back(ShaderMacro);
+	}
+
+	{
+		ShaderType::FShaderMacro ShaderMacro;
+		ShaderMacro.Name = "START_UP_FOG";
+		ShaderMacro.Definition = GeometryMap->IsStartUPFog() ? "1" : "0";
+
+		InMacro.push_back(ShaderMacro);
+	}
+}
+
 void FRenderLayer::Init(FGeometryMap* InGeometryMap, FDirectXPipelineState* InDirectXPipelineState)
 {
 	GeometryMap = InGeometryMap;

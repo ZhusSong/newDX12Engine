@@ -1,5 +1,6 @@
-#include "Material.hlsl"
+#include "Material.hlsli"
 #include "PBR.hlsl"
+#include "Fog.hlsli"
 
 
 struct MeshVertexIn
@@ -91,6 +92,8 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
     float DotValue = 0;
 
     float4 LightStrengths = { 0.f, 0.f, 0.f, 1.f };
+
+	float4 FinalColor = { 0.f,0.f,0.f,1.f };
     
 
     for (int i = 0; i < 16; i++)
@@ -325,24 +328,25 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
 				//float3 F0 = { 0.1f,0.1f,0.1f };
 				//Specular.xyz = FresnelSchlickMethod(F0, ModelNormal, ViewDirection, 3).xyz;
             }
-            LightStrengths += saturate(LightStrength * DotValue * float4(SceneLights[i].LightIntensity, 1.f));
-            LightStrengths.w = 1.f;
 
+            // 漫反射
+            float4 Diffuse = Material.BaseColor;
+            // 高光
+			Specular = saturate(Specular);
 
-			//把这些属性限制到 0-1
-            LightStrengths = saturate(LightStrengths);
-            Specular = saturate(Specular);
-            Material.BaseColor = saturate(Material.BaseColor);
-        }
+            // 限制最终光照颜色为0-1
+			FinalColor += saturate((Diffuse + Specular) * LightStrength * DotValue);
+		}
     }
 
     // 最终颜色贡献
-    MVOut.Color = LightStrengths * (Material.BaseColor //漫反射
-		+ Specular * Material.BaseColor) + //高光
+    MVOut.Color = FinalColor +               // 物体最终颜色
+		AmbientLight * Material.BaseColor;   // 环境光
 
-		AmbientLight * Material.BaseColor; //间接光
-	
-    MVOut.Color.a = Material.BaseColor.a;
+	MVOut.Color.a = Material.BaseColor.a;    // alpha值
+
+    // 添加雾气影响
+	MVOut.Color = GetFogValue(MVOut.Color, MVOut.WorldPosition);
 
     return MVOut.Color;
 }

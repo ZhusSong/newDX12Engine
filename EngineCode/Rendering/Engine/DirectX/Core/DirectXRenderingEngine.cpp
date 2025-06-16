@@ -21,6 +21,10 @@
 #include "../../../../Core/World.h"
 #include "../../../../Component/Mesh/Core/MeshComponent.h"
 
+// 天空
+#include "../../../../Actor/Sky/Fog.h"
+#include "../../../../Actor/Sky/Sky.h"
+
 // 灯光相关
 #include "../../../../Manager/LightManager.h"
 #include "../../../../Actor/Light/ParallelLight.h"
@@ -213,7 +217,7 @@ int CDirectXRenderingEngine::PostInit()
 			InPlaneMesh->CreateMesh(4.f, 3.f, 20, 20);
 
 			InPlaneMesh->SetPosition(XMFLOAT3(0.f, -12.f, 0.f));
-			InPlaneMesh->SetScale(fvector_3d(50.f, 50.f, 50.f));
+			InPlaneMesh->SetScale(fvector_3d(50.f, 1.f, 50.f));
 			if (CMaterial* InMaterial = (*InPlaneMesh->GetMaterials())[0])
 			{
 				InMaterial->SetMaterialType(EMaterialType::Lambert);
@@ -586,23 +590,40 @@ int CDirectXRenderingEngine::PostInit()
 			}
 		}
 
-		// 天空盒
-		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
+		// 天空
+		if (GSky* InSky = World->CreateActorObject<GSky>())//ﾌ・ﾕ
 		{
-			SphereMesh->SetMeshRenderLayerType(EMeshRenderLayerType::RENDERLAYER_BACKGROUND);
-
-			SphereMesh->CreateMesh(2.f, 100, 100, true);
-			SphereMesh->SetPosition(XMFLOAT3(0.f, 0, 0.f));
-			//SphereMesh->SetRotation(fvector_3d(0.f, 90.f, 0.f));
-			SphereMesh->SetScale(fvector_3d(4000.f));
-			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
-			{
-				InMaterial->SetBaseColor(fvector_4d(0.f, 0.f, 0.f, 1.f));
-				InMaterial->SetBaseColor("Hello_CubeMap");
-				InMaterial->SetSpecular(fvector_3d(1.f));
-				InMaterial->SetMaterialType(EMaterialType::BaseColor);
-			}
+			InSky->SetPosition(XMFLOAT3(0.f, 0.f, 0.f));
 		}
+
+		// 雾
+		if (GFog* Fog = World->CreateActorObject<GFog>())
+		{
+			Fog->SetFogColor(fvector_color(0.7f));
+			Fog->SetFogStart(30.f);
+			Fog->SetFogRange(200.f);
+
+			Fog->SetFogHeight(5000.f);
+			Fog->SetFogTransparentCoefficient(0.01f);
+
+		}
+		//// 天空盒
+		//if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
+		//{
+		//	SphereMesh->SetMeshRenderLayerType(EMeshRenderLayerType::RENDERLAYER_BACKGROUND);
+
+		//	SphereMesh->CreateMesh(2.f, 100, 100, true);
+		//	SphereMesh->SetPosition(XMFLOAT3(0.f, 0, 0.f));
+		//	//SphereMesh->SetRotation(fvector_3d(0.f, 90.f, 0.f));
+		//	SphereMesh->SetScale(fvector_3d(4000.f));
+		//	if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
+		//	{
+		//		InMaterial->SetBaseColor(fvector_4d(0.f, 0.f, 0.f, 1.f));
+		//		InMaterial->SetBaseColor("Hello_CubeMap");
+		//		InMaterial->SetSpecular(fvector_3d(1.f));
+		//		InMaterial->SetMaterialType(EMaterialType::BaseColor);
+		//	}
+		//}
 
 	}
 
