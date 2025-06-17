@@ -12,6 +12,8 @@ CSpotLightComponent::CSpotLightComponent()
 {
 
 	string MeshPath = "../newDX12Engine/Asset/SpotMesh.obj";
+
+	//string MeshPath = "Asset/SpotMesh.obj";
 	SetLightMesh(GetMeshManager()->CreateMeshComponent(MeshPath));
 
 

@@ -53,7 +53,7 @@ void FShader::BuildShaderByName(
 	wchar_t* shaderPath = get_shader_path_shader_name(shader_path);
 
 	HRESULT R = D3DCompileFromFile(shaderPath,
-		NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE,
+		InShaderMacro, D3D_COMPILE_STANDARD_FILE_INCLUDE,
 		InEntryFunName.c_str(), InShadersVersion.c_str(),
 #if _DEBUG
 		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION
@@ -64,7 +64,7 @@ void FShader::BuildShaderByName(
 
 	if (ErrorShaderMsg)
 	{
-		Engine_Log_Error("%s", (char*)ErrorShaderMsg->GetBufferPointer());
+		Engine_Log_Error("%s 1", (char*)ErrorShaderMsg->GetBufferPointer());
 	}
 	ErrorShaderMsg.Reset();
 	//失败就奔溃了

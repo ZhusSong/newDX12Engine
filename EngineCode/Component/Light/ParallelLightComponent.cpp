@@ -8,6 +8,7 @@ CParallelLightComponent::CParallelLightComponent()
 {
 	// 读取模型资源
 	string MeshPath = "../newDX12Engine/Asset/SunMesh.obj";
+	//string MeshPath = "Asset/SunMesh.obj";
 
 	SetLightMesh(GetMeshManager()->CreateMeshComponent(MeshPath)); if (GetLightMesh())
 	{

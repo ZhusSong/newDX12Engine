@@ -14,12 +14,14 @@ public:
 		const string& InEntryFunName,
 		const string& InShadersVersion,
 		const D3D_SHADER_MACRO* InShaderMacro = NULL);
-private:
-	ComPtr<ID3DBlob> ShaderCode;
-	// 通过shader名字获取相对路径并构建shader
+
 	void BuildShaderByName(
 		const wstring& InFileName,
 		const string& InEntryFunName,
 		const string& InShadersVersion,
 		const D3D_SHADER_MACRO* InShaderMacro = NULL);
+private:
+	ComPtr<ID3DBlob> ShaderCode;
+	// 通过shader名字获取相对路径并构建shader
+	
 };

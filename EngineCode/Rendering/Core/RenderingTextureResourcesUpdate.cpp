@@ -47,7 +47,6 @@ void FRenderingTextureResourcesUpdate::LoadTextureResources(const wstring& InFil
 		wreplace_string_inline(Value, Asset, Project);
 		wreplace_string_inline(Value, DDS, (L"." + MyTexture->Name).c_str());
 
-		wget_printf_s(AssetFilenameBuff, L"Texture'%s'", Value);
 	}
 
 	MyTexture->AssetFilename = AssetFilenameBuff;

@@ -442,7 +442,7 @@ int CDirectXRenderingEngine::PostInit()
 		//}
 		if (GetCurrentGPU() == NVIDIA)
 		{
-			//以线框显示
+			////以线框显示
 			//if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 			//{
 			//	SphereMesh->SetMeshRenderLayerType(EMeshRenderLayerType::RENDERLAYER_OPAQUE);

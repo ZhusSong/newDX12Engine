@@ -10,6 +10,7 @@ void FDirectXRootSignature::BuildRootSignature(UINT InTextureNum)
     // 构建根签名
     CD3DX12_ROOT_PARAMETER RootParam[7];
 
+    Engine_Log("Texture number is %d", InTextureNum);
     // Shader描述表
     CD3DX12_DESCRIPTOR_RANGE DescriptorRangeTextureSRV;
     DescriptorRangeTextureSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, InTextureNum, 1);
@@ -39,7 +40,7 @@ void FDirectXRootSignature::BuildRootSignature(UINT InTextureNum)
         StaticSamplerObject.GetData(),//采样数据
         D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 
-    //ｴｴｽｨ
+    // 创建
     ComPtr<ID3DBlob> SerializeRootSignature;
     ComPtr<ID3DBlob> ErrorBlob;
     D3D12SerializeRootSignature(
@@ -53,7 +54,7 @@ void FDirectXRootSignature::BuildRootSignature(UINT InTextureNum)
         Engine_Log_Error("%s", (char*)ErrorBlob->GetBufferPointer());
     }
 
-    //ｴｴｽｨ
+    // 创建
     GetD3dDevice()->CreateRootSignature(
         0,
         SerializeRootSignature->GetBufferPointer(),
