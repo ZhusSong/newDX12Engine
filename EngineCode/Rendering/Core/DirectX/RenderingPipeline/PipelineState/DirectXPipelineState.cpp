@@ -95,6 +95,13 @@ void FDirectXPipelineState::ResetPSO(int InPSOType)
 
 void FDirectXPipelineState::ResetPSO()
 {
+
+    ResetPSO(PipelineState);
+}
+
+void FDirectXPipelineState::ResetPSO(bool bWireframe)
+{
+    PipelineState = bWireframe ?  EPipelineState::Wireframe: EPipelineState::GrayModel;
     ResetPSO(PipelineState);
 }
 

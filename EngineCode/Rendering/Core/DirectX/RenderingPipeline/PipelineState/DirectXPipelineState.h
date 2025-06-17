@@ -37,6 +37,8 @@ public:
 
 	// 只供不透明层使用
 	void ResetPSO();
+	// 提供线框渲染模式
+	void ResetPSO(bool bWireframe);
 
 	// 设置渲染模式
 	void SetFillMode(bool bWireframe);

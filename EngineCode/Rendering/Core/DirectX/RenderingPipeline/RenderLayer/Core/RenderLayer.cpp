@@ -10,7 +10,7 @@
 FRenderLayer::FRenderLayer()
 	:RenderPriority(0)
 {
-	
+
 }
 
 void FRenderLayer::RegisterRenderLayer()
@@ -68,6 +68,7 @@ void FRenderLayer::Draw(float DeltaTime)
 	//模型构建
 	for (auto& InRenderingData : RenderDatas)
 	{
+		
 		D3D12_VERTEX_BUFFER_VIEW VBV = GeometryMap->Geometrys[InRenderingData.GeometryKey].GetVertexBufferView();
 		D3D12_INDEX_BUFFER_VIEW IBV = GeometryMap->Geometrys[InRenderingData.GeometryKey].GetIndexBufferView();
 
@@ -81,6 +82,7 @@ void FRenderLayer::Draw(float DeltaTime)
 			0,//起始输入槽 0-15 
 			1,//k k+1 ... k+n-1 
 			&VBV);
+
 
 		//定义我们要绘制的哪种图元 点 线 面
 		D3D_PRIMITIVE_TOPOLOGY DisplayStatus = (*InRenderingData.Mesh->GetMaterials())[0]->GetMaterialDisplayStatus();

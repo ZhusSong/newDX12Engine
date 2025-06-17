@@ -14,6 +14,7 @@ FRenderLayerManager::FRenderLayerManager()
 	//CreateRenderLayer<FAlphaTestRenderLayer>();
 	CreateRenderLayer<FOpaqueRenderLayer>();
 	CreateRenderLayer<FTransparentRenderLayer>();
+	//CreateRenderLayer<FWireframeRenderLayer>();
 }
 
 FRenderLayerManager::~FRenderLayerManager()
@@ -50,6 +51,7 @@ void FRenderLayerManager::BuildPSO()
 	{
 		Tmp->BuildPSO();
 	}
+
 }
 void FRenderLayerManager::Sort()
 {

@@ -58,6 +58,11 @@ UINT GMesh::GetMaterialNum() const
 	return MeshComponent->GetMaterialNum();
 }
 
+EMeshRenderLayerType GMesh::GetRenderLayerType() const
+{
+	return MeshComponent->GetRenderLayerType();
+}
+
 vector<CMaterial*>* GMesh::GetMaterials()
 {
 	return MeshComponent->GetMaterials();

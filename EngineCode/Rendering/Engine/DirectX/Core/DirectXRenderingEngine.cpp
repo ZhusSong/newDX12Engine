@@ -442,25 +442,24 @@ int CDirectXRenderingEngine::PostInit()
 		//}
 		if (GetCurrentGPU() == NVIDIA)
 		{
-			////以线框显示
-			//if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
-			//{
-			//	SphereMesh->SetMeshRenderLayerType(EMeshRenderLayerType::RENDERLAYER_OPAQUE);
-
-			//	SphereMesh->CreateMesh(2.f, 50, 50);
-			//	SphereMesh->SetPosition(XMFLOAT3(9.f, 18, 0.f));
-			//	if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
-			//	{
-			//		InMaterial->SetMaterialDisplayStatus(EMaterialDisplayStatusType::WireframeDisplay);
-			//		InMaterial->SetMaterialType(EMaterialType::BaseColor);
-			//		InMaterial->SetBaseColor(fvector_4d(1.f, 1.f, 1.f, 1.f));
-
-			//	}
-			//}
+			//以线框显示
+			if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
+			{
+				SphereMesh->CreateMesh(2.f, 50, 50);
+				SphereMesh->SetPosition(XMFLOAT3(9.f, 18, 0.f));
+				if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
+				{
+					InMaterial->SetMaterialDisplayStatus(EMaterialDisplayStatusType::WireframeDisplay);
+					InMaterial->SetMaterialType(EMaterialType::BaseColor);
+					InMaterial->SetBaseColor(fvector_4d(1.f, 1.f, 1.f, 1.f));
+				}
+			}
 
 			////以点显示
 			//if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 			//{
+			//	SphereMesh->SetMeshRenderLayerType(EMeshRenderLayerType::RENDERLAYER_WIREFRAME);
+
 			//	SphereMesh->CreateMesh(2.f, 50, 50);
 			//	SphereMesh->SetPosition(XMFLOAT3(-3.f, 18, 0.f));
 			//	if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])

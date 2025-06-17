@@ -52,6 +52,6 @@ protected:
 	virtual void SetMeshComponent(CMeshComponent* InMeshComponent);
 public:
 	UINT GetMaterialNum()const;
-
+	EMeshRenderLayerType GetRenderLayerType()const;
 	vector<CMaterial*>* GetMaterials();
 };

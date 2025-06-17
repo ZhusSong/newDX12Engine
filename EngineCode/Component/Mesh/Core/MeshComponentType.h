@@ -10,4 +10,6 @@ enum EMeshRenderLayerType
 	RENDERLAYER_ALPHATEST,
 	// 背景
 	RENDERLAYER_BACKGROUND,
+	//// 线框
+	//RENDERLAYER_WIREFRAME,
 };
