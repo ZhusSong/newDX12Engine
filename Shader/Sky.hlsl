@@ -33,10 +33,10 @@ MeshVertexOut VertexShaderMain(MeshVertexIn MV)
 
 float4 PixelShaderMain(MeshVertexOut MVOut) :SV_TARGET
 {
-	float4 Color = SimpleCubeMap.Sample(TextureSampler, MVOut.PositionH);
+    float4 Color = SimpleCubeMap.Sample(TextureSampler, (float3)MVOut.PositionH);
 
 	float4 WorldPosition = mul(MVOut.PositionH, WorldMatrix);
-	Color = GetFogValue(Color, WorldPosition);
+    Color = GetFogValue(Color, (float3) WorldPosition);
 
 	return Color;
 }

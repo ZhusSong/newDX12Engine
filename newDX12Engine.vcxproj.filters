@@ -302,9 +302,6 @@
     <Filter Include="EngineCode\Rendering\DirectX12">
       <UniqueIdentifier>{83a4da36-920e-4228-88c3-424b78decfad}</UniqueIdentifier>
     </Filter>
-    <Filter Include="EngineCode\Rendering\Core\DirectX\StaticSampler">
-      <UniqueIdentifier>{a7f706b5-a383-49c5-85a2-a00b17df3e5d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="EngineCode\Manager">
       <UniqueIdentifier>{bb5d3e07-b5b6-426c-a3ed-9356c093d0d5}</UniqueIdentifier>
     </Filter>
@@ -325,6 +322,15 @@
     </Filter>
     <Filter Include="EngineCode\Actor\Sky">
       <UniqueIdentifier>{f846dec3-903d-4cc0-a2fa-2dd32338c22a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\StaticSampler">
+      <UniqueIdentifier>{a7f706b5-a383-49c5-85a2-a00b17df3e5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget">
+      <UniqueIdentifier>{02ef5286-a90b-41b1-8665-eef0fc713910}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\CubeMap">
+      <UniqueIdentifier>{f5442ce2-c106-40c4-a7b6-624ab703ce64}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -650,7 +656,7 @@
       <Filter>EngineCode\Component\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\StaticSampler\StaticSamplerObject.cpp">
-      <Filter>EngineCode\Rendering\Core\DirectX\StaticSampler</Filter>
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\StaticSampler</Filter>
     </ClCompile>
     <ClCompile Include="EngineCode\Mesh\PipeMesh.cpp">
       <Filter>EngineCode\Mesh</Filter>
@@ -702,6 +708,18 @@
     </ClCompile>
     <ClCompile Include="EngineCode\Shader\Core\ShaderType.cpp">
       <Filter>EngineCode\Shader\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Core\Viewport\ClientViewport.cpp">
+      <Filter>EngineCode\Core\Viewport</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\CubeMapRenderTarget.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\CubeMap\DynamicCubeMap.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\CubeMap</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\OpaqueReflectorRenderLayer.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\RednerLayer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1093,7 +1111,7 @@
       <Filter>EngineCode\Component\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\StaticSampler\StaticSamplerObject.h">
-      <Filter>EngineCode\Rendering\Core\DirectX\StaticSampler</Filter>
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\StaticSampler</Filter>
     </ClInclude>
     <ClInclude Include="EngineCode\Mesh\PipeMesh.h">
       <Filter>EngineCode\Mesh</Filter>
@@ -1169,6 +1187,18 @@
     </ClInclude>
     <ClInclude Include="Shader\Fog.hlsli">
       <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Core\Viewport\ClientViewport.h">
+      <Filter>EngineCode\Core\Viewport</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\CubeMapRenderTarget.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\CubeMap\DynamicCubeMap.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\CubeMap</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\OpaqueReflectorRenderLayer.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\RednerLayer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

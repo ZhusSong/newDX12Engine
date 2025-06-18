@@ -1,6 +1,7 @@
 ﻿#include "TorusMeshComponent.h"
 #include "../../Mesh/Core/MeshType.h"
 
+
 CTorusMeshComponent::CTorusMeshComponent()
 {
 
@@ -28,6 +29,7 @@ void CTorusMeshComponent::CreateMesh(FMeshRenderingData& MeshData, float InRadiu
 			float ThetaBetaValueCosSin = cosf(ThetaRadian) * sinf(BetaRadian);
 			float ThetaValueSin = sinf(ThetaRadian);
 
+			//拿到点的位置
 			fvector_3d PointPosition(
 				Center.x + InSectionRadius * ThetaBetaValueCosCos,
 				Center.y + InSectionRadius * ThetaValueSin,
@@ -39,10 +41,19 @@ void CTorusMeshComponent::CreateMesh(FMeshRenderingData& MeshData, float InRadiu
 
 			FVertex& InVertex = MeshData.VertexData[MeshData.VertexData.size() - 1];
 
+			//求法线
 			fvector_3d Normal = PointPosition - Center;
 			Normal.normalize();
 
+			//法线赋值
 			InVertex.Normal = EngineMath::ToFloat3(Normal);
+
+			//展UV
+			InVertex.TexCoord.x = (float)j / (float)InHeightSubdivision;
+			InVertex.TexCoord.y = (float)i / (float)InAxialSubdivision;
+
+			//InVertex.UTangent.x = tan(BetaRadian) * InRadius;
+			//InVertex.UTangent.y = tan(ThetaRadian) * InSectionRadius;
 		}
 	}
 
@@ -50,13 +61,13 @@ void CTorusMeshComponent::CreateMesh(FMeshRenderingData& MeshData, float InRadiu
 	{
 		for (size_t j = 0; j < InHeightSubdivision; ++j)
 		{
+			//绘制外圈两个三角形
 			DrawQuadrilateral(
-				MeshData,
-				GetQuadrilateralDrawPointTypeA(j, i, InHeightSubdivision));
+				MeshData,//提取绘制信息
+				GetQuadrilateralDrawPointTypeA(j, i, InHeightSubdivision));//拿到四个点
 		}
 	}
 }
-
 
 void CTorusMeshComponent::BuildKey(size_t& OutHashKey, float InRadius, float InSectionRadius, uint32_t InAxialSubdivision, uint32_t InHeightSubdivision)
 {
@@ -70,4 +81,3 @@ void CTorusMeshComponent::BuildKey(size_t& OutHashKey, float InRadius, float InS
 	OutHashKey += IntHash._Do_hash(InAxialSubdivision);
 	OutHashKey += IntHash._Do_hash(InHeightSubdivision);
 }
-

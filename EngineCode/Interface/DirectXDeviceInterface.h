@@ -15,6 +15,12 @@ class CWorld;
 class IDirectXDeviceInterface
 {
 public:
+	// 得到视口RenderTarget
+	void StartSetMainViewportRenderTarget();
+	void EndSetMainViewportRenderTarget();
+	void ClearMainSwapChainCanvas();
+
+public:
 	ComPtr<ID3D12Fence> GetFence();
 	ComPtr<ID3D12Device> GetD3dDevice();
 
@@ -26,6 +32,13 @@ public:
 	ComPtr<ID3D12GraphicsCommandList> GetGraphicsCommandList();
 	ComPtr<ID3D12CommandAllocator> GetCommandAllocator();
 	ComPtr<ID3D12CommandQueue> GetCommandQueue();
+
+	ID3D12DescriptorHeap* GetRTVHeap();
+	ID3D12DescriptorHeap* GetDSVHeap();
+
+	UINT GetDescriptorHandleIncrementSizeByDSV();
+	UINT GetDescriptorHandleIncrementSizeByRTV();
+	UINT GetDescriptorHandleIncrementSizeByCBV_SRV_UAV();
 
 	UINT64 GetCurrentFenceIndex();
 	HWND GetMainWindowsHandle();
@@ -52,6 +65,16 @@ public:
 	ComPtr<ID3D12GraphicsCommandList> GetGraphicsCommandList();
 	ComPtr<ID3D12CommandAllocator> GetCommandAllocator();
 	ComPtr<ID3D12CommandQueue> GetCommandQueue();
+
+	ID3D12DescriptorHeap* GetRTVHeap();
+
+	ID3D12DescriptorHeap* GetDSVHeap();
+
+	UINT GetDescriptorHandleIncrementSizeByDSV();
+
+	UINT GetDescriptorHandleIncrementSizeByRTV();
+
+	UINT GetDescriptorHandleIncrementSizeByCBV_SRV_UAV();
 
 	UINT64 GetCurrentFenceIndex();
 	HWND GetMianWindowsHandle();

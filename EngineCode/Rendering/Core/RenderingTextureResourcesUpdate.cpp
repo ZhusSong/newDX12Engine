@@ -61,16 +61,9 @@ void FRenderingTextureResourcesUpdate::BuildTextureConstantBuffer(ID3D12Descript
 	CD3DX12_CPU_DESCRIPTOR_HANDLE Handle(InHeap->GetCPUDescriptorHandleForHeapStart());
 	Handle.Offset(Offset, DescriptorOffset);
 
-	/*D3D12_SHADER_RESOURCE_VIEW_DESC ShaderResourceViewDesc = {};
-	ShaderResourceViewDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-	ShaderResourceViewDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-	ShaderResourceViewDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
-	ShaderResourceViewDesc.Texture2D.MostDetailedMip = 0;
-	ShaderResourceViewDesc.Texture2D.MipLevels = 1;
-	ShaderResourceViewDesc.Texture2D.ResourceMinLODClamp = 0.f;*/
-
 	for (auto& Tmp : TexturesMapping)
 	{
+		// 根据类型初始化对应贴图
 		ResetTextureByType(&Tmp.second);
 
 		GetD3dDevice()->CreateShaderResourceView(
@@ -126,7 +119,7 @@ std::unique_ptr<FRenderingTexture>* FRenderingTextureResourcesUpdate::FindRender
 {
 	if (!InKey.empty())
 	{
-		//宽字符转化
+		// 宽字符转化
 		const char* InString = InKey.c_str();
 		wchar_t TexturePath[1024] = { 0 };
 

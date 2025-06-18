@@ -92,12 +92,6 @@ int CDirectXRenderingEngine::PostInit()
 
 	ANALYSIS_HRESULT(GraphicsCommandList->Reset(CommandAllocator.Get(), NULL));
 	{
-		/*if (GMesh* BoxMesh = MeshManage->CreateBoxMesh(4.f, 3.f, 1.5f))
-		{
-			BoxMesh->SetPosition(XMFLOAT3(4, 3, 5));
-			BoxMesh->SetRotation(fvector_3d(60.f, 1.f, 20.f));
-		}
-		*/
 		// 创建灯光
 		//  聚光灯
 		//if (GSpotLight* SpotLight = World->CreateActorObject<GSpotLight>())
@@ -118,19 +112,20 @@ int CDirectXRenderingEngine::PostInit()
 			PointLight->SetPosition(XMFLOAT3(0.f, -6.f, 10.f));
 			PointLight->SetRotation(fvector_3d(0.f, 0.f, 0.f));
 
-			PointLight->SetLightIntensity(fvector_3d(1.0f, 0.5f, 0.5f));
+			PointLight->SetLightIntensity(fvector_3d(1.0f));
 			PointLight->SetEndAttenuation(100.f);
 		}
-		//// 平行光
-		if (GParallelLight* ParallelLight = World->CreateActorObject<GParallelLight>())
-		{
-			ParallelLight->SetPosition(XMFLOAT3(10.f, -10.f, 30.f));
-			ParallelLight->SetRotation(fvector_3d(0.f, 0.f, 0.f));
+		////// 平行光
+		//if (GParallelLight* ParallelLight = World->CreateActorObject<GParallelLight>())
+		//{
+		//	ParallelLight->SetPosition(XMFLOAT3(10.f, -10.f, 30.f));
+		//	ParallelLight->SetRotation(fvector_3d(0.f, 0.f, 0.f));
 
-			ParallelLight->SetLightIntensity(fvector_3d(1.1f, 1.1f, 1.1f));
-		}
+		//	ParallelLight->SetLightIntensity(fvector_3d(1.1f, 1.1f, 1.1f));
+		//}
 	
 
+		//甜甜圈
 		if (GTorusMesh* InTorusMesh = World->CreateActorObject<GTorusMesh>())
 		{
 			InTorusMesh->CreateMesh(6.f, 2.f, 40.f, 40.f);
@@ -139,6 +134,9 @@ int CDirectXRenderingEngine::PostInit()
 			if (CMaterial* InMaterial = (*InTorusMesh->GetMaterials())[0])
 			{
 				InMaterial->SetMaterialType(EMaterialType::HalfLambert);
+
+				InMaterial->SetBaseColor("Zhuan");
+				InMaterial->SetNormal("Zhuan_NRM");
 			}
 		}
 
@@ -149,9 +147,9 @@ int CDirectXRenderingEngine::PostInit()
 			InPyramidMesh->SetPosition(XMFLOAT3(-1.f, -8, 20.f));
 			InPyramidMesh->SetRotation(fvector_3d(0.f, 90.f, 0.f));
 			InPyramidMesh->SetScale(fvector_3d(1.f));
-			//InPyramidMesh->SetRotation(fvector_3d(0.f, 90.f, 0.f));
 			if (CMaterial* InMaterial = (*InPyramidMesh->GetMaterials())[0])
 			{
+				InMaterial->SetBaseColor(fvector_4d(4.f, 0.f, 0.f, 1.f));
 				InMaterial->SetMaterialType(EMaterialType::HalfLambert);
 			}
 		}
@@ -159,14 +157,17 @@ int CDirectXRenderingEngine::PostInit()
 		//Pipe模型
 		if (GPipeMesh* InPipeMesh = World->CreateActorObject<GPipeMesh>())
 		{
-			InPipeMesh->CreateMesh(3.f, 3.f, 6.f, 1.f, 20, 20);
+			InPipeMesh->CreateMesh(3.f, 3.f, 6.f, 1.f, 20.f, 20.f);
 			InPipeMesh->SetPosition(XMFLOAT3(-9.f, -9, 20.f));
+			InPipeMesh->SetScale(fvector_3d(1.f));
 			if (CMaterial* InMaterial = (*InPipeMesh->GetMaterials())[0])
 			{
-				//InMaterial->SetBaseColor(fvector_4d(1.f));
 				//InMaterial->SetBaseColor(fvector_4d(5.f));
 				//InMaterial->SetMaterialDisplayStatus(EMaterialDisplayStatusType::WireframeDisplay);
 				InMaterial->SetMaterialType(EMaterialType::HalfLambert);
+
+				InMaterial->SetBaseColor("Zhuan");
+				InMaterial->SetNormal("Zhuan_NRM");
 			}
 		}
 
@@ -201,13 +202,15 @@ int CDirectXRenderingEngine::PostInit()
 
 		if (GCylinderMesh* InCylinderMesh = World->CreateActorObject<GCylinderMesh>())
 		{
-			InCylinderMesh->CreateMesh(2.f, 2.f, 5.f, 20, 20);
+			InCylinderMesh->CreateMesh(2.f, 2.f, 5.f, 20.f, 20.f);
 
 			InCylinderMesh->SetPosition(XMFLOAT3(14.f, -10.f, 20.f));
-			InCylinderMesh->SetScale(fvector_3d(1.f, 1.f, 1.f));
+			InCylinderMesh->SetScale(fvector_3d(1.f));
 			if (CMaterial* InMaterial = (*InCylinderMesh->GetMaterials())[0])
 			{
-				//InMaterial->SetBaseColor(fvector_4d(1.f));
+				InMaterial->SetBaseColor("Zhuan");
+				InMaterial->SetNormal("Zhuan_NRM");
+
 				InMaterial->SetMaterialType(EMaterialType::HalfLambert);
 			}
 		}
@@ -343,11 +346,13 @@ int CDirectXRenderingEngine::PostInit()
 					111.f / 255.f, 1.f));
 
 				InMaterial->SetMaterialType(EMaterialType::Phong);
+				InMaterial->SetSpecular(fvector_3d(1.f));
 
-				InMaterial->SetRoughness(0.8f);
+				InMaterial->SetFresnelF0(fvector_3d(0.08f));
+				InMaterial->SetRoughness(0.4f);
 			}
 		}
-		//phong Fresnel
+		// Fresnel
 		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 		{
 			SphereMesh->CreateMesh(2.f, 50, 50);
@@ -364,6 +369,8 @@ int CDirectXRenderingEngine::PostInit()
 		// binn phong 
 		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 		{
+			SphereMesh->SetMeshRenderLayerType(EMeshRenderLayerType::RENDERLAYER_OPAQUE_REFLECTOR);
+
 			SphereMesh->CreateMesh(2.f, 50, 50);
 			SphereMesh->SetPosition(XMFLOAT3(9.f, 14, 0.f));
 			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
@@ -374,8 +381,11 @@ int CDirectXRenderingEngine::PostInit()
 					227.f / 255.f, 1.f));
 
 				InMaterial->SetMaterialType(EMaterialType::BinnPhong);
+				InMaterial->SetSpecular(fvector_3d(1.f));
+				InMaterial->SetRoughness(0.3f);
 
-				InMaterial->SetRoughness(0.9f);
+				InMaterial->SetFresnelF0(fvector_3d(0.1f));
+				InMaterial->SetDynamicReflection(true);
 			}
 		}
 
@@ -403,6 +413,7 @@ int CDirectXRenderingEngine::PostInit()
 			SphereMesh->SetPosition(XMFLOAT3(15.f, 8, 0.f));
 			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
 			{
+				InMaterial->SetBaseColor("Hair");
 				
 				InMaterial->SetMaterialType(EMaterialType::AnisotropyKajiyaKay);
 
@@ -421,39 +432,25 @@ int CDirectXRenderingEngine::PostInit()
 					1.4f, 1.f));
 				InMaterial->SetMaterialType(EMaterialType::OrenNayar);
 
-				InMaterial->SetRoughness(0.7f);
+				InMaterial->SetRoughness(0.7f);//如果是0 就是兰伯特
 
 			}
 		}
-		//// PBR
-		//if (GMesh* SphereMesh = MeshManage->CreateSphereMesh(2.f, 20, 20))
-		//{
-		//	SphereMesh->SetPosition(XMFLOAT3(21.f, 2, 0.f));
-		//	if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
-		//	{
-		//		InMaterial->SetBaseColor(fvector_4d(
-		//			1.f));
-		//		InMaterial->SetMaterialType(EMaterialType::PBR);
-
-		//		InMaterial->SetRoughness(0.7f);
-
-
-		//	}
-		//}
+	
 		if (GetCurrentGPU() == NVIDIA)
 		{
-			//以线框显示
-			if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
-			{
-				SphereMesh->CreateMesh(2.f, 50, 50);
-				SphereMesh->SetPosition(XMFLOAT3(9.f, 18, 0.f));
-				if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
-				{
-					InMaterial->SetMaterialDisplayStatus(EMaterialDisplayStatusType::WireframeDisplay);
-					InMaterial->SetMaterialType(EMaterialType::BaseColor);
-					InMaterial->SetBaseColor(fvector_4d(1.f, 1.f, 1.f, 1.f));
-				}
-			}
+			////以线框显示
+			//if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
+			//{
+			//	SphereMesh->CreateMesh(2.f, 50, 50);
+			//	SphereMesh->SetPosition(XMFLOAT3(9.f, 18, 0.f));
+			//	if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
+			//	{
+			//		InMaterial->SetMaterialDisplayStatus(EMaterialDisplayStatusType::WireframeDisplay);
+			//		InMaterial->SetMaterialType(EMaterialType::BaseColor);
+			//		InMaterial->SetBaseColor(fvector_4d(1.f, 1.f, 1.f, 1.f));
+			//	}
+			//}
 
 			////以点显示
 			//if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
@@ -491,7 +488,7 @@ int CDirectXRenderingEngine::PostInit()
 			    InMaterial->SetMaterialType(EMaterialType::WorldNormal);
 			}
 		}
-		//显示BaseColor贴图1
+		//法线木材
 		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 		{
 			SphereMesh->CreateMesh(2.f, 50, 50);
@@ -503,11 +500,11 @@ int CDirectXRenderingEngine::PostInit()
 				InMaterial->SetNormal("Wood_NRM");
 				InMaterial->SetBaseColor(fvector_4d(1.f));
 				InMaterial->SetRoughness(4.f);
-				InMaterial->SetMaterialType(EMaterialType::HalfLambert);
+				InMaterial->SetMaterialType(EMaterialType::OrenNayar);
 			}
 		}
 
-		//显示BaseColor贴图2
+		//法线地面效果
 		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 		{
 			SphereMesh->CreateMesh(2.f, 50, 50);
@@ -517,25 +514,32 @@ int CDirectXRenderingEngine::PostInit()
 			{
 				InMaterial->SetBaseColor("MMOARPG");
 				InMaterial->SetNormal("MMOARPG_NRM");
-				InMaterial->SetMaterialType(EMaterialType::HalfLambert);
+				InMaterial->SetMaterialType(EMaterialType::OrenNayar);
 			}
 		}
 
-		////显示BaseColor贴图2
+		// 贴图反射
 		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 		{
+			SphereMesh->SetMeshRenderLayerType(EMeshRenderLayerType::RENDERLAYER_OPAQUE_REFLECTOR);
+
 			SphereMesh->CreateMesh(2.f, 50, 50);
 			SphereMesh->SetPosition(XMFLOAT3(3.f, -3, 0.f));
 			SphereMesh->SetRotation(fvector_3d(0.f, -90.f, 0.f));
 			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
 			{
+				InMaterial->SetDynamicReflection(true);
+
 				InMaterial->SetBaseColor("Earth");
-				InMaterial->SetBaseColor(fvector_4d(0.7f));
 				InMaterial->SetSpecular(fvector_3d(1.f));
 				InMaterial->SetMaterialType(EMaterialType::BinnPhong);
+
+
+				InMaterial->SetFresnelF0(fvector_3d(0.1f));
+				InMaterial->SetRoughness(0.1f);
 			}
 		}
-
+		// 单独法线贴图
 		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 		{
 			SphereMesh->CreateMesh(2.f, 100, 100);
@@ -548,7 +552,7 @@ int CDirectXRenderingEngine::PostInit()
 				InMaterial->SetMaterialType(EMaterialType::BinnPhong);
 			}
 		}
-
+		// 单独法线贴图+反射贴图
 		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 		{
 			SphereMesh->CreateMesh(2.f, 100, 100);
@@ -560,6 +564,18 @@ int CDirectXRenderingEngine::PostInit()
 				//InMaterial->SetBaseColor("Wood2");
 				InMaterial->SetSpecular("Wood2_SPEC");
 				InMaterial->SetMaterialType(EMaterialType::BinnPhong);
+			}
+		}
+		// PBR模型
+		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
+		{
+			SphereMesh->CreateMesh(2.f, 100, 100);
+			SphereMesh->SetPosition(XMFLOAT3(21.f, 2, 0.f));
+			SphereMesh->SetRotation(fvector_3d(0.f, 0.f, 0.f));
+			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
+			{
+				InMaterial->SetBaseColor(fvector_4d(1.f));
+				InMaterial->SetMaterialType(EMaterialType::PBR);
 			}
 		}
 		// 透明
@@ -576,16 +592,40 @@ int CDirectXRenderingEngine::PostInit()
 				InMaterial->SetMaterialType(EMaterialType::HalfLambert);
 			}
 		}
-		// PBR模型
+	
+		// 反射球
 		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 		{
+			SphereMesh->SetMeshRenderLayerType(EMeshRenderLayerType::RENDERLAYER_OPAQUE_REFLECTOR);
 			SphereMesh->CreateMesh(2.f, 100, 100);
 			SphereMesh->SetPosition(XMFLOAT3(21.f, 2, 0.f));
 			SphereMesh->SetRotation(fvector_3d(0.f, 0.f, 0.f));
 			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
 			{
+				InMaterial->SetDynamicReflection(true);
 				InMaterial->SetBaseColor(fvector_4d(1.f));
-				InMaterial->SetMaterialType(EMaterialType::PBR);
+				InMaterial->SetMaterialType(EMaterialType::Phong);
+
+				InMaterial->SetRoughness(0.01f);
+				InMaterial->SetFresnelF0(fvector_3d(0.5f));
+			}
+		}
+
+		// 透明球
+		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
+		{
+			SphereMesh->SetMeshRenderLayerType(EMeshRenderLayerType::RENDERLAYER_TRANSPARENT);
+			SphereMesh->CreateMesh(2.f, 100, 100);
+			SphereMesh->SetPosition(XMFLOAT3(21.f, -3, 0.f));
+			SphereMesh->SetRotation(fvector_3d(0.f, 0.f, 0.f));
+			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
+			{
+				InMaterial->SetBaseColor(fvector_4d(1.f));
+				InMaterial->SetMaterialType(EMaterialType::Transparency);
+
+				InMaterial->SetRoughness(0.01f);
+				InMaterial->SetFresnelF0(fvector_3d(0.5f));
+				InMaterial->SetTransparency(0.2f);
 			}
 		}
 
@@ -598,12 +638,12 @@ int CDirectXRenderingEngine::PostInit()
 		// 雾
 		if (GFog* Fog = World->CreateActorObject<GFog>())
 		{
-			Fog->SetFogColor(fvector_color(0.7f));
-			Fog->SetFogStart(30.f);
-			Fog->SetFogRange(200.f);
+			Fog->SetFogColor(fvector_color(0.8f));
+			Fog->SetFogStart(50.f);
+			Fog->SetFogRange(500.f);
 
 			Fog->SetFogHeight(5000.f);
-			Fog->SetFogTransparentCoefficient(0.01f);
+			Fog->SetFogTransparentCoefficient(0.00f);
 
 		}
 		//// 天空盒
@@ -650,40 +690,12 @@ void CDirectXRenderingEngine::Tick(float DeltaTime)
 
 	MeshManager->PreDraw(DeltaTime);
 
-	//指向哪个资源 转换其状态
-	CD3DX12_RESOURCE_BARRIER ResourceBarrierPresent = CD3DX12_RESOURCE_BARRIER::Transition(GetCurrentSwapBuff(),
-		D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
-
-	GraphicsCommandList->ResourceBarrier(1, &ResourceBarrierPresent);
-
-
-	//需要每帧执行
-	//绑定矩形框
-	GraphicsCommandList->RSSetViewports(1, &ViewprotInfo);
-	GraphicsCommandList->RSSetScissorRects(1, &ViewprotRect);
-
-	//清除画布
-	GraphicsCommandList->ClearRenderTargetView(GetCurrentSwapBufferView(),
-		DirectX::Colors::Black,
-		0, nullptr);
-
-	//清除深度模板缓冲区
-	GraphicsCommandList->ClearDepthStencilView(GetCurrentDepthStencilView(),
-		D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL,
-		1.f, 0, 0, NULL);
-
-	//输出的合并阶段
-	D3D12_CPU_DESCRIPTOR_HANDLE SwapBufferView = GetCurrentSwapBufferView();
-	D3D12_CPU_DESCRIPTOR_HANDLE DepthStencilView = GetCurrentDepthStencilView();
-	GraphicsCommandList->OMSetRenderTargets(1, &SwapBufferView,
-		true, &DepthStencilView);
+	StartSetMainViewportRenderTarget();
 
 	MeshManager->Draw(DeltaTime);
 	MeshManager->PostDraw(DeltaTime);
 
-	CD3DX12_RESOURCE_BARRIER ResourceBarrierPresentRenderTarget = CD3DX12_RESOURCE_BARRIER::Transition(GetCurrentSwapBuff(),
-		D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
-	GraphicsCommandList->ResourceBarrier(1, &ResourceBarrierPresentRenderTarget);
+	EndSetMainViewportRenderTarget();
 
 	//录入完成
 	ANALYSIS_HRESULT(GraphicsCommandList->Close());
@@ -725,27 +737,49 @@ int CDirectXRenderingEngine::PostExit()
 		debugDevice->ReportLiveDeviceObjects(D3D12_RLDO_DETAIL);
 	}
 
-	//// 释放所有d3d资源
-	//DXGIFactory.Reset();
-	//Fence.Reset();
-	//CommandQueue.Reset();
-	//CommandAllocator.Reset();
-	//GraphicsCommandList.Reset();
-	//SwapChain.Reset();
-	//RTVHeap.Reset();
-	//DSVHeap.Reset();
-	//DepthStencilBuffer.Reset();
-	//D3dDevice.Reset();
-
-	//for (int i = 0; i < FEngineRenderConfig::GetRenderConfig()->SwapChainCount; i++)
-	//{
-	//	SwapChainBuffer[i].Reset();
-	//}
-
 	Engine_Log("Engine post exit complete.");
 	return 0;
 }
 
+void CDirectXRenderingEngine::StartSetMainViewportRenderTarget()
+{
+	//指向哪个资源 转换其状态
+	CD3DX12_RESOURCE_BARRIER ResourceBarrierPresent = CD3DX12_RESOURCE_BARRIER::Transition(GetCurrentSwapBuff(),
+		D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
+
+	GraphicsCommandList->ResourceBarrier(1, &ResourceBarrierPresent);
+
+	//需要每帧执行
+	//绑定矩形框
+	GraphicsCommandList->RSSetViewports(1, &ViewprotInfo);
+	GraphicsCommandList->RSSetScissorRects(1, &ViewprotRect);
+
+	//输出的合并阶段
+	D3D12_CPU_DESCRIPTOR_HANDLE SwapBufferView = GetCurrentSwapBufferView();
+	D3D12_CPU_DESCRIPTOR_HANDLE DepthStencilView = GetCurrentDepthStencilView();
+	GraphicsCommandList->OMSetRenderTargets(1, &SwapBufferView,
+		true, &DepthStencilView);
+}
+
+void CDirectXRenderingEngine::EndSetMainViewportRenderTarget()
+{
+	CD3DX12_RESOURCE_BARRIER ResourceBarrierPresentRenderTarget = CD3DX12_RESOURCE_BARRIER::Transition(GetCurrentSwapBuff(),
+		D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
+	GraphicsCommandList->ResourceBarrier(1, &ResourceBarrierPresentRenderTarget);
+}
+
+void CDirectXRenderingEngine::ClearMainSwapChainCanvas()
+{
+	//清除画布
+	GraphicsCommandList->ClearRenderTargetView(GetCurrentSwapBufferView(),
+		DirectX::Colors::Black,
+		0, nullptr);
+
+	//清除深度模板缓冲区
+	GraphicsCommandList->ClearDepthStencilView(GetCurrentDepthStencilView(),
+		D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL,
+		1.f, 0, 0, NULL);
+}
 ID3D12Resource* CDirectXRenderingEngine::GetCurrentSwapBuff() const
 {
 	return SwapChainBuffer[CurrentSwapBuffIndex].Get();
@@ -928,7 +962,7 @@ bool CDirectXRenderingEngine::InitDirect3D()
 
 	M4XQualityLevels = QualityLevels.NumQualityLevels;
 
-	//交换链
+	// 交换链
 ////////////////////////////////////////////////////////////////////
 	SwapChain.Reset();
 	DXGI_SWAP_CHAIN_DESC SwapChainDesc;
@@ -939,11 +973,12 @@ bool CDirectXRenderingEngine::InitDirect3D()
 	SwapChainDesc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER::DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
 	SwapChainDesc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
 	SwapChainDesc.BufferCount = FEngineRenderConfig::GetRenderConfig()->SwapChainCount;
-	//DXGI_USAGE_BACK_BUFFER //
-	//DXGI_USAGE_READ_ONLY 
-	//DXGI_USAGE_SHADER_INPUT
-	//DXGI_USAGE_SHARED
-	//DXGI_USAGE_UNORDERED_ACCESS
+
+	// DXGI_USAGE_BACK_BUFFER //
+	// DXGI_USAGE_READ_ONLY 
+	// DXGI_USAGE_SHADER_INPUT
+	// DXGI_USAGE_SHARED
+	// DXGI_USAGE_UNORDERED_ACCESS
 	SwapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;//使用表面或资源作为输出渲染目标。
 	SwapChainDesc.OutputWindow = MainWindowsHandle;//指定windows句柄
 	SwapChainDesc.Windowed = true;//以窗口运行
@@ -951,22 +986,26 @@ bool CDirectXRenderingEngine::InitDirect3D()
 	SwapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG::DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;//IDXGISwapChain::ResizeTarget
 	SwapChainDesc.BufferDesc.Format = BackBufferFormat;//纹理格式
 
-	//多重采样设置
+	// 多重采样设置
 	SwapChainDesc.SampleDesc.Count = GetDXGISampleCount();
 	SwapChainDesc.SampleDesc.Quality = GetDXGISampleQuality();
+
 	ANALYSIS_HRESULT(DXGIFactory->CreateSwapChain(
 		CommandQueue.Get(),
 		&SwapChainDesc, SwapChain.GetAddressOf()));
 
-	//资源描述符
+	// 资源描述符
 	////////////////////////////////////////////////////////////////////
-	//D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV	//CBV常量缓冲区视图 SRV着色器资源视图 UAV无序访问视图
-	//D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER		//采样器视图
-	//D3D12_DESCRIPTOR_HEAP_TYPE_RTV			//渲染目标的视图资源
-	//D3D12_DESCRIPTOR_HEAP_TYPE_DSV			//深度/模板的视图资源
-	//RTV
+	// D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV	//CBV常量缓冲区视图 SRV着色器资源视图 UAV无序访问视图
+	// D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER		//采样器视图
+	// D3D12_DESCRIPTOR_HEAP_TYPE_RTV			//渲染目标的视图资源
+	// D3D12_DESCRIPTOR_HEAP_TYPE_DSV			//深度/模板的视图资源
+	// RTV
 	D3D12_DESCRIPTOR_HEAP_DESC RTVDescriptorHeapDesc;
-	RTVDescriptorHeapDesc.NumDescriptors = FEngineRenderConfig::GetRenderConfig()->SwapChainCount;
+	RTVDescriptorHeapDesc.NumDescriptors =
+		FEngineRenderConfig::GetRenderConfig()->SwapChainCount + //交换链
+		6; //CubeMap RTV
+
 	RTVDescriptorHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
 	RTVDescriptorHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 	RTVDescriptorHeapDesc.NodeMask = 0;
@@ -976,7 +1015,10 @@ bool CDirectXRenderingEngine::InitDirect3D()
 
 	//DSV
 	D3D12_DESCRIPTOR_HEAP_DESC DSVDescriptorHeapDesc;
-	DSVDescriptorHeapDesc.NumDescriptors = 1;
+	DSVDescriptorHeapDesc.NumDescriptors =
+		1 + //本身深度
+		1;//CubeMap深度
+
 	DSVDescriptorHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
 	DSVDescriptorHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 	DSVDescriptorHeapDesc.NodeMask = 0;
@@ -989,7 +1031,7 @@ bool CDirectXRenderingEngine::InitDirect3D()
 
 void CDirectXRenderingEngine::PostInitDirect3D()
 {
-	//同步
+	// 同步
 	WaitGPUCommandQueueComplete();
 
 	ANALYSIS_HRESULT(GraphicsCommandList->Reset(CommandAllocator.Get(), NULL));
@@ -1000,13 +1042,14 @@ void CDirectXRenderingEngine::PostInitDirect3D()
 	}
 	DepthStencilBuffer.Reset();
 
+	// 自适应屏幕变大
 	SwapChain->ResizeBuffers(
 		FEngineRenderConfig::GetRenderConfig()->SwapChainCount,
 		FEngineRenderConfig::GetRenderConfig()->ScrrenWidth,
 		FEngineRenderConfig::GetRenderConfig()->ScrrenHight,
 		BackBufferFormat, DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH);
 
-	//拿到描述size
+	// 拿到描述size
 	RTVDescriptorSize = D3dDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 
 	CD3DX12_CPU_DESCRIPTOR_HANDLE HeapHandle(RTVHeap->GetCPUDescriptorHandleForHeapStart());
@@ -1031,11 +1074,11 @@ void CDirectXRenderingEngine::PostInitDirect3D()
 	ResourceDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;
 	ResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
 
+
 	D3D12_CLEAR_VALUE ClearValue;
 	ClearValue.DepthStencil.Depth = 1.f;
 	ClearValue.DepthStencil.Stencil = 0;
 	ClearValue.Format = DepthStencilFormat;
-
 	CD3DX12_HEAP_PROPERTIES Properties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
 	D3dDevice->CreateCommittedResource(
 		&Properties,
@@ -1061,12 +1104,13 @@ void CDirectXRenderingEngine::PostInitDirect3D()
 	ID3D12CommandList* CommandList[] = { GraphicsCommandList.Get() };
 	CommandQueue->ExecuteCommandLists(_countof(CommandList), CommandList);
 
-	//这些会覆盖原先windows画布
-	//描述视口尺寸
+
+	// 这些会覆盖原先windows画布
+	// 描述视口尺寸
 	ViewprotInfo.TopLeftX = 0;
 	ViewprotInfo.TopLeftY = 0;
-	ViewprotInfo.Width = (FLOAT)FEngineRenderConfig::GetRenderConfig()->ScrrenWidth;
-	ViewprotInfo.Height = (FLOAT)FEngineRenderConfig::GetRenderConfig()->ScrrenHight;
+	ViewprotInfo.Width = FEngineRenderConfig::GetRenderConfig()->ScrrenWidth;
+	ViewprotInfo.Height = FEngineRenderConfig::GetRenderConfig()->ScrrenHight;
 	ViewprotInfo.MinDepth = 0.f;
 	ViewprotInfo.MaxDepth = 1.f;
 

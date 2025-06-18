@@ -46,6 +46,7 @@ void FRenderingResourcesUpdate::Init(ID3D12Device* InDevice, UINT InElemetSize, 
 	ANALYSIS_HRESULT(UploadBuffer->Map(0, nullptr, reinterpret_cast<void**>(&Data)));
 }
 
+
 void FRenderingResourcesUpdate::Update(int Index, const void* InData)
 {
 	memcpy(&Data[Index * ElementSize], InData, ElementSize);
@@ -53,25 +54,7 @@ void FRenderingResourcesUpdate::Update(int Index, const void* InData)
 
 UINT FRenderingResourcesUpdate::GetConstantBufferByteSize(UINT InTypeSzie)
 {
-	//222
-	//256
-	//454
-	//512
-	//(InTypeSzie + 255)& ~255;
 
-	/*if (!(InTypeSzie % 256))
-	{
-		float NewFloat =  (float) InTypeSzie / 256.f;
-		int Num = (NewFloat += 1);
-		InTypeSzie = Num * 256;
-	}*/
-
-	//456
-	//(456 + 255) & ~255;
-	//711 & ~255;
-	//0x02c7 & ~0x00ff
-	//0x02c7 & 0xff00
-	//0x0200
 	return (InTypeSzie + 255) & ~255;
 }
 

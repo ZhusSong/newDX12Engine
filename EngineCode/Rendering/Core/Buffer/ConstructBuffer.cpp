@@ -30,12 +30,14 @@ namespace ConstructBuffer
 		SubResourceData.RowPitch = InDataSize;
 		SubResourceData.SlicePitch = SubResourceData.RowPitch;
 
+		// 标记资源为复制目标
 		CD3DX12_RESOURCE_BARRIER CopyDestBarrier = CD3DX12_RESOURCE_BARRIER::Transition(Buffer.Get(),
 			D3D12_RESOURCE_STATE_COMMON,
 			D3D12_RESOURCE_STATE_COPY_DEST);
 
 		GetGraphicsCommandList()->ResourceBarrier(1, &CopyDestBarrier);
 
+		// 更新子资源，填充所有子资源数组
 		UpdateSubresources<1>(
 			GetGraphicsCommandList().Get(),
 			Buffer.Get(),
@@ -49,6 +51,7 @@ namespace ConstructBuffer
 			D3D12_RESOURCE_STATE_COPY_DEST,
 			D3D12_RESOURCE_STATE_GENERIC_READ);
 
+		//GetGraphicsCommandList()->ResourceBarrier(1, &ReadDestBarrier);
 		return Buffer;
 	}
 }

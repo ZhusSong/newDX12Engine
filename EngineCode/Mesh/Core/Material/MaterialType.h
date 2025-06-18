@@ -19,6 +19,8 @@ enum EMaterialType
 	Normal=13,					// 局部法线
 	WorldNormal=14,			// 世界法线
 
+	Transparency = 15,		//透明
+
 	PBR = 20,				//基于物理的显示
 
 	Fresnel=100, //测试用，并非单独材质

@@ -1,11 +1,11 @@
 ﻿#include "PyramidMeshComponent.h"
 #include "../../Mesh/Core/MeshType.h"
 
+
 CPyramidMeshComponent::CPyramidMeshComponent()
 {
 
 }
-
 void CPyramidMeshComponent::CreateMesh(
 	FMeshRenderingData& MeshData,
 	EPyramidNumberSides PyramidNumberSides,
@@ -15,14 +15,14 @@ void CPyramidMeshComponent::CreateMesh(
 	float InHeight = InSize * 2.f;
 	uint32_t InAxialSubdivision = (uint32_t)PyramidNumberSides;
 
-	//
+	//半径间隔
 	float RadiusInterval = -InRadius / (float)InHeightSubdivide;
-	//
+	//高度间隔
 	float HeightInterval = InHeight / (float)InHeightSubdivide;
 
 	float BetaValue = XM_2PI / (float)InAxialSubdivision;
 
-	//
+	//构建顶部
 	MeshData.VertexData.push_back(
 		FVertex(
 			XMFLOAT3(0.f, 0.5f * InHeight, 0.f),
@@ -54,17 +54,20 @@ void CPyramidMeshComponent::CreateMesh(
 			XMVECTOR B = XMLoadFloat3(&bitangent);
 			XMVECTOR N = -XMVector3Normalize(XMVector3Cross(T, B));
 			XMStoreFloat3(&Vertex.Normal, N);
+
+			Vertex.TexCoord.x = (float)j / (float)InAxialSubdivision;
+			Vertex.TexCoord.y = (float)i / (float)InHeightSubdivide;
 		}
 	}
 
-	//
+	//添加中点
 	MeshData.VertexData.push_back(
 		FVertex(
 			XMFLOAT3(0.f, -0.5f * InHeight, 0.f),
 			XMFLOAT4(Colors::White),
 			XMFLOAT3(0.f, -1.f, 0.f)));
 
-	//
+	//绘制index模型
 	for (uint32_t i = 0; i < InAxialSubdivision; ++i)
 	{
 		MeshData.IndexData.push_back(0);
@@ -74,23 +77,24 @@ void CPyramidMeshComponent::CreateMesh(
 
 	float BaseIndex = 1;
 	float VertexCircleNum = InAxialSubdivision + 1;
-	//
+	//绘制腰围
 	for (uint32_t i = 0; i <= InHeightSubdivide - 1; ++i)
 	{
 		for (uint32_t j = 0; j < InAxialSubdivision; ++j)
 		{
-			//
-			//
+			//我们绘制的是四边形
+			//三角形1
 			MeshData.IndexData.push_back(BaseIndex + i * VertexCircleNum + j);
 			MeshData.IndexData.push_back(BaseIndex + i * VertexCircleNum + j + 1);
 			MeshData.IndexData.push_back(BaseIndex + (i + 1) * VertexCircleNum + j);
-			//
+			//三角形2
 			MeshData.IndexData.push_back(BaseIndex + (i + 1) * VertexCircleNum + j);
 			MeshData.IndexData.push_back(BaseIndex + i * VertexCircleNum + j + 1);
 			MeshData.IndexData.push_back(BaseIndex + (i + 1) * VertexCircleNum + j + 1);
 		}
 	}
 
+	//添加南极点
 	{
 		int i = InHeightSubdivide;
 
@@ -109,6 +113,7 @@ void CPyramidMeshComponent::CreateMesh(
 		}
 	}
 
+	//绘制南极
 	uint32_t SouthBaseIndex = MeshData.VertexData.size() - 1;
 	BaseIndex = SouthBaseIndex - VertexCircleNum;
 	for (uint32_t Index = 0; Index < InAxialSubdivision; ++Index)

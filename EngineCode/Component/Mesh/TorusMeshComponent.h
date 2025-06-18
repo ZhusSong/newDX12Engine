@@ -11,4 +11,3 @@ public:
 
 	void BuildKey(size_t& OutHashKey, float InRadius, float InSectionRadius, uint32_t InAxialSubdivision, uint32_t InHeightSubdivision);
 };
-

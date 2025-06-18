@@ -89,15 +89,7 @@ void CSphereMeshComponent::CreateMesh(FMeshRenderingData& MeshData, float InRadi
 				GetQuadrilateralDrawPointTypeA(j, i, InAxialSubdivision, 1),
 				bReverse);
 
-			////我们绘制的是四边形
-			////三角形1
-			//MeshData.IndexData.push_back(BaseIndex + i * VertexCircleNum + j);
-			//MeshData.IndexData.push_back(BaseIndex + i * VertexCircleNum + j + 1);
-			//MeshData.IndexData.push_back(BaseIndex + (i + 1) * VertexCircleNum + j);
-			////三角形2
-			//MeshData.IndexData.push_back(BaseIndex + (i + 1) * VertexCircleNum + j);
-			//MeshData.IndexData.push_back(BaseIndex + i * VertexCircleNum + j + 1);
-			//MeshData.IndexData.push_back(BaseIndex + (i + 1) * VertexCircleNum + j + 1);
+		
 		}
 	}
 

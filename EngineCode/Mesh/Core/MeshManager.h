@@ -59,8 +59,6 @@ public:
 		uint32_t InAxialSubdivision,
 		uint32_t InHeightSubdivision, bool bReverse);
 
-
-
 	CMeshComponent* CreatePyramidMeshComponent(
 		EPyramidNumberSides InPyramidNumberSidesType,
 		uint32_t InHeightSubdivide,

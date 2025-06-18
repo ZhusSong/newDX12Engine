@@ -29,6 +29,7 @@ void FShader::BuildShaders(
 
 	if (ErrorShaderMsg)
 	{
+		char* p = (char*)ErrorShaderMsg->GetBufferPointer();
 		Engine_Log_Error("%s", (char*)ErrorShaderMsg->GetBufferPointer());
 	}
 
@@ -64,6 +65,7 @@ void FShader::BuildShaderByName(
 
 	if (ErrorShaderMsg)
 	{
+		char* p = (char*)ErrorShaderMsg->GetBufferPointer();
 		Engine_Log_Error("%s 1", (char*)ErrorShaderMsg->GetBufferPointer());
 	}
 	ErrorShaderMsg.Reset();

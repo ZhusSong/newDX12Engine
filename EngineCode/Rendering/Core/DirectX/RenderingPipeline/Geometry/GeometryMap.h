@@ -51,6 +51,7 @@ protected:
 struct FGeometryMap :public IDirectXDeviceInterface_Struct
 {
 	friend class FRenderLayer;
+	friend class FDynamicCubeMap;
 
 	FGeometryMap();
 	~FGeometryMap();
@@ -59,11 +60,21 @@ struct FGeometryMap :public IDirectXDeviceInterface_Struct
 	void Draw(float DeltaTime);
 	void PostDraw(float DeltaTime);
 
-
+	// 更新每帧运算
 	void UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo);
 
+	// 更新视口
+	void UpdateCalculationsViewport(
+		float DeltaTime,
+		const FViewportInfo& ViewportInfo,
+		UINT InConstantBufferOffset);
+
+
+	// 更新材质
 	void UpdateMaterialShaderResourceView(float DeltaTime, const FViewportInfo& ViewportInfo);
 
+	//收集动态反射模型
+	void BuildDynamicReflectionMesh();
 	void BuildFog();
 
 	void BuildMesh(const size_t InMeshHash, CMeshComponent* InMesh, const FMeshRenderingData& MeshData);
@@ -71,6 +82,7 @@ struct FGeometryMap :public IDirectXDeviceInterface_Struct
 
 	bool FindMeshRenderingDataByHash(const size_t& InHash, FRenderingData& MeshData, int InRenderLayerIndex = -1);
 
+	// 读取Texture
 	void LoadTexture();
 
 	// 构建模型
@@ -104,13 +116,19 @@ struct FGeometryMap :public IDirectXDeviceInterface_Struct
 	UINT GetDrawTexture2DResourcesNumber();
 
 
+	// CubeMap贴图数量
 	UINT GetDrawCubeMapResourcesNumber();
+
+
+	//动态摄像机
+	UINT GetDynamicReflectionViewportNum();
 
 	// 构建纹理SRV视图
 	void BuildTextureConstantBuffer();
 
-	//构建视口常量缓冲区视图
-	void BuildViewportConstantBufferView();
+	//构建我们的视口常量缓冲区视图
+	void BuildViewportConstantBufferView(UINT InViewportOffset = 0);
+
 
 public:
 	bool IsStartUPFog();
@@ -123,7 +141,9 @@ public:
 	void DrawViewport(float DeltaTime);
 	void DrawMesh(float DeltaTime);
 	void DrawMaterial(float DeltaTime);
-	void DrawTexture(float DeltaTime);
+	void Draw2DTexture(float DeltaTime);
+
+	void DrawCubeMapTexture(float DeltaTime);
 	void DrawFog(float DeltaTime);
 public:
 	ID3D12DescriptorHeap* GetHeap()const { return DescriptorHeap.GetHeap(); }
@@ -142,6 +162,7 @@ protected:
 	std::shared_ptr<class FRenderingTextureResourcesUpdate> RenderingTexture2DResources;
 	std::shared_ptr<class FRenderingTextureResourcesUpdate> RenderingCubeMapResources;
 	std::vector<CMaterial*> Materials;
+	std::vector<CMeshComponent*> DynamicReflectionMeshComponents;
 
 	CFogComponent* Fog;
 };

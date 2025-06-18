@@ -1,6 +1,6 @@
 ﻿#pragma once
-#include "../Actor/Core/ActorObject.h"
 #include "Viewport/Viewport.h"
+#include "Viewport/ClientViewport.h"
 #include "../CodeReflection/CodeReflectionMacroTag.h"
 #include "../Interface/DirectXDeviceInterface.h"
 
@@ -10,10 +10,10 @@ class CTransformComponent;
 class CInputComponent;
 
 // 相机类
-class GCamera:public GActorObject
-	,public FViewport
+class GCamera:public GClientViewport
 	, public IDirectXDeviceInterface
 {
+	typedef GClientViewport Super;
 	//CVARIABLE()
 	//CTransformComponent* TransformationComponent;
 
@@ -53,4 +53,6 @@ protected:
 	float Radius;
 	float A;//Theta
 	float B;//
+
+	class CMeshComponent* SphereMesh;
 };

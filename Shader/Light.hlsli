@@ -65,7 +65,7 @@ float4 ComputeLightStrength(Light L,float3 InObjectPointNormal,float3 InObjectWo
 	// Point Light 
     else if (L.LightType == 1) //spot
     {
-        float4 LightStrength = float4(1.f, 1.f, 1.f, 1.f);
+        float4 LightStrength = float4(L.LightIntensity, 1.f);
         float3 LightVector = L.Position - InObjectWorldLocation;;
         float Distance = length(LightVector);
 
@@ -82,51 +82,33 @@ float4 ComputeLightStrength(Light L,float3 InObjectPointNormal,float3 InObjectWo
     }
 	else if (L.LightType == 2) //spot
 	{
-   //     float3 LightVector = L.Position - InObjectWorldLocation;;
-   //     float Distance = length(LightVector);
-
-   //     if (Distance < L.EndAttenuation)
-   //     {
-   //        float4 LightStrength = float4(1.f, 1.f, 1.f, 1.f)
-   //        * pow(max(dot(NormalizeLightDirection, L.LightDirection.xyz), 0.f), 1.f);
-			////return AttenuationPointLights1(L, Distance) * LightStrength;
-   //         return AttenuationPointLights2(
-			//	L,
-			//	Distance,
-			//	0.f, //c
-			//	0.4f, //i
-			//	0.3f) * LightStrength; //q
-   //      }
+  
         float3 LightVector = L.Position - InObjectWorldLocation;;
 		float Distance = length(LightVector);
 
 		if (Distance < L.EndAttenuation)
 		{	
-			float DotValue = max(dot(NormalizeLightDirection, L.LightDirection), 0.f);
-			//float4 LightStrength = float4(1.f, 1.f, 1.f, 1.f) * pow(DotValue,1.f);
+            float DotValue = max(dot(NormalizeLightDirection, L.LightDirection), 0.f);
 			
-			float4 LightStrength = float4(1.f, 1.f, 1.f, 1.f) * float4(L.LightIntensity, 1.f);
+            float4 LightStrength = float4(L.LightIntensity, 1.f);
 			
 			float Theta1 = acos(DotValue);
-			if (Theta1 == 0.f)
-			{
-				return LightStrength;
-			}
-			else if (Theta1 <= L.ConicalInnerCorner)
+
+			 if (Theta1 <= L.ConicalInnerCorner)
 			{
 				return LightStrength;
 			}
 			else if (Theta1 <= L.ConicalOuterCorner)
 			{
 				// 线性插值计算
-				//float OuterInnerDistance = L.ConicalOuterCorner - L.ConicalInnerCorner;
-				//float CurrentDistance = OuterInnerDistance - (Theta1 - L.ConicalInnerCorner);
+                float OuterInnerDistance = L.ConicalOuterCorner - L.ConicalInnerCorner;
+                float CurrentDistance = OuterInnerDistance - (Theta1 - L.ConicalInnerCorner);
 
-				//return (CurrentDistance / OuterInnerDistance) * LightStrength;
+                return (CurrentDistance / OuterInnerDistance) * LightStrength;
 
 				// 平滑插值计算
-				float spotlightFactor = smoothstep(L.ConicalOuterCorner, L.ConicalInnerCorner, Theta1);
-				return spotlightFactor * LightStrength;
+				//float spotlightFactor = smoothstep(L.ConicalOuterCorner, L.ConicalInnerCorner, Theta1);
+				//return spotlightFactor * LightStrength;
 
 			
 			 }

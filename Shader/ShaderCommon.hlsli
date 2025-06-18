@@ -5,9 +5,6 @@
 #include "Light.hlsli"
 
 
-SamplerState TextureSampler: register(s0);
-SamplerState AnisotropicSampler : register(s1);
-
 
 #ifndef TEXTURE2D_MAP_NUM
 #define TEXTURE2D_MAP_NUM 20  
@@ -20,6 +17,10 @@ SamplerState AnisotropicSampler : register(s1);
 //#ifndef START_UP_FOG
 //#define START_UP_FOG 1  
 //#endif
+
+SamplerState TextureSampler : register(s0);
+
+SamplerState AnisotropicSampler : register(s1);
 
 Texture2D SimpleTexture2DMap[TEXTURE2D_MAP_NUM] : register(t1);
 
@@ -72,9 +73,13 @@ struct MaterialConstBuffer
     float4 BaseColor;
 
     float3 SpecularColor;
-    int XX6;
+    float XXX5;
 
+    float3 FresnelF0;
+    float Transparency;
     float4x4 TransformInformation;
+    
+    
 };
 
 StructuredBuffer<MaterialConstBuffer> Materials : register(t0, Space1);

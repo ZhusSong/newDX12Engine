@@ -2,7 +2,7 @@
 #pragma once
 #include "Core/ShellMeshComponent.h"
 
-class CCustomMeshComponent :public CShellMeshComponent
+class CCustomMeshComponent :public CMeshComponent
 {
 public:
 	CCustomMeshComponent();

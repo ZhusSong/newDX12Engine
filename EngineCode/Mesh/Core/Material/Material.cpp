@@ -11,6 +11,8 @@ CMaterial::CMaterial()
 	, MaterialType(EMaterialType::Lambert)
 	, MaterialDisplayStatus(EMaterialDisplayStatusType::TriangleDisplay)
 	, MaterialTransform(EngineMath::IdentityMatrix4x4())
+	, Transparency(1.f)
+	, bDynamicReflection(false)
 {
 }
 
@@ -29,9 +31,16 @@ void CMaterial::SetBaseColor(const fvector_4d& InBaseColor)
 	SetDirty(true);
 }
 
-void CMaterial::SetBaseColor(const std::string& InAssetFilename)
+void CMaterial::SetMaterialType(const EMaterialType& InMaterialType)
 {
-	BaseColorIndexKey = InAssetFilename;
+	MaterialType = InMaterialType;
+
+	SetDirty(true);
+}
+
+void CMaterial::SetRoughness(const float InNewRoughness)
+{
+	Roughness = InNewRoughness;
 
 	SetDirty(true);
 }
@@ -50,20 +59,24 @@ void CMaterial::SetSpecular(const fvector_3d& InVector)
 	SetDirty(true);
 }
 
-void CMaterial::SetMaterialType(const EMaterialType& InMaterialType)
+void CMaterial::SetFresnelF0(const fvector_3d& InF0Vector)
 {
-	MaterialType = InMaterialType;
+	FresnelF0 = InF0Vector;
 
 	SetDirty(true);
 }
-
-void CMaterial::SetRoughness(const float InNewRoughness)
+void CMaterial::SetTransparency(float InTransparency)
 {
-	Roughness = InNewRoughness;
+	Transparency = InTransparency;
 
 	SetDirty(true);
 }
+void CMaterial::SetBaseColor(const std::string& InAssetFilename)
+{
+	BaseColorIndexKey = InAssetFilename;
 
+	SetDirty(true);
+}
 
 void CMaterial::SetNormal(const std::string& InAssetFilename)
 {
@@ -84,3 +97,9 @@ void CMaterial::SetMaterialIndex(int InNewIndex)
 	SetDirty(true);
 }
 
+void CMaterial::SetDynamicReflection(bool InDynamicReflection)
+{
+	bDynamicReflection = InDynamicReflection;
+
+	SetDirty(true);
+}

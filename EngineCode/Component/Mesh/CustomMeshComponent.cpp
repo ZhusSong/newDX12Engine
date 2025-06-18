@@ -21,10 +21,10 @@ void CCustomMeshComponent::CreateMesh(FMeshRenderingData& MeshData, string& InPa
 
 	if (!LoadObjFromBuff(Buff, FileSize, MeshData))
 	{
-		Engine_Log_Error("Cant load obj!");
+
 	}
 
-	Buff = nullptr;
+	delete Buff;
 }
 
 bool CCustomMeshComponent::LoadObjFromBuff(char* InBuff, uint32_t InBuffSize, FMeshRenderingData& MeshData)

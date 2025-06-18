@@ -28,13 +28,13 @@ MeshVertexOut VertexShaderMain(MeshVertexIn MV)
 
     MeshVertexOut MOut;
     
-	//颜色
+	// 颜色
     MOut.Color = MV.Color;
     
-	//世界坐标
+	// 世界坐标
     MOut.WorldPosition = mul(float4(MV.Position, 1.f), WorldMatrix);
 
-	//变换到齐次剪辑空间
+	// 变换到齐次剪辑空间
     MOut.Position = mul(MOut.WorldPosition, ViewProjectionMatrix);
 
     if (MatConstBuffer.MaterialType == 13)
@@ -43,14 +43,14 @@ MeshVertexOut VertexShaderMain(MeshVertexIn MV)
     }
     else
     {
-		//转法线
+		// 转法线
         MOut.Normal = mul(MV.Normal, (float3x3) WorldMatrix);
     }
 	
-	//切线
+	// 切线
     MOut.UTangent = mul(MV.UTangent, (float3x3) WorldMatrix);
 
-	//ui坐标
+	// ui坐标
     float4 MyTexCoord = mul(float4(MV.TexCoord, 0.0f, 1.f), ObjectTextureTransform);
     MOut.TexCoord = mul(MyTexCoord, MatConstBuffer.TransformInformation).xy;
 
@@ -72,6 +72,8 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
 	//BaseColor
     if (MatConstBuffer.MaterialType == 12)
     {
+        // 添加反射
+        float4 Specular = GetMaterialSpecular(MatConstBuffer, MVOut.TexCoord);
         return Material.BaseColor * Specular + Material.BaseColor + 0.1f;
     }
     else if (MatConstBuffer.MaterialType == 13)
@@ -91,15 +93,15 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
 
     float DotValue = 0;
 
-    float4 LightStrengths = { 0.f, 0.f, 0.f, 1.f };
-
-	float4 FinalColor = { 0.f,0.f,0.f,1.f };
+    float4 FinalColor = { 0.f, 0.f, 0.f, 1.f };
     
 
     for (int i = 0; i < 16; i++)
     {
         if (length(SceneLights[i].LightIntensity.xyz) > 0.f)
         {
+            float4 Specular = GetMaterialSpecular(MatConstBuffer, MVOut.TexCoord);
+
             float3 NormalizeLightDirection = normalize(GetLightDirection(SceneLights[i], MVOut.WorldPosition.xyz));
 
             float4 LightStrength = ComputeLightStrength(SceneLights[i], ModelNormal, MVOut.WorldPosition.xyz, NormalizeLightDirection);
@@ -280,6 +282,11 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
 
                 DotValue = NormalLight * (A + B * max(0, Phiri) * sin(Alpha) * tan(Beta));
             }
+            else if (MatConstBuffer.MaterialType == 15)//透明物体
+            {
+                float DiffuseReflection = dot(ModelNormal, NormalizeLightDirection);
+                DotValue = max((DiffuseReflection * 0.5f + 0.5f), 0.0); //[-1,1] => [0,1]
+            }
             else if (MatConstBuffer.MaterialType == 20)//PBR
             {
                 float3 L = NormalizeLightDirection;
@@ -342,11 +349,35 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
     // 最终颜色贡献
     MVOut.Color = FinalColor +               // 物体最终颜色
 		AmbientLight * Material.BaseColor;   // 环境光
+    
+    switch (MatConstBuffer.MaterialType)
+    {
+        case 2:
+        case 3:
+        case 9:
+        case 15:
+		{      
+			//计算反射
+            float3 ReflectionColor = GetReflectionColor(MatConstBuffer, ModelNormal, MVOut.WorldPosition.xyz);
+            MVOut.Color.xyz += ReflectionColor;
+            break;
+        }
+    }
 
-	MVOut.Color.a = Material.BaseColor.a;    // alpha值
-
-    // 添加雾气影响
-	MVOut.Color = GetFogValue(MVOut.Color, MVOut.WorldPosition);
-
+    if (MatConstBuffer.MaterialType == 15)
+    {
+		//透明的
+        MVOut.Color.a = MatConstBuffer.Transparency;
+    }
+    else
+    {
+		//透明的
+        MVOut.Color.a = Material.BaseColor.a;
+    }
+	
+	
+	// 计算雾
+    MVOut.Color = GetFogValue(MVOut.Color, (float3)MVOut.WorldPosition);
+    
     return MVOut.Color;
 }

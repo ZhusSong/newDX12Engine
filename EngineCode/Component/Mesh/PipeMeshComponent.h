@@ -23,7 +23,7 @@ public:
 		uint32_t InHeightSubdivision);
 protected:
 
-	// 构建半径点
+	//构建半径点
 	void BuildRadiusPoint(
 		FMeshRenderingData& MeshData,
 		float HeightInterval,

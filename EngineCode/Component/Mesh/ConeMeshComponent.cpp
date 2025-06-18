@@ -6,8 +6,10 @@ CConeMeshComponent::CConeMeshComponent()
 
 }
 
-void CConeMeshComponent::CreateMesh(FMeshRenderingData& MeshData, 
-	float InRadius, float InHeight, uint32_t InAxialSubdivision, uint32_t InHeightSubdivision)
+void CConeMeshComponent::CreateMesh(
+	FMeshRenderingData& MeshData,
+	float InRadius, float InHeight,
+	uint32_t InAxialSubdivision, uint32_t InHeightSubdivision)
 {
 	//半径间隔
 	float RadiusInterval = -InRadius / (float)InHeightSubdivision;
@@ -25,7 +27,7 @@ void CConeMeshComponent::CreateMesh(FMeshRenderingData& MeshData,
 
 	//uint32_t Index = MeshData.VertexData.size();
 
-	for (uint32_t i = 0; i < InHeightSubdivision; ++i)
+	for (uint32_t i = 0; i <= InHeightSubdivision; ++i)
 	{
 		float Y = 0.5f * InHeight - HeightInterval * i;
 		float Radius = i * RadiusInterval;
@@ -39,6 +41,7 @@ void CConeMeshComponent::CreateMesh(FMeshRenderingData& MeshData,
 					Y,//y
 					Radius * s), //z
 				XMFLOAT4(Colors::White)));
+
 			FVertex& Vertex = MeshData.VertexData[MeshData.VertexData.size() - 1];
 			Vertex.UTangent = XMFLOAT3(-s, Y, c);
 
@@ -86,7 +89,7 @@ void CConeMeshComponent::CreateMesh(FMeshRenderingData& MeshData,
 		}
 	}
 
-	//绘制南极
+	//添加南极点
 	{
 		int i = InHeightSubdivision;
 
@@ -104,6 +107,8 @@ void CConeMeshComponent::CreateMesh(FMeshRenderingData& MeshData,
 				XMFLOAT4(Colors::White), XMFLOAT3(0.f, -1.f, 0.f)));
 		}
 	}
+
+	//绘制南极
 	uint32_t SouthBaseIndex = MeshData.VertexData.size() - 1;
 	BaseIndex = SouthBaseIndex - VertexCircleNum;
 	for (uint32_t Index = 0; Index < InAxialSubdivision; ++Index)

@@ -30,6 +30,11 @@ public:
 	virtual int Exit();
 	virtual int PostExit();
 public:
+	void StartSetMainViewportRenderTarget();
+	void EndSetMainViewportRenderTarget();
+	void ClearMainSwapChainCanvas();
+
+public:
 	// 提供对当前帧缓冲区和深度模板视图的访问
 	ID3D12Resource* GetCurrentSwapBuff() const;
 	D3D12_CPU_DESCRIPTOR_HANDLE GetCurrentSwapBufferView() const;
