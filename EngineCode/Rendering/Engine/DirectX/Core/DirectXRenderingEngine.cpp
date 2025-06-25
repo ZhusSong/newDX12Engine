@@ -1014,13 +1014,14 @@ bool CDirectXRenderingEngine::InitDirect3D()
 	////////////////////////////////////////////////////////////////////
 	// D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV	//CBV常量缓冲区视图 SRV着色器资源视图 UAV无序访问视图
 	// D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER		//采样器视图
-	// D3D12_DESCRIPTOR_HEAP_TYPE_RTV			//渲染目标的视图资源
+	// D3D12_DESCRIPTOR_HEAP_TYPE_RTV			//渲染目标视图资源
 	// D3D12_DESCRIPTOR_HEAP_TYPE_DSV			//深度/模板的视图资源
 	// RTV
+	//************ ！！！每次添加新RTV时需检查此处！！！****************
 	D3D12_DESCRIPTOR_HEAP_DESC RTVDescriptorHeapDesc;
 	RTVDescriptorHeapDesc.NumDescriptors =
 		FEngineRenderConfig::GetRenderConfig()->SwapChainCount + //交换链
-		6; //CubeMap RTV
+		6;			//CubeMap RTV
 
 	RTVDescriptorHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
 	RTVDescriptorHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
@@ -1029,12 +1030,13 @@ bool CDirectXRenderingEngine::InitDirect3D()
 		&RTVDescriptorHeapDesc,
 		IID_PPV_ARGS(RTVHeap.GetAddressOf())));
 
-	//DSV
+	//************ !!!!! 每次添加新DSV时需检查此处 !!!!! ****************
+	// 创建DSV
 	D3D12_DESCRIPTOR_HEAP_DESC DSVDescriptorHeapDesc;
 	DSVDescriptorHeapDesc.NumDescriptors =
-		1 + //本身深度
-		1+//CubeMap深度
-		1;//阴影深度
+		1 +			//本身深度
+		1+			//CubeMap深度
+		1;			//阴影深度
 
 	DSVDescriptorHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
 	DSVDescriptorHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;

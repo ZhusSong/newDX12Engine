@@ -488,6 +488,7 @@ void FGeometryMap::BuildTextureConstantBuffer()
 
 void FGeometryMap::BuildViewportConstantBufferView(UINT InViewportOffset)
 {
+	//****************!!!!新增视口时需检查此处常量缓冲区设置!!!*******************
 	//创建常量缓冲区
 	ViewportConstantBufferViews.CreateConstant(sizeof(FViewportTransformation),
 		1 + //主视口 摄像机
