@@ -88,8 +88,10 @@
     <ClCompile Include="EngineCode\Mesh\TorusMesh.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\Buffer\ConstructBuffer.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\ConstantBuffer\ConstantBufferViews.cpp" />
-    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\CubeMap\DynamicCubeMap.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DescriptorHeap\DirectXDescriptorHeap.cpp" />
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\Core\DynamicMap.cpp" />
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\CubeMap\DynamicCubeMap.cpp" />
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\ShadowMap\DynamicShadowMap.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\Geometry\GeometryMap.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\Geometry\RenderingData.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\PipelineState\DirectXPipelineState.cpp" />
@@ -100,8 +102,11 @@
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\BackgroundRenderLayer.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\OpaqueReflectorRenderLayer.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\OpaqueRenderLayer.cpp" />
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\OpaqueShadowRenderLayer.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\TransparentRenderLayer.cpp" />
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\Core\RenderTarget.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\CubeMapRenderTarget.cpp" />
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\ShadowMapRenderTarget.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RootSignature\DirectXRootSignature.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\StaticSampler\StaticSamplerObject.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\Rendering.cpp" />
@@ -226,8 +231,10 @@
     <ClInclude Include="EngineCode\Mesh\TorusMesh.h" />
     <ClInclude Include="EngineCode\Rendering\Core\Buffer\ConstructBuffer.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\ConstantBuffer\ConstantBufferViews.h" />
-    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\CubeMap\DynamicCubeMap.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DescriptorHeap\DirectXDescriptorHeap.h" />
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\Core\DynamicMap.h" />
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\CubeMap\DynamicCubeMap.h" />
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\ShadowMap\DynamicShadowMap.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\Geometry\GeometryMap.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\Geometry\RenderingData.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\PipelineState\DirectXPipelineState.h" />
@@ -239,8 +246,11 @@
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\BackgroundRenderLayer.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\OpaqueReflectorRenderLayer.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\OpaqueRenderLayer.h" />
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\OpaqueShadowRenderLayer.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\TransparentRenderLayer.h" />
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\Core\RenderTarget.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\CubeMapRenderTarget.h" />
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\ShadowMapRenderTarget.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RootSignature\DirectXRootSignature.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\StaticSampler\StaticSamplerObject.h" />
     <ClInclude Include="EngineCode\Rendering\Core\Rendering.h" />
@@ -337,6 +347,11 @@
     <ClInclude Include="Shader\PBR.hlsl">
       <FileType>Document</FileType>
     </ClInclude>
+    <FxCompile Include="Shader\Shadow.hlsl">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VertexShaderMain</EntryPointName>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.1</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+    </FxCompile>
     <FxCompile Include="Shader\Sky.hlsl">
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">VertexShaderMain</EntryPointName>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.1</ShaderModel>
@@ -362,6 +377,10 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shader\ShadowFunction.hlsli" />
+    <None Include="Shader\ShadowFunctionLibrary.hlsli" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

@@ -1,6 +1,7 @@
 #include "Material.hlsli"
 #include "PBR.hlsl"
 #include "Fog.hlsli"
+#include "ShadowFunction.hlsli"
 
 
 struct MeshVertexIn
@@ -25,7 +26,8 @@ struct MeshVertexOut
 MeshVertexOut VertexShaderMain(MeshVertexIn MV)
 {
     MaterialConstBuffer MatConstBuffer = Materials[MaterialIndex];
-
+    
+	
     MeshVertexOut MOut;
     
 	// 颜色
@@ -60,14 +62,17 @@ MeshVertexOut VertexShaderMain(MeshVertexIn MV)
 float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
 {
     MaterialConstBuffer MatConstBuffer = Materials[MaterialIndex];
-
+    
+    // 返回阴影贴图采样
+    if (MatConstBuffer.MaterialType == 101)
+    {
+        return float4(SimpleShadowMap.Sample(TextureSampler, MVOut.TexCoord).rrr, 1.f);
+    }
     FMaterial Material;
 
 	//获取BaseColor
     Material.BaseColor = GetMaterialBaseColor(MatConstBuffer, MVOut.TexCoord);
     
-	//拿到Specular
-    float4 Specular = GetMaterialSpecular(MatConstBuffer, MVOut.TexCoord);
 
 	//BaseColor
     if (MatConstBuffer.MaterialType == 12)
@@ -296,9 +301,9 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
 
                 float PI = 3.1415926;
 
-                float Roughness = 0.2f;
-                float3 Metallic = 0.2f;
-				
+                float Roughness = MatConstBuffer.MaterialRoughness;
+                float3 Metallic = MatConstBuffer.Metallicity;
+
                 float4 D = GetDistributionGGX(N, H, Roughness);
 
                 float3 F0 = 0.04f;
@@ -307,14 +312,17 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
 
                 float4 G = GSmith(N, V, L, Roughness);
 
-
-                float4 Kd = 1 - F;
-                Kd *= 1 - float4(Metallic, 1.f);
-
-                float3 Diffuse = Kd.rgb * GetDiffuseLambert(MatConstBuffer.BaseColor.rgb);
-
+                float LoH = saturate(dot(L, H));
                 float NoV = saturate(dot(N, V));
                 float NoL = saturate(dot(N, L));
+
+                float3 FIndirect = GetIndirectLight(LoH, F0, Roughness);
+                float3 IndirKS = GetDirectLight(NoV, F0, Roughness);
+
+                float4 Kd = 1 - float4(FIndirect, 1.f);
+                Kd *= (1 - float4(IndirKS, 1.f)) * (1 - float4(Metallic, 1.f));
+
+                float3 Diffuse = Kd.rgb * GetDiffuseLambert(MatConstBuffer.BaseColor.rgb);
 
                 float4 Value = (D * F * G) / (4 * (NoV * NoL));
                 Specular = float4(Value.rgb, 1.f);
@@ -322,16 +330,17 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
                 float3 Radiance = LightStrength.xyz;
                 float3 MyColor = (Diffuse + Specular.xyz) * NoL * Radiance;
 
+				//IBL
                 return float4(MyColor.xyz, 1.0f);
             }
-			//菲尼尔
+			// 菲尼尔
             else if (MatConstBuffer.MaterialType == 100)
             {
-				//另一种菲尼尔方法
+				// 另一种菲尼尔方法
                 float3 ViewDirection = normalize(ViewportPosition.xyz - MVOut.WorldPosition.xyz);
                 DotValue = pow(1.f - max(dot(ModelNormal, ViewDirection), 0.0), 2.f);
 				
-				//Schlick 菲尼尔方法
+				// Schlick 菲尼尔方法
 				//float3 F0 = { 0.1f,0.1f,0.1f };
 				//Specular.xyz = FresnelSchlickMethod(F0, ModelNormal, ViewDirection, 3).xyz;
             }
@@ -340,10 +349,11 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
             float4 Diffuse = Material.BaseColor;
             // 高光
 			Specular = saturate(Specular);
-
-            // 限制最终光照颜色为0-1
-			FinalColor += saturate((Diffuse + Specular) * LightStrength * DotValue);
-		}
+            // 阴影，此处可使用ShadowFunction中多种算法进行阴影采样
+            float ShadowFactor = GetShadowFactor_PCF_Sample9(MVOut.WorldPosition, SceneLights[i].ShadowTransform);
+			// 限制最终光照颜色为0-1
+            FinalColor += ShadowFactor * (saturate((Diffuse + Specular) * LightStrength * DotValue));
+        }
     }
 
     // 最终颜色贡献

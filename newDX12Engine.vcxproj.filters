@@ -329,8 +329,20 @@
     <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget">
       <UniqueIdentifier>{02ef5286-a90b-41b1-8665-eef0fc713910}</UniqueIdentifier>
     </Filter>
-    <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\CubeMap">
+    <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap">
       <UniqueIdentifier>{f5442ce2-c106-40c4-a7b6-624ab703ce64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\Core">
+      <UniqueIdentifier>{51291365-8dab-4684-b11f-86db81590cf0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\DynamicCubeMap">
+      <UniqueIdentifier>{3b11e516-7ac5-4acd-9214-34a3ca4d2fe4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\DynamicShadowMap">
+      <UniqueIdentifier>{e7058d27-f335-49be-9349-9f3bd7b4010b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\Core">
+      <UniqueIdentifier>{a138d020-2c90-4ad0-b389-bfee485a8bc9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -715,10 +727,25 @@
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\CubeMapRenderTarget.cpp">
       <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget</Filter>
     </ClCompile>
-    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\CubeMap\DynamicCubeMap.cpp">
-      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\CubeMap</Filter>
-    </ClCompile>
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\OpaqueReflectorRenderLayer.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\RednerLayer</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\Core\DynamicMap.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\CubeMap\DynamicCubeMap.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\DynamicCubeMap</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\ShadowMap\DynamicShadowMap.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\DynamicShadowMap</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\Core\RenderTarget.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\ShadowMapRenderTarget.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\OpaqueShadowRenderLayer.cpp">
       <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\RednerLayer</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1194,10 +1221,25 @@
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\CubeMapRenderTarget.h">
       <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget</Filter>
     </ClInclude>
-    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\CubeMap\DynamicCubeMap.h">
-      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\CubeMap</Filter>
-    </ClInclude>
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\OpaqueReflectorRenderLayer.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\RednerLayer</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\Core\DynamicMap.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\CubeMap\DynamicCubeMap.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\DynamicCubeMap</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\ShadowMap\DynamicShadowMap.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\DynamicShadowMap</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\Core\RenderTarget.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\ShadowMapRenderTarget.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\OpaqueShadowRenderLayer.h">
       <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\RednerLayer</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1208,5 +1250,16 @@
     <FxCompile Include="Shader\Sky.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
+    <FxCompile Include="Shader\Shadow.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shader\ShadowFunctionLibrary.hlsli">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\ShadowFunction.hlsli">
+      <Filter>Shader</Filter>
+    </None>
   </ItemGroup>
 </Project>

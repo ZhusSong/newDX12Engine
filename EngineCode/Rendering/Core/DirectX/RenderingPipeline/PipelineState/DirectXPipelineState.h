@@ -49,6 +49,8 @@ public:
 
 	void SetRasterizerState(const CD3DX12_RASTERIZER_DESC& InRasterizerDesc);
 	void SetDepthStencilState(const CD3DX12_DEPTH_STENCIL_DESC& InDepthStencilDesc);
+public:
+	FORCEINLINE D3D12_GRAPHICS_PIPELINE_STATE_DESC& GetGPSDesc() { return GPSDesc; }
 
 private:
 	//按键捕获

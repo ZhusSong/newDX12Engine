@@ -37,6 +37,12 @@ public:
 	virtual void BuildShaderMacro(std::vector<ShaderType::FShaderMacro>& InMacro);
 
 	virtual void UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo);
+
+	//单独设置PSO
+	virtual void ResetPSO();
+
+	//渲染 不包含设置PSO
+	virtual void DrawMesh(float DeltaTime);
 public:
 	const UINT GetRenderPriority()const { return RenderPriority; }
 

@@ -43,7 +43,9 @@ public:
 	  // 设置动态反射
 	  void SetDynamicReflection(bool InDynamicReflection);
 	  // 设置折射率
-	  void SetRefractiveValue(float InRefractiveValue);
+	  void SetRefractiveValue(float InRefractiveValue); 
+	  // 设置金属度
+	  void SetMetallicity(float InMetallicity);
 
 	  // 动态反射
 	  FORCEINLINE float IsDynamicReflection() const {
@@ -66,6 +68,7 @@ public:
 	  
 	  FORCEINLINE EMaterialType GetMaterialType()const { return MaterialType; }
 	  FORCEINLINE float GetRefractiveValue()const { return Refractive; }
+	  FORCEINLINE fvector_3d GetMetallicity()const { return Metallicity; }
 	  // 得到渲染模板
 	  FORCEINLINE D3D_PRIMITIVE_TOPOLOGY GetMaterialDisplayStatus()const {
 		  switch (MaterialDisplayStatus){
@@ -114,6 +117,9 @@ private:
 	float Transparency;			//透明度
 
 	bool bDynamicReflection;  	//动态反射
+
+	fvector_3d Metallicity;		//金属度
+
 	
-	float Refractive;   //折射率
+	float Refractive;			//折射率
 };

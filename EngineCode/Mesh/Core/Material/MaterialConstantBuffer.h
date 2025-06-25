@@ -23,4 +23,6 @@ struct FMaterialConstantBuffer
 
 	float Transparency;					// 透明度    
 	XMFLOAT4X4 TransformInformation;
+	XMFLOAT3 Metallicity;
+	float xxx5;
 };

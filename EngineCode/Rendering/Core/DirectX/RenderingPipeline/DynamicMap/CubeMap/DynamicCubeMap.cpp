@@ -1,20 +1,16 @@
 ﻿#include "DynamicCubeMap.h"
-#include "../Geometry/GeometryMap.h"
-#include "../PipelineState/DirectXPipelineState.h"
-#include "../../../.././../Core/Viewport/ClientViewport.h"
-#include "../RenderLayer/RenderLayerManager.h"
-#include "../../../../../Config/EngineRenderConfig.h"
-#include "../../../../../Component/Mesh/Core/MeshComponentType.h"
-#include "../../../../../Component/Mesh/Core/MeshComponent.h"
+#include "../../Geometry/GeometryMap.h"
+#include "../../PipelineState/DirectXPipelineState.h"
+#include "../../../.././../../Core/Viewport/ClientViewport.h"
+#include "../../RenderLayer/RenderLayerManager.h"
+#include "../../../../../../Config/EngineRenderConfig.h"
+#include "../../../../../../Component/Mesh/Core/MeshComponentType.h"
+#include "../../../../../../Component/Mesh/Core/MeshComponent.h"
 
 FDynamicCubeMap::FDynamicCubeMap()
-	:GeometryMap(NULL)
-	, DirectXPipelineState(NULL)
-	, RenderLayer(NULL)
-	, Width(256)
-	, Height(256)
+	:Super()
 {
-	RenderTarget = std::make_unique<FCubeMapRenderTarget>();
+	CreateRenderTarget<FCubeMapRenderTarget>();
 }
 
 void FDynamicCubeMap::UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo)
@@ -25,7 +21,7 @@ void FDynamicCubeMap::UpdateCalculations(float DeltaTime, const FViewportInfo& V
 		{
 			CMeshComponent* Tmp = GeometryMap->DynamicReflectionMeshComponents[i];
 			XMFLOAT3 F3 = Tmp->GetPosition();
-			SetCubeMapViewportPosition(fvector_3d(F3.x, F3.y, F3.z));
+			SetViewportPosition(fvector_3d(F3.x, F3.y, F3.z));
 
 			for (size_t j = 0; j < 6; j++)
 			{
@@ -49,9 +45,7 @@ void FDynamicCubeMap::Init(
 	FDirectXPipelineState* InDirectXPipelineState,
 	FRenderLayerManager* InRenderLayer)
 {
-	GeometryMap = InGeometryMap;
-	DirectXPipelineState = InDirectXPipelineState;
-	RenderLayer = InRenderLayer;
+	Super::Init(InGeometryMap, InDirectXPipelineState, InRenderLayer);
 }
 
 void FDynamicCubeMap::PreDraw(float DeltaTime)
@@ -62,15 +56,15 @@ void FDynamicCubeMap::PreDraw(float DeltaTime)
 		{
 			//指向哪个资源 转换其状态
 			CD3DX12_RESOURCE_BARRIER ResourceBarrierPresent = CD3DX12_RESOURCE_BARRIER::Transition(
-				RenderTarget->GetRenderTarget(),
+				InRenderTarget->GetRenderTarget(),
 				D3D12_RESOURCE_STATE_GENERIC_READ, D3D12_RESOURCE_STATE_RENDER_TARGET);
 
 			GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrierPresent);
 
 			//需要每帧执行
 			//绑定矩形框
-			auto RenderTargetViewport = RenderTarget->GetViewport();
-			auto RenderTargetScissorRect = RenderTarget->GetScissorRect();
+			auto RenderTargetViewport = InRenderTarget->GetViewport();
+			auto RenderTargetScissorRect = InRenderTarget->GetScissorRect();
 			GetGraphicsCommandList()->RSSetViewports(1, &RenderTargetViewport);
 			GetGraphicsCommandList()->RSSetScissorRects(1, &RenderTargetScissorRect);
 
@@ -79,7 +73,7 @@ void FDynamicCubeMap::PreDraw(float DeltaTime)
 			{
 				//清除画布
 				GetGraphicsCommandList()->ClearRenderTargetView(
-					RenderTarget->CPURenderTargetView[i],
+					InRenderTarget->CPURenderTargetView[i],
 					DirectX::Colors::Black,
 					0, nullptr);
 
@@ -91,7 +85,7 @@ void FDynamicCubeMap::PreDraw(float DeltaTime)
 
 				//输出的合并阶段
 				GetGraphicsCommandList()->OMSetRenderTargets(1,
-					&RenderTarget->CPURenderTargetView[i],
+					&InRenderTarget->CPURenderTargetView[i],
 					true,
 					&DSVDes);
 
@@ -142,11 +136,10 @@ void FDynamicCubeMap::PreDraw(float DeltaTime)
 
 void FDynamicCubeMap::Draw(float DeltaTime)
 {
-	//CubeMap
-	GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(6, RenderTarget->GPUShaderResourceView);
+
 }
 
-void FDynamicCubeMap::SetCubeMapViewportPosition(const fvector_3d& InCenterPoint)
+void FDynamicCubeMap::SetViewportPosition(const fvector_3d& InCenterPoint)
 {
 	//捕获摄像机四个面
 	FTmpViewportCapture Capture(InCenterPoint);
@@ -247,13 +240,16 @@ void FDynamicCubeMap::BuildRenderTargetRTV()
 	//RTV的起始
 	auto RTVDesHeapStart = GetRTVHeap()->GetCPUDescriptorHandleForHeapStart();
 
-	//偏移的地址记录
-	for (size_t i = 0; i < 6; i++)
+	if (FCubeMapRenderTarget* InRenderTarget = dynamic_cast<FCubeMapRenderTarget*>(RenderTarget.get()))
 	{
-		RenderTarget->CPURenderTargetView[i] = CD3DX12_CPU_DESCRIPTOR_HANDLE(
-			RTVDesHeapStart,
-			FEngineRenderConfig::GetRenderConfig()->SwapChainCount + i,
-			RTVDescriptorSize);
+		//偏移的地址记录
+		for (size_t i = 0; i < 6; i++)
+		{
+			InRenderTarget->CPURenderTargetView[i] = CD3DX12_CPU_DESCRIPTOR_HANDLE(
+				RTVDesHeapStart,
+				FEngineRenderConfig::GetRenderConfig()->SwapChainCount + i,
+				RTVDescriptorSize);
+		}
 	}
 }
 
@@ -264,17 +260,20 @@ void FDynamicCubeMap::BuildRenderTargetSRV()
 	auto CPUSRVDesHeapStart = GeometryMap->GetHeap()->GetCPUDescriptorHandleForHeapStart();
 	auto GPUSRVDesHeapStart = GeometryMap->GetHeap()->GetGPUDescriptorHandleForHeapStart();
 
-	RenderTarget->CPUShaderResourceView =
-		CD3DX12_CPU_DESCRIPTOR_HANDLE(CPUSRVDesHeapStart,
-			GeometryMap->GetDrawTexture2DResourcesNumber() +
-			GeometryMap->GetDrawCubeMapResourcesNumber(),
-			CBVDescriptorSize);
+	if (FCubeMapRenderTarget* InRenderTarget = dynamic_cast<FCubeMapRenderTarget*>(RenderTarget.get()))
+	{
+		InRenderTarget->CPUShaderResourceView =
+			CD3DX12_CPU_DESCRIPTOR_HANDLE(CPUSRVDesHeapStart,
+				GeometryMap->GetDrawTexture2DResourcesNumber() +
+				GeometryMap->GetDrawCubeMapResourcesNumber(),
+				CBVDescriptorSize);
 
-	RenderTarget->GPUShaderResourceView =
-		CD3DX12_GPU_DESCRIPTOR_HANDLE(GPUSRVDesHeapStart,
-			GeometryMap->GetDrawTexture2DResourcesNumber() +
-			GeometryMap->GetDrawCubeMapResourcesNumber(),
-			CBVDescriptorSize);
+		InRenderTarget->GPUShaderResourceView =
+			CD3DX12_GPU_DESCRIPTOR_HANDLE(GPUSRVDesHeapStart,
+				GeometryMap->GetDrawTexture2DResourcesNumber() +
+				GeometryMap->GetDrawCubeMapResourcesNumber(),
+				CBVDescriptorSize);
+	}
 }
 
 FDynamicCubeMap::FTmpViewportCapture::FTmpViewportCapture(const fvector_3d& InCenterPoint)
@@ -299,4 +298,3 @@ void FDynamicCubeMap::FTmpViewportCapture::BuildViewportCapture(const fvector_3d
 	UP[4] = fvector_3d(0.f, 1.f, 0.f);
 	UP[5] = fvector_3d(0.f, 1.f, 0.f);
 }
-

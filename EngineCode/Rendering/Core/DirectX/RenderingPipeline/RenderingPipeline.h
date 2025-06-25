@@ -6,7 +6,7 @@
 #include "RootSignature/DirectXRootSignature.h"
 #include "../../../../Core/Viewport/ViewportInfo.h"
 #include "RenderLayer/RenderLayerManager.h"
-#include "CubeMap/DynamicCubeMap.h"
+#include "DynamicMap/CubeMap/DynamicCubeMap.h"
 
 class CMeshComponent;
 

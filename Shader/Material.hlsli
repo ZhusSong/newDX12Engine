@@ -89,7 +89,10 @@ float3 FresnelSchlickFactor(MaterialConstBuffer MatConstBuffer, float3 InUnitWor
 {
     return FresnelSchlickMethod(MatConstBuffer.FresnelF0, InUnitWorldNormal, InReflect, 5);
 }
-
+float3 FresnelSchlickRoughness(float NV, float3 F0, float Roughness)
+{
+    return F0 + (max(float3(1.0 - Roughness, 1.0 - Roughness, 1.0 - Roughness), F0) - F0) * pow(1.0 - NV, 5.0);
+}
 // 得到最终反射颜色
 float3 GetReflectionColor(MaterialConstBuffer MatConstBuffer, float3 InUnitWorldNormal, float3 WorldPosition)
 {

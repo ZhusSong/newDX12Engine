@@ -106,23 +106,23 @@ int CDirectXRenderingEngine::PostInit()
 		//	SpotLight->SetConicalInnerCorner(40.f);
 		//	SpotLight->SetConicalOuterCorner(60.f);
 		//}
-		// 点光源
-		if (GPointLight* PointLight = World->CreateActorObject<GPointLight>())
-		{
-			PointLight->SetPosition(XMFLOAT3(0.f, -6.f, 10.f));
-			PointLight->SetRotation(fvector_3d(0.f, 0.f, 0.f));
-
-			PointLight->SetLightIntensity(fvector_3d(1.0f));
-			PointLight->SetEndAttenuation(100.f);
-		}
-		////// 平行光
-		//if (GParallelLight* ParallelLight = World->CreateActorObject<GParallelLight>())
+		//// 点光源
+		//if (GPointLight* PointLight = World->CreateActorObject<GPointLight>())
 		//{
-		//	ParallelLight->SetPosition(XMFLOAT3(10.f, -10.f, 30.f));
-		//	ParallelLight->SetRotation(fvector_3d(0.f, 0.f, 0.f));
+		//	PointLight->SetPosition(XMFLOAT3(0.f, -6.f, 10.f));
+		//	PointLight->SetRotation(fvector_3d(0.f, 0.f, 0.f));
 
-		//	ParallelLight->SetLightIntensity(fvector_3d(1.1f, 1.1f, 1.1f));
+		//	PointLight->SetLightIntensity(fvector_3d(1.0f));
+		//	PointLight->SetEndAttenuation(100.f);
 		//}
+		//// 平行光
+		if (GParallelLight* ParallelLight = World->CreateActorObject<GParallelLight>())
+		{
+			ParallelLight->SetPosition(XMFLOAT3(10.f, -10.f, 30.f));
+			ParallelLight->SetRotation(fvector_3d(0.f, 0.f, 0.f));
+
+			ParallelLight->SetLightIntensity(fvector_3d(1.1f, 1.1f, 1.1f));
+		}
 	
 
 		//甜甜圈
@@ -437,8 +437,8 @@ int CDirectXRenderingEngine::PostInit()
 			}
 		}
 	
-		if (GetCurrentGPU() == NVIDIA)
-		{
+	/*	if (GetCurrentGPU() == NVIDIA)
+		{*/
 			////以线框显示
 			//if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 			//{
@@ -466,7 +466,7 @@ int CDirectXRenderingEngine::PostInit()
 			//		InMaterial->SetBaseColor(fvector_4d(1.f, 1.f, 1.f, 1.f));
 			//	}
 			//}
-		}
+		//}
 		
 		// 以法线显示
 		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
@@ -630,6 +630,18 @@ int CDirectXRenderingEngine::PostInit()
 
 				InMaterial->SetSpecular(fvector_3d(1.f));
 				InMaterial->SetRefractiveValue(1.11f);
+			}
+		}
+
+		// 阴影shader单独显示
+		if (GPlaneMesh* InPlaneMesh = World->CreateActorObject<GPlaneMesh>())
+		{
+			InPlaneMesh->CreateMesh(7.f, 7.f, 2, 2);
+			InPlaneMesh->SetPosition(XMFLOAT3(0.f, 0.f, 40.f));
+			InPlaneMesh->SetRotation(fvector_3d(90.f, 0.f, 0.f));
+			if (CMaterial* InMaterial = (*InPlaneMesh->GetMaterials())[0])
+			{
+				InMaterial->SetMaterialType(ShadowTexture);
 			}
 		}
 
@@ -1021,7 +1033,8 @@ bool CDirectXRenderingEngine::InitDirect3D()
 	D3D12_DESCRIPTOR_HEAP_DESC DSVDescriptorHeapDesc;
 	DSVDescriptorHeapDesc.NumDescriptors =
 		1 + //本身深度
-		1;//CubeMap深度
+		1+//CubeMap深度
+		1;//阴影深度
 
 	DSVDescriptorHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
 	DSVDescriptorHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;

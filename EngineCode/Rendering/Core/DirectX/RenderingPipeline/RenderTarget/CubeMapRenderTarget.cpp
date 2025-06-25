@@ -2,69 +2,15 @@
 #include "../../../../../Debug/EngineDebug.h"
 
 FCubeMapRenderTarget::FCubeMapRenderTarget()
-	:Width(256)
-	, Height(256)
-	, Format(DXGI_FORMAT_R8G8B8A8_UNORM)
+	:Super()
 {
-	ResetViewport(Width, Height);
-	ResetScissorRect(Width, Height);
-
 	CPURenderTargetView.resize(6);
 }
 
 void FCubeMapRenderTarget::Init(UINT InWidth, UINT InHeight, DXGI_FORMAT InFormat)
 {
-	Width = InWidth;
-	Height = InHeight;
-	Format = InFormat;
+	Super::Init(InWidth, InHeight, InFormat);
 
-	ResetViewport(Width, Height);
-	ResetScissorRect(Width, Height);
-
-	BuildRenderTargetMap();
-
-	BuildSRVDescriptors();
-	BuildRTVDescriptors();
-}
-
-void FCubeMapRenderTarget::ResetViewport(UINT InWidth, UINT InHeight)
-{
-	Viewport =
-	{
-		0.0f,//TopLeftX
-		0.0f,//TopLeftY
-		(float)InWidth,//Width
-		(float)InHeight,//Height
-		0.0f,//MinDepth
-		1.0f //MaxDepth
-	};
-}
-
-void FCubeMapRenderTarget::ResetScissorRect(UINT InWidth, UINT InHeight)
-{
-	ScissorRect =
-	{
-		0,//left
-		0,//top
-		(LONG)InWidth,//right
-		(LONG)InHeight//bottom
-	};
-}
-
-void FCubeMapRenderTarget::ResetRenderTarget(UINT InWidth, UINT InHeight)
-{
-	if (InWidth != Width || InHeight != Height)
-	{
-		Width = InWidth;
-		Height = InHeight;
-
-		BuildRenderTargetMap();
-
-		BuildSRVDescriptors();
-		BuildRTVDescriptors();
-
-
-	}
 }
 
 void FCubeMapRenderTarget::BuildRenderTargetMap()
@@ -76,7 +22,7 @@ void FCubeMapRenderTarget::BuildRenderTargetMap()
 	ResourceDesc.Alignment = 0;
 	ResourceDesc.Width = Width;
 	ResourceDesc.Height = Height;
-	ResourceDesc.DepthOrArraySize = 6; //使用6个摄像机对反射贴图进行捕捉
+	ResourceDesc.DepthOrArraySize = 6;
 	ResourceDesc.MipLevels = 1;
 	ResourceDesc.Format = Format;
 	ResourceDesc.SampleDesc.Count = 1;
@@ -84,26 +30,14 @@ void FCubeMapRenderTarget::BuildRenderTargetMap()
 	ResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
 	ResourceDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET;
 
-	// 添加优化的清除值,与在DynamicCubeMap中的PreDraw()使用的颜色一致
-	D3D12_CLEAR_VALUE OptimizedClearValue = {};
-	OptimizedClearValue.Format = Format;
-	OptimizedClearValue.Color[0] = 0.0f; 
-	OptimizedClearValue.Color[1] = 0.0f;
-	OptimizedClearValue.Color[2] = 0.0f;
-	OptimizedClearValue.Color[3] = 1.0f;
-
-
 	CD3DX12_HEAP_PROPERTIES BufferProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
 
 	ANALYSIS_HRESULT(GetD3dDevice()->CreateCommittedResource(
 		&BufferProperties,
 		D3D12_HEAP_FLAG_NONE,
 		&ResourceDesc,
-		D3D12_RESOURCE_STATE_COMMON, // 改为 RENDER_TARGET 状态
-		&OptimizedClearValue, // 添加优化清除值
-		IID_PPV_ARGS(RenderTargetMap.GetAddressOf())));
-
-
+		D3D12_RESOURCE_STATE_COMMON,
+		NULL, IID_PPV_ARGS(RenderTargetMap.GetAddressOf())));
 }
 
 void FCubeMapRenderTarget::BuildRTVDescriptors()
@@ -142,4 +76,3 @@ void FCubeMapRenderTarget::BuildSRVDescriptors()
 		&SRVDesc,
 		CPUShaderResourceView);
 }
-

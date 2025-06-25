@@ -8,6 +8,7 @@ enum EPipelineState
 	Reflector,              //反射
 	GrayModel = 4,			//实体
 	Wireframe = 5,			//线框
+	Shadow = 6,
 };
 
 struct FTextureNumber

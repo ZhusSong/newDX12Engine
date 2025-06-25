@@ -23,7 +23,8 @@ enum EMaterialType
 
 	PBR = 20,				//基于物理的显示
 
-	Fresnel=100, //测试用，并非单独材质
+	Fresnel=100,			//测试用，并非单独材质
+	ShadowTexture = 101,			//Shadow Debug
 	Max,
 };
 

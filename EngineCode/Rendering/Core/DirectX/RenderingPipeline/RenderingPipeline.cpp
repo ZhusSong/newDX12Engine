@@ -54,6 +54,12 @@ void FRenderingPipeline::BuildPipeline()
 		&DirectXPipelineState,
 		&RenderLayer);
 
+	// 构建阴影map
+	GeometryMap.DynamicShadowMap.Init(
+		&GeometryMap,
+		&DirectXPipelineState,
+		&RenderLayer);
+
 	// 构建根签名
 	RootSignature.BuildRootSignature(GeometryMap.GetDrawTexture2DResourcesNumber());
 	DirectXPipelineState.BindRootSignature(RootSignature.GetRootSignature());
@@ -70,14 +76,18 @@ void FRenderingPipeline::BuildPipeline()
 	// 初始化CubeMap 摄像机
 	DynamicCubeMap.BuildViewport(fvector_3d(0.f, 0.f, 0.f));
 
-	// 构建RTVDes
-	DynamicCubeMap.BuildRenderTargetDescriptor();
-
 	// 构建深度模板描述
 	DynamicCubeMap.BuildDepthStencilDescriptor();
 
+	// 构建RTVDes
+	DynamicCubeMap.BuildRenderTargetDescriptor();
+
+
 	// 构建深度模板
 	DynamicCubeMap.BuildDepthStencil();
+
+	//构建阴影
+	GeometryMap.BuildShadow();
 
 	// 构建常量缓冲区
 	GeometryMap.BuildMeshConstantBuffer();
@@ -115,6 +125,8 @@ void FRenderingPipeline::PreDraw(float DeltaTime)
 	// 渲染灯光材质贴图等
 	GeometryMap.Draw(DeltaTime);
 
+	//渲染阴影
+	GeometryMap.DrawShadow(DeltaTime);
 
 	// 动态反射
 	if (DynamicCubeMap.IsExitDynamicReflectionMesh())

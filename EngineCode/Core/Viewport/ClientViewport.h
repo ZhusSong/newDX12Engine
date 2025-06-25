@@ -22,6 +22,8 @@ public:
 	virtual void BuildViewMatrix(float DeltaTime);
 	virtual void Tick(float DeltaTime);
 
+	// 构建正交矩阵
+	void BuildOrthographicOffCenterLHMatrix(float InRadius, const fvector_3d& InTargetPosition);
 public:
 	FORCEINLINE float GetFOV() const { return YFOV; }
 	FORCEINLINE float GetAspect() const { return Aspect; }

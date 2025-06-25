@@ -109,3 +109,10 @@ void CMaterial::SetRefractiveValue(float InRefractiveValue)
 
 	SetDirty(true);
 }
+
+void CMaterial::SetMetallicity(float InMetallicity)
+{
+	Metallicity = InMetallicity;
+
+	SetDirty(true);
+}

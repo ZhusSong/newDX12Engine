@@ -14,4 +14,5 @@ public:
 	virtual void BuildPSO();
 
 	virtual int GetRenderLayerType() const { return 1; }
+	virtual void ResetPSO();
 };

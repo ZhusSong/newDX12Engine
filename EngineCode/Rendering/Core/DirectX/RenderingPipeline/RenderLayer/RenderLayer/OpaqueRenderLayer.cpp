@@ -10,7 +10,7 @@ FOpaqueRenderLayer::FOpaqueRenderLayer()
 void FOpaqueRenderLayer::Draw(float DeltaTime)
 {
 	// 重置PSO
-	DirectXPipelineState->ResetPSO();
+	ResetPSO();
 
 	Super::Draw(DeltaTime);
 }
@@ -57,4 +57,9 @@ void FOpaqueRenderLayer::BuildPSO()
 	// 构建线框
 	DirectXPipelineState->SetFillMode(true);
 	DirectXPipelineState->Build(Wireframe);
+}
+
+void FOpaqueRenderLayer::ResetPSO()
+{
+	DirectXPipelineState->ResetPSO();
 }

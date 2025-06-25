@@ -30,6 +30,9 @@ struct FLight
 	// 后续添加
 	float xx1;
 	float xx2;
+
+	//灯光视角
+	XMFLOAT4X4 ShadowTransform;
 };
 struct FLightConstantBuffer
 {

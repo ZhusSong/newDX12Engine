@@ -17,7 +17,10 @@ struct Light
 
     // 后续添加
 	float xx1;
-	float xx2;
+    float xx2;
+    
+	//灯光视角
+    float4x4 ShadowTransform;
 };
 
 float3 GetLightDirection(Light L, float3 InObjectWorldLocation)
@@ -58,10 +61,10 @@ float4 AttenuationPointLights2(Light L,float Distance,float C,float I,float Q)
 float4 ComputeLightStrength(Light L,float3 InObjectPointNormal,float3 InObjectWorldLocation, float3 NormalizeLightDirection)
 {
     // 平行光时
-	if (L.LightType == 0)
-	{
-		return float4(1.f, 1.f, 1.f, 1.f);
-	}
+    if (L.LightType == 0)
+    {
+        return float4(1.f, 1.f, 1.f, 1.f) * float4(L.LightIntensity, 1.f);
+    }
 	// Point Light 
     else if (L.LightType == 1) //spot
     {
