@@ -22,6 +22,14 @@ public:
 	void BuildSRVDescriptors();
 	void BuildRTVDescriptors();
 
+	//// 判断资源转换屏障
+	//void TransitionTo(ID3D12GraphicsCommandList* commandList, D3D12_RESOURCE_STATES newState);
+	//void ForceInitialTransition(ID3D12GraphicsCommandList* commandList); 
+	//D3D12_RESOURCE_STATES GetCurrentState() const { return CurrentResourceState; }
+	//void ResetToCommonState(ID3D12GraphicsCommandList* commandList);
+
+
+
 public:
 	FORCEINLINE ID3D12Resource* GetRenderTarget() const { return RenderTargetMap.Get(); }
 	FORCEINLINE D3D12_VIEWPORT GetViewport() const { return Viewport; }
@@ -43,4 +51,8 @@ private:
 
 	//RTV
 	std::vector<CD3DX12_CPU_DESCRIPTOR_HANDLE> CPURenderTargetView;
+
+	//// 当前渲染状态
+	//D3D12_RESOURCE_STATES CurrentResourceState = D3D12_RESOURCE_STATE_COMMON;
+	//bool bHasBeenUsed = false; // 标记是否已经被使用过
 };

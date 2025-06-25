@@ -52,6 +52,9 @@ public:
 	CMeshManager* GetMeshManager() { return MeshManager; }
 	CLightManager* GetLightManager() { return LightManager; }
 
+
+private:
+
 protected:
 	// 封装D3D初始化与GPU/CPU同步
 	void WaitGPUCommandQueueComplete();

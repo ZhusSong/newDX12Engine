@@ -42,6 +42,8 @@ public:
 
 	  // 设置动态反射
 	  void SetDynamicReflection(bool InDynamicReflection);
+	  // 设置折射率
+	  void SetRefractiveValue(float InRefractiveValue);
 
 	  // 动态反射
 	  FORCEINLINE float IsDynamicReflection() const {
@@ -49,8 +51,10 @@ public:
 			  (MaterialType == EMaterialType::Back ||
 				  MaterialType == EMaterialType::Phong ||
 				  MaterialType == EMaterialType::BinnPhong ||
-				  MaterialType == EMaterialType::PBR);
+				  MaterialType == EMaterialType::PBR ||
+				  MaterialType == EMaterialType::Transparency);
 	  }
+	  
 
 	  FORCEINLINE float GetRoughness()const { return Roughness; }
 	  FORCEINLINE fvector_4d GetBaseColor()const { return BaseColor; }
@@ -61,7 +65,7 @@ public:
 	  FORCEINLINE fvector_3d GetFresnelF0()const { return FresnelF0; }
 	  
 	  FORCEINLINE EMaterialType GetMaterialType()const { return MaterialType; }
-
+	  FORCEINLINE float GetRefractiveValue()const { return Refractive; }
 	  // 得到渲染模板
 	  FORCEINLINE D3D_PRIMITIVE_TOPOLOGY GetMaterialDisplayStatus()const {
 		  switch (MaterialDisplayStatus){
@@ -110,4 +114,6 @@ private:
 	float Transparency;			//透明度
 
 	bool bDynamicReflection;  	//动态反射
+	
+	float Refractive;   //折射率
 };

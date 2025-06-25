@@ -38,7 +38,7 @@ void FDynamicCubeMap::UpdateCalculations(float DeltaTime, const FViewportInfo& V
 
 				GeometryMap->UpdateCalculationsViewport(DeltaTime, MyViewportInfo,
 					j + i * 6 +//给动态摄像机
-					1);//给摄像机
+					1);//给主视口
 			}
 		}
 	}
@@ -56,93 +56,99 @@ void FDynamicCubeMap::Init(
 
 void FDynamicCubeMap::PreDraw(float DeltaTime)
 {
-	for (int j = 0; j < GeometryMap->DynamicReflectionMeshComponents.size(); j++)
+	if (FCubeMapRenderTarget* InRenderTarget = dynamic_cast<FCubeMapRenderTarget*>(RenderTarget.get()))
 	{
-		// 指向哪个资源 转换其状态
-		CD3DX12_RESOURCE_BARRIER ResourceBarrierPresent = CD3DX12_RESOURCE_BARRIER::Transition(
-			RenderTarget->GetRenderTarget(),
-			D3D12_RESOURCE_STATE_GENERIC_READ, D3D12_RESOURCE_STATE_RENDER_TARGET);
-
-		GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrierPresent);
-
-		// 需要每帧执行
-		// 绑定矩形框
-		auto RenderTargetViewport = RenderTarget->GetViewport();
-		auto RenderTargetScissorRect = RenderTarget->GetScissorRect();
-		GetGraphicsCommandList()->RSSetViewports(1, &RenderTargetViewport);
-		GetGraphicsCommandList()->RSSetScissorRects(1, &RenderTargetScissorRect);
-
-		UINT CBVSize = GeometryMap->ViewportConstantBufferViews.GetConstantBufferByteSize();
-		for (size_t i = 0; i < 6; i++)
+		for (int j = 0; j < GeometryMap->DynamicReflectionMeshComponents.size(); j++)
 		{
-			// 清除画布
-			GetGraphicsCommandList()->ClearRenderTargetView(
-				RenderTarget->CPURenderTargetView[i],
-				DirectX::Colors::Black,
-				0, nullptr);
+			//指向哪个资源 转换其状态
+			CD3DX12_RESOURCE_BARRIER ResourceBarrierPresent = CD3DX12_RESOURCE_BARRIER::Transition(
+				RenderTarget->GetRenderTarget(),
+				D3D12_RESOURCE_STATE_GENERIC_READ, D3D12_RESOURCE_STATE_RENDER_TARGET);
 
-			// 清除深度模板缓冲区
-			GetGraphicsCommandList()->ClearDepthStencilView(
-				DSVDes,
-				D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL,
-				1.f, 0, 0, NULL);
+			GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrierPresent);
 
-			// 输出的合并阶段
-			GetGraphicsCommandList()->OMSetRenderTargets(1,
-				&RenderTarget->CPURenderTargetView[i],
-				true,
-				&DSVDes);
+			//需要每帧执行
+			//绑定矩形框
+			auto RenderTargetViewport = RenderTarget->GetViewport();
+			auto RenderTargetScissorRect = RenderTarget->GetScissorRect();
+			GetGraphicsCommandList()->RSSetViewports(1, &RenderTargetViewport);
+			GetGraphicsCommandList()->RSSetScissorRects(1, &RenderTargetScissorRect);
 
-			// 更新6个摄像机 绑定6个摄像机
-			auto ViewprotAddr = GeometryMap->ViewportConstantBufferViews.GetBuffer()->GetGPUVirtualAddress();
-			ViewprotAddr += (
-				1 + //主摄像机
-				i + j * 6 //
-				) * CBVSize;
+			UINT CBVSize = GeometryMap->ViewportConstantBufferViews.GetConstantBufferByteSize();
+			for (size_t i = 0; i < 6; i++)
+			{
+				//清除画布
+				GetGraphicsCommandList()->ClearRenderTargetView(
+					RenderTarget->CPURenderTargetView[i],
+					DirectX::Colors::Black,
+					0, nullptr);
 
-			GetGraphicsCommandList()->SetGraphicsRootConstantBufferView(1, ViewprotAddr);
+				//清除深度模板缓冲区
+				GetGraphicsCommandList()->ClearDepthStencilView(
+					DSVDes,
+					D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL,
+					1.f, 0, 0, NULL);
 
-			// 各类层级渲染
-			RenderLayer->Draw(RENDERLAYER_BACKGROUND, DeltaTime);
-			RenderLayer->Draw(RENDERLAYER_OPAQUE, DeltaTime);
-			RenderLayer->Draw(RENDERLAYER_TRANSPARENT, DeltaTime);
+				//输出的合并阶段
+				GetGraphicsCommandList()->OMSetRenderTargets(1,
+					&RenderTarget->CPURenderTargetView[i],
+					true,
+					&DSVDes);
+
+				//更新6个摄像机 绑定6个摄像机
+				auto ViewprotAddr = GeometryMap->ViewportConstantBufferViews.GetBuffer()->GetGPUVirtualAddress();
+				ViewprotAddr += (
+					1 + //主摄像机
+					i + j * 6 //
+					) * CBVSize;
+
+				GetGraphicsCommandList()->SetGraphicsRootConstantBufferView(1, ViewprotAddr);
+
+				//各类层级渲染
+				RenderLayer->Draw(RENDERLAYER_BACKGROUND, DeltaTime);
+				RenderLayer->Draw(RENDERLAYER_OPAQUE, DeltaTime);
+				RenderLayer->Draw(RENDERLAYER_TRANSPARENT, DeltaTime);
+			}
+
+			CD3DX12_RESOURCE_BARRIER ResourceBarrierPresentRenderTarget = CD3DX12_RESOURCE_BARRIER::Transition(
+				RenderTarget->GetRenderTarget(),
+				D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_GENERIC_READ);
+
+			GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrierPresentRenderTarget);
+
+			StartSetMainViewportRenderTarget();
+
+			//主视口
+			GeometryMap->DrawViewport(DeltaTime);
+
+			//更新CubeMap
+			GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(6, InRenderTarget->GPUShaderResourceView);
+
+			Draw(DeltaTime);
+
+			RenderLayer->FindObjectDraw(
+				DeltaTime,
+				RENDERLAYER_OPAQUE_REFLECTOR,
+				GeometryMap->DynamicReflectionMeshComponents[j]);
+
+			//重置CubeMap
+			GeometryMap->DrawCubeMapTexture(DeltaTime);
+
+			//End
+			EndSetMainViewportRenderTarget();
 		}
-
-		CD3DX12_RESOURCE_BARRIER ResourceBarrierPresentRenderTarget = CD3DX12_RESOURCE_BARRIER::Transition(
-			RenderTarget->GetRenderTarget(),
-			D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_GENERIC_READ);
-
-		GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrierPresentRenderTarget);
-
-		StartSetMainViewportRenderTarget();
-
-		// 主视口
-		GeometryMap->DrawViewport(DeltaTime);
-
-		Draw(DeltaTime);
-
-		RenderLayer->FindObjectDraw(
-			DeltaTime,
-			RENDERLAYER_OPAQUE_REFLECTOR,
-			GeometryMap->DynamicReflectionMeshComponents[j]);
-
-		// 重置CubeMap
-		GeometryMap->DrawCubeMapTexture(DeltaTime);
-
-		// End
-		EndSetMainViewportRenderTarget();
 	}
 }
 
 void FDynamicCubeMap::Draw(float DeltaTime)
 {
-	// CubeMap
+	//CubeMap
 	GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(6, RenderTarget->GPUShaderResourceView);
 }
 
 void FDynamicCubeMap::SetCubeMapViewportPosition(const fvector_3d& InCenterPoint)
 {
-	// 捕获摄像机四个面
+	//捕获摄像机四个面
 	FTmpViewportCapture Capture(InCenterPoint);
 
 	for (size_t i = 0; i < 6; i++)
@@ -160,6 +166,7 @@ bool FDynamicCubeMap::IsExitDynamicReflectionMesh()
 
 void FDynamicCubeMap::BuildViewport(const fvector_3d& InCenterPoint)
 {
+	//捕获摄像机四个面
 	FTmpViewportCapture Capture(InCenterPoint);
 
 	for (size_t i = 0; i < 6; i++)
@@ -223,13 +230,13 @@ void FDynamicCubeMap::BuildDepthStencilDescriptor()
 
 void FDynamicCubeMap::BuildRenderTargetDescriptor()
 {
-	// 视图
+	//视图
 	BuildRenderTargetRTV();
 
-	// Shader
+	//给Shader
 	BuildRenderTargetSRV();
 
-	// 初始化Target
+	//初始化Target
 	RenderTarget->Init(Width, Height, DXGI_FORMAT_R8G8B8A8_UNORM);
 }
 
@@ -237,10 +244,10 @@ void FDynamicCubeMap::BuildRenderTargetRTV()
 {
 	UINT RTVDescriptorSize = GetDescriptorHandleIncrementSizeByRTV();
 
-	// RTV的起始
+	//RTV的起始
 	auto RTVDesHeapStart = GetRTVHeap()->GetCPUDescriptorHandleForHeapStart();
 
-	// 偏移的地址记录
+	//偏移的地址记录
 	for (size_t i = 0; i < 6; i++)
 	{
 		RenderTarget->CPURenderTargetView[i] = CD3DX12_CPU_DESCRIPTOR_HANDLE(
@@ -277,7 +284,7 @@ FDynamicCubeMap::FTmpViewportCapture::FTmpViewportCapture(const fvector_3d& InCe
 
 void FDynamicCubeMap::FTmpViewportCapture::BuildViewportCapture(const fvector_3d& InCenterPoint)
 {
-	// 捕获摄像机四个面
+	//捕获摄像机四个面
 	TargetPoint[0] = fvector_3d(InCenterPoint.x + 1.0f, InCenterPoint.y, InCenterPoint.z);
 	TargetPoint[1] = fvector_3d(InCenterPoint.x - 1.0f, InCenterPoint.y, InCenterPoint.z);
 	TargetPoint[2] = fvector_3d(InCenterPoint.x, InCenterPoint.y + 1.0f, InCenterPoint.z);
@@ -292,3 +299,4 @@ void FDynamicCubeMap::FTmpViewportCapture::BuildViewportCapture(const fvector_3d
 	UP[4] = fvector_3d(0.f, 1.f, 0.f);
 	UP[5] = fvector_3d(0.f, 1.f, 0.f);
 }
+

@@ -369,7 +369,7 @@ int CDirectXRenderingEngine::PostInit()
 		// binn phong 
 		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 		{
-			SphereMesh->SetMeshRenderLayerType(EMeshRenderLayerType::RENDERLAYER_OPAQUE_REFLECTOR);
+			//SphereMesh->SetMeshRenderLayerType(EMeshRenderLayerType::RENDERLAYER_OPAQUE_REFLECTOR);
 
 			SphereMesh->CreateMesh(2.f, 50, 50);
 			SphereMesh->SetPosition(XMFLOAT3(9.f, 14, 0.f));
@@ -614,18 +614,22 @@ int CDirectXRenderingEngine::PostInit()
 		// 透明球
 		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 		{
-			SphereMesh->SetMeshRenderLayerType(EMeshRenderLayerType::RENDERLAYER_TRANSPARENT);
+			SphereMesh->SetMeshRenderLayerType(EMeshRenderLayerType::RENDERLAYER_OPAQUE_REFLECTOR);
 			SphereMesh->CreateMesh(2.f, 100, 100);
-			SphereMesh->SetPosition(XMFLOAT3(21.f, -3, 0.f));
-			SphereMesh->SetRotation(fvector_3d(0.f, 0.f, 0.f));
+			SphereMesh->SetPosition(XMFLOAT3(0.f, 2.f, 10.f));
+			//SphereMesh->SetPosition(XMFLOAT3(15.f, 18, 0.f));
 			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
 			{
-				InMaterial->SetBaseColor(fvector_4d(1.f));
+				InMaterial->SetBaseColor(fvector_4d(0.f));
 				InMaterial->SetMaterialType(EMaterialType::Transparency);
 
 				InMaterial->SetRoughness(0.01f);
 				InMaterial->SetFresnelF0(fvector_3d(0.5f));
-				InMaterial->SetTransparency(0.2f);
+				InMaterial->SetTransparency(1.f);
+				InMaterial->SetDynamicReflection(true);
+
+				InMaterial->SetSpecular(fvector_3d(1.f));
+				InMaterial->SetRefractiveValue(1.11f);
 			}
 		}
 

@@ -355,13 +355,33 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
         case 2:
         case 3:
         case 9:
-        case 15:
-		{      
+            {      
 			//计算反射
-            float3 ReflectionColor = GetReflectionColor(MatConstBuffer, ModelNormal, MVOut.WorldPosition.xyz);
-            MVOut.Color.xyz += ReflectionColor;
-            break;
-        }
+                float3 ReflectionColor = GetReflectionColor(MatConstBuffer, ModelNormal, MVOut.WorldPosition.xyz);
+                MVOut.Color.xyz += ReflectionColor;
+                break;
+            }
+        case 15:
+            {
+			    //计算折射
+                float3 NewRefract = GetRefract(ModelNormal, MVOut.WorldPosition.xyz, MatConstBuffer.Refraction);
+                float3 SampleRefractColor = GetReflectionSampleColor(ModelNormal, NewRefract);
+
+			    //计算反射
+                float3 NewReflect = GetReflect(ModelNormal, MVOut.WorldPosition.xyz);
+                float3 SampleReflectionColor = GetReflectionSampleColor(ModelNormal, NewReflect);
+			
+			    //计算A通道
+                float3 V = normalize(ViewportPosition.xyz - MVOut.WorldPosition.xyz);
+                float Shininess = GetShininess(MatConstBuffer);
+                float3 FresnelFactor = FresnelSchlickFactor(MatConstBuffer, ModelNormal, V);
+
+                float3 Color = lerp(SampleRefractColor, SampleReflectionColor, pow(Shininess * FresnelFactor, 2));
+
+                MVOut.Color.xyz += Color;
+                break;
+            }
+		
     }
 
     if (MatConstBuffer.MaterialType == 15)

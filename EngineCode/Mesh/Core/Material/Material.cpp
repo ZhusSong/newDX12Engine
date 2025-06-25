@@ -103,3 +103,9 @@ void CMaterial::SetDynamicReflection(bool InDynamicReflection)
 
 	SetDirty(true);
 }
+void CMaterial::SetRefractiveValue(float InRefractiveValue)
+{
+	Refractive = InRefractiveValue;
+
+	SetDirty(true);
+}

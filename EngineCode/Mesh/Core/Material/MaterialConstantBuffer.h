@@ -18,7 +18,7 @@ struct FMaterialConstantBuffer
 
 	XMFLOAT4 BaseColor;
 	XMFLOAT3 SpecularColor;
-	int XX6;
+	int Refraction;
 	XMFLOAT3 FresnelF0;
 
 	float Transparency;					// 透明度    

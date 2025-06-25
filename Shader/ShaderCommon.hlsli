@@ -73,7 +73,7 @@ struct MaterialConstBuffer
     float4 BaseColor;
 
     float3 SpecularColor;
-    float XXX5;
+    float Refraction;
 
     float3 FresnelF0;
     float Transparency;
