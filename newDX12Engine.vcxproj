@@ -436,7 +436,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
-    <LibraryPath>H:\newDX12Engine\x64\Debug;$(LibraryPath)</LibraryPath>
+    <LibraryPath>J:\newDX12Project\newDX12Engine\x64\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LibraryPath>H:\newDX12Engine\x64\Debug;$(LibraryPath)</LibraryPath>

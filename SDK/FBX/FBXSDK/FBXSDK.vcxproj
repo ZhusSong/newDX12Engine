@@ -80,8 +80,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <PublicIncludeDirectories>$(PublicIncludeDirectories)</PublicIncludeDirectories>
-    <LibraryPath>H:\newDX12Engine\SDK\FBX\FBXSDK\lib\vs2015\x64\debug;$(LibraryPath)</LibraryPath>
-    <IncludePath>H:\newDX12Engine\SDK\FBX\FBXSDK\include;$(IncludePath)</IncludePath>
+    <LibraryPath>J:\newDX12Project\newDX12Engine\SDK\FBX\FBXSDK\x64\Debug;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir);J:\newDX12Project\newDX12Engine\SDK\FBX\FBXSDK\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <PublicIncludeDirectories>$(PublicIncludeDirectories)</PublicIncludeDirectories>
@@ -120,7 +120,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;FBXSDK_EXPORTS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;FBXSDK_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
