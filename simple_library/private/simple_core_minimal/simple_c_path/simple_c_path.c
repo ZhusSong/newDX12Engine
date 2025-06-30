@@ -136,3 +136,16 @@ wchar_t* get_shader_path_shader_name(const  wchar_t* shaderFileName)
 	// 找不到
 	return NULL;
 }
+
+
+char* get_full_path(char* in_path_buf, int in_buff_len, const char* in_path)
+{
+#ifdef _WIN32
+	_fullpath(in_path_buf, in_path, in_buff_len);
+#else
+	realpath(in_path, in_path_buf);
+#endif
+	normalization_path(in_path_buf);
+
+	return in_path_buf;
+}

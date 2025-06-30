@@ -1,6 +1,14 @@
 ﻿#include "CustomMeshComponent.h"
 #include "../../Mesh/Core/MeshType.h"
 
+#if THIRD_PARTY_LIBRARY
+#include "../../../SDK/FBX/FBXSDK/FBXSDK.h"
+
+#pragma comment(lib, "FBXSDK.lib")
+
+#endif // THIRD_PARTY_LIBRARY
+
+
 CCustomMeshComponent::CCustomMeshComponent()
 {
 
@@ -8,23 +16,39 @@ CCustomMeshComponent::CCustomMeshComponent()
 
 void CCustomMeshComponent::CreateMesh(FMeshRenderingData& MeshData, string& InPath)
 {
-	//拿到文件大小
-	unsigned int FileSize = get_file_size_by_filename(InPath.c_str());
-
-	//根据文件大小创建buff
-	char* Buff = new char[FileSize + 1];
-	//必须要初始化
-	memset(Buff, 0, FileSize + 1);
-
-	//提取buff
-	get_file_buf(InPath.c_str(), Buff);
-
-	if (!LoadObjFromBuff(Buff, FileSize, MeshData))
+	// 获取文件路径
+	// x.obj
+	char Buff[1024] = { 0 };
+	get_path_clean_filename(Buff, InPath.c_str());
+	if (find_string(Buff, ".obj", 0) != -1 ||
+		find_string(Buff, ".OBJ", 0) != -1)
 	{
+		//拿到文件大小
+		unsigned int FileSize = get_file_size_by_filename(InPath.c_str());
 
+		//根据文件大小创建buff
+		char* Buff = new char[FileSize + 1];
+		//必须要初始化
+		memset(Buff, 0, FileSize + 1);
+
+		//提取buff
+		get_file_buf(InPath.c_str(), Buff);
+
+		if (!LoadObjFromBuff(Buff, FileSize, MeshData))
+		{
+
+		}
+
+		delete Buff;
 	}
+	else if(find_string(Buff, ".fbx", 0) != -1 ||
+		find_string(Buff, ".FBX", 0) != -1)
+	{
+		char PathBuff[1024] = { 0 };
+		get_full_path(PathBuff, 1024, InPath.c_str());
 
-	delete Buff;
+		LoadFBXFromBuff(PathBuff, MeshData);
+	}
 }
 
 bool CCustomMeshComponent::LoadObjFromBuff(char* InBuff, uint32_t InBuffSize, FMeshRenderingData& MeshData)
@@ -119,4 +143,46 @@ void CCustomMeshComponent::BuildKey(size_t& OutHashKey, std::string& InPath)
 
 	OutHashKey = 3;
 	OutHashKey += FloatHash(InPath);
+}
+
+bool CCustomMeshComponent::LoadFBXFromBuff(const string& InPath, FMeshRenderingData& MeshData)
+{
+#if THIRD_PARTY_LIBRARY
+	FFBXRenderData RenderData;
+	FFBXAssetImport().LoadMeshData(InPath.c_str(), RenderData);
+
+	for (auto& TmpModel : RenderData.ModelData)
+	{
+		for (auto& MeshTmp : TmpModel.MeshData)
+		{
+			for (auto& VertexTmp : MeshTmp.VertexData)
+			{
+				for (int i = 0; i < 3; i++)
+				{
+					MeshData.VertexData.push_back(FVertex());
+					FVertex& InVertex = MeshData.VertexData[MeshData.VertexData.size() - 1];
+
+					InVertex.Position.x = VertexTmp.Vertexs[i].Position.X;
+					InVertex.Position.y = VertexTmp.Vertexs[i].Position.Y;
+					InVertex.Position.z = VertexTmp.Vertexs[i].Position.Z;
+
+					InVertex.Normal.x = VertexTmp.Vertexs[i].Normal.X;
+					InVertex.Normal.y = VertexTmp.Vertexs[i].Normal.Y;
+					InVertex.Normal.z = VertexTmp.Vertexs[i].Normal.Z;
+
+					InVertex.UTangent.x = VertexTmp.Vertexs[i].Tangent.X;
+					InVertex.UTangent.y = VertexTmp.Vertexs[i].Tangent.Y;
+					InVertex.UTangent.z = VertexTmp.Vertexs[i].Tangent.Z;
+
+					InVertex.TexCoord.x = VertexTmp.Vertexs[i].UV.X;
+					InVertex.TexCoord.y = VertexTmp.Vertexs[i].UV.Y;
+				}
+			}
+
+			// 索引
+			MeshData.IndexData = MeshTmp.IndexData;
+		}
+	}
+#endif
+	return true;
 }
