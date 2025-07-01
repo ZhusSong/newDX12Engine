@@ -1,5 +1,5 @@
 ﻿#pragma once
-
+//25.7.1 李
 enum EPipelineState
 {
 	Transparent = 0,        //透明
@@ -11,13 +11,20 @@ enum EPipelineState
 	Shadow = 6,
 };
 
-struct FTextureNumber
+// 渲染条件
+enum ERenderingConditions
 {
-	FTextureNumber()
-		:Texture2DNum(1)
-		, CubeMapNum(1)
-	{}
-
-	UINT Texture2DNum;
-	UINT CubeMapNum;
+	RC_None = 0,//全部渲染
+	RC_Shadow,//仅渲染该物体
 };
+
+//struct FTextureNumber
+//{
+//	FTextureNumber()
+//		:Texture2DNum(1)
+//		, CubeMapNum(1)
+//	{}
+//
+//	UINT Texture2DNum;
+//	UINT CubeMapNum;
+//};

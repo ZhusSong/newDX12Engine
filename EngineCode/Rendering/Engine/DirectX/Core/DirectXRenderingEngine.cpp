@@ -221,6 +221,8 @@ int CDirectXRenderingEngine::PostInit()
 
 			InPlaneMesh->SetPosition(XMFLOAT3(0.f, -12.f, 0.f));
 			InPlaneMesh->SetScale(fvector_3d(50.f, 1.f, 50.f));
+			// 地面不显示阴影
+			InPlaneMesh->SetCastShadow(false);
 			if (CMaterial* InMaterial = (*InPlaneMesh->GetMaterials())[0])
 			{
 				InMaterial->SetMaterialType(EMaterialType::Lambert);
@@ -644,7 +646,23 @@ int CDirectXRenderingEngine::PostInit()
 				InMaterial->SetMaterialType(ShadowTexture);
 			}
 		}
-
+		// 外部FBX模型
+		if (GCustomMesh* CustomMesh = World->CreateActorObject<GCustomMesh>())//反射球
+		{
+			string Path = "../newDX12Engine/Asset/SK_Mannequin.FBX";
+			CustomMesh->CreateMesh(Path);
+		
+			CustomMesh->SetPosition(XMFLOAT3(0.f, 0, -20.f));
+			CustomMesh->SetRotation(fvector_3d(0.f, 0.f, 0.f));
+			// 是否渲染ShadowMap
+			CustomMesh->SetCastShadow(false);
+			if (CMaterial* InMaterial = (*CustomMesh->GetMaterials())[0])
+			{
+				InMaterial->SetBaseColor(fvector_4d(1.f));
+				InMaterial->SetMaterialType(EMaterialType::HalfLambert);
+		
+			}
+		}
 		// 天空
 		if (GSky* InSky = World->CreateActorObject<GSky>())//ﾌ・ﾕ
 		{

@@ -109,7 +109,7 @@ void GetPolygons(FbxMesh* InMesh, FFBXMesh& OutData)
 						FbxVector2 UV = TextureUV->GetDirectArray().GetAt(ControlPointIndex);
 
 						InTriangle.Vertexs[j].UV.X = UV.mData[0];
-						InTriangle.Vertexs[j].UV.Y = 1.f - UV.mData[1];//
+						InTriangle.Vertexs[j].UV.Y = 1.f - UV.mData[1];//UV取反
 					}
 					else if (ReferenceMode == fbxsdk::FbxLayerElement::eIndexToDirect)
 					{
@@ -117,7 +117,7 @@ void GetPolygons(FbxMesh* InMesh, FFBXMesh& OutData)
 
 						FbxVector2 UV = TextureUV->GetDirectArray().GetAt(ID);
 						InTriangle.Vertexs[j].UV.X = UV.mData[0];
-						InTriangle.Vertexs[j].UV.Y = 1.f - UV.mData[1];//
+						InTriangle.Vertexs[j].UV.Y = 1.f - UV.mData[1];//UV取反
 					}
 				}
 				else if (ModeType == fbxsdk::FbxLayerElement::eByPolygonVertex)
@@ -132,7 +132,7 @@ void GetPolygons(FbxMesh* InMesh, FFBXMesh& OutData)
 						FbxVector2 UV = TextureUV->GetDirectArray().GetAt(ControlPointIndex);
 
 						InTriangle.Vertexs[j].UV.X = UV.mData[0];
-						InTriangle.Vertexs[j].UV.Y = 1.f - UV.mData[1];//
+						InTriangle.Vertexs[j].UV.Y = 1.f - UV.mData[1];//UV取反
 						break;
 					}
 					}

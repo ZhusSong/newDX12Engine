@@ -32,4 +32,11 @@ public:
 public:
 	//动态反射
 	bool IsDynamicReflection() const;
+
+	// 设置是否开启阴影
+	void SetCastShadow(bool bNewCastShadow) { bCastShadow = bNewCastShadow; }
+	bool IsCastShadow()const { return bCastShadow; }
+
+protected:
+	bool bCastShadow;
 };

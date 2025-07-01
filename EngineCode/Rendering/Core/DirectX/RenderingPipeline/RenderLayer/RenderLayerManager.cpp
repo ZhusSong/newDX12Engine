@@ -66,13 +66,14 @@ void FRenderLayerManager::ResetPSO(int InLayer)
 		InRenderLayer->ResetPSO();
 	}
 }
-void FRenderLayerManager::DrawMesh(float DeltaTime, int InLayer)
+void FRenderLayerManager::DrawMesh(float DeltaTime, int InLayer, ERenderingConditions RC)
 {
 	if (auto InRenderLayer = FindByRenderLayer(InLayer))
 	{
-		InRenderLayer->DrawMesh(DeltaTime);
+		InRenderLayer->DrawMesh(DeltaTime, RC);
 	}
 }
+
 std::shared_ptr<FRenderLayer> FRenderLayerManager::FindByRenderLayer(int InRenderLayer)
 {
 	for (auto &Tmp : RenderLayers)

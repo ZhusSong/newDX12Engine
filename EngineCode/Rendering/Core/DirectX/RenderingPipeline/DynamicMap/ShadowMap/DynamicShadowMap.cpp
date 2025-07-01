@@ -103,9 +103,9 @@ void FDynamicShadowMap::Draw(float DeltaTime)
 		RenderLayer->ResetPSO(RENDERLAYER_SHADOW_RENDER);
 
 		//
-		RenderLayer->DrawMesh(DeltaTime, RENDERLAYER_OPAQUE);
-		RenderLayer->DrawMesh(DeltaTime, RENDERLAYER_TRANSPARENT);
-		RenderLayer->DrawMesh(DeltaTime, RENDERLAYER_OPAQUE_REFLECTOR);
+		RenderLayer->DrawMesh(DeltaTime, RENDERLAYER_OPAQUE, ERenderingConditions::RC_Shadow);
+		RenderLayer->DrawMesh(DeltaTime, RENDERLAYER_TRANSPARENT, ERenderingConditions::RC_Shadow);
+		RenderLayer->DrawMesh(DeltaTime, RENDERLAYER_OPAQUE_REFLECTOR, ERenderingConditions::RC_Shadow);
 
 		CD3DX12_RESOURCE_BARRIER ResourceBarrierPresentRenderTarget = CD3DX12_RESOURCE_BARRIER::Transition(
 			RenderTarget->GetRenderTarget(),
