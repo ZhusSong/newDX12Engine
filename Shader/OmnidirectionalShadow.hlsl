@@ -33,6 +33,8 @@ MeshVertexOut VertexShaderMain(MeshVertexIn MV)
 float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
 {
 	// 采集深度图
-    float Depth = MVOut.PositionH.z / MVOut.PositionH.w;
+    float Depth = (1.f - (MVOut.PositionH.z / MVOut.PositionH.w));
+
+    Depth = pow(Depth, 5);
     return float4(Depth, Depth, Depth, 1.f);
 }

@@ -231,6 +231,12 @@ void FGeometryMap::UpdateLight(float DeltaTime, const FViewportInfo& ViewportInf
 					break;
 				}
 				case ELightType::PointLight:
+					if (CRangeLightComponent* InRangeLightComponent = dynamic_cast<CRangeLightComponent*>(InLightComponent))
+					{
+						LightConstantBuffer.SceneLights[i].StartAttenuation = InRangeLightComponent->GetStartAttenuation();
+						LightConstantBuffer.SceneLights[i].EndAttenuation = InRangeLightComponent->GetEndAttenuation();
+					}
+
 					break;
 				case ELightType::SpotLight:
 				{
@@ -327,6 +333,7 @@ void FGeometryMap::BuildFog()
 }
 void FGeometryMap::BuildShadow()
 {
+	// 构建普通阴影
 	DynamicShadowMap.Init(2048, 2048);
 
 	DynamicShadowMap.BuildViewport(fvector_3d(0.f, 0.f, 0.f));
@@ -334,6 +341,12 @@ void FGeometryMap::BuildShadow()
 	DynamicShadowMap.BuildDepthStencilDescriptor();
 
 	DynamicShadowMap.BuildRenderTargetDescriptor();
+
+	// 构建点光源阴影
+	DynamicShadowCubeMap.BuildViewport(fvector_3d(0.f, 0.f, 0.f));
+	DynamicShadowCubeMap.BuildDepthStencilDescriptor();
+	DynamicShadowCubeMap.BuildRenderTargetDescriptor();
+	DynamicShadowCubeMap.BuildDepthStencil();
 }
 void FGeometryMap::BuildDynamicReflectionMesh()
 {
@@ -423,11 +436,14 @@ void FGeometryMap::Build()
 void FGeometryMap::BuildDescriptorHeap()
 {
 	// 只构建贴图描述符表
+	//+1摄像机
 	DescriptorHeap.Build(
 		GetDrawTexture2DResourcesNumber() + //Texture2D
 		GetDrawCubeMapResourcesNumber() + //静态Cube贴图
-		1+		//动态Cube贴图
-		1);		//阴影
+		1 + //动态Cube贴图
+		1 + //Shadow
+		1 +//ShadowCubeMap
+		1);//UI
 }
 
 void FGeometryMap::BuildMeshConstantBuffer()

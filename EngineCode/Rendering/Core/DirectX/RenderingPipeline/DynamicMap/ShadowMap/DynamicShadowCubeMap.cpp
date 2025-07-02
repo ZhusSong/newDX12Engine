@@ -39,8 +39,11 @@ void FDynamicShadowCubeMap::UpdateCalculations(float DeltaTime, const FViewportI
 					MyViewportInfo.ProjectMatrix = CubeMapViewport[j]->ProjectMatrix;
 
 					GeometryMap->UpdateCalculationsViewport(DeltaTime, MyViewportInfo,
-						j + i * 6 +//给动态摄像机
-						1);//给主视口
+						1 +//给主视口
+						GeometryMap->GetDynamicReflectionViewportNum() + //给Shadow动态摄像机
+						1 +//给Shadow摄像机
+						j + Index * 6 //给动态摄像机
+					);
 				}
 
 				Index++;
@@ -61,6 +64,7 @@ void FDynamicShadowCubeMap::PreDraw(float DeltaTime)
 {
 	if (FCubeMapRenderTarget* InRenderTarget = dynamic_cast<FCubeMapRenderTarget*>(RenderTarget.get()))
 	{
+		int Index = 0;
 		for (int j = 0; j < GetLightManager()->GetLights().size(); j++)
 		{
 			CLightComponent* Tmp = GetLightManager()->GetLights()[j];
@@ -86,7 +90,7 @@ void FDynamicShadowCubeMap::PreDraw(float DeltaTime)
 					// 清除画布
 					GetGraphicsCommandList()->ClearRenderTargetView(
 						InRenderTarget->GetCPURenderTargetView(i),
-						DirectX::Colors::Black,
+						DirectX::Colors::White,
 						0, nullptr);
 
 					// 清除深度模板缓冲区
@@ -105,7 +109,9 @@ void FDynamicShadowCubeMap::PreDraw(float DeltaTime)
 					auto ViewprotAddr = GeometryMap->ViewportGPUVirtualAddress();
 					ViewprotAddr += (
 						1 + //主摄像机
-						i + j * 6 //
+						GeometryMap->GetDynamicReflectionViewportNum() + //CubeMap 反射
+						1 + //Shadow 平行光 聚光灯
+						i + Index * 6 //
 						) * CBVSize;
 
 					GetGraphicsCommandList()->SetGraphicsRootConstantBufferView(1, ViewprotAddr);
@@ -129,6 +135,8 @@ void FDynamicShadowCubeMap::PreDraw(float DeltaTime)
 
 				// 绘制到ShadowCubeMap
 				GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(8, InRenderTarget->GetGPUSRVOffset());
+
+				Index++;
 			}
 		}
 	}
@@ -139,13 +147,14 @@ void FDynamicShadowCubeMap::Draw(float DeltaTime)
 
 }
 
+// 设置DSV偏移
 void FDynamicShadowCubeMap::BuildDepthStencilDescriptor()
 {
 	UINT DescriptorHandleIncrementSize = GetD3dDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV);
 
 	DSVDes = CD3DX12_CPU_DESCRIPTOR_HANDLE(
 		GetDSVHeap()->GetCPUDescriptorHandleForHeapStart(),
-		1,
+		3,
 		DescriptorHandleIncrementSize);
 }
 
@@ -165,7 +174,9 @@ void FDynamicShadowCubeMap::BuildRenderTargetRTV()
 		{
 			InRenderTarget->GetCPURenderTargetView(i) = CD3DX12_CPU_DESCRIPTOR_HANDLE(
 				RTVDesHeapStart,
-				FEngineRenderConfig::GetRenderConfig()->SwapChainCount + i,
+				FEngineRenderConfig::GetRenderConfig()->SwapChainCount
+				+ 6  //反射 CubeMap的摄像机
+				+ i,
 				RTVDescriptorSize);
 		}
 	}
@@ -178,18 +189,22 @@ void FDynamicShadowCubeMap::BuildRenderTargetSRV()
 	auto CPUSRVDesHeapStart = GeometryMap->GetHeap()->GetCPUDescriptorHandleForHeapStart();
 	auto GPUSRVDesHeapStart = GeometryMap->GetHeap()->GetGPUDescriptorHandleForHeapStart();
 
+	int Offset =
+		GeometryMap->GetDrawTexture2DResourcesNumber() +
+		GeometryMap->GetDrawCubeMapResourcesNumber() +
+		1 + //反射cubemap
+		1;//shadop
+
 	if (FCubeMapRenderTarget* InRenderTarget = dynamic_cast<FCubeMapRenderTarget*>(RenderTarget.get()))
 	{
 		InRenderTarget->GetCPUSRVOffset() =
 			CD3DX12_CPU_DESCRIPTOR_HANDLE(CPUSRVDesHeapStart,
-				GeometryMap->GetDrawTexture2DResourcesNumber() +
-				GeometryMap->GetDrawCubeMapResourcesNumber(),
+				Offset,
 				CBVDescriptorSize);
 
 		InRenderTarget->GetGPUSRVOffset() =
 			CD3DX12_GPU_DESCRIPTOR_HANDLE(GPUSRVDesHeapStart,
-				GeometryMap->GetDrawTexture2DResourcesNumber() +
-				GeometryMap->GetDrawCubeMapResourcesNumber(),
+				Offset,
 				CBVDescriptorSize);
 	}
 }

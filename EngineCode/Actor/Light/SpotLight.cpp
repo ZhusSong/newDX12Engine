@@ -14,22 +14,25 @@ void GSpotLight::Tick(float DeltaTime)
 {
 	index_test += DeltaTime;
 
-	// 直上直下
-	XMFLOAT3 Pos = GetPosition();
+	//// 直上直下
+	//XMFLOAT3 Pos = GetPosition();
 
-	Pos.y += sin(index_test) * 0.4f;
-	SetPosition(Pos);
+	//Pos.y += sin(index_test) * 0.4f;
+	//SetPosition(Pos);
 
 	// 旋转
-	//float I = 1.f;
-	//float O = 40.f;
+	float O = 50.f;
+	float I = 30.f;
+	
+	SetConicalInnerCorner(I * fabsf(cos(index_test)) + 10.f);
+	SetConicalOuterCorner(O * fabsf(cos(index_test)) + 20.f);
+	
+	fvector_3d v3 = GetRotation();
+	//v3.x += DeltaTime * 40.f;
+	v3.y += DeltaTime * 40.f;
+	//v3.z += DeltaTime * 100.f;
 
-	//SetConicalInnerCorner(I * fabsf(cos(index_test)) + 10.f);
-	//SetConicalOuterCorner(O * fabsf(cos(index_test)) + 30.f);
-
-	//fvector_3d v3 = GetRotation();
-	//v3.x += DeltaTime * 60.f;
-
+	SetRotation(v3);
 	//SetRotation(v3);
 }
 

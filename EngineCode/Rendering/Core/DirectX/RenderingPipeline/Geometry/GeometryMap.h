@@ -6,6 +6,7 @@
 #include "../ConstantBuffer/ConstantBufferViews.h"
 #include "../../../../../Core/Viewport/ViewportInfo.h"
 #include "../DynamicMap/ShadowMap/DynamicShadowMap.h"
+#include "../DynamicMap/ShadowMap/DynamicShadowCubeMap.h"
 
 class CMaterial;
 struct FRenderingTexture;
@@ -76,7 +77,10 @@ struct FGeometryMap :public IDirectXDeviceInterface_Struct
 	// 更新材质
 	void UpdateMaterialShaderResourceView(float DeltaTime, const FViewportInfo& ViewportInfo);
 	
+	// 更新灯光
 	void UpdateLight(float DeltaTime, const FViewportInfo& ViewportInfo);
+	
+	// 更新雾
 	void UpdateFog(float DeltaTime, const FViewportInfo& ViewportInfo);
 
 	//收集动态反射模型
@@ -187,4 +191,6 @@ protected:
 	CFogComponent* Fog;
 
 	FDynamicShadowMap DynamicShadowMap;
+
+	FDynamicShadowCubeMap DynamicShadowCubeMap;
 };

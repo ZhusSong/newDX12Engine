@@ -66,7 +66,7 @@ float4 ComputeLightStrength(Light L,float3 InObjectPointNormal,float3 InObjectWo
         return float4(1.f, 1.f, 1.f, 1.f) * float4(L.LightIntensity, 1.f);
     }
 	// Point Light 
-    else if (L.LightType == 1) //spot
+    else if (L.LightType == 1) 
     {
         float4 LightStrength = float4(L.LightIntensity, 1.f);
         float3 LightVector = L.Position - InObjectWorldLocation;;
@@ -82,8 +82,9 @@ float4 ComputeLightStrength(Light L,float3 InObjectPointNormal,float3 InObjectWo
 			//	0.5f,//i
 			//	0.9f);//q
         }
-    }
-	else if (L.LightType == 2) //spot
+    } 
+    //spot
+	else if (L.LightType == 2) 
 	{
   
         float3 LightVector = L.Position - InObjectWorldLocation;;

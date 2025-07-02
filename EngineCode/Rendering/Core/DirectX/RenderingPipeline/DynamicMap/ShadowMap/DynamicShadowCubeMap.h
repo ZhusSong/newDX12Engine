@@ -4,9 +4,10 @@
 
 
 class GClientViewport;
+class FRenderLayerManager;
+
 struct FGeometryMap;
 struct FDirectXPipelineState;
-class FRenderLayerManage;
 struct FViewportInfo;
 
 class FDynamicShadowCubeMap :public FDynamicCubeMap
@@ -25,6 +26,9 @@ public:
 	virtual void BuildDepthStencilDescriptor();
 
 protected:
+	// 构建RTV
 	virtual void BuildRenderTargetRTV();
+
+	// 构建SRV
 	virtual void BuildRenderTargetSRV();
 };

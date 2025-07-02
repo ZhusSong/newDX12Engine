@@ -3,9 +3,10 @@
 #include "../../../../../../Interface/DirectXDeviceInterface.h"
 #include "../../RenderTarget/Core/RenderTarget.h"
 
+class FRenderLayerManager;
+
 struct FGeometryMap;
 struct FDirectXPipelineState;
-class FRenderLayerManager;
 struct FViewportInfo;
 
 class FDynamicMap :public IDirectXDeviceInterface

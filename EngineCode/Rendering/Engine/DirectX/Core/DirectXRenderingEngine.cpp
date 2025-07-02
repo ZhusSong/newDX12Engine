@@ -97,8 +97,8 @@ int CDirectXRenderingEngine::PostInit()
 		//  聚光灯
 		if (GSpotLight* SpotLight = World->CreateActorObject<GSpotLight>())
 		{
-			SpotLight->SetPosition(XMFLOAT3(0.f, -3.f, -10.f));
-			SpotLight->SetRotation(fvector_3d(5.f, 180.f, 0.f));
+			SpotLight->SetPosition(XMFLOAT3(0.f, 0.f, 20.f));
+			SpotLight->SetRotation(fvector_3d(0.f, 0.f, 0.f));
 
 			SpotLight->SetLightIntensity(fvector_3d(1.3f, 1.3f, 1.3f));
 			//SpotLight->SetStartAttenuation(1.f);
@@ -110,11 +110,11 @@ int CDirectXRenderingEngine::PostInit()
 		//// 点光源
 		//if (GPointLight* PointLight = World->CreateActorObject<GPointLight>())
 		//{
-		//	PointLight->SetPosition(XMFLOAT3(0.f, -6.f, 10.f));
+		//	PointLight->SetPosition(XMFLOAT3(0.f, 10.f, 10.f));
 		//	PointLight->SetRotation(fvector_3d(0.f, 0.f, 0.f));
 
-		//	PointLight->SetLightIntensity(fvector_3d(1.0f));
-		//	PointLight->SetEndAttenuation(100.f);
+		//	PointLight->SetLightIntensity(fvector_3d(0.9f));
+		//	PointLight->SetEndAttenuation(190.f);
 		//}
 		//// 平行光
 		/*if (GParallelLight* ParallelLight = World->CreateActorObject<GParallelLight>())
@@ -636,6 +636,49 @@ int CDirectXRenderingEngine::PostInit()
 			}
 		}
 
+		////PBR模型组
+		//{
+		//	//自由设定
+		//	if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())//PBR模型
+		//	{
+		//		SphereMesh->CreateMesh(2.f, 30, 30);
+		//		SphereMesh->SetPosition(XMFLOAT3(15.f, 2, 0.f));
+		//		SphereMesh->SetRotation(fvector_3d(0.f, 0.f, 0.f));
+		//		if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
+		//		{
+		//			InMaterial->SetBaseColor(fvector_4d(1.f));
+		//			InMaterial->SetMaterialType(EMaterialType::PBR);
+		//		}
+		//	}
+
+		//	int Row = 6;
+		//	int Colum = 6;
+		//	for (int i = 0; i < Colum; i++)
+		//	{
+		//		for (int j = 0; j < Row; j++)
+		//		{
+		//			fvector_3d PBRPosition(25.f, -3.f, 5.f);
+		//			PBRPosition.y += i * 5.f;
+		//			PBRPosition.z += j * 5.f;
+
+		//			if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())//PBR模型
+		//			{
+		//				SphereMesh->CreateMesh(2.f, 30, 30);
+		//				SphereMesh->SetPosition(XMFLOAT3(PBRPosition.x, PBRPosition.y, PBRPosition.z));
+		//				SphereMesh->SetRotation(fvector_3d(0.f, 0.f, 0.f));
+		//				if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
+		//				{
+		//					InMaterial->SetBaseColor(fvector_4d(1.f));
+		//					InMaterial->SetMaterialType(EMaterialType::PBR);
+
+		//					InMaterial->SetRoughness(((float)j + 1.f) / (float)Row);
+		//					InMaterial->SetMetallicity(((float)i + 1.f) / (float)Colum);
+		//				}
+		//			}
+		//		}
+		//	}
+		//}
+
 		// 阴影shader单独显示
 		if (GPlaneMesh* InPlaneMesh = World->CreateActorObject<GPlaneMesh>())
 		{
@@ -664,6 +707,36 @@ int CDirectXRenderingEngine::PostInit()
 		
 			}
 		}
+
+		//well
+		if (GBoxMesh* InBoxMesh = World->CreateActorObject<GBoxMesh>())
+		{
+			InBoxMesh->CreateMesh(30.f, 150, 0.4f);
+
+			InBoxMesh->SetPosition(XMFLOAT3(0.f, 0.f, -60.f));
+			if (CMaterial* InMaterial = (*InBoxMesh->GetMaterials())[0])
+			{
+				InMaterial->SetBaseColor(fvector_4d(1.f));
+				InMaterial->SetMaterialType(EMaterialType::Lambert);
+			}
+		}
+
+		//well
+		if (GBoxMesh* InBoxMesh = World->CreateActorObject<GBoxMesh>())
+		{
+			InBoxMesh->CreateMesh(30.f, 0.5f, 150.f);
+
+			InBoxMesh->SetPosition(XMFLOAT3(70.f, 0.f, 0.f));
+			if (CMaterial* InMaterial = (*InBoxMesh->GetMaterials())[0])
+			{
+				InMaterial->SetBaseColor(fvector_4d(1.f));
+				InMaterial->SetMaterialType(EMaterialType::Lambert);
+			}
+		}
+
+		
+
+
 		// 天空
 		if (GSky* InSky = World->CreateActorObject<GSky>())//ﾌ・ﾕ
 		{
@@ -681,6 +754,8 @@ int CDirectXRenderingEngine::PostInit()
 			Fog->SetFogTransparentCoefficient(0.00f);
 
 		}
+
+
 		//// 天空盒
 		//if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 		//{
@@ -1040,8 +1115,8 @@ bool CDirectXRenderingEngine::InitDirect3D()
 	D3D12_DESCRIPTOR_HEAP_DESC RTVDescriptorHeapDesc;
 	RTVDescriptorHeapDesc.NumDescriptors =
 		FEngineRenderConfig::GetRenderConfig()->SwapChainCount + //交换链
-		6;			//CubeMap RTV
-
+		6 +			//反射CubeMap RTV
+		6;			//点光源阴影cubemap  RTV
 	RTVDescriptorHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
 	RTVDescriptorHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 	RTVDescriptorHeapDesc.NodeMask = 0;
@@ -1053,10 +1128,10 @@ bool CDirectXRenderingEngine::InitDirect3D()
 	// 创建DSV
 	D3D12_DESCRIPTOR_HEAP_DESC DSVDescriptorHeapDesc;
 	DSVDescriptorHeapDesc.NumDescriptors =
-		1 +			//本身深度
-		1+			//CubeMap深度
-		1+			//阴影深度
-		1;          //CubeMapShadow深度
+		1 +			//main视口深度
+		1+			//CubeMap深度 反射
+		1+			//平行光 聚光灯 阴影深度
+		1;          //点光源 CubeMapShadow深度
 
 	DSVDescriptorHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
 	DSVDescriptorHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;

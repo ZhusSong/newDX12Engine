@@ -58,11 +58,12 @@ void FShadowMapRenderTarget::BuildDSVDescriptors()
 	DSVDesc.Texture2D.MipSlice = 0;
 	DSVDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
 	DSVDesc.Flags = D3D12_DSV_FLAG_NONE;
+
 	GetD3dDevice()->CreateDepthStencilView(RenderTargetMap.Get(), &DSVDesc, DSVDes);
 }
 
 
-//构建常量缓冲区
+// 构建常量缓冲区
 void FShadowMapRenderTarget::BuildShadowConstantBuffer()
 {
 	D3D12_SHADER_RESOURCE_VIEW_DESC SRVDesc = {};

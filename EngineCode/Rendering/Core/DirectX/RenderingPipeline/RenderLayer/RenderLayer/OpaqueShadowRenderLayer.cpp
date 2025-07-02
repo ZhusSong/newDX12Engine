@@ -80,6 +80,7 @@ void FOpaqueShadowRenderLayer::BuildPSO()
 	GPSDesc.RTVFormats[0] = DXGI_FORMAT_UNKNOWN;
 	GPSDesc.NumRenderTargets = 0;
 
+	// 构建正交Shadow
 	DirectXPipelineState->Build(OrthogonalShadow);
 
 	// 透视阴影单独设置

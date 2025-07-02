@@ -349,8 +349,20 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
             float4 Diffuse = Material.BaseColor;
             // 高光
 			Specular = saturate(Specular);
-            // 阴影，此处可使用ShadowFunction中多种算法进行阴影采样
-            float ShadowFactor = GetShadowFactor_PCF_Sample9(MVOut.WorldPosition, SceneLights[i].ShadowTransform);
+
+            float ShadowFactor = 1.f;
+            if (SceneLights[i].LightType == 1)
+            {
+                // 点光源阴影
+                ShadowFactor = ProcessingOmnidirectionalSampleCmpLevelZeroCubeMapShadow(MVOut.WorldPosition, SceneLights[i].Position);
+            }
+            else
+            { 
+                // 阴影，此处可使用ShadowFunction中多种算法进行阴影采样
+				//float ShadowFactor = GetShadowFactor(MVOut.WorldPosition, SceneLights[i].ShadowTransform);
+				//float ShadowFactor = GetShadowFactor_PCF_Sample4(MVOut.WorldPosition, SceneLights[i].ShadowTransform);
+                ShadowFactor = GetShadowFactor_PCF_Sample9(MVOut.WorldPosition, SceneLights[i].ShadowTransform);
+            }
 			// 限制最终光照颜色为0-1
             FinalColor += ShadowFactor * (saturate((Diffuse + Specular) * LightStrength * DotValue));
         }

@@ -25,6 +25,8 @@ bool FRenderingPipeline::FindMeshRenderingDataByHash(const size_t& InHash, FRend
 
 void FRenderingPipeline::UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo)
 {
+	GeometryMap.DynamicShadowCubeMap.UpdateCalculations(DeltaTime, ViewportInfo);
+
 	DynamicCubeMap.UpdateCalculations(DeltaTime, ViewportInfo);
 	GeometryMap.UpdateCalculations(DeltaTime, ViewportInfo);
 	RenderLayer.UpdateCalculations(DeltaTime, ViewportInfo);
@@ -54,8 +56,14 @@ void FRenderingPipeline::BuildPipeline()
 		&DirectXPipelineState,
 		&RenderLayer);
 
-	// 构建阴影map
+	// 构建普通阴影map
 	GeometryMap.DynamicShadowMap.Init(
+		&GeometryMap,
+		&DirectXPipelineState,
+		&RenderLayer);
+
+	// 构建Cubemap阴影
+	GeometryMap.DynamicShadowCubeMap.Init(
 		&GeometryMap,
 		&DirectXPipelineState,
 		&RenderLayer);
@@ -124,6 +132,9 @@ void FRenderingPipeline::PreDraw(float DeltaTime)
 
 	// 渲染灯光材质贴图等
 	GeometryMap.Draw(DeltaTime);
+
+	//渲染shadowCubeMap
+	GeometryMap.DynamicShadowCubeMap.PreDraw(DeltaTime);
 
 	//渲染阴影
 	GeometryMap.DrawShadow(DeltaTime);
