@@ -89,8 +89,10 @@
     <ClCompile Include="EngineCode\Rendering\Core\Buffer\ConstructBuffer.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\ConstantBuffer\ConstantBufferViews.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DescriptorHeap\DirectXDescriptorHeap.cpp" />
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\Core\DynamicCubeMap.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\Core\DynamicMap.cpp" />
-    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\CubeMap\DynamicCubeMap.cpp" />
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\CubeMap\DynamicReflectionCubeMap.cpp" />
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\ShadowMap\DynamicShadowCubeMap.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\ShadowMap\DynamicShadowMap.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\Geometry\GeometryMap.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\Geometry\RenderingData.cpp" />
@@ -232,8 +234,10 @@
     <ClInclude Include="EngineCode\Rendering\Core\Buffer\ConstructBuffer.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\ConstantBuffer\ConstantBufferViews.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DescriptorHeap\DirectXDescriptorHeap.h" />
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\Core\DynamicCubeMap.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\Core\DynamicMap.h" />
-    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\CubeMap\DynamicCubeMap.h" />
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\CubeMap\DynamicReflectionCubeMap.h" />
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\ShadowMap\DynamicShadowCubeMap.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\ShadowMap\DynamicShadowMap.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\Geometry\GeometryMap.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\Geometry\RenderingData.h" />
@@ -347,6 +351,11 @@
     <ClInclude Include="Shader\PBR.hlsl">
       <FileType>Document</FileType>
     </ClInclude>
+    <FxCompile Include="Shader\OmnidirectionalShadow.hlsl">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VertexShaderMain</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.1</ShaderModel>
+    </FxCompile>
     <FxCompile Include="Shader\Shadow.hlsl">
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VertexShaderMain</EntryPointName>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.1</ShaderModel>

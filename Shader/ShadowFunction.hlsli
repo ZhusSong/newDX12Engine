@@ -86,7 +86,8 @@ float GetShadowFactor_PCF_Sample9(float4 InWorldPosition, float4x4 InShadowMatri
 			ShadowDepth).r;
     }
 
-    return R / 9.f;
+    // 添加max限制，以增加阴影细节
+    return max(R / 9.f,0.5f);
 }
 
 #endif

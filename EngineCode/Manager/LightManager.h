@@ -8,6 +8,8 @@ class CLightManager :public CCoreMinimalObject
 public:
 	void AddLight(CLightComponent* InLightStance);
 
+	const vector<CLightComponent*>& GetLights() const { return Lights; }
+
 protected:
 	vector<CLightComponent*> Lights;
 };

@@ -66,6 +66,14 @@ void FRenderLayerManager::ResetPSO(int InLayer)
 		InRenderLayer->ResetPSO();
 	}
 }
+
+void FRenderLayerManager::ResetPSO(int InLayer, EPipelineState InPipelineState)
+{
+	if (auto InRenderLayer = FindByRenderLayer(InLayer))
+	{
+		InRenderLayer->ResetPSO(InPipelineState);
+	}
+}
 void FRenderLayerManager::DrawMesh(float DeltaTime, int InLayer, ERenderingConditions RC)
 {
 	if (auto InRenderLayer = FindByRenderLayer(InLayer))

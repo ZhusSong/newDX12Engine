@@ -8,45 +8,52 @@ FDirectXRootSignature::FDirectXRootSignature()
 void FDirectXRootSignature::BuildRootSignature(UINT InTextureNum)
 {
     // 构建根签名
-    CD3DX12_ROOT_PARAMETER RootParam[8];
+    CD3DX12_ROOT_PARAMETER RootParam[9];
 
     Engine_Log("Texture number is %d", InTextureNum);
 
-    //texture描述表
+    // texture描述表(包括cubemap)
     CD3DX12_DESCRIPTOR_RANGE DescriptorRangeTextureSRV;
     DescriptorRangeTextureSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV,
-        InTextureNum, 2);
+        InTextureNum, 3);
 
-    //静态CubeMap
+    // 静态CubeMap
     CD3DX12_DESCRIPTOR_RANGE DescriptorRangeCubeMapSRV;
     DescriptorRangeCubeMapSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0);
 
-    //ShadowMap
+    // ShadowMap
     CD3DX12_DESCRIPTOR_RANGE DescriptorShadowMapSRV;
-    DescriptorShadowMapSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 1);
+    DescriptorShadowMapSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 2);
+
+    // ShadowCubeMap
+    CD3DX12_DESCRIPTOR_RANGE DescriptorShadowCubeMapSRV;
+    DescriptorShadowCubeMapSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 1);
 
     RootParam[0].InitAsConstantBufferView(0);//对象
     RootParam[1].InitAsConstantBufferView(1);//视口
     RootParam[2].InitAsConstantBufferView(2);//灯光
     RootParam[3].InitAsConstantBufferView(3);//雾
 
-    //t
+    // t
     RootParam[4].InitAsShaderResourceView(0, 1);//材质
 
-    //2D贴图
+    // 2D贴图
     RootParam[5].InitAsDescriptorTable(1, &DescriptorRangeTextureSRV, D3D12_SHADER_VISIBILITY_PIXEL);
 
-    //CubeMap贴图
+    // CubeMap贴图
     RootParam[6].InitAsDescriptorTable(1, &DescriptorRangeCubeMapSRV, D3D12_SHADER_VISIBILITY_PIXEL);
 
-    //ShadowMap
+    // ShadowMap
     RootParam[7].InitAsDescriptorTable(1, &DescriptorShadowMapSRV, D3D12_SHADER_VISIBILITY_PIXEL);
+    
+    // ShadowCubeMap
+    RootParam[8].InitAsDescriptorTable(1, &DescriptorShadowCubeMapSRV, D3D12_SHADER_VISIBILITY_PIXEL);
 
     //构建静态采样
     StaticSamplerObject.BuildStaticSampler();
 
     CD3DX12_ROOT_SIGNATURE_DESC RootSignatureDesc(
-        8,
+        9,
         RootParam,
         StaticSamplerObject.GetSize(),//采样数量
         StaticSamplerObject.GetData(),//采样PTR

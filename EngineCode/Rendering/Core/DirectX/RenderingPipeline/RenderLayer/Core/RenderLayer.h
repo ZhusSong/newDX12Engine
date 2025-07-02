@@ -41,6 +41,8 @@ public:
 
 	//单独设置PSO
 	virtual void ResetPSO();
+	// 通过流水线状态设置PSO
+	virtual void ResetPSO(EPipelineState InPipelineState);
 
 	//渲染 不包含设置PSO
 	virtual void DrawMesh(float DeltaTime, ERenderingConditions RC = ERenderingConditions::RC_None);

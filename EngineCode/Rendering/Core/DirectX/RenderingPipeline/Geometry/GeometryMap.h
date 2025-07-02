@@ -52,7 +52,7 @@ protected:
 struct FGeometryMap :public IDirectXDeviceInterface_Struct
 {
 	friend class FRenderLayer;
-	friend class FDynamicCubeMap;
+	friend class FDynamicReflectionCubeMap;
 	friend class FDynamicShadowMap;
 	friend class FRenderingPipeline;
 
@@ -136,6 +136,18 @@ struct FGeometryMap :public IDirectXDeviceInterface_Struct
 	//构建我们的视口常量缓冲区视图
 	void BuildViewportConstantBufferView(UINT InViewportOffset = 0);
 
+public:
+	// ShadowCubeMap相关
+	// 获取动态反射模型组件
+	UINT GetDynamicReflectionMeshComponentsSize();
+
+	CMeshComponent* GetDynamicReflectionMeshComponents(int Index);
+
+	// 获取视口常量缓冲区size
+	UINT GetViewportConstantBufferByteSize();
+
+	// 获取GPU访问资源时使用的虚拟地址
+	D3D12_GPU_VIRTUAL_ADDRESS ViewportGPUVirtualAddress();
 
 public:
 	bool IsStartUPFog();

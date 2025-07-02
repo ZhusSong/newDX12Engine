@@ -30,9 +30,17 @@ public:
 	void SetViewportPosition(const fvector_3d& InPosition);
 	void SetViewportRotation(const fvector_3d& InRotation);
 	void BuildViewMatrix(float DeltaTime);
+
+	// 构建平行光阴影矩阵
 	void BuildParallelLightMatrix(
 		const fvector_3d& InDirection,
 		const fvector_3d& InTargetPosition,
+		float InRadius = 100.f);
+
+	// 构建聚光灯阴影矩阵
+	void BuildSpotLightMatrix(
+		const fvector_3d& InDirection,
+		const fvector_3d& InPosition,
 		float InRadius = 100.f);
 public:
 	virtual void BuildViewport(const fvector_3d& InCenterPoint);

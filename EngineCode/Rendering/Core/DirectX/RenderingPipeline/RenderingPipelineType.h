@@ -8,7 +8,9 @@ enum EPipelineState
 	Reflector,              //反射
 	GrayModel = 4,			//实体
 	Wireframe = 5,			//线框
-	Shadow = 6,
+	OrthogonalShadow = 6,   //正交阴影(平行光)
+	PerspectiveShadow = 7,  //透视阴影(聚光灯)
+	OmnidirectionalShadow = 8,  //万向阴影(点光)
 };
 
 // 渲染条件

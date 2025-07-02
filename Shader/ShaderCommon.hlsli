@@ -24,11 +24,13 @@ SamplerState AnisotropicSampler : register(s1);
 
 SamplerComparisonState ShadowSampler : register(s2);
 
-Texture2D SimpleShadowMap : register(t1);
+TextureCube SimpleCubeMap : register(t0); //根签名位置6
 
-Texture2D SimpleTexture2DMap[TEXTURE2D_MAP_NUM] : register(t2);
+TextureCube SimpleShadowCubeMap : register(t1); //点光源 ShadowCubemap 根签名位置8
+Texture2D SimpleShadowMap : register(t2); // 聚光灯和平行光shadowmap 根签名位置7
 
-TextureCube SimpleCubeMap : register(t0);
+Texture2D SimpleTexture2DMap[TEXTURE2D_MAP_NUM] : register(t3);
+
 
 
 cbuffer ObjectConstBuffer : register(b0) 

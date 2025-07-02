@@ -11,6 +11,10 @@ public:
 	FCubeMapRenderTarget();
 
 	void Init(UINT InWidth, UINT InHeight, DXGI_FORMAT InFormat);
+public:
+	// 获取cpu渲染目标视图
+	CD3DX12_CPU_DESCRIPTOR_HANDLE& GetCPURenderTargetView(int Index);
+
 
 private:
 	virtual void BuildRenderTargetMap();

@@ -31,6 +31,8 @@ public:
 	virtual void Sort();
 	// 单独设置PSO
 	virtual void ResetPSO(int InLayer);
+	// 通过流水线状态设置PSO
+	virtual void ResetPSO(int InLayer, EPipelineState InPipelineState);
 
 	// 渲染 不包含设置PSO
 	virtual void DrawMesh(float DeltaTime, int InLayer, ERenderingConditions RC = ERenderingConditions::RC_None);

@@ -93,19 +93,20 @@ int CDirectXRenderingEngine::PostInit()
 	ANALYSIS_HRESULT(GraphicsCommandList->Reset(CommandAllocator.Get(), NULL));
 	{
 		// 创建灯光
+		
 		//  聚光灯
-		//if (GSpotLight* SpotLight = World->CreateActorObject<GSpotLight>())
-		//{
-		//	SpotLight->SetPosition(XMFLOAT3(0.f, 10.f, 10.f));
-		//	SpotLight->SetRotation(fvector_3d(0.f, 0.f, 0.f));
+		if (GSpotLight* SpotLight = World->CreateActorObject<GSpotLight>())
+		{
+			SpotLight->SetPosition(XMFLOAT3(0.f, -3.f, -10.f));
+			SpotLight->SetRotation(fvector_3d(5.f, 180.f, 0.f));
 
-		//	SpotLight->SetLightIntensity(fvector_3d(1.3f, 1.3f, 1.3f));
-		//	//SpotLight->SetStartAttenuation(1.f);
-		//	SpotLight->SetEndAttenuation(130.f);
+			SpotLight->SetLightIntensity(fvector_3d(1.3f, 1.3f, 1.3f));
+			//SpotLight->SetStartAttenuation(1.f);
+			SpotLight->SetEndAttenuation(130.f);
 
-		//	SpotLight->SetConicalInnerCorner(40.f);
-		//	SpotLight->SetConicalOuterCorner(60.f);
-		//}
+			SpotLight->SetConicalInnerCorner(40.f);
+			SpotLight->SetConicalOuterCorner(60.f);
+		}
 		//// 点光源
 		//if (GPointLight* PointLight = World->CreateActorObject<GPointLight>())
 		//{
@@ -116,13 +117,13 @@ int CDirectXRenderingEngine::PostInit()
 		//	PointLight->SetEndAttenuation(100.f);
 		//}
 		//// 平行光
-		if (GParallelLight* ParallelLight = World->CreateActorObject<GParallelLight>())
+		/*if (GParallelLight* ParallelLight = World->CreateActorObject<GParallelLight>())
 		{
 			ParallelLight->SetPosition(XMFLOAT3(10.f, -10.f, 30.f));
 			ParallelLight->SetRotation(fvector_3d(0.f, 0.f, 0.f));
 
 			ParallelLight->SetLightIntensity(fvector_3d(1.1f, 1.1f, 1.1f));
-		}
+		}*/
 	
 
 		//甜甜圈
@@ -639,7 +640,7 @@ int CDirectXRenderingEngine::PostInit()
 		if (GPlaneMesh* InPlaneMesh = World->CreateActorObject<GPlaneMesh>())
 		{
 			InPlaneMesh->CreateMesh(7.f, 7.f, 2, 2);
-			InPlaneMesh->SetPosition(XMFLOAT3(0.f, 0.f, 40.f));
+			InPlaneMesh->SetPosition(XMFLOAT3(0.f, 0.f, 60.f));
 			InPlaneMesh->SetRotation(fvector_3d(90.f, 0.f, 0.f));
 			if (CMaterial* InMaterial = (*InPlaneMesh->GetMaterials())[0])
 			{
@@ -652,8 +653,8 @@ int CDirectXRenderingEngine::PostInit()
 			string Path = "../newDX12Engine/Asset/SK_Mannequin.FBX";
 			CustomMesh->CreateMesh(Path);
 		
-			CustomMesh->SetPosition(XMFLOAT3(0.f, 0, -20.f));
-			CustomMesh->SetRotation(fvector_3d(0.f, 0.f, 0.f));
+			CustomMesh->SetPosition(XMFLOAT3(0.f, 0, 40.f));
+			CustomMesh->SetRotation(fvector_3d(0.f, 180.f, 0.f));
 			// 是否渲染ShadowMap
 			CustomMesh->SetCastShadow(false);
 			if (CMaterial* InMaterial = (*CustomMesh->GetMaterials())[0])
@@ -672,8 +673,8 @@ int CDirectXRenderingEngine::PostInit()
 		// 雾
 		if (GFog* Fog = World->CreateActorObject<GFog>())
 		{
-			Fog->SetFogColor(fvector_color(0.8f));
-			Fog->SetFogStart(50.f);
+			Fog->SetFogColor(fvector_color(0.7f, 0.7f, 0.9f, 1.f));
+			Fog->SetFogStart(10.f);
 			Fog->SetFogRange(500.f);
 
 			Fog->SetFogHeight(5000.f);
@@ -1054,7 +1055,8 @@ bool CDirectXRenderingEngine::InitDirect3D()
 	DSVDescriptorHeapDesc.NumDescriptors =
 		1 +			//本身深度
 		1+			//CubeMap深度
-		1;			//阴影深度
+		1+			//阴影深度
+		1;          //CubeMapShadow深度
 
 	DSVDescriptorHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
 	DSVDescriptorHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;

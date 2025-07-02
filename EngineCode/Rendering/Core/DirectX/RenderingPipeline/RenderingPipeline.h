@@ -6,7 +6,7 @@
 #include "RootSignature/DirectXRootSignature.h"
 #include "../../../../Core/Viewport/ViewportInfo.h"
 #include "RenderLayer/RenderLayerManager.h"
-#include "DynamicMap/CubeMap/DynamicCubeMap.h"
+#include "DynamicMap/CubeMap/DynamicReflectionCubeMap.h"
 
 class CMeshComponent;
 
@@ -42,5 +42,5 @@ protected:
 	// 几何图形
 	FGeometryMap GeometryMap;
 	// 动态cubemap
-	FDynamicCubeMap DynamicCubeMap;
+	FDynamicReflectionCubeMap DynamicCubeMap;
 };

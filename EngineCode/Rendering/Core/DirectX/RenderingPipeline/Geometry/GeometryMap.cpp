@@ -197,59 +197,91 @@ void FGeometryMap::UpdateLight(float DeltaTime, const FViewportInfo& ViewportInf
 
 			switch (InLightComponent->GetLightType())
 			{
-			case ELightType::DirectionalLight:
-			{
-				// 正交矩阵
-				XMFLOAT3 ForwardVector = InLightComponent->GetForwardVector();
-
-				DynamicShadowMap.BuildParallelLightMatrix(
-					EngineMath::ToVector3d(ForwardVector), fvector_3d(0.f), 70.f);
-
-				XMFLOAT4X4 ShadowViewMatrix;
-				XMFLOAT4X4 ShadowProjectMatrix;
-				DynamicShadowMap.GetViewportMatrix(ShadowViewMatrix, ShadowProjectMatrix);
-
-				XMMATRIX ShadowViewMatrixRTX = XMLoadFloat4x4(&ShadowViewMatrix);
-				XMMATRIX ShadowProjectMatrixRTX = XMLoadFloat4x4(&ShadowProjectMatrix);
-
-				// NDC [-1,1]; = >[0,1]
-				// 半兰伯特
-				XMMATRIX Transform =
+				case ELightType::DirectionalLight:
 				{
-					0.5f, 0.0f, 0.0f, 0.0f,
-					0.0f, -0.5f, 0.0f, 0.0f,
-					0.0f, 0.0f, 1.0f, 0.0f,
-					0.5f, 0.5f, 0.0f, 1.0f
-				};
+					// 正交矩阵
+					XMFLOAT3 ForwardVector = InLightComponent->GetForwardVector();
 
-				XMMATRIX ShadowViewProjectMatrixRTX =
-					ShadowViewMatrixRTX * ShadowProjectMatrixRTX * Transform;
+					DynamicShadowMap.BuildParallelLightMatrix(
+						EngineMath::ToVector3d(ForwardVector), fvector_3d(0.f), 70.f);
 
-				//存储Shadow变换信息
-				XMStoreFloat4x4(&LightConstantBuffer.SceneLights[i].ShadowTransform, XMMatrixTranspose(ShadowViewProjectMatrixRTX));
+					XMFLOAT4X4 ShadowViewMatrix;
+					XMFLOAT4X4 ShadowProjectMatrix;
+					DynamicShadowMap.GetViewportMatrix(ShadowViewMatrix, ShadowProjectMatrix);
 
-				break;
-			}
-			case ELightType::PointLight:
-			case ELightType::SpotLight:
-			{
-				if (CRangeLightComponent* InRangeLightComponent = dynamic_cast<CRangeLightComponent*>(InLightComponent))
-				{
-					LightConstantBuffer.SceneLights[i].StartAttenuation = InRangeLightComponent->GetStartAttenuation();
-					LightConstantBuffer.SceneLights[i].EndAttenuation = InRangeLightComponent->GetEndAttenuation();
-				}
+					XMMATRIX ShadowViewMatrixRTX = XMLoadFloat4x4(&ShadowViewMatrix);
+					XMMATRIX ShadowProjectMatrixRTX = XMLoadFloat4x4(&ShadowProjectMatrix);
 
-				if (InLightComponent->GetLightType() == ELightType::SpotLight)
-				{
-					if (CSpotLightComponent* InSpotLightComponent = dynamic_cast<CSpotLightComponent*>(InLightComponent))
+					// NDC [-1,1]; = >[0,1]
+					// 半兰伯特
+					XMMATRIX Transform =
 					{
-						LightConstantBuffer.SceneLights[i].ConicalInnerCorner = math_utils::angle_to_radian(InSpotLightComponent->GetConicalInnerCorner());
-						LightConstantBuffer.SceneLights[i].ConicalOuterCorner = math_utils::angle_to_radian(InSpotLightComponent->GetConicalOuterCorner());
-					}
-				}
+						0.5f, 0.0f, 0.0f, 0.0f,
+						0.0f, -0.5f, 0.0f, 0.0f,
+						0.0f, 0.0f, 1.0f, 0.0f,
+						0.5f, 0.5f, 0.0f, 1.0f
+					};
 
-				break;
-			}
+					XMMATRIX ShadowViewProjectMatrixRTX =
+						ShadowViewMatrixRTX * ShadowProjectMatrixRTX * Transform;
+
+					//存储Shadow变换信息
+					XMStoreFloat4x4(&LightConstantBuffer.SceneLights[i].ShadowTransform, XMMatrixTranspose(ShadowViewProjectMatrixRTX));
+
+					break;
+				}
+				case ELightType::PointLight:
+					break;
+				case ELightType::SpotLight:
+				{
+					if (CRangeLightComponent* InRangeLightComponent = dynamic_cast<CRangeLightComponent*>(InLightComponent))
+					{
+						LightConstantBuffer.SceneLights[i].StartAttenuation = InRangeLightComponent->GetStartAttenuation();
+						LightConstantBuffer.SceneLights[i].EndAttenuation = InRangeLightComponent->GetEndAttenuation();
+					}
+
+					if (InLightComponent->GetLightType() == ELightType::SpotLight)
+					{
+						if (CSpotLightComponent* InSpotLightComponent = dynamic_cast<CSpotLightComponent*>(InLightComponent))
+						{
+							LightConstantBuffer.SceneLights[i].ConicalInnerCorner = math_utils::angle_to_radian(InSpotLightComponent->GetConicalInnerCorner());
+							LightConstantBuffer.SceneLights[i].ConicalOuterCorner = math_utils::angle_to_radian(InSpotLightComponent->GetConicalOuterCorner());
+						}
+					}
+
+					XMFLOAT3 ForwardVector = InLightComponent->GetForwardVector();
+					XMFLOAT3 Position = InLightComponent->GetPosition();
+
+					DynamicShadowMap.BuildSpotLightMatrix(
+						EngineMath::ToVector3d(ForwardVector),
+						EngineMath::ToVector3d(Position),
+						370.f);
+
+					XMFLOAT4X4 ShadowViewMatrix;
+					XMFLOAT4X4 ShadowProjectMatrix;
+					DynamicShadowMap.GetViewportMatrix(ShadowViewMatrix, ShadowProjectMatrix);
+
+					XMMATRIX ShadowViewMatrixRTX = XMLoadFloat4x4(&ShadowViewMatrix);
+					XMMATRIX ShadowProjectMatrixRTX = XMLoadFloat4x4(&ShadowProjectMatrix);
+
+					//NDC [-1,1]; = >[0,1]
+					//半兰伯特思想
+					XMMATRIX Transform =
+					{
+						0.5f, 0.0f, 0.0f, 0.0f,
+						0.0f, -0.5f, 0.0f, 0.0f,
+						0.0f, 0.0f, 1.0f, 0.0f,
+						0.5f, 0.5f, 0.0f, 1.0f
+					};
+
+					XMMATRIX ShadowViewProjectMatrixRTX =
+						ShadowViewMatrixRTX * ShadowProjectMatrixRTX * Transform;
+
+					//存储Shadow变换信息
+					XMStoreFloat4x4(&LightConstantBuffer.SceneLights[i].ShadowTransform, XMMatrixTranspose(ShadowViewProjectMatrixRTX));
+
+					break;
+				}
 			}
 		}
 	}
@@ -494,9 +526,28 @@ void FGeometryMap::BuildViewportConstantBufferView(UINT InViewportOffset)
 		1 + //主视口 摄像机
 		GetDynamicReflectionViewportNum() + //这个是动态反射的视口
 		1 + //阴影视口
+		6 + //ShadowCubeMap(用于点光源阴影)
 		InViewportOffset);
+}
 
+UINT FGeometryMap::GetDynamicReflectionMeshComponentsSize()
+{
+	return DynamicReflectionMeshComponents.size();
+}
 
+CMeshComponent* FGeometryMap::GetDynamicReflectionMeshComponents(int Index)
+{
+	return DynamicReflectionMeshComponents[Index];
+}
+
+UINT FGeometryMap::GetViewportConstantBufferByteSize()
+{
+	return ViewportConstantBufferViews.GetConstantBufferByteSize();
+}
+
+D3D12_GPU_VIRTUAL_ADDRESS FGeometryMap::ViewportGPUVirtualAddress()
+{
+	return ViewportConstantBufferViews.GetBuffer()->GetGPUVirtualAddress();
 }
 
 bool FGeometryMap::IsStartUPFog()
