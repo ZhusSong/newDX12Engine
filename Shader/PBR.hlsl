@@ -34,14 +34,14 @@ float GSmith(float3 N, float3 V, float3 L, float Roughness)
     return SchlickGGX(NoV, K_Dir) * SchlickGGX(NoL, K_Dir);
 }
 
-//¼ä½Ó¹â
+//é—´æŽ¥å…‰
 float3 GetDirectLight(float HoL, float3 F0, float Roughness)
 {
     float F = exp2((-5.55473 * HoL - 6.98316) * HoL);
     return lerp(F, 1, F0);
 }
 
-//Ö±½Ó¹â
+//ç›´æŽ¥å…‰
 float3 GetIndirectLight(float NoV, float3 F0, float Roughness)
 {
     float F = exp2((-5.55473 * NoV - 6.98316) * NoV);

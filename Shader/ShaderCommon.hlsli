@@ -24,10 +24,10 @@ SamplerState AnisotropicSampler : register(s1);
 
 SamplerComparisonState ShadowSampler : register(s2);
 
-TextureCube SimpleCubeMap : register(t0); //¸ùÇ©ÃûÎ»ÖÃ6
+TextureCube SimpleCubeMap : register(t0); //æ ¹ç­¾åä½ç½®6
 
-TextureCube SimpleShadowCubeMap : register(t1); //µã¹âÔ´ ShadowCubemap ¸ùÇ©ÃûÎ»ÖÃ8
-Texture2D SimpleShadowMap : register(t2); // ¾Û¹âµÆºÍÆ½ĞĞ¹âshadowmap ¸ùÇ©ÃûÎ»ÖÃ7
+TextureCube SimpleShadowCubeMap : register(t1); //ç‚¹å…‰æº ShadowCubemap æ ¹ç­¾åä½ç½®8
+Texture2D SimpleShadowMap : register(t2); // èšå…‰ç¯å’Œå¹³è¡Œå…‰shadowmap æ ¹ç­¾åä½ç½®7
 
 Texture2D SimpleTexture2DMap[TEXTURE2D_MAP_NUM] : register(t3);
 

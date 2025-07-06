@@ -5,8 +5,11 @@
 #include "PipelineState/DirectXPipelineState.h"
 #include "RootSignature/DirectXRootSignature.h"
 #include "../../../../Core/Viewport/ViewportInfo.h"
+
 #include "RenderLayer/RenderLayerManager.h"
 #include "DynamicMap/CubeMap/DynamicReflectionCubeMap.h"
+
+#include "UI/IMGUIPipeline.h"
 
 class CMeshComponent;
 
@@ -43,4 +46,8 @@ protected:
 	FGeometryMap GeometryMap;
 	// 动态cubemap
 	FDynamicReflectionCubeMap DynamicCubeMap;
+
+	// UI
+	FIMGUIPipeline UIPipeline;
+
 };

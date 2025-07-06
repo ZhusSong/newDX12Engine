@@ -3,7 +3,7 @@
 
 #include "ShaderCommon.hlsli"
 
-// Ö±½Ó²ÉÑù ÓĞ¾â³İ
+// ç›´æ¥é‡‡æ · æœ‰é”¯é½¿
 float GetShadowFactor(float4 InWorldPosition, float4x4 InShadowMatrix)
 {
     float4 ShadowPointHome = mul(InWorldPosition, InShadowMatrix);
@@ -12,14 +12,14 @@ float GetShadowFactor(float4 InWorldPosition, float4x4 InShadowMatrix)
     return SimpleShadowMap.SampleCmpLevelZero(ShadowSampler, ShadowPointHome.xy, ShadowDepth);
 }
 
-// Ö±½Ó²ÉÑù ÓĞ¾â³İ ÓĞÍ¸ÊÓ
+// ç›´æ¥é‡‡æ · æœ‰é”¯é½¿ æœ‰é€è§†
 float GetShadowFactorByDirectSample(float4 InWorldPosition, float4x4 InShadowMatrix)
 {
     float4 ShadowPointHome = mul(InWorldPosition, InShadowMatrix);
     return SimpleShadowMap.Sample(TextureSampler, ShadowPointHome.xy).r;
 }
 
-// ËÄ¸öÑù±¾PCF²ÉÑù ÓĞÄ£ºıµÄ¾â³İ
+// å››ä¸ªæ ·æœ¬PCFé‡‡æ · æœ‰æ¨¡ç³Šçš„é”¯é½¿
 float GetShadowFactor_PCF_Sample4(float4 InWorldPosition, float4x4 InShadowMatrix)
 {
     uint Width = 0;
@@ -45,7 +45,7 @@ float GetShadowFactor_PCF_Sample4(float4 InWorldPosition, float4x4 InShadowMatri
     float R3 = ShadowDepth <= S3;
     float R4 = ShadowDepth <= S4;
 
-	// ×ªµ½ÎÆËØ¿Õ¼ä
+	// è½¬åˆ°çº¹ç´ ç©ºé—´
     float2 TexelsPosition = frac(Width * ShadowPointHome.xy);
 
     return lerp(
@@ -54,7 +54,7 @@ float GetShadowFactor_PCF_Sample4(float4 InWorldPosition, float4x4 InShadowMatri
 		TexelsPosition.y);
 }
 
-// ¾Å¸öµãµÄPCF²ÉÑù
+// ä¹ä¸ªç‚¹çš„PCFé‡‡æ ·
 float GetShadowFactor_PCF_Sample9(float4 InWorldPosition, float4x4 InShadowMatrix)
 {
     float4 ShadowPointHome = mul(InWorldPosition, InShadowMatrix);
@@ -86,7 +86,7 @@ float GetShadowFactor_PCF_Sample9(float4 InWorldPosition, float4x4 InShadowMatri
 			ShadowDepth).r;
     }
 
-    // Ìí¼ÓmaxÏŞÖÆ£¬ÒÔÔö¼ÓÒõÓ°Ï¸½Ú
+    // æ·»åŠ maxé™åˆ¶ï¼Œä»¥å¢åŠ é˜´å½±ç»†èŠ‚
     return max(R / 9.f,0.5f);
 }
 

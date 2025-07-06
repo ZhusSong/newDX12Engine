@@ -1,9 +1,19 @@
 ﻿#include "WindowsMessageProcessing.h"
 #include "../Component/Input/Input.h"
 #include <WindowsX.h>
+
+// 注册IMGUI消息队列
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
 // 操作窗口时，处理操作对应的消息句柄
 LRESULT CALLBACK EngineWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+	// 添加IMGUI消息队列
+	if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wParam, lParam))
+	{
+		return true;
+	}
+
 	// 消息队列
 	switch (msg)
 	{
