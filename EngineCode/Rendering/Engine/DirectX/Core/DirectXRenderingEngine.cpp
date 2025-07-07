@@ -744,7 +744,7 @@ int CDirectXRenderingEngine::PostInit()
 		}
 
 		// 雾
-		if (GFog* Fog = World->CreateActorObject<GFog>())
+		/*if (GFog* Fog = World->CreateActorObject<GFog>())
 		{
 			Fog->SetFogColor(fvector_color(0.7f, 0.7f, 0.9f, 1.f));
 			Fog->SetFogStart(10.f);
@@ -753,7 +753,7 @@ int CDirectXRenderingEngine::PostInit()
 			Fog->SetFogHeight(5000.f);
 			Fog->SetFogTransparentCoefficient(0.00f);
 
-		}
+		}*/
 
 
 		//// 天空盒
@@ -1228,7 +1228,7 @@ void CDirectXRenderingEngine::PostInitDirect3D()
 	ViewprotInfo.MinDepth = 0.f;
 	ViewprotInfo.MaxDepth = 1.f;
 
-	//矩形
+	// 矩形
 	ViewprotRect.left = 0;
 	ViewprotRect.top = 0;
 	ViewprotRect.right = FEngineRenderConfig::GetRenderConfig()->ScrrenWidth;

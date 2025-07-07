@@ -28,8 +28,7 @@ void FOpaqueShadowRenderLayer::BuildShader()
 	//PixelShader.BuildShaders(L"../newDX12Engine/x64/Debug/Shader/VertexShader.hlsl", "PixelShaderMain", "ps_5_1", D3DShaderMacro.data());
 	VertexShader.BuildShaders(L"../newDX12Engine/Shader/Shadow.hlsl", "VertexShaderMain", "vs_5_1", D3DShaderMacro.data());
 	PixelShader.BuildShaders(L"../newDX12Engine/Shader/Shadow.hlsl", "PixelShaderMain", "ps_5_1", D3DShaderMacro.data());
-	/*VertexShader.BuildShaderByName(L"Shadow.hlsl", "VertexShaderMain", "vs_5_1", D3DShaderMacro.data());
-	PixelShader.BuildShaderByName(L"Shadow.hlsl", "PixelShaderMain", "ps_5_1", D3DShaderMacro.data());*/
+	
 	DirectXPipelineState->BindShader(VertexShader, PixelShader);
 
 	//输入布局

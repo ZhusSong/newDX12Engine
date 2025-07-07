@@ -148,11 +148,11 @@ void FRenderingPipeline::PreDraw(float DeltaTime)
 	//渲染阴影
 	GeometryMap.DrawShadow(DeltaTime);
 
-	// 动态反射
-	if (DynamicCubeMap.IsExitDynamicReflectionMesh())
-	{
-		DynamicCubeMap.PreDraw(DeltaTime);
-	}
+	//// 动态反射
+	//if (DynamicCubeMap.IsExitDynamicReflectionMesh())
+	//{
+	//	DynamicCubeMap.PreDraw(DeltaTime);
+	//}
 
 	RenderLayer.PreDraw(DeltaTime);
 }
@@ -162,8 +162,8 @@ void FRenderingPipeline::Draw(float DeltaTime)
 	// 主视口
 	GeometryMap.DrawViewport(DeltaTime);
 
-	// 覆盖原先被修改的CubeMap
-	GeometryMap.DrawCubeMapTexture(DeltaTime);
+	//// 覆盖原先被修改的CubeMap
+	//GeometryMap.DrawCubeMapTexture(DeltaTime);
 
 	// 各类层级
 	RenderLayer.Draw(RENDERLAYER_BACKGROUND, DeltaTime);
