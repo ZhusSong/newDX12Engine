@@ -1,4 +1,4 @@
-﻿/*
+/*
 uSynergy client -- Implementation for the embedded Synergy client library
   version 1.0.0, July 7th, 2012
 

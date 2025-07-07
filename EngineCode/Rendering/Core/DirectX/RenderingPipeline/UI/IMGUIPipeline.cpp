@@ -1,5 +1,10 @@
 ﻿#include "IMGUIPipeline.h"
 
+// 是否使用编辑器引擎
+#if EDITOR_ENGINE
+#include "../../../../../../EditorEngine/EditorEngine.h"
+#endif // EDITOR_ENGINE
+
 FIMGUIPipeline::FIMGUIPipeline()
 {
 
@@ -33,6 +38,12 @@ void FIMGUIPipeline::Init(ID3D12DescriptorHeap* InHeap, UINT InOffset)
 		DXGI_FORMAT_R8G8B8A8_UNORM, InHeap,
 		CPUDescriptor,
 		GPUDescriptor);
+
+#if EDITOR_ENGINE
+	GetEditorEngine()->BuildEditor();
+#endif
+
+
 }
 
 void FIMGUIPipeline::Draw(float DeltaTime)
@@ -52,23 +63,17 @@ void FIMGUIPipeline::Draw(float DeltaTime)
 
 void FIMGUIPipeline::Exit()
 {
+#if EDITOR_ENGINE
+	GetEditorEngine()->ExitEditor();
+#endif
+
 	ImGui_ImplDX12_Shutdown();
 	ImGui_ImplWin32_Shutdown();
 }
 
 void FIMGUIPipeline::Tick(float DeltaTime)
 {
-	bool show_demo_window = true;
-	//ImGui::ShowDemoWindow(&show_demo_window);//Imgui自带学习案例
-
-	ImGui::Begin("Test");
-	//ImGui::Text("asdioakd asd madm askld asd alsd masd .");
-	//ImGui::SetWindowPos(ImVec2(0,0),ImGuiCond_Always);
-	//ImGui::SetWindowSize(ImVec2(ImGui::GetIO().DisplaySize.x / 2.f, ImGui::GetIO().DisplaySize.y / 2.f));
-
-	//ImGui::Checkbox("bHeight",&bClicked);
-	//ImGui::SliderFloat("Hello",&fff,0.f,1.f);
-	//ImGui::ColorEdit3("Color",(float*)&CCC);
-
-	ImGui::End();
+#if EDITOR_ENGINE
+	GetEditorEngine()->DrawEditor(DeltaTime);
+#endif
 }

@@ -1,4 +1,5 @@
 ﻿#pragma once
+#define CLOSE_DISABLE_DEBUG_INFOR 
 
 // 定义了需要加载的头文件
 
@@ -43,4 +44,7 @@ using namespace DirectX::PackedVector;
 
 extern class CEngine* Engine;
 
+// 是否使用第三方库(FBX)
 #define THIRD_PARTY_LIBRARY 0
+// 是否使用编辑器引擎
+#define EDITOR_ENGINE 1

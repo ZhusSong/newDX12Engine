@@ -42,6 +42,12 @@ protected:
 
 protected:
 	CDirectXRenderingEngine* RenderingEngine;
+
+	// 添加编辑器引擎
+#if EDITOR_ENGINE
+	class CEditorEngine* EditorEngine;
+#endif
+
 	CWorld* World;
 
 };

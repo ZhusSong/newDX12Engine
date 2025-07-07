@@ -1,4 +1,5 @@
-﻿#pragma once
+﻿// 25.7.7 李
+#pragma once
 #include "../Core/Engine.h"
 
 #if defined(_WIN32)
@@ -11,7 +12,7 @@ class CLightManager;
 class CMeshManager;
 class CWorld;
 
-// 提供渲染内容的接口
+// 提供渲染设备内容的接口
 class IDirectXDeviceInterface
 {
 public:
@@ -49,9 +50,13 @@ public:
 	CEngine* GetEngine();
 #endif
 
+	// 添加编辑器引擎
+#if EDITOR_ENGINE
+	class CEditorEngine* GetEditorEngine();
+#endif // 0
 };
 
-// 提供接口的结构体
+// 提供渲染设备接口的结构体
 struct IDirectXDeviceInterface_Struct
 {
 public:
@@ -84,6 +89,10 @@ public:
 #else
 	CEngine* GetEngine();
 #endif
+
+#if EDITOR_ENGINE
+	class CEditorEngine* GetEditorEngine();
+#endif // 0
 
 private:
 	// 创建接口的实例

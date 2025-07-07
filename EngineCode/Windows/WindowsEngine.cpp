@@ -15,11 +15,19 @@
 
 #include "../Rendering/Engine/DirectX/DirectX12RenderingEngine.h"
 
+#if EDITOR_ENGINE
+#include "../../EditorEngine/EditorEngine.h"
+#endif
+
+
 #if defined(_WIN32)
 #include "WindowsMessageProcessing.h"
 
 CWindowsEngine::CWindowsEngine()
 	:RenderingEngine(new CDirectX12RenderingEngine())
+#if EDITOR_ENGINE
+	, EditorEngine(new CEditorEngine())
+#endif // 0
 {
 
 }

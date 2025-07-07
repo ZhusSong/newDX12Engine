@@ -439,10 +439,10 @@ void FGeometryMap::BuildDescriptorHeap()
 	//+1摄像机
 	DescriptorHeap.Build(
 		GetDrawTexture2DResourcesNumber() + //Texture2D
-		GetDrawCubeMapResourcesNumber() + //静态Cube贴图
+		GetDrawCubeMapResourcesNumber() + //静态Cube贴图(天空球)
 		1 + //动态Cube贴图
-		1 + //Shadow
-		1 +//ShadowCubeMap
+		1 + //Shadow   平行光/聚光灯
+		1 +//ShadowCubeMap  //点光源
 		1);//UI
 }
 
