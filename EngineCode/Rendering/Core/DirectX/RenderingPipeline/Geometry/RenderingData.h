@@ -3,9 +3,12 @@
 #include "../../../RenderingResourcesUpdate.h"
 
 class CMeshComponent;
+struct FMeshRenderingData;
 
 // 渲染所需数据结构体
-struct FRenderingData :public IDirectXDeviceInterface_Struct
+struct FRenderingData
+	:public IDirectXDeviceInterface_Struct
+	, public std::enable_shared_from_this<FRenderingData>
 {
 public:
 	FRenderingData();
@@ -39,5 +42,7 @@ public:
 	XMFLOAT4X4 TextureTransform;
 
 	CMeshComponent* Mesh;
+
+	FMeshRenderingData* MeshRenderingData;
 
 };

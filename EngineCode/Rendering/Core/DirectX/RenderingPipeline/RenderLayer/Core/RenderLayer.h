@@ -28,7 +28,7 @@ public:
 	virtual void Draw(float DeltaTime);
 	virtual void PostDraw(float DeltaTime);
 
-	virtual void DrawObject(float DeltaTime, const FRenderingData& InRenderingData, ERenderingConditions RC = ERenderingConditions::RC_None);
+	virtual void DrawObject(float DeltaTime, std::weak_ptr<FRenderingData>& InWeakRenderingData, ERenderingConditions RC = ERenderingConditions::RC_None);
 	virtual void FindObjectDraw(float DeltaTime, const CMeshComponent* InKey);
 
 	virtual void BuildPSO();
@@ -60,7 +60,7 @@ protected:
 	FShader PixelShader;
 	std::vector<D3D12_INPUT_ELEMENT_DESC> InputElementDesc;
 
-	std::vector<FRenderingData> RenderDatas;
+	std::vector<std::weak_ptr<FRenderingData>> RenderDatas;
 
 	FGeometryMap* GeometryMap;
 	FDirectXPipelineState* DirectXPipelineState;

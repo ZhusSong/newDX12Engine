@@ -40,6 +40,7 @@ void FDynamicReflectionCubeMap::UpdateCalculations(float DeltaTime, const FViewp
 	}
 }
 
+
 void FDynamicReflectionCubeMap::Init(
 	FGeometryMap* InGeometryMap,
 	FDirectXPipelineState* InDirectXPipelineState,
@@ -181,18 +182,20 @@ void FDynamicReflectionCubeMap::BuildRenderTargetSRV()
 	auto CPUSRVDesHeapStart = GeometryMap->GetHeap()->GetCPUDescriptorHandleForHeapStart();
 	auto GPUSRVDesHeapStart = GeometryMap->GetHeap()->GetGPUDescriptorHandleForHeapStart();
 
+	int InOffset =
+		GeometryMap->GetDrawTexture2DResourcesNumber() +
+		GeometryMap->GetDrawCubeMapResourcesNumber();
+
 	if (FCubeMapRenderTarget* InRenderTarget = dynamic_cast<FCubeMapRenderTarget*>(RenderTarget.get()))
 	{
 		InRenderTarget->GetCPUSRVOffset() =
 			CD3DX12_CPU_DESCRIPTOR_HANDLE(CPUSRVDesHeapStart,
-				GeometryMap->GetDrawTexture2DResourcesNumber() +
-				GeometryMap->GetDrawCubeMapResourcesNumber(),
+				InOffset,
 				CBVDescriptorSize);
 
 		InRenderTarget->GetGPUSRVOffset() =
 			CD3DX12_GPU_DESCRIPTOR_HANDLE(GPUSRVDesHeapStart,
-				GeometryMap->GetDrawTexture2DResourcesNumber() +
-				GeometryMap->GetDrawCubeMapResourcesNumber(),
+				InOffset,
 				CBVDescriptorSize);
 	}
 }

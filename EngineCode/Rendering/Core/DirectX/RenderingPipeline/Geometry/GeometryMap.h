@@ -22,9 +22,10 @@ struct FGeometry :public IDirectXDeviceInterface_Struct
 
 	// 通过hash值构建模型
 	void BuildMesh(const size_t InMeshHash, CMeshComponent* InMesh, const FMeshRenderingData& MeshData, int InKey);
-	void DuplicateMesh(CMeshComponent* InMesh, const FRenderingData& MeshData, int InKey);
-	bool FindMeshRenderingDataByHash(const size_t& InHash, FRenderingData& MeshData, int InRenderLayerIndex = -1);
+	void DuplicateMesh(CMeshComponent* InMesh, std::shared_ptr<FRenderingData>& MeshData, int InKey);
+	bool FindMeshRenderingDataByHash(const size_t& InHash, std::shared_ptr<FRenderingData>& MeshData, int InRenderLayerIndex = -1);
 
+	//构建模型
 	void Build();
 
 	UINT GetDrawObjectNumber() const;
@@ -42,12 +43,17 @@ protected:
 	ComPtr<ID3D12Resource> VertexBufferTmpPtr;
 	ComPtr<ID3D12Resource> IndexBufferTmpPtr;
 
+	// 渲染数据
 	FMeshRenderingData MeshRenderingData;
 
-	// 渲染数据描述列表
-	//vector<FRenderingData> DescribeMeshRenderingData;
-};
+protected:
+	// 渲染池单例
+	static map<size_t, std::shared_ptr<FRenderingData>> UniqueRenderingDatas;
 
+public:
+	// 实际使用的渲染池 里面会有重复的 key (size_t)
+	static vector<std::shared_ptr<FRenderingData>> RenderingDatas;
+};
 
 //提供渲染内容的接口
 struct FGeometryMap :public IDirectXDeviceInterface_Struct
@@ -89,9 +95,8 @@ struct FGeometryMap :public IDirectXDeviceInterface_Struct
 	void BuildShadow();
 
 	void BuildMesh(const size_t InMeshHash, CMeshComponent* InMesh, const FMeshRenderingData& MeshData);
-	void DuplicateMesh(CMeshComponent* InMesh, const FRenderingData& MeshData);
-
-	bool FindMeshRenderingDataByHash(const size_t& InHash, FRenderingData& MeshData, int InRenderLayerIndex = -1);
+	void DuplicateMesh(CMeshComponent* InMesh, std::shared_ptr<FRenderingData>& MeshData);
+	bool FindMeshRenderingDataByHash(const size_t& InHash, std::shared_ptr<FRenderingData>& MeshData, int InRenderLayerIndex = -1);
 
 	// 读取Texture
 	void LoadTexture();

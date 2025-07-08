@@ -52,6 +52,7 @@ void FDynamicShadowCubeMap::UpdateCalculations(float DeltaTime, const FViewportI
 	}
 }
 
+
 void FDynamicShadowCubeMap::Init(
 	FGeometryMap* InGeometryMap,
 	FDirectXPipelineState* InDirectXPipelineState,
@@ -70,7 +71,7 @@ void FDynamicShadowCubeMap::PreDraw(float DeltaTime)
 			CLightComponent* Tmp = GetLightManager()->GetLights()[j];
 			if (Tmp->GetLightType() == ELightType::PointLight)
 			{
-				// 指向哪个资源 转换其状态
+				// 转换资源状态
 				CD3DX12_RESOURCE_BARRIER ResourceBarrierPresent = CD3DX12_RESOURCE_BARRIER::Transition(
 					InRenderTarget->GetRenderTarget(),
 					D3D12_RESOURCE_STATE_GENERIC_READ, D3D12_RESOURCE_STATE_RENDER_TARGET);
@@ -130,9 +131,7 @@ void FDynamicShadowCubeMap::PreDraw(float DeltaTime)
 
 				GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrierPresentRenderTarget);
 
-				// 更新CubeMap
-				GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(6, InRenderTarget->GetGPUSRVOffset());
-
+			
 				// 绘制到ShadowCubeMap
 				GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(8, InRenderTarget->GetGPUSRVOffset());
 
@@ -208,7 +207,6 @@ void FDynamicShadowCubeMap::BuildRenderTargetSRV()
 				CBVDescriptorSize);
 	}
 }
-
 FDynamicShadowCubeMap::FTmpViewportCapture::FTmpViewportCapture(const fvector_3d& InCenterPoint)
 {
 	BuildViewportCapture(InCenterPoint);

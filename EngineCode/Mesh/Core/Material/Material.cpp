@@ -13,6 +13,7 @@ CMaterial::CMaterial()
 	, MaterialTransform(EngineMath::IdentityMatrix4x4())
 	, Transparency(1.f)
 	, bDynamicReflection(false)
+	, Refractive(1.1f)
 {
 }
 

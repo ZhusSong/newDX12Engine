@@ -371,6 +371,12 @@
     <Filter Include="EditorEngine\Core">
       <UniqueIdentifier>{a032bb4d-151d-46fb-a11e-5779e49ade72}</UniqueIdentifier>
     </Filter>
+    <Filter Include="EngineCode\Library">
+      <UniqueIdentifier>{006bafab-5f8e-42dc-9bb7-5d7b9abaf2aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Collision">
+      <UniqueIdentifier>{d4b4a213-ca51-42f1-bfc8-2c03daf4f3dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="simple_library\private\simple_math\transformation\matrix\matrix_2x2.cpp">
@@ -816,6 +822,15 @@
     </ClCompile>
     <ClCompile Include="EditorEngine\LogEditor\LogObject\LogSystem.cpp">
       <Filter>EditorEngine\LogEditor\LogObject</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\EngineType.cpp">
+      <Filter>EngineCode</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Library\RaycastSystemLibrary.cpp">
+      <Filter>EngineCode\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Collision\CollisionSceneQuery.cpp">
+      <Filter>EngineCode\Collision</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1364,6 +1379,15 @@
     </ClInclude>
     <ClInclude Include="EditorEngine\Core\EditorBase.h">
       <Filter>EditorEngine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\EngineType.h">
+      <Filter>EngineCode</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Library\RaycastSystemLibrary.h">
+      <Filter>EngineCode\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Collision\CollisionSceneQuery.h">
+      <Filter>EngineCode\Collision</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

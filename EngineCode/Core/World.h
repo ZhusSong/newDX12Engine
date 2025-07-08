@@ -3,6 +3,7 @@
 
 #include "CoreObject/CoreMinimalObject.h"
 #include "../CodeReflection/CodeReflectionMacroTag.h"
+#include "../EngineType.h"
 
 struct FInputKey;
 class CTransformComponent;
@@ -25,6 +26,9 @@ public:
 
 		return InArray;
 	}
+public:
+	// 射线检测
+	bool LineTraceBySingle(FCollisionResult& OutResult, const fvector_3d& InStart, const fvector_3d& InEnd);
 
 
 protected:

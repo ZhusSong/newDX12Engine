@@ -24,24 +24,27 @@ void FDynamicShadowMap::UpdateCalculations(float DeltaTime, const FViewportInfo&
 	Super::UpdateCalculations(DeltaTime, ViewportInfo);
 
 	//更新视口
-	for (size_t i = 0; i < GetLightManager()->GetLights().size(); i++)
+	if (ShadowViewport)
 	{
-		if (CLightComponent* InLightComponent = GetLightManager()->GetLights()[i])
+		for (size_t i = 0; i < GetLightManager()->GetLights().size(); i++)
 		{
-			FViewportInfo ShadowViewportInfo;
-			GetViewportMatrix(ShadowViewportInfo.ViewMatrix, ShadowViewportInfo.ProjectMatrix);
-			ShadowViewportInfo.ViewPosition =
-				XMFLOAT4(
-					ShadowViewport->GetPosition().x,
-					ShadowViewport->GetPosition().y,
-					ShadowViewport->GetPosition().z,
-					1.f);
+			if (CLightComponent* InLightComponent = GetLightManager()->GetLights()[i])
+			{
+				FViewportInfo ShadowViewportInfo;
+				GetViewportMatrix(ShadowViewportInfo.ViewMatrix, ShadowViewportInfo.ProjectMatrix);
+				ShadowViewportInfo.ViewPosition =
+					XMFLOAT4(
+						ShadowViewport->GetPosition().x,
+						ShadowViewport->GetPosition().y,
+						ShadowViewport->GetPosition().z,
+						1.f);
 
-			GeometryMap->UpdateCalculationsViewport(
-				DeltaTime,
-				ShadowViewportInfo,
-				GeometryMap->GetDynamicReflectionViewportNum() + //动态反射的摄像机
-				1);//主视口
+				GeometryMap->UpdateCalculationsViewport(
+					DeltaTime,
+					ShadowViewportInfo,
+					GeometryMap->GetDynamicReflectionViewportNum() + //动态反射的摄像机
+					1);//主视口
+			}
 		}
 	}
 }
@@ -68,18 +71,16 @@ void FDynamicShadowMap::Draw(float DeltaTime)
 			if (FShadowMapRenderTarget* InRenderTarget = dynamic_cast<FShadowMapRenderTarget*>(RenderTarget.get()))
 			{
 				ELightType InLightType = InLightComponent->GetLightType();
-
 				if (InLightType != ELightType::PointLight)
 				{
-
 					CD3DX12_RESOURCE_BARRIER ResourceBarrierPresent = CD3DX12_RESOURCE_BARRIER::Transition(
 						RenderTarget->GetRenderTarget(),
 						D3D12_RESOURCE_STATE_GENERIC_READ, D3D12_RESOURCE_STATE_DEPTH_WRITE);
 
 					GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrierPresent);
 
-					//需要每帧执行
-					//绑定矩形框
+					// 需要每帧执行
+					// 绑定矩形框
 					auto RenderTargetViewport = InRenderTarget->GetViewport();
 					auto RenderTargetScissorRect = InRenderTarget->GetScissorRect();
 					GetGraphicsCommandList()->RSSetViewports(1, &RenderTargetViewport);
@@ -87,13 +88,13 @@ void FDynamicShadowMap::Draw(float DeltaTime)
 
 					UINT CBVSize = GeometryMap->ViewportConstantBufferViews.GetConstantBufferByteSize();
 
-					//清除深度模板缓冲区
+					// 清除深度模板缓冲区
 					GetGraphicsCommandList()->ClearDepthStencilView(
 						InRenderTarget->DSVDes,
 						D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL,
 						1.f, 0, 0, NULL);
 
-					//输出的合并阶段
+					// 输出的合并阶段
 					GetGraphicsCommandList()->OMSetRenderTargets(0,
 						nullptr,
 						false,
@@ -122,8 +123,6 @@ void FDynamicShadowMap::Draw(float DeltaTime)
 						break;
 					}
 
-					//
-					//OrthogonalShadow
 					RenderLayer->DrawMesh(DeltaTime, RENDERLAYER_OPAQUE, ERenderingConditions::RC_Shadow);
 					RenderLayer->DrawMesh(DeltaTime, RENDERLAYER_TRANSPARENT, ERenderingConditions::RC_Shadow);
 					RenderLayer->DrawMesh(DeltaTime, RENDERLAYER_OPAQUE_REFLECTOR, ERenderingConditions::RC_Shadow);
@@ -174,15 +173,15 @@ void FDynamicShadowMap::BuildParallelLightMatrix(
 	const fvector_3d& InTargetPosition,
 	float InRadius)
 {
-	//ShadowViewport
-	//构建ViewMatrix
+	// ShadowViewport
+	// 构建ViewMatrix
 	fvector_3d ViewPosition = (InDirection * -InRadius);
 	ShadowViewport->SetPosition(XMFLOAT3(ViewPosition.x, ViewPosition.y, ViewPosition.z));
 	ShadowViewport->FaceTarget(ViewPosition, InTargetPosition, fvector_3d(0.f, 1.f, 0.f));
 
 	BuildViewMatrix(0.3f);
 
-	//构建ProjMatrix
+	// 构建ProjMatrix
 	ShadowViewport->BuildOrthographicOffCenterLHMatrix(InRadius, InTargetPosition);
 }
 
@@ -224,18 +223,6 @@ void FDynamicShadowMap::BuildDepthStencilDescriptor()
 
 	if (FShadowMapRenderTarget* InRenderTarget = dynamic_cast<FShadowMapRenderTarget*>(RenderTarget.get()))
 	{
-		
-		////调试用 
-		//UINT dsvIndex = 2; // 1(主视口) + 1(CubeMap) = 2
-
-		//// 确保索引不超出堆大小
-		//if (dsvIndex >= GetDSVHeap()->GetDesc().NumDescriptors)
-		//{
-		//	Engine_Log("索引超出范围");
-		//	// 错误处理：索引超出范围
-		//	return;
-		//}
-
 
 		InRenderTarget->DSVDes = CD3DX12_CPU_DESCRIPTOR_HANDLE(
 			GetDSVHeap()->GetCPUDescriptorHandleForHeapStart(),
@@ -259,8 +246,8 @@ void FDynamicShadowMap::BuildRenderTargetSRV()
 	auto GPUSRVDesHeapStart = GeometryMap->GetHeap()->GetGPUDescriptorHandleForHeapStart();
 
 	int ShadowMapOffset =
-		GeometryMap->GetDrawTexture2DResourcesNumber() +
-		GeometryMap->GetDrawCubeMapResourcesNumber()
+		GeometryMap->GetDrawTexture2DResourcesNumber() 
+		+ GeometryMap->GetDrawCubeMapResourcesNumber()
 		+ 1;//Cubemap
 
 	if (FShadowMapRenderTarget* InRenderTarget = dynamic_cast<FShadowMapRenderTarget*>(RenderTarget.get()))

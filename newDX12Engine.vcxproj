@@ -31,6 +31,7 @@
     <ClCompile Include="EngineCode\Actor\Light\SpotLight.cpp" />
     <ClCompile Include="EngineCode\Actor\Sky\Fog.cpp" />
     <ClCompile Include="EngineCode\Actor\Sky\Sky.cpp" />
+    <ClCompile Include="EngineCode\Collision\CollisionSceneQuery.cpp" />
     <ClCompile Include="EngineCode\Component\Core\Component.cpp" />
     <ClCompile Include="EngineCode\Component\InputComponent.cpp" />
     <ClCompile Include="EngineCode\Component\Input\Input.cpp" />
@@ -71,7 +72,9 @@
     <ClCompile Include="EngineCode\Core\World.cpp" />
     <ClCompile Include="EngineCode\DX12Engine.cpp" />
     <ClCompile Include="EngineCode\EngineFactory.cpp" />
+    <ClCompile Include="EngineCode\EngineType.cpp" />
     <ClCompile Include="EngineCode\Interface\DirectXDeviceInterface.cpp" />
+    <ClCompile Include="EngineCode\Library\RaycastSystemLibrary.cpp" />
     <ClCompile Include="EngineCode\Manager\LightManager.cpp" />
     <ClCompile Include="EngineCode\Math\EngineMath.cpp" />
     <ClCompile Include="EngineCode\Mesh\BoxMesh.cpp" />
@@ -183,6 +186,7 @@
     <ClInclude Include="EngineCode\Actor\Sky\Fog.h" />
     <ClInclude Include="EngineCode\Actor\Sky\Sky.h" />
     <ClInclude Include="EngineCode\CodeReflection\CodeReflectionMacroTag.h" />
+    <ClInclude Include="EngineCode\Collision\CollisionSceneQuery.h" />
     <ClInclude Include="EngineCode\Component\Core\Component.h" />
     <ClInclude Include="EngineCode\Component\InputComponent.h" />
     <ClInclude Include="EngineCode\Component\Input\Input.h" />
@@ -229,7 +233,9 @@
     <ClInclude Include="EngineCode\Debug\Log\SimpleLog.h" />
     <ClInclude Include="EngineCode\EngineFactory.h" />
     <ClInclude Include="EngineCode\EngineMinimal.h" />
+    <ClInclude Include="EngineCode\EngineType.h" />
     <ClInclude Include="EngineCode\Interface\DirectXDeviceInterface.h" />
+    <ClInclude Include="EngineCode\Library\RaycastSystemLibrary.h" />
     <ClInclude Include="EngineCode\Manager\LightManager.h" />
     <ClInclude Include="EngineCode\Math\EngineMath.h" />
     <ClInclude Include="EngineCode\Mesh\BoxMesh.h" />

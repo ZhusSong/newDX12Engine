@@ -6,26 +6,26 @@
 namespace MeshConstruction
 {
     template<class T, typename ...ParamTypes>
-    T* CreateMeshComponent(CMeshManager* InManager, T* InMesh, ParamTypes &&...Params)
+    T* CreateMeshComponent(CMeshManager* InManage, T* InMesh, ParamTypes &&...Params)
     {
-        if (InManager && InMesh)
+        if (InManage && InMesh)
         {
             size_t HashKey = 0;
             InMesh->BuildKey(HashKey, forward<ParamTypes>(Params)...);
 
-            FRenderingData RenderingData;
-            if (InManager->GetRenderingPipeline().FindMeshRenderingDataByHash(HashKey, RenderingData, (int)InMesh->GetRenderLayerType()))
+            std::shared_ptr<FRenderingData> RenderingData;
+            if (InManage->GetRenderingPipeline().FindMeshRenderingDataByHash(HashKey, RenderingData, (int)InMesh->GetRenderLayerType()))
             {
-                InManager->GetRenderingPipeline().DuplicateMesh(InMesh, RenderingData);
+                InManage->GetRenderingPipeline().DuplicateMesh(InMesh, RenderingData);
             }
             else
             {
-                //提取模型资源
+                // 提取模型资源
                 FMeshRenderingData MeshData;
                 InMesh->CreateMesh(MeshData, forward<ParamTypes>(Params)...);
 
-                //构建mesh
-                InManager->GetRenderingPipeline().BuildMesh(HashKey, InMesh, MeshData);
+                // 构建mesh
+                InManage->GetRenderingPipeline().BuildMesh(HashKey, InMesh, MeshData);
             }
 
             InMesh->Init();
@@ -37,13 +37,13 @@ namespace MeshConstruction
     }
 
     template<class T, typename ...ParamTypes>
-    T* CreateMeshComponent(CMeshManager* InManager, ParamTypes &&...Params)
+    T* CreateMeshComponent(CMeshManager* InManage, ParamTypes &&...Params)
     {
-        if (InManager)
+        if (InManage)
         {
-            T* InMesh = CreateObject<T>(new T());
+            T* InMesh = CreateObject<T>(new T());//NewObject
 
-            return CreateMeshComponent<T>(InManager, InMesh, Params...);
+            return CreateMeshComponent<T>(InManage, InMesh, Params...);
         }
 
         return NULL;

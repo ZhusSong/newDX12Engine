@@ -11,12 +11,12 @@ void FRenderingPipeline::BuildMesh(const size_t InMeshHash, CMeshComponent* InMe
 	GeometryMap.BuildMesh(InMeshHash, InMesh, MeshData);
 }
 
-void FRenderingPipeline::DuplicateMesh(CMeshComponent* InMesh, const FRenderingData& MeshData)
+void FRenderingPipeline::DuplicateMesh(CMeshComponent* InMesh, std::shared_ptr<FRenderingData>& MeshData)
 {
 	GeometryMap.DuplicateMesh(InMesh, MeshData);
 }
 
-bool FRenderingPipeline::FindMeshRenderingDataByHash(const size_t& InHash, FRenderingData& MeshData, int InRenderLayerIndex)
+bool FRenderingPipeline::FindMeshRenderingDataByHash(const size_t& InHash, std::shared_ptr<FRenderingData>& MeshData, int InRenderLayerIndex)
 {
 	return GeometryMap.FindMeshRenderingDataByHash(InHash, MeshData, InRenderLayerIndex);
 }
@@ -99,7 +99,6 @@ void FRenderingPipeline::BuildPipeline()
 	// 构建RTVDes
 	DynamicCubeMap.BuildRenderTargetDescriptor();
 
-
 	// 构建深度模板
 	DynamicCubeMap.BuildDepthStencil();
 
@@ -162,8 +161,8 @@ void FRenderingPipeline::Draw(float DeltaTime)
 	// 主视口
 	GeometryMap.DrawViewport(DeltaTime);
 
-	//// 绘制抓取到的ShadowCubeMap贴图
-	//GeometryMap.DrawCubeMapTexture(DeltaTime);
+	// 绘制抓取到的ShadowCubeMap贴图
+	GeometryMap.DrawCubeMapTexture(DeltaTime);
 
 	// 各类层级
 	RenderLayer.Draw(RENDERLAYER_BACKGROUND, DeltaTime);

@@ -26,7 +26,7 @@ void FDynamicCubeMap::SetViewportPosition(const fvector_3d& InCenterPoint)
 	for (size_t i = 0; i < 6; i++)
 	{
 		CubeMapViewport[i]->SetPosition(XMFLOAT3(InCenterPoint.x, InCenterPoint.y, InCenterPoint.z));
-		//CubeMapViewport[i]->FaceTarget(InCenterPoint, Capture.TargetPoint[i], Capture.UP[i]);
+		CubeMapViewport[i]->FaceTarget(InCenterPoint, Capture.TargetPoint[i], Capture.UP[i]);
 		CubeMapViewport[i]->BuildViewMatrix(0.3f);
 	}
 }
@@ -43,7 +43,7 @@ void FDynamicCubeMap::BuildViewport(const fvector_3d& InCenterPoint)
 
 		Viewport->SetPosition(XMFLOAT3(InCenterPoint.x, InCenterPoint.y, InCenterPoint.z));
 		Viewport->FaceTarget(InCenterPoint, Capture.TargetPoint[i], Capture.UP[i]);
-		Viewport->SetFrustum(0.5f * XM_PI, 1.f, 0.1f, 5000.f);
+		Viewport->SetFrustum(0.5f * XM_PI, 1.f, 0.1f, 10000.f);
 		Viewport->BuildViewMatrix(0.3f);
 	}
 }

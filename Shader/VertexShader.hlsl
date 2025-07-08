@@ -72,7 +72,7 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
 
 	//获取BaseColor
     Material.BaseColor = GetMaterialBaseColor(MatConstBuffer, MVOut.TexCoord);
-    
+
 
 	//BaseColor
     if (MatConstBuffer.MaterialType == 12)
@@ -138,17 +138,16 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
 			//blinn-phong 
             else if (MatConstBuffer.MaterialType == 3)
             {
-				//当前的公式已经对blinn-phong 模型做了很大的变形
                 float3 ViewDirection = normalize(ViewportPosition.xyz - MVOut.WorldPosition.xyz);
                 float3 HalfDirection = normalize(ViewDirection + NormalizeLightDirection);
 
-				//先半兰博特化 再减去0.2f曝光的，再平方，变得更柔和
+				// 先半兰博特化 再减去0.2f曝光的，再平方，变得更柔和
                 DotValue = pow(max(0.0, (dot(ModelNormal, NormalizeLightDirection) * 0.5f + 0.5f) - 0.2f), 2);
 
                 float MaterialShininess = 1.f - saturate(MatConstBuffer.MaterialRoughness);
                 float M = MaterialShininess * 100.f;
 
-				//c=(m+2.f/PI) 归一化系数 后面会详细讲解推导
+				// c=(m+2.f/PI) 归一化系数 后面会详细讲解推导
                 Specular *= saturate((M + 2.0f) * pow(max(dot(HalfDirection, ModelNormal), 0.f), M) / 3.1415926);
             }
             //Wrap 早期模拟皮肤的效果 
@@ -161,7 +160,7 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
                 float DiffuseReflection = dot(ModelNormal, NormalizeLightDirection);
                 DotValue = max((DiffuseReflection + WrapValue) / (1.f + WrapValue), 0.0); //[-1,1] => [0,1]
             }
-            else if (MatConstBuffer.MaterialType == 5)//Minnaert 模拟月球和天鹅绒效果
+            else if (MatConstBuffer.MaterialType == 5)//Minnaert 
             {
                 float3 ViewDirection = normalize(ViewportPosition.xyz - MVOut.WorldPosition.xyz);
 
@@ -176,7 +175,7 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
             {
                 if (i == 0)
                 {
-					//融入半兰伯特
+					// 融入半兰伯特
                     float DiffuseReflection = (dot(ModelNormal, NormalizeLightDirection) + 1.f) * 0.5f;
 
                     float Layered = 4.f;
@@ -190,7 +189,7 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
                 {
                     float4 Color2 = { 245.f / 255.f, 88.f / 255.f, .0f, 1.f };
 
-					//灯光点乘值
+					// 灯光点乘值
                     float LightDotValue = dot(ModelNormal, NormalizeLightDirection);
 
                     float DiffuseReflection = (LightDotValue + 1.f) * 0.5f;
@@ -289,8 +288,8 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
             }
             else if (MatConstBuffer.MaterialType == 15)//透明物体
             {
-                float DiffuseReflection = dot(ModelNormal, NormalizeLightDirection);
-                DotValue = max((DiffuseReflection * 0.5f + 0.5f), 0.0); //[-1,1] => [0,1]
+                //float DiffuseReflection = dot(ModelNormal, NormalizeLightDirection);
+                //DotValue = max((DiffuseReflection * 0.5f + 0.5f), 0.0); //[-1,1] => [0,1]
             }
             else if (MatConstBuffer.MaterialType == 20)//PBR
             {
@@ -365,8 +364,8 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
 				ShadowFactor = GetShadowFactor_PCF_Sample9(MVOut.WorldPosition, SceneLights[i].ShadowTransform);
 			}
 	
-			FinalColor += ShadowFactor * (saturate((Diffuse + Specular) * LightStrength * DotValue));
-		}
+            FinalColor += ShadowFactor * (saturate((Diffuse + Specular) * LightStrength * DotValue));
+        }
     }
 
     // 最终颜色贡献
@@ -384,17 +383,18 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
                 MVOut.Color.xyz += ReflectionColor;
                 break;
             }
+        // 透明算法
         case 15:
             {
-			    //计算折射
+			    // 计算折射
                 float3 NewRefract = GetRefract(ModelNormal, MVOut.WorldPosition.xyz, MatConstBuffer.Refraction);
                 float3 SampleRefractColor = GetReflectionSampleColor(ModelNormal, NewRefract);
 
-			    //计算反射
+			    // 计算反射
                 float3 NewReflect = GetReflect(ModelNormal, MVOut.WorldPosition.xyz);
                 float3 SampleReflectionColor = GetReflectionSampleColor(ModelNormal, NewReflect);
 			
-			    //计算A通道
+			    // 计算A通道
                 float3 V = normalize(ViewportPosition.xyz - MVOut.WorldPosition.xyz);
                 float Shininess = GetShininess(MatConstBuffer);
                 float3 FresnelFactor = FresnelSchlickFactor(MatConstBuffer, ModelNormal, V);
@@ -404,17 +404,16 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
                 MVOut.Color.xyz += Color;
                 break;
             }
-		
     }
 
     if (MatConstBuffer.MaterialType == 15)
     {
-		//透明的
+		// 透明的
         MVOut.Color.a = MatConstBuffer.Transparency;
     }
     else
     {
-		//透明的
+		// 非透明的
         MVOut.Color.a = Material.BaseColor.a;
     }
 	

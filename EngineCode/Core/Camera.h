@@ -35,6 +35,12 @@ public:
 
 	virtual void MoveForward(float InValue);
 	virtual void MoveRight(float InValue);
+
+public:
+	// 点击屏幕时
+	virtual void OnClickedScreen(int X, int Y);
+
+
 protected:
 	void RotateAroundXAxis(float InRotateDegrees);
 	void RotateAroundYAxis(float InRotateDegrees);
