@@ -19,6 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="EditorEngine\EditorEngine.cpp" />
+    <ClCompile Include="EditorEngine\LogEditor\LogEditor.cpp" />
+    <ClCompile Include="EditorEngine\LogEditor\LogObject\LogSystem.cpp" />
+    <ClCompile Include="EditorEngine\ToolbarEditor\ToolbarEditor.cpp" />
     <ClCompile Include="EngineCode\Actor\Core\ActorObject.cpp" />
     <ClCompile Include="EngineCode\Actor\Light\Core\Light.cpp" />
     <ClCompile Include="EngineCode\Actor\Light\Core\RangeLight.cpp" />
@@ -165,6 +169,11 @@
     <ClCompile Include="simple_library\third_party_library\tinyxml\tinyxmlparser.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="EditorEngine\Core\EditorBase.h" />
+    <ClInclude Include="EditorEngine\EditorEngine.h" />
+    <ClInclude Include="EditorEngine\LogEditor\LogEditor.h" />
+    <ClInclude Include="EditorEngine\LogEditor\LogObject\LogSystem.h" />
+    <ClInclude Include="EditorEngine\ToolbarEditor\ToolbarEditor.h" />
     <ClInclude Include="EngineCode\Actor\Core\ActorObject.h" />
     <ClInclude Include="EngineCode\Actor\Light\Core\Light.h" />
     <ClInclude Include="EngineCode\Actor\Light\Core\RangeLight.h" />

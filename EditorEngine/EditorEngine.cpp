@@ -49,6 +49,7 @@ int CEditorEngine::PostExit()
 void CEditorEngine::BuildEditor()
 {
 	ImGuiIO& IO = ImGui::GetIO();
+	// 边界吸附功能
 	IO.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
 	ToolbarEditor->BuildEditor();
@@ -62,9 +63,9 @@ void CEditorEngine::DrawEditor(float DeltaTime)
 	bool show_demo_window = true;
 	//ImGui::ShowDemoWindow(&show_demo_window);
 
-	ImGui::Begin("Editor");
-	ImGui::Text("Test001");
-	ImGui::End();
+	//ImGui::Begin("Editor");
+	////ImGui::Text("Test001");
+	//ImGui::End();
 
 	ToolbarEditor->DrawEditor(DeltaTime);
 	LogEditor->DrawEditor(DeltaTime);
@@ -78,6 +79,7 @@ void CEditorEngine::ExitEditor()
 
 void CEditorEngine::DrawLayer(float DeltaTime)
 {
+	// 吸附窗口设置
 	ImGuiDockNodeFlags DockspaceFlags = ImGuiDockNodeFlags_None;
 
 	ImGuiWindowFlags WindowFlags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
@@ -95,6 +97,7 @@ void CEditorEngine::DrawLayer(float DeltaTime)
 
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 
+	// 背景改为透明
 	DockspaceFlags |= ImGuiDockNodeFlags_PassthruCentralNode;
 
 	bool bOpenWindows = true;
@@ -103,6 +106,7 @@ void CEditorEngine::DrawLayer(float DeltaTime)
 	ImGui::PopStyleVar(2);
 
 	ImGuiIO& IO = ImGui::GetIO();
+	// 是否开启吸附
 	if (IO.ConfigFlags & ImGuiConfigFlags_DockingEnable)
 	{
 		ImGuiID DockspaceID = ImGui::GetID("EditorEngineLayer");
