@@ -49,8 +49,8 @@ public:
 	UINT GetDXGISampleCount()const;
 	UINT GetDXGISampleQuality()const;
 
-	CMeshManager* GetMeshManager() { return MeshManager; }
-	CLightManager* GetLightManager() { return LightManager; }
+	CMeshManager* GetMeshManager()  const { return MeshManager; }
+	CLightManager* GetLightManager()  const { return LightManager; }
 
 
 private:

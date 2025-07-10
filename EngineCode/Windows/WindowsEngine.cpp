@@ -140,7 +140,7 @@ int CWindowsEngine::PostExit()
 	return 0;
 }
 
-CMeshManager* CWindowsEngine::GetMeshManager()
+CMeshManager* CWindowsEngine::GetMeshManager()const
 {
 	return RenderingEngine->GetMeshManager();
 }

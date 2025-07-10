@@ -28,10 +28,10 @@ public:
 	virtual int Exit();
 	virtual int PostExit();
 
-	CDirectXRenderingEngine* GetRenderingEngine() { return RenderingEngine; }
+	CDirectXRenderingEngine* GetRenderingEngine() const { return RenderingEngine; }
 public:
-	CMeshManager* GetMeshManager();
-	CWorld* GetWorld() { return World; }
+	CMeshManager* GetMeshManager()const;
+	CWorld* GetWorld() const { return World; }
 public:
 
 	bool InitWindows(FWinMainCommandParameters InParameters);
