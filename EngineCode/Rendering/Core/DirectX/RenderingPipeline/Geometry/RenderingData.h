@@ -26,6 +26,10 @@ public:
 
 
 public:
+	// AABB包围盒
+	BoundingBox Bounds;
+
+
 	size_t MeshHash;
 	int GeometryKey;
 	int MeshObjectIndex;

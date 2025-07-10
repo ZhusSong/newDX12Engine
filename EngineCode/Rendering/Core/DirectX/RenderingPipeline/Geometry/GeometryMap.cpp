@@ -666,6 +666,31 @@ void FGeometry::BuildMesh(
 
 		InRenderLayer->RenderDatas.push_back(InRenderingData);
 
+		// 计算AABB包围盒
+		{
+			fvector_3d MaxPoint = fvector_3d(-FLT_MAX);
+			fvector_3d MinPoint = fvector_3d(+FLT_MAX);
+			for (auto& Tmp : MeshData.VertexData)
+			{
+				MinPoint.x = math_libray::Min(Tmp.Position.x, MinPoint.x);
+				MinPoint.y = math_libray::Min(Tmp.Position.y, MinPoint.y);
+				MinPoint.z = math_libray::Min(Tmp.Position.z, MinPoint.z);
+
+				MaxPoint.x = math_libray::Max(Tmp.Position.x, MaxPoint.x);
+				MaxPoint.y = math_libray::Max(Tmp.Position.y, MaxPoint.y);
+				MaxPoint.z = math_libray::Max(Tmp.Position.z, MaxPoint.z);
+			}
+
+			XMFLOAT3 XMFMaxPoint = EngineMath::ToFloat3(MaxPoint);
+			XMFLOAT3 XMFMinPoint = EngineMath::ToFloat3(MinPoint);
+
+			XMVECTOR XMFMaxPointTOR = XMLoadFloat3(&XMFMaxPoint);
+			XMVECTOR XMFMinPointTOR = XMLoadFloat3(&XMFMinPoint);
+
+			XMStoreFloat3(&InRenderingData->Bounds.Center, (XMFMaxPointTOR + XMFMinPointTOR) * 0.5f);
+			XMStoreFloat3(&InRenderingData->Bounds.Extents, (XMFMaxPointTOR - XMFMinPointTOR) * 0.5f);
+		}
+
 		// 基础渲染数据注册
 		InRenderingData->MeshObjectIndex = MeshObjectCount++;
 		InRenderingData->Mesh = InMesh;
@@ -694,6 +719,8 @@ void FGeometry::BuildMesh(
 		UniqueRenderingDatas[InMeshHash]->VertexOffsetPosition = InRenderingData->VertexOffsetPosition;
 
 		UniqueRenderingDatas[InMeshHash]->MeshRenderingData = &MeshRenderingData;
+		
+		UniqueRenderingDatas[InMeshHash]->Bounds = InRenderingData->Bounds;
 
 		
 		// 合并索引
@@ -735,6 +762,9 @@ void FGeometry::DuplicateMesh(CMeshComponent* InMesh, std::shared_ptr<FRendering
 
 		// 指向三角形和索引
 		InRenderingData->MeshRenderingData = &MeshRenderingData;
+
+		// AABB
+		InRenderingData->Bounds = MeshData->Bounds;
 	}
 }
 

@@ -2,7 +2,7 @@
 #include "EngineMinimal.h"
 
 class CComponent;
-class GActor;
+class GActorObject;
 
 struct FCollisionResult
 {
@@ -17,5 +17,5 @@ struct FCollisionResult
 	float Time;
 
 	CComponent* Component;
-	GActor* Actor;
+	GActorObject* Actor;
 };

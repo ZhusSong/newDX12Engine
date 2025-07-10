@@ -5,6 +5,8 @@
 #include "GuidInterface.h"
 #include "../Construction/ObjectConstruction.h"
 
+class CCoreMinimalObject;
+
 //提供核心对象接口
 class CCoreMinimalObject :public IGuidInterface
 {
@@ -17,8 +19,17 @@ public:
 
 
 	bool IsTick()const { return bTick; }
+
+
+	FORCEINLINE CCoreMinimalObject* GetOuter() const { return Outer; }
+	void SetOuter(CCoreMinimalObject* InNewOuter) { Outer = InNewOuter; }
 protected:
 	bool bTick;
+
+
+	// 外层对象
+	CCoreMinimalObject* Outer;
+
 };
 
 extern vector<CCoreMinimalObject*> GObjects;
