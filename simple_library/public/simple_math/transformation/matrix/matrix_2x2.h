@@ -1,6 +1,7 @@
 ﻿#pragma once
-// 25.6.8 李
-struct fmatrix_2x2
+#include "simple_library/public/simple_library_macro.h"
+
+struct SIMPLE_LIBRARY_API fmatrix_2x2
 {
 	float m11;float m12;
 	float m21;float m22;

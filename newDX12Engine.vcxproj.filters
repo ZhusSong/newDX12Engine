@@ -457,9 +457,6 @@
     <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_windows\simple_c_windows_setting.c">
       <Filter>simple_library\private\simple_core_minimal\simple_c_windows</Filter>
     </ClCompile>
-    <ClCompile Include="simple_library\private\simple_cpp_core_minimal\simple_cpp_helper_file\simple_cpp_helper_file.cpp">
-      <Filter>simple_library\private\simple_cpp_core_minimal\simple_cpp_helper_file</Filter>
-    </ClCompile>
     <ClCompile Include="simple_library\private\simple_cpp_core_minimal\simple_cpp_string_algorithm\simple_cpp_string_algorithm.cpp">
       <Filter>simple_library\private\simple_cpp_core_minimal\simple_cpp_string_algorithm</Filter>
     </ClCompile>
@@ -884,9 +881,6 @@
     </ClInclude>
     <ClInclude Include="simple_library\public\simple_cpp_core_minimal\shared\simple_cpp_shared_ptr_type.h">
       <Filter>simple_library\public\simple_cpp_core_minimal\shared</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_cpp_core_minimal\simple_cpp_helper_file\simple_cpp_helper_file.h">
-      <Filter>simple_library\public\simple_cpp_core_minimal\simple_cpp_helper_file</Filter>
     </ClInclude>
     <ClInclude Include="simple_library\public\simple_cpp_core_minimal\simple_cpp_string_algorithm\simple_cpp_string_algorithm.h">
       <Filter>simple_library\public\simple_cpp_core_minimal\simple_cpp_string_algorithm</Filter>

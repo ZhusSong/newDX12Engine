@@ -28,6 +28,7 @@ public:
 	virtual void BuildViewMatrix(float DeltaTime);
 public:
 	// 鼠标处理相关
+	virtual void OnLeftMouseButtonDown(int X, int Y);
 	virtual void OnMouseButtonDown(int X, int Y);
 	virtual void OnMouseButtonUp(int X, int Y);
 	virtual void OnMouseMove(int X, int Y);

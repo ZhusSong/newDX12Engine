@@ -1,8 +1,5 @@
 ﻿#pragma once
-// 25.6.8 李
-//#ifndef WIN32_LEAN_AND_MEAN 
-//#define WIN32_LEAN_AND_MEAN 
-//#endif
+// 25.7.10 李
 #ifndef _CRT_SECURE_NO_WARNINGS
 #define _CRT_SECURE_NO_WARNINGS
 #endif // !1
@@ -35,4 +32,4 @@
 
 //#include <array>
 
-#define SIMPLE_C_BUFF_SIZE 2024 //如果嫌小就给大点
+#define SIMPLE_C_BUFF_SIZE 8196 //如果嫌小就给大点

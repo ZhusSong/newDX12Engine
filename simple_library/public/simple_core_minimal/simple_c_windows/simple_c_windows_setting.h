@@ -1,6 +1,7 @@
 ﻿#pragma once
-// 25.6.8 李
-#include "../simple_c_core/simple_core_minimal.h"
+
+// 25.7.10 李
+#include "simple_library/public/simple_core_minimal/simple_c_core/simple_core_minimal.h"
 
 _CRT_BEGIN_C_HEADER
 typedef enum 

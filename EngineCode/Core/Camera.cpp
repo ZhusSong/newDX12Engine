@@ -28,6 +28,8 @@ void GCamera::BeginInit()
 	ViewportInit();
 	// 绑定代理
 	InputComponent->CaptureKeyboardInforDelegate.Bind(this, &GCamera::ExecuteKeyboard);
+	
+	InputComponent->OnLMouseButtonDownDelegate.Bind(this, &GCamera::OnLeftMouseButtonDown);
 
 	InputComponent->OnMouseButtonDownDelegate.Bind(this, &GCamera::OnMouseButtonDown);
 	InputComponent->OnMouseButtonUpDelegate.Bind(this, &GCamera::OnMouseButtonUp);
@@ -102,6 +104,18 @@ void GCamera::BuildViewMatrix(float DeltaTime)
 	}
 	}
 }
+
+void GCamera::OnLeftMouseButtonDown(int X, int Y)
+{
+	LastMousePosition.x = X;
+	LastMousePosition.y = Y;
+
+	OnClickedScreen(X, Y);
+
+	SetCapture(GetMainWindowsHandle());
+}
+
+
 void GCamera::OnMouseButtonDown(int X, int Y)
 {
 	bLeftMouseDown = true;

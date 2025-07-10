@@ -1,7 +1,9 @@
-﻿// 25.6.8 李
+﻿
+// 25.7.10 李
 #pragma once
+#include "simple_library/public/simple_library_macro.h"
 
-struct fvector_2d
+struct SIMPLE_LIBRARY_API fvector_2d
 {
 	float x;
 	float y;
@@ -11,6 +13,8 @@ public:
 	fvector_2d(float in_x, float in_y);
 
 	fvector_2d(float in_value);
+
+	float len();
 
 	static float dot(const fvector_2d& a, const fvector_2d& b);
 
@@ -28,6 +32,26 @@ public:
 	fvector_2d operator-(const fvector_2d& a)const
 	{
 		return fvector_2d(x- a.x, y - a.y);
+	}
+
+	bool operator>(const fvector_2d& a)const
+	{
+		return x > a.x && y > a.y;
+	}
+
+	bool operator<(const fvector_2d& a)const
+	{
+		return x < a.x && y < a.y;
+	}
+
+	bool operator>=(const fvector_2d& a)const
+	{
+		return x >= a.x && y >= a.y;
+	}
+
+	bool operator<=(const fvector_2d& a)const
+	{
+		return x <= a.x&& y <= a.y;
 	}
 
 	void operator-=(const fvector_2d& a)
@@ -77,4 +101,6 @@ public:
 	{
 		return fvector_2d(x / a.x, y / a.y);
 	}
+
+
 };

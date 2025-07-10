@@ -1,4 +1,4 @@
-ï»¿#ifndef _CRT_SECURE_NO_WARNINGS
+#ifndef _CRT_SECURE_NO_WARNINGS
 #define _CRT_SECURE_NO_WARNINGS
 #endif // !_CRT_SECURE_NO_WARNINGS
 
@@ -28,8 +28,8 @@ namespace simple_cpp_string_algorithm
 		std::vector<std::string>& in_array,
 		const char* parse_string)
 	{
-		int string_content_len = (int)strlen(string_content);
-		int parse_string_len = (int)strlen(parse_string);
+		int string_content_len = strlen(string_content);
+		int parse_string_len = strlen(parse_string);
 
 		fframe_buffer_index frame_buffer;
 		int pos = find_string(string_content, parse_string, frame_buffer.strat_pos);
@@ -47,7 +47,7 @@ namespace simple_cpp_string_algorithm
 				in_string.resize(frame_buffer.offset);
 				char* in_ptr = const_cast<char*>(in_string.c_str());
 
-				//æ•°æ®æ‹·è´
+				//Êı¾İ¿½±´
 				strncpy(in_ptr, &string_content[frame_buffer.strat_pos], frame_buffer.offset);
 			};
 
@@ -64,7 +64,7 @@ namespace simple_cpp_string_algorithm
 				bloop = true;
 			}
 
-			//å­˜åœ¨æœ€åä¸€æ¬¡
+			//´æÔÚ×îºóÒ»´Î
 			if (bloop)
 			{
 				frame_buffer.offset = string_content_len - frame_buffer.strat_pos;

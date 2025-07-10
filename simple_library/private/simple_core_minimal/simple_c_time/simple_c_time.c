@@ -1,6 +1,6 @@
-﻿// 25.6.8 李
-#include "../../../public/simple_core_minimal/simple_c_time/simple_c_time.h"
-#include "../../../public/simple_core_minimal/simple_c_time/simple_c_locale_list.h"
+// Copyright (C) RenZhai.2022.All Rights Reserved.
+#include "simple_library/public/simple_core_minimal/simple_c_time/simple_c_time.h"
+#include "simple_library/public/simple_core_minimal/simple_c_time/simple_c_locale_list.h"
 
 char * get_locale(char *in_buffer,
 	const char *in_locale,

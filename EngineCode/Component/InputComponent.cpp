@@ -4,6 +4,7 @@
 // 绑定代理函数
 void CInputComponent::BeginInit()
 {
+	LMouseDownDelegate.AddFunction(this, &CInputComponent::OnLeftMouseButtonDown);
 	MouseDownDelegate.AddFunction(this, &CInputComponent::OnMouseButtonDown);
 	MouseUpDelegate.AddFunction(this, &CInputComponent::OnMouseButtonUp);
 	MouseMoveDelegate.AddFunction(this, &CInputComponent::OnMouseMove);
@@ -48,8 +49,15 @@ void CInputComponent::Tick(float DeltaTime)
 		CaptureKeyboardInforDelegate.Execute(InputKey);
 	}
 }
-
-// 鼠标按下时
+// 鼠标左键按下时
+void CInputComponent::OnLeftMouseButtonDown(int X, int Y)
+{
+	if (OnLMouseButtonDownDelegate.IsBound())
+	{
+		OnLMouseButtonDownDelegate.Execute((int)X, (int)Y);
+	}
+}
+// 鼠标右键按下时
 void CInputComponent::OnMouseButtonDown(int X, int Y)
 {
 	if (OnMouseButtonDownDelegate.IsBound())

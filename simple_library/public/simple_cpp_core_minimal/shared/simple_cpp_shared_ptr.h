@@ -1,4 +1,5 @@
-﻿// 25.6.8 李
+﻿
+// 25.7.10 李
 #pragma once
 #include "simple_cpp_shared_ptr_type.h"
 

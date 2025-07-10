@@ -1,4 +1,4 @@
-ï»¿#include "simple_library/public/simple_math/transformation/quaternion/quat.h"
+#include "simple_library/public/simple_math/transformation/quaternion/quat.h"
 #include "simple_library/public/simple_math/transformation/vector/vector_3d.h"
 #include "simple_library/public/simple_math/transformation/rotator/rotator.h"
 #include "simple_library/public/simple_math/math_libray.hpp"
@@ -207,7 +207,7 @@ void fquat::rotator_by_z(float theta)
 
 void fquat::rotator_by_axis(float theta, const fvector_3d& axis)
 {
-	assert(is_normalized());//è‡³å°‘å•ä½åŒ–
+	assert(is_normalized());//ÖÁÉÙµ¥Î»»¯
 
 	float helf_theta = theta * 0.5f;
 	float sin_helf_theta = sin(helf_theta);
@@ -221,7 +221,7 @@ void fquat::rotator_by_axis(float theta, const fvector_3d& axis)
 
 fquat fquat::inverse() const
 {
-	assert(is_normalized());//è‡³å°‘å•ä½åŒ–
+	assert(is_normalized());//ÖÁÉÙµ¥Î»»¯
 
 	return fquat(-x,-y,-z,w);
 }
@@ -231,7 +231,7 @@ void fquat::inertia_to_object(const frotator& in_rot)
 	feuler euler;
 	in_rot.rotator_to_euler(euler);
 
-	//åŠè§’
+	//°ë½Ç
 	euler /= 2.f;
 
 	float sin_heading = sin(euler.heading);
@@ -242,7 +242,7 @@ void fquat::inertia_to_object(const frotator& in_rot)
 	float cos_pitch = cos(euler.pitch);
 	float cos_bank = cos(euler.bank);
 
-	//å¥—å…¬å¼
+	//Ì×¹«Ê½
 	w = cos_heading * cos_pitch * cos_bank + sin_heading * sin_pitch * sin_bank;
 	x = -cos_heading * sin_pitch * cos_bank - sin_heading * cos_pitch * sin_bank;
 	y = cos_heading * sin_pitch * sin_bank - sin_heading * cos_pitch * cos_bank;
@@ -254,7 +254,7 @@ void fquat::object_to_inertia(const frotator& in_rot)
 	feuler euler;
 	in_rot.rotator_to_euler(euler);
 
-	//åŠè§’
+	//°ë½Ç
 	euler /= 2.f;
 
 	float sin_heading = sin(euler.heading);
@@ -265,7 +265,7 @@ void fquat::object_to_inertia(const frotator& in_rot)
 	float cos_pitch = cos(euler.pitch);
 	float cos_bank = cos(euler.bank);
 
-	//å¥—å…¬å¼
+	//Ì×¹«Ê½
 	w = cos_heading * cos_pitch * cos_bank + sin_heading * sin_pitch * sin_bank;
 	x = cos_heading * sin_pitch * cos_bank + sin_heading * cos_pitch * sin_bank;
 	y = sin_heading * cos_pitch * cos_bank - cos_heading * sin_pitch * sin_bank;
@@ -366,7 +366,7 @@ frotator fquat::get_rot_by_inertia_to_object_v2()
 }
 fquat fquat::lerp(const fquat& in_q0, const fquat& in_q1, float in_t)
 {
-	//è€ƒè™‘åŒå€è¦†ç›–é—®é¢˜
+	//¿¼ÂÇË«±¶¸²¸ÇÎÊÌâ
 	//q -q
 	float bias = (in_q0 | in_q1) > 0.f ?1.f :-1.f;
 	return (in_q0 * (bias * (1 - in_t))) + in_q1 * in_t;
@@ -394,18 +394,18 @@ fquat fquat::s_lerp(const fquat& in_q0, const fquat& in_q1, float in_t)
 		return in_q0;
 	}
 
-	//åŒå€è¦†ç›–
+	//Ë«±¶¸²¸Ç
 	float q0oq1_cos = (in_q0 | in_q1);//cos
 	q0oq1_cos = q0oq1_cos >= 0.f ? q0oq1_cos:-q0oq1_cos;
 
 	assert(q0oq1_cos < 1.1f);
 
-	//è§’åº¦æŽ¥è¿‘0.fçš„æ—¶å€™
+	//½Ç¶È½Ó½ü0.fµÄÊ±ºò
 	float scale0 = 0.f;
 	float scale1 = 0.f;
 	if (q0oq1_cos >= 0.99999f)
 	{
-		//çº¿æ€§Lerp
+		//ÏßÐÔLerp
 		scale0 = 1.f - in_t;
 		scale1 = in_t;
 	}
@@ -415,17 +415,17 @@ fquat fquat::s_lerp(const fquat& in_q0, const fquat& in_q1, float in_t)
 		//sin
 		float q0oq1_sin = sqrt(1.f - q0oq1_cos * q0oq1_cos);
 
-		//è§’åº¦(å¼§åº¦)
+		//½Ç¶È(»¡¶È)
 		float theta = atan2(q0oq1_sin,q0oq1_cos);
 
 		float q0oq1_inv_sin = 1.f / q0oq1_sin;
 
-		//Slerp å…¬å¼
+		//Slerp ¹«Ê½
 		scale0 = sin((1.f - in_t) * theta) * q0oq1_inv_sin;
 		scale1 = sin(in_t * theta) * q0oq1_inv_sin;
 	}
 
-	//åŒå€è¦†ç›–
+	//Ë«±¶¸²¸Ç
 	scale1 = scale1 >= 0.f ? scale1 : -scale1;
 
 	fquat result;
@@ -444,9 +444,9 @@ fquat fquat::s_lerp_full_path(const fquat& in_q0, const fquat& in_q1, float in_t
 
 	float q0oq1_cos = (in_q0 | in_q1);//cos
 	q0oq1_cos = math_libray::Clamp(q0oq1_cos,-1.f,1.f);
-	float angle = asin(q0oq1_cos);//å¼§åº¦
+	float angle = asin(q0oq1_cos);//»¡¶È
 
-	if (fabsf(angle) < 1.e-4f)//æžå°å€¼
+	if (fabsf(angle) < 1.e-4f)//¼«Ð¡Öµ
 	{
 		return in_q0;
 	}
@@ -456,7 +456,7 @@ fquat fquat::s_lerp_full_path(const fquat& in_q0, const fquat& in_q1, float in_t
 
 	float q0oq1_inv_sin = 1.f / q0oq1_sin;
 
-	//Slerp å…¬å¼
+	//Slerp ¹«Ê½
 	scale0 = sin((1.f - in_t) * angle) * q0oq1_inv_sin;
 	scale1 = sin(in_t * angle) * q0oq1_inv_sin;
 

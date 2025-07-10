@@ -1,12 +1,12 @@
-Ôªø// 25.6.9 Êùé
+// Copyright (C) RenZhai.2022.All Rights Reserved.
 #include "simple_library/public/simple_c_log/simple_c_log.h"
 #include "simple_library/public/simple_core_minimal/simple_c_windows/simple_c_windows_setting.h"
 #include "simple_library/public/simple_core_minimal/simple_c_core/simple_c_string_algorithm/string_algorithm.h"
 
-char log_path[MAX_PATH] = { 0 }; //Â≠òÂÇ®ÁùÄÊàë‰ª¨ÁöÑË∑ØÂæÑ
-char log_filename[MAX_PATH] = { 0 };//ÂÖ∑‰ΩìÊñá‰ª∂
+char log_path[MAX_PATH] = { 0 }; //¥Ê¥¢◊≈Œ“√«µƒ¬∑æ∂
+char log_filename[MAX_PATH] = { 0 };//æﬂÃÂŒƒº˛
 
-const char* get_log_filename()
+const char *get_log_filename()
 {
 	if (log_filename[0] == '\0')
 	{
@@ -20,7 +20,7 @@ const char* get_log_filename()
 			return NULL;
 		}
 
-		const char* p = log_path;
+		const char *p = log_path;
 
 		char tmp_path[MAX_PATH] = { 0 };
 		strcpy(tmp_path, p);
@@ -29,26 +29,26 @@ const char* get_log_filename()
 
 		time_t now_time = time(NULL);
 
-		//char* p_time = ctime(__TIME__);//Êó•ÊúüËé∑ÂèñÂ§±Ë¥•
+		//char* p_time = ctime(__TIME__);//»’∆⁄ªÒ»° ß∞‹
 		char p_time[256] = { 0 };
 		get_local_time_string(p_time);
 		if (p_time)
 		{
-			remove_char_form_end(p_time, '\n');
-			remove_char_form_end(p_time, ':');
-			remove_char_form_end(p_time, ':');
+			remove_char_end(p_time, '\n');
+			remove_char_end(p_time, ':');
+			remove_char_end(p_time, ':');			
 			strcat(tmp_path, p_time);
 		}
 		else
 		{
 			strcat(tmp_path, "MyLog");
 		}
-
+	
 		const char file_suffix[] = ".txt";
 
 		strcat(tmp_path, file_suffix);
 
-		FILE* hfile = NULL;
+		FILE *hfile = NULL;
 		if ((hfile = fopen(tmp_path, "a+")) != NULL)
 		{
 			strcpy(log_filename, tmp_path);
@@ -59,7 +59,7 @@ const char* get_log_filename()
 	return log_filename;
 }
 
-const char* get_log_path()
+const char * get_log_path()
 {
 	if (log_path[0] == '\0')
 	{
@@ -72,20 +72,20 @@ const char* get_log_path()
 	return log_path;
 }
 
-void init_log_system(const char* path)
+void init_log_system(const char *path)
 {
 	strcpy(log_path, path);
 }
 
-bool log_wirte(enum e_error error, char* format, ...)
+bool log_wirte(enum e_error error, char *format, ...)
 {
-	const char* p = get_log_filename();
+	const char *p = get_log_filename();
 
 	if (p != NULL)
 	{
 		FILE* hfile = NULL;
-		//#if _WIN64
-		//#elif _WIN32
+//#if _WIN64
+//#elif _WIN32
 		if ((hfile = fopen(p, "a+")) != NULL)
 		{
 			char buf[SIMPLE_C_BUFF_SIZE] = { 0 };
@@ -100,7 +100,7 @@ bool log_wirte(enum e_error error, char* format, ...)
 
 			char text_buf[SIMPLE_C_BUFF_SIZE] = { 0 };
 			get_log_str(error, text_buf, buf);
-
+			
 			switch (error)
 			{
 			case SIMPLE_C_SUCCESS:
@@ -121,7 +121,7 @@ bool log_wirte(enum e_error error, char* format, ...)
 			set_console_w_color(SIMPLE_WHITE, SIMPLE_BLACK);
 			fclose(hfile);
 		}
-		//#endif
+//#endif
 		return true;
 	}
 
@@ -149,7 +149,7 @@ char* get_error_str(enum e_error error, char* buff)
 	return buff;
 }
 
-int get_log_str(enum e_error error, char* buff, const char* content_buff)
+int get_log_str(enum e_error error, char* buff,const char *content_buff)
 {
 	char error_str[64] = { 0 };
 	get_error_str(error, error_str);
@@ -158,7 +158,7 @@ int get_log_str(enum e_error error, char* buff, const char* content_buff)
 	get_local_time_string(time);
 	if (time)
 	{
-		remove_char_form_end(time, '\n');
+		remove_char_end(time, '\n');
 	}
 
 	if (content_buff)
@@ -169,5 +169,5 @@ int get_log_str(enum e_error error, char* buff, const char* content_buff)
 	{
 		return get_printf_s(buff, "[%s][%s] \r\n", error_str, time);
 	}
-
+	
 }

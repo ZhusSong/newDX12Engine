@@ -1,6 +1,6 @@
-﻿// 25.6.8 李
+﻿// 25.7.10 李
 #pragma once
-#include "../simple_core_minimal/simple_c_core/simple_core_minimal.h"
+#include "simple_library/public/simple_core_minimal/simple_c_core/simple_core_minimal.h"
 
 template<class ContainerType,typename ElementType>
 class TIndexedContainerIterator

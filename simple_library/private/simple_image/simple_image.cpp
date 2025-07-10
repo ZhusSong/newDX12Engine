@@ -1,7 +1,6 @@
-ï»¿// 25.6.8 æ
-#include "../../public/simple_image/simple_image.h"
-#include "../../public/simple_image/Core/simple_image_bmp.h"
-#include "../../public/simple_core_minimal/simple_c_helper_file/simple_file_helper.h"
+#include "simple_library/public/simple_image/simple_image.h"
+#include "simple_library/public/simple_image/Core/simple_image_bmp.h"
+#include "simple_library/public/simple_core_minimal/simple_c_helper_file/simple_file_helper.h"
 
 namespace SimpleImage
 {
@@ -17,12 +16,12 @@ namespace SimpleImage
 		std::vector<char> Data;
 		Data.resize(InImageInfo.BmpHearder.bfSize);
 
-		//åˆå§‹åŒ–
+		//³õÊ¼»¯
 		memset(Data.data(),0, InImageInfo.BmpHearder.bfSize);
 
 		char *IndexPtr = Data.data();
 
-		//æŒ‡é’ˆçš„åç§»æ“ä½œ
+		//Ö¸ÕëµÄÆ«ÒÆ²Ù×÷
 		{
 			memcpy(IndexPtr,&InImageInfo.BmpHearder,sizeof(BITMAPFILEHEADER));
 
@@ -39,7 +38,7 @@ namespace SimpleImage
 			memcpy(IndexPtr, InData.data(), InData.size() * sizeof(unsigned char));		
 		}
 
-		//å­˜å‚¨æˆ‘ä»¬çš„æ•°æ®
+		//´æ´¢ÎÒÃÇµÄÊı¾İ
 		return save_data_to_disk_w(InPath,Data.data(), Data.size());
 	}
 
@@ -80,7 +79,7 @@ namespace SimpleImage
 					BmpImageInfo.BmpInFoHeader.biClrUsed = 256;
 					BmpImageInfo.BmpInFoHeader.biClrImportant = 256;
 
-					//å¡«å……é¢œè‰²è¡¨
+					//Ìî³äÑÕÉ«±í
 					for (size_t i = 0; i < 256; i++)
 					{
 						BmpImageInfo.BmpColors[i].rgbBlue = i;
@@ -97,7 +96,7 @@ namespace SimpleImage
 					BmpImageInfo.BmpInFoHeader.biClrImportant = 0;
 				}
 
-				BmpImageInfo.BmpHearder.bfType = 0x4D42;//bmpç±»å‹
+				BmpImageInfo.BmpHearder.bfType = 0x4D42;//bmpÀàĞÍ
 				BmpImageInfo.BmpHearder.bfSize =
 					sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER) + 
 					ColorTableSize + InImageInfo.Height * InImageInfo.Width * 3;
@@ -134,14 +133,14 @@ namespace SimpleImage
 	{
 		const wchar_t *WPath = InLoadPath.c_str();
 		
-		//æ‹¿åˆ°æ–‡ä»¶å¤§å°
+		//ÄÃµ½ÎÄ¼ş´óĞ¡
 		unsigned int Len = get_file_size_by_filename_w(WPath);
 
-		//è¯»å–æ•°æ®
+		//¶ÁÈ¡Êı¾İ
 		std::vector<unsigned char> LoadData;
 		LoadData.resize(Len);
 		
-		//è¯»å–æ–‡ä»¶
+		//¶ÁÈ¡ÎÄ¼ş
 		load_data_from_disk_w(WPath,(char*)LoadData.data());
 
 		switch (ImageType)
@@ -153,22 +152,22 @@ namespace SimpleImage
 				FBmpImageInfo BmpImageInfo;
 				BmpImageInfo.BmpHearder = *(BITMAPFILEHEADER*)IndexPtr;
 
-				//ä¿è¯æ˜¯bmpæ–‡ä»¶
+				//±£Ö¤ÊÇbmpÎÄ¼ş
 				if (BmpImageInfo.BmpHearder.bfType == 0x4D42)
 				{
 					IndexPtr += sizeof(BITMAPFILEHEADER);
 					BmpImageInfo.BmpInFoHeader = *(BITMAPINFOHEADER*)IndexPtr;
 
-					//è·å–å›¾ç‰‡é«˜å®½
+					//»ñÈ¡Í¼Æ¬¸ß¿í
 					OutInfo->Height = BmpImageInfo.BmpInFoHeader.biHeight;
 					OutInfo->Width = BmpImageInfo.BmpInFoHeader.biWidth;
 
 					OutInfo->ImageType = SimpleImage::Bmp;
 
-					//ç®—é€šé“
+					//ËãÍ¨µÀ
 					OutInfo->Channel = (EImageChannel)(BmpImageInfo.BmpInFoHeader.biBitCount / 8);
 			
-					//æ ¹æ®é€šé“åšåˆ¤å®š
+					//¸ù¾İÍ¨µÀ×öÅĞ¶¨
 					switch (OutInfo->Channel)
 					{
 						case EImageChannel::Channel_8Bit:
@@ -184,7 +183,7 @@ namespace SimpleImage
 						}
 					}
 
-					//è®¡ç®—é¢œè‰²å†…å®¹
+					//¼ÆËãÑÕÉ«ÄÚÈİ
 					OutData.resize(BmpImageInfo.BmpInFoHeader.biSizeImage);
 					memcpy(OutData.data(), IndexPtr, BmpImageInfo.BmpInFoHeader.biSizeImage);
 			

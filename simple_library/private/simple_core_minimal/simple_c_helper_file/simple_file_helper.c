@@ -1,58 +1,58 @@
-﻿// 25.7.6 李
+// 25.7.10 ��
 #include "../../../public/simple_core_minimal/simple_c_helper_file/simple_file_helper.h"
 #include "../../../public/simple_core_minimal/simple_c_core/simple_c_array/simple_c_array_string.h"
 
-//用于检测ShellExecute的返回值信息
+//���ڼ��ShellExecute�ķ���ֵ��Ϣ
 bool check_ShellExecute_ret(int ret)
 {
 	if (ret == 0)
 	{
-		// 内存不足
+		// �ڴ治��
 		assert(0, "open_url_w=>insufficient memory.");
 	}
 	else if (ret == 2)
 	{
-		// 文件名错误
+		// �ļ�������
 		assert(0, "open_url_w=>File name error.");
 	}
 	else if (ret == 3)
 	{
-		// 路径名错误
+		// ·��������
 		assert(0, "open_url_w=>Path name error.");
 	}
 	else if (ret == 11)
 	{
-		// EXE 文件无效
+		// EXE �ļ���Ч
 		assert(0, "open_url_w=>Invalid .exe file.");
 	}
 	else if (ret == 26)
 	{
-		// 发生共享错误
+		// ������������
 		assert(0, "open_url_w=>A sharing error occurred.");
 	}
 	else if (ret == 27)
 	{
-		// 文件名不完全或无效
+		// �ļ�������ȫ����Ч
 		assert(0, "open_url_w=>incomplete or invalid file name.");
 	}
 	else if (ret == 28)
 	{
-		// 超时
+		// ��ʱ
 		assert(0, "open_url_w=>timeout.");
 	}
 	else if (ret == 29)
 	{
-		// DDE 事务失败
+		// DDE ����ʧ��
 		assert(0, "open_url_w=> DDE transaction failed.");
 	}
 	else if (ret == 30)
 	{
-		// 正在处理其他 DDE 事务而不能完成该 DDE 事务
+		// ���ڴ������� DDE �����������ɸ� DDE ����
 		assert(0, "open_url_w=> is processing another DDE transaction and cannot complete the DDE transaction.");
 	}
 	else if (ret == 31)
 	{
-		// 没有相关联的应用程序
+		// û���������Ӧ�ó���
 		assert(0, "open_url_w=>no associated application.");
 	}
 
@@ -73,7 +73,7 @@ void init_def_c_paths_w(def_c_paths_w* c_paths)
 
 int copy_file(char* Src, char* Dest)
 {
-	//当前的缓存 缓存1MB大小，如果超过就会出问题 这个会在std C课程里面继续扩展
+	//��ǰ�Ļ��� ����1MB��С����������ͻ������ �������std C�γ����������չ
 	char Buf[1024 * 1024] = { 0 };
 	int FileSize = 0;
 	FILE* FpSrc = NULL;
@@ -103,7 +103,6 @@ void find_files(char const* in_path, def_c_paths* str, bool b_recursion)
 #ifdef  _WIN64
 	struct _finddatai64_t finddata;
 #else
-
 #ifdef _WIN32    
 	struct _finddata_t finddata;
 #endif 
@@ -215,7 +214,7 @@ bool create_file_directory(char const* in_path)
 
 bool open_url(const char* url)
 {
-	//宽字符转为窄字符
+	//���ַ�תΪխ�ַ�
 	wchar_t path[1024] = { 0 };
 	char_to_wchar_t(path, 1024, url);
 
@@ -224,7 +223,7 @@ bool open_url(const char* url)
 
 bool open_url_by_param(const char* url, const char* param)
 {
-	//宽字符转为窄字符
+	//���ַ�תΪխ�ַ�
 	wchar_t path[1024] = { 0 };
 	char_to_wchar_t(path, 1024, url);
 
@@ -238,7 +237,7 @@ bool open_by_operation(const char* in_operation, const char* url, const char* pa
 	wchar_t my_operation[1024] = { 0 };
 	char_to_wchar_t(my_operation, 1024, in_operation);
 
-	//宽字符转为窄字符
+	//���ַ�תΪխ�ַ�
 	wchar_t path[1024] = { 0 };
 	char_to_wchar_t(path, 1024, url);
 
@@ -250,7 +249,7 @@ bool open_by_operation(const char* in_operation, const char* url, const char* pa
 
 bool open_explore(const char* url)
 {
-	//宽字符转为窄字符
+	//���ַ�תΪխ�ַ�
 	wchar_t path[1024] = { 0 };
 	char_to_wchar_t(path, 1024, url);
 
@@ -359,18 +358,18 @@ bool load_data_from_disk_w(const wchar_t* path, char* buf)
 	FILE* f = NULL;
 	if ((f = _wfopen(path, L"rb")) != NULL)
 	{
-		//把文件指针移动到文件尾部;
+		//���ļ�ָ���ƶ����ļ�β��;
 		fseek(f, 0, SEEK_END);
 
 		int l = 0;
-		//来返回当前文件的位置，返回单位为字节 大于0 代表文件有效
+		//�����ص�ǰ�ļ���λ�ã����ص�λΪ�ֽ� ����0 �����ļ���Ч
 		if ((l = ftell(f)) > 0)
 		{
-			//把文件指针移到文件头部
+			//���ļ�ָ���Ƶ��ļ�ͷ��
 			rewind(f);
-			//把文件拷贝到缓存
+			//���ļ�����������
 			fread(buf, sizeof(unsigned char), l, f);
-			//文件后面需要0结尾
+			//�ļ�������Ҫ0��β
 			//buf[l] = '\0';
 		}
 		fclose(f);
@@ -426,18 +425,18 @@ bool load_data_from_disk(const char* path, char* buf)
 	FILE* f = NULL;
 	if ((f = fopen(path, "rb")) != NULL)
 	{
-		//把文件指针移动到文件尾部;
+		//���ļ�ָ���ƶ����ļ�β��;
 		fseek(f, 0, SEEK_END);
 
 		int l = 0;
-		//来返回当前文件的位置，返回单位为字节 大于0 代表文件有效
+		//�����ص�ǰ�ļ���λ�ã����ص�λΪ�ֽ� ����0 �����ļ���Ч
 		if ((l = ftell(f)) > 0)
 		{
-			//把文件指针移到文件头部
+			//���ļ�ָ���Ƶ��ļ�ͷ��
 			rewind(f);
-			//把文件拷贝到缓存
+			//���ļ�����������
 			fread(buf, 1, l, f);
-			//文件后面需要0结尾
+			//�ļ�������Ҫ0��β
 			//buf[l] = '\0';
 		}
 		fclose(f);
