@@ -18,9 +18,11 @@
 #include "../../../../Core/World.h"
 #include "../../../../Mesh/Core/MeshManager.h"
 #include "../../../../Mesh/Core/Material/Material.h"
-#include "../../../../Core/World.h"
 #include "../../../../Component/Mesh/Core/MeshComponent.h"
 
+// 视口
+#include "../../../../Core/World.h"
+#include "../../../../Core/Camera.h"
 // 天空
 #include "../../../../Actor/Sky/Fog.h"
 #include "../../../../Actor/Sky/Sky.h"
@@ -226,10 +228,12 @@ int CDirectXRenderingEngine::PostInit()
 			InPlaneMesh->SetScale(fvector_3d(50.f, 1.f, 50.f));
 			// 地面不显示阴影
 			InPlaneMesh->SetCastShadow(false);
+			InPlaneMesh->SetPickup(false);
 			if (CMaterial* InMaterial = (*InPlaneMesh->GetMaterials())[0])
 			{
 				InMaterial->SetMaterialType(EMaterialType::Lambert);
 			}
+
 		}
 
 		//兰伯特
@@ -836,18 +840,18 @@ int CDirectXRenderingEngine::PostExit()
 
 void CDirectXRenderingEngine::StartSetMainViewportRenderTarget()
 {
-	//指向哪个资源 转换其状态
+	// 转换资源状态
 	CD3DX12_RESOURCE_BARRIER ResourceBarrierPresent = CD3DX12_RESOURCE_BARRIER::Transition(GetCurrentSwapBuff(),
 		D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
 
 	GraphicsCommandList->ResourceBarrier(1, &ResourceBarrierPresent);
 
-	//需要每帧执行
-	//绑定矩形框
-	GraphicsCommandList->RSSetViewports(1, &ViewprotInfo);
-	GraphicsCommandList->RSSetScissorRects(1, &ViewprotRect);
+	// 需要每帧执行
+	// 绑定矩形框
+	GraphicsCommandList->RSSetViewports(1, &World->GetCamera()->ViewprotInfo);
+	GraphicsCommandList->RSSetScissorRects(1, &World->GetCamera()->ViewprotRect);
 
-	//输出的合并阶段
+	// 输出的合并阶段
 	D3D12_CPU_DESCRIPTOR_HANDLE SwapBufferView = GetCurrentSwapBufferView();
 	D3D12_CPU_DESCRIPTOR_HANDLE DepthStencilView = GetCurrentDepthStencilView();
 	GraphicsCommandList->OMSetRenderTargets(1, &SwapBufferView,
@@ -1177,6 +1181,7 @@ void CDirectXRenderingEngine::PostInitDirect3D()
 	ClearValue.DepthStencil.Depth = 1.f;
 	ClearValue.DepthStencil.Stencil = 0;
 	ClearValue.Format = DepthStencilFormat;
+
 	CD3DX12_HEAP_PROPERTIES Properties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
 	D3dDevice->CreateCommittedResource(
 		&Properties,
@@ -1202,21 +1207,6 @@ void CDirectXRenderingEngine::PostInitDirect3D()
 	ID3D12CommandList* CommandList[] = { GraphicsCommandList.Get() };
 	CommandQueue->ExecuteCommandLists(_countof(CommandList), CommandList);
 
-
-	// 这些会覆盖原先windows画布
-	// 描述视口尺寸
-	ViewprotInfo.TopLeftX = 0;
-	ViewprotInfo.TopLeftY = 0;
-	ViewprotInfo.Width = FEngineRenderConfig::GetRenderConfig()->ScrrenWidth;
-	ViewprotInfo.Height = FEngineRenderConfig::GetRenderConfig()->ScrrenHight;
-	ViewprotInfo.MinDepth = 0.f;
-	ViewprotInfo.MaxDepth = 1.f;
-
-	// 矩形
-	ViewprotRect.left = 0;
-	ViewprotRect.top = 0;
-	ViewprotRect.right = FEngineRenderConfig::GetRenderConfig()->ScrrenWidth;
-	ViewprotRect.bottom = FEngineRenderConfig::GetRenderConfig()->ScrrenHight;
 
 	WaitGPUCommandQueueComplete();
 }

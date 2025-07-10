@@ -33,6 +33,8 @@ public:
 	virtual void Draw(float DeltaTime);
 	virtual void PostDraw(float DeltaTime);
 
+	virtual void SetPickup(bool bNewPickup);
+
 public:
 	virtual void SetPosition(const XMFLOAT3& InNewPosition);
 	virtual void SetRotation(const fvector_3d& InRotation);
@@ -55,6 +57,5 @@ protected:
 	virtual void SetMeshComponent(CMeshComponent* InMeshComponent);
 public:
 	UINT GetMaterialNum()const;
-	EMeshRenderLayerType GetRenderLayerType()const;
 	vector<CMaterial*>* GetMaterials();
 };

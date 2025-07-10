@@ -23,7 +23,9 @@ void GActorObject::SetScale(const fvector_3d& InNewScale)
 {
 	TransformComponent->SetScale(InNewScale);
 }
-
+void GActorObject::SetPickup(bool bNewPickup)
+{
+}
 XMFLOAT3& GActorObject::GetPosition()
 {
 	return TransformComponent->GetPosition();

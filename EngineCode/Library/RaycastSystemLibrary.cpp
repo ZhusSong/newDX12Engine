@@ -2,7 +2,7 @@
 #include "../Core/Camera.h"
 #include "../Config/EngineRenderConfig.h"
 #include "../Core/World.h"
-#include "../Rendering/Core/DirectX/RenderingPipeline/Geometry/GeometryMap.h"
+#include "../Collision/CollisionSceneQuery.h"
 
 bool FRaycastSystemLibrary::HitResultByScreen(CWorld* InWorld, int ScreenX, int ScreenY, FCollisionResult& OutResult)
 {
@@ -23,12 +23,7 @@ bool FRaycastSystemLibrary::HitResultByScreen(CWorld* InWorld, int ScreenX, int 
 		XMVECTOR ViewMatrixDeterminant = XMMatrixDeterminant(ViewMatrix);
 		XMMATRIX ViewInverseMatrix = XMMatrixInverse(&ViewMatrixDeterminant, ViewMatrix);
 
-		for (size_t i = 0; i < FGeometry::RenderingDatas.size(); i++)
-		{
-			std::shared_ptr<FRenderingData>& InRenderingData = FGeometry::RenderingDatas[i];
-
-
-		}
+		FCollisionSceneQuery::RaycastSingle(InWorld, OriginPoint, Direction, ViewInverseMatrix, OutResult);
 	}
 
 	return false;

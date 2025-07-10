@@ -225,10 +225,12 @@ void GCamera::OnClickedScreen(int X, int Y)
 {
 	FCollisionResult CollisionResult;
 	FRaycastSystemLibrary::HitResultByScreen(GetWorld(), X, Y, CollisionResult);
-	
+
 	// 点击到物体时
 	if (CollisionResult.bHit)
 	{
+		Engine_Log("Clicked successfully.[time]=%f", CollisionResult.Time);
+
 		if (FRenderLayerManager* InLayer = GetRenderLayerManager())
 		{
 			// 清除旧物体

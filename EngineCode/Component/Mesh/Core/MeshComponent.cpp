@@ -11,6 +11,7 @@ CMeshComponent::CMeshComponent()
 	Materials.push_back(CreateObject<CMaterial>(Param, new CMaterial()));
 
 	bCastShadow = true;
+	bPickup = true;
 }
 
 void CMeshComponent::Init()

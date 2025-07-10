@@ -208,6 +208,10 @@ void FDynamicShadowMap::BuildViewport(const fvector_3d& InCenterPoint)
 	ShadowViewport->SetPosition(XMFLOAT3(InCenterPoint.x, InCenterPoint.y, InCenterPoint.z));
 	ShadowViewport->FaceTarget(InCenterPoint, fvector_3d(10.f), fvector_3d(0.f, 1.f, 0.f));
 	ShadowViewport->SetFrustum(0.5f * XM_PI, 1.f, 0.1f, 100.f);
+
+	ShadowViewport->ViewprotInfo = RenderTarget->GetViewport();
+	ShadowViewport->ViewprotRect = RenderTarget->GetScissorRect();
+
 	BuildViewMatrix(0.3f);
 }
 

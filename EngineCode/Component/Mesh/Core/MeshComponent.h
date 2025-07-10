@@ -37,6 +37,13 @@ public:
 	void SetCastShadow(bool bNewCastShadow) { bCastShadow = bNewCastShadow; }
 	bool IsCastShadow()const { return bCastShadow; }
 
+	// 设置是否可被拾取
+	void SetPickup(bool bNewPickup) { bPickup = bNewPickup; }
+	bool IsPickup()const { return bPickup; }
+
 protected:
+	// 是否产生阴影
 	bool bCastShadow;
+	// 是否可被拾取
+	bool bPickup;
 };
