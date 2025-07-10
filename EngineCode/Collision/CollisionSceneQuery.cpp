@@ -34,40 +34,47 @@ bool FCollisionSceneQuery::RaycastSingle(
 
 		// 射线是否和AABB相交
 		float BoundTime = 0.f;
-		float TriangleTime = 0.f;
 		if (InRenderingData->Bounds.Intersects(LocalOriginPoint, LocalDirection, BoundTime))
 		{
-			// 
-			if (BoundTime < FinalTime)
+			if (BoundTime > 0.f)
 			{
-				if (InRenderingData->MeshRenderingData)
+				if (BoundTime < FinalTime)
 				{
-					UINT TriangleNumber = InRenderingData->IndexSize / 3;
-					for (UINT i = 0; i < TriangleNumber; i++)
+					if (InRenderingData->MeshRenderingData)
 					{
-						fvector_3id Indices;
-						Indices.x = InRenderingData->MeshRenderingData->IndexData[InRenderingData->IndexOffsetPosition + i * 3 + 0];
-						Indices.y = InRenderingData->MeshRenderingData->IndexData[InRenderingData->IndexOffsetPosition + i * 3 + 1];
-						Indices.z = InRenderingData->MeshRenderingData->IndexData[InRenderingData->IndexOffsetPosition + i * 3 + 2];
+						UINT TriangleNumber = InRenderingData->IndexSize / 3;
+						float TriangleTime = FLT_MAX;
 
-						XMVECTOR Vertex0 = XMLoadFloat3(&InRenderingData->MeshRenderingData->VertexData[Indices.x].Position);
-						XMVECTOR Vertex1 = XMLoadFloat3(&InRenderingData->MeshRenderingData->VertexData[Indices.y].Position);
-						XMVECTOR Vertex2 = XMLoadFloat3(&InRenderingData->MeshRenderingData->VertexData[Indices.z].Position);
-
-						float TriangleTestsTime = 0.f;
-						if (TriangleTests::Intersects(LocalOriginPoint, LocalDirection, Vertex0, Vertex1, Vertex2, TriangleTestsTime))
+						for (UINT i = 0; i < TriangleNumber; i++)
 						{
-							FinalTime = BoundTime;
-							if (TriangleTestsTime < TriangleTime)
-							{
-								TriangleTime = TriangleTestsTime;
+							fvector_3id Indices;
+							Indices.x = InRenderingData->MeshRenderingData->IndexData[InRenderingData->IndexOffsetPosition + i * 3 + 0];
+							Indices.y = InRenderingData->MeshRenderingData->IndexData[InRenderingData->IndexOffsetPosition + i * 3 + 1];
+							Indices.z = InRenderingData->MeshRenderingData->IndexData[InRenderingData->IndexOffsetPosition + i * 3 + 2];
 
-								OutResult.bHit = true;
-								OutResult.Component = InRenderingData->Mesh;
-								OutResult.Time = TriangleTestsTime;
-								if (InRenderingData->Mesh)
+							XMVECTOR Vertex0 = XMLoadFloat3(&InRenderingData->MeshRenderingData->VertexData[Indices.x].Position);
+							XMVECTOR Vertex1 = XMLoadFloat3(&InRenderingData->MeshRenderingData->VertexData[Indices.y].Position);
+							XMVECTOR Vertex2 = XMLoadFloat3(&InRenderingData->MeshRenderingData->VertexData[Indices.z].Position);
+
+							float TriangleTestsTime = 0.f;
+							if (TriangleTests::Intersects(LocalOriginPoint, LocalDirection, Vertex0, Vertex1, Vertex2, TriangleTestsTime))
+							{
+								FinalTime = BoundTime;
+								if (TriangleTestsTime < TriangleTime)
 								{
-									OutResult.Actor = dynamic_cast<GActorObject*>(InRenderingData->Mesh->GetOuter());
+									TriangleTime = TriangleTestsTime;
+
+									OutResult.bHit = true;
+									OutResult.Component = InRenderingData->Mesh;
+									OutResult.Time = TriangleTestsTime;
+									if (InRenderingData->Mesh)
+									{
+										OutResult.Actor = dynamic_cast<GActorObject*>(InRenderingData->Mesh->GetOuter());
+									}
+
+									// 获取渲染数据
+									OutResult.RenderingData = InRenderingData;
+
 								}
 							}
 						}

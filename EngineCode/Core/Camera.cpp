@@ -4,6 +4,8 @@
 #include "CameraType.h"
 #include "../Config/EngineRenderConfig.h"
 #include "../Library/RaycastSystemLibrary.h"
+#include "../Rendering/Core/DirectX/RenderingPipeline/RenderLayer/RenderLayerManager.h"
+#include "../Component/Mesh/Core/MeshComponentType.h"
 
 
 GCamera::GCamera()
@@ -209,6 +211,27 @@ void GCamera::OnClickedScreen(int X, int Y)
 {
 	FCollisionResult CollisionResult;
 	FRaycastSystemLibrary::HitResultByScreen(GetWorld(), X, Y, CollisionResult);
+	
+	// 点击到物体时
+	if (CollisionResult.bHit)
+	{
+		if (FRenderLayerManager* InLayer = GetRenderLayerManager())
+		{
+			// 清除旧物体
+			InLayer->Clear(EMeshRenderLayerType::RENDERLAYER_SELECT);
+
+			// 设置新物体
+			InLayer->Add(EMeshRenderLayerType::RENDERLAYER_SELECT, CollisionResult.RenderingData);
+		}
+	}
+	else
+	{
+		if (FRenderLayerManager* InLayer = GetRenderLayerManager())
+		{
+			InLayer->Clear(EMeshRenderLayerType::RENDERLAYER_SELECT);
+		}
+	}
+
 }
 
 

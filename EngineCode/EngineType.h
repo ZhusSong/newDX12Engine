@@ -4,6 +4,8 @@
 class CComponent;
 class GActorObject;
 
+struct FRenderingData;
+
 struct FCollisionResult
 {
 	FCollisionResult();
@@ -18,4 +20,6 @@ struct FCollisionResult
 
 	CComponent* Component;
 	GActorObject* Actor;
+public:
+	std::weak_ptr<FRenderingData> RenderingData;
 };

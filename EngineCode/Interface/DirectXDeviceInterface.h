@@ -11,8 +11,9 @@ class CEngine;
 class CLightManager;
 class CMeshManager;
 class CWorld;
-struct FRenderingPipeline;
 class FRenderLayerManager;
+
+struct FRenderingPipeline;
 
 // 提供渲染设备内容的接口
 class IDirectXDeviceInterface
