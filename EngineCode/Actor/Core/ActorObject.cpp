@@ -4,7 +4,9 @@
 // Actor对象
 GActorObject::GActorObject()
 {
-	TransformComponent = CreateObject<CTransformComponent>(new CTransformComponent());
+	FCreateObjectParam Param;
+	Param.Outer = this;
+	TransformComponent = CreateObject<CTransformComponent>(Param, new CTransformComponent());
 }
 
 void GActorObject::SetPosition(const XMFLOAT3& InNewPosition)

@@ -11,7 +11,10 @@ CPointLightComponent::CPointLightComponent()
 	// 加载模型
 	string MeshPath = "../newDX12Engine/Asset/PointMesh.obj";
 	//string MeshPath = "Asset/PointMesh.obj";
-	SetLightMesh(GetMeshManager()->CreateMeshComponent(MeshPath));
+	FCreateObjectParam Param;
+	Param.Outer = this;
+	SetLightMesh(GetMeshManager()->CreateMeshComponent(Param, MeshPath));
+
 
 
 	if (GetLightMesh())

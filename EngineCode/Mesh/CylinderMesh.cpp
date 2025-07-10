@@ -7,8 +7,11 @@
 
 GCylinderMesh::GCylinderMesh()
 {
-	SetMeshComponent(ConstructionObject<CCylinderMeshComponent>());
+	FCreateObjectParam Param;
+	Param.Outer = this;
+	SetMeshComponent(ConstructionObject<CCylinderMeshComponent>(Param));
 }
+
 
 void GCylinderMesh::Init()
 {

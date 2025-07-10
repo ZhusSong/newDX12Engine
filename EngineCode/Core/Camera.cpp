@@ -9,8 +9,9 @@
 GCamera::GCamera()
 	:Super()
 {
-	InputComponent = CreateObject<CInputComponent>(new CInputComponent());
-	//TransformationComponent = CreateObject<CTransformComponent>(new CTransformComponent());
+	FCreateObjectParam Param;
+	Param.Outer = this;
+	InputComponent = CreateObject<CInputComponent>(Param, new CInputComponent());
 
 	MouseSensitivity = 0.7f;
 	CmeraType = ECmeraType::CameraRoaming;

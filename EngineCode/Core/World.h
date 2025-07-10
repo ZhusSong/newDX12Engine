@@ -18,10 +18,12 @@ public:
 
 	GCamera* GetCamera() { return Camera; }
 
+	// 创建Actor对象
 	template<class T>
 	T* CreateActorObject()
 	{
 		T* InArray = new T();
+		InArray->SetOuter(this);
 		ActorObjects.push_back(InArray);
 
 		return InArray;

@@ -4,7 +4,9 @@
 
 CWorld::CWorld()
 {
-	Camera = CreateObject<GCamera>(new GCamera());
+	FCreateObjectParam Param;
+	Param.Outer = this;
+	Camera = CreateObject<GCamera>(Param, new GCamera());
 }
 
 bool CWorld::LineTraceBySingle(FCollisionResult& OutResult, const fvector_3d& InStart, const fvector_3d& InEnd)

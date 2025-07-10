@@ -37,6 +37,7 @@ bool FCollisionSceneQuery::RaycastSingle(
 		float TriangleTime = 0.f;
 		if (InRenderingData->Bounds.Intersects(LocalOriginPoint, LocalDirection, BoundTime))
 		{
+			// 
 			if (BoundTime < FinalTime)
 			{
 				if (InRenderingData->MeshRenderingData)
