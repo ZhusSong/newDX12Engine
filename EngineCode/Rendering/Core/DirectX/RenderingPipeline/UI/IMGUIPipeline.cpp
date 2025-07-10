@@ -18,7 +18,7 @@ void FIMGUIPipeline::Init(ID3D12DescriptorHeap* InHeap, UINT InOffset)
 
 	ImGui::StyleColorsDark();
 
-	ImGui_ImplWin32_Init(GetMianWindowsHandle());
+	ImGui_ImplWin32_Init(GetMainWindowsHandle());
 
 	UINT CBVDescriptorSize = GetDescriptorHandleIncrementSizeByCBV_SRV_UAV();
 

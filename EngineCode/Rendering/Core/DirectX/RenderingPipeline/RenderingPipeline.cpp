@@ -22,7 +22,6 @@ bool FRenderingPipeline::FindMeshRenderingDataByHash(const size_t& InHash, std::
 }
 
 
-
 void FRenderingPipeline::UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo)
 {
 	GeometryMap.DynamicShadowCubeMap.UpdateCalculations(DeltaTime, ViewportInfo);

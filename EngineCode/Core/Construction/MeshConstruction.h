@@ -6,9 +6,7 @@ namespace MeshConstruction
 {
     // Mesh结构定义
     template<class T, typename ...ParamTypes>
-    T* CreateMeshComponent(CMeshManager* InManager,
-        T* InMesh,
-        ParamTypes &&...Params)
+    T* CreateMeshComponent(CMeshManager* InManager, T* InMesh, ParamTypes &&...Params)
     {
         if (InManager && InMesh)
         {
@@ -16,9 +14,9 @@ namespace MeshConstruction
             InMesh->BuildKey(HashKey, forward<ParamTypes>(Params)...);
 
             std::shared_ptr<FRenderingData> RenderingData;
-            if (InManager->GetRenderingPipeline().FindMeshRenderingDataByHash(HashKey, RenderingData, (int)InMesh->GetRenderLayerType()))
+            if (InManager->GetRenderingPipeline()->FindMeshRenderingDataByHash(HashKey, RenderingData, (int)InMesh->GetRenderLayerType()))
             {
-                InManager->GetRenderingPipeline().DuplicateMesh(InMesh, RenderingData);
+                InManager->GetRenderingPipeline()->DuplicateMesh(InMesh, RenderingData);
             }
             else
             {
@@ -27,7 +25,7 @@ namespace MeshConstruction
                 InMesh->CreateMesh(MeshData, forward<ParamTypes>(Params)...);
 
                 // 构建mesh
-                InManager->GetRenderingPipeline().BuildMesh(HashKey, InMesh, MeshData);
+                InManager->GetRenderingPipeline()->BuildMesh(HashKey, InMesh, MeshData);
             }
 
             InMesh->Init();
@@ -37,7 +35,6 @@ namespace MeshConstruction
 
         return NULL;
     }
-
 
     template<class T, typename ...ParamTypes>
     T* CreateMeshComponent(const FCreateObjectParam& InObjectParam, 

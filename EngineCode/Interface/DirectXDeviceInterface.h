@@ -11,10 +11,13 @@ class CEngine;
 class CLightManager;
 class CMeshManager;
 class CWorld;
+struct FRenderingPipeline;
+class FRenderLayerManager;
 
 // 提供渲染设备内容的接口
 class IDirectXDeviceInterface
 {
+	friend struct IDirectXDeviceInterface_Struct;
 public:
 	// 得到视口RenderTarget
 	void StartSetMainViewportRenderTarget();
@@ -22,37 +25,40 @@ public:
 	void ClearMainSwapChainCanvas();
 
 public:
-	ComPtr<ID3D12Fence> GetFence();
-	ComPtr<ID3D12Device> GetD3dDevice();
+	ComPtr<ID3D12Fence> GetFence()const;
+	ComPtr<ID3D12Device> GetD3dDevice()const;
+	CLightManager* GetLightManager()const;
+	CMeshManager* GetMeshManager()const;
+	CWorld* GetWorld()const;
 
-	CLightManager* GetLightManager();
-	CMeshManager* GetMeshManager();
-	CWorld* GetWorld();
+	ComPtr<ID3D12GraphicsCommandList> GetGraphicsCommandList()const;
+	ComPtr<ID3D12CommandAllocator> GetCommandAllocator()const;
+	ComPtr<ID3D12CommandQueue> GetCommandQueue()const;
 
+	ID3D12DescriptorHeap* GetRTVHeap()const;
+	ID3D12DescriptorHeap* GetDSVHeap()const;
 
-	ComPtr<ID3D12GraphicsCommandList> GetGraphicsCommandList();
-	ComPtr<ID3D12CommandAllocator> GetCommandAllocator();
-	ComPtr<ID3D12CommandQueue> GetCommandQueue();
+	UINT GetDescriptorHandleIncrementSizeByDSV()const;
+	UINT GetDescriptorHandleIncrementSizeByRTV()const;
+	UINT GetDescriptorHandleIncrementSizeByCBV_SRV_UAV()const;
 
-	ID3D12DescriptorHeap* GetRTVHeap();
-	ID3D12DescriptorHeap* GetDSVHeap();
+	UINT64 GetCurrentFenceIndex()const;
+	HWND GetMainWindowsHandle()const;
 
-	UINT GetDescriptorHandleIncrementSizeByDSV();
-	UINT GetDescriptorHandleIncrementSizeByRTV();
-	UINT GetDescriptorHandleIncrementSizeByCBV_SRV_UAV();
+protected:
+	FRenderingPipeline* GetRenderingPipeline() const;
+	FRenderLayerManager* GetRenderLayerManager() const;
 
-	UINT64 GetCurrentFenceIndex();
-	HWND GetMainWindowsHandle();
-
+public:
 #if defined(_WIN32)
-	CWindowsEngine* GetEngine();
+	CWindowsEngine* GetEngine() const;
 #else
 	CEngine* GetEngine();
 #endif
 
 	// 添加编辑器引擎
 #if EDITOR_ENGINE
-	class CEditorEngine* GetEditorEngine();
+	class CEditorEngine* GetEditorEngine() const;
 #endif // 0
 };
 
@@ -60,38 +66,41 @@ public:
 struct IDirectXDeviceInterface_Struct
 {
 public:
-	ComPtr<ID3D12Fence> GetFence();
-	ComPtr<ID3D12Device> GetD3dDevice();
+	ComPtr<ID3D12Fence> GetFence() const;
+	ComPtr<ID3D12Device> GetD3dDevice() const;
 
-	CLightManager* GetLightManager();
-	CMeshManager* GetMeshManager();
-	CWorld* GetWorld();
+	CLightManager* GetLightManager() const;
+	CMeshManager* GetMeshManager() const;
+	CWorld* GetWorld() const;
 
-	ComPtr<ID3D12GraphicsCommandList> GetGraphicsCommandList();
-	ComPtr<ID3D12CommandAllocator> GetCommandAllocator();
-	ComPtr<ID3D12CommandQueue> GetCommandQueue();
+	ComPtr<ID3D12GraphicsCommandList> GetGraphicsCommandList() const;
+	ComPtr<ID3D12CommandAllocator> GetCommandAllocator() const;
+	ComPtr<ID3D12CommandQueue> GetCommandQueue() const;
 
-	ID3D12DescriptorHeap* GetRTVHeap();
+	ID3D12DescriptorHeap* GetRTVHeap() const;
 
-	ID3D12DescriptorHeap* GetDSVHeap();
+	ID3D12DescriptorHeap* GetDSVHeap() const;
 
-	UINT GetDescriptorHandleIncrementSizeByDSV();
+	UINT GetDescriptorHandleIncrementSizeByDSV() const;
 
-	UINT GetDescriptorHandleIncrementSizeByRTV();
+	UINT GetDescriptorHandleIncrementSizeByRTV() const;
 
-	UINT GetDescriptorHandleIncrementSizeByCBV_SRV_UAV();
+	UINT GetDescriptorHandleIncrementSizeByCBV_SRV_UAV() const;
 
-	UINT64 GetCurrentFenceIndex();
-	HWND GetMianWindowsHandle();
+	UINT64 GetCurrentFenceIndex() const;
+	HWND GetMainWindowsHandle() const;
 
+protected:
+	FRenderingPipeline* GetRenderingPipeline() const;
+	FRenderLayerManager* GetRenderLayerManager() const;
 #if defined(_WIN32)
-	CWindowsEngine* GetEngine();
+	CWindowsEngine* GetEngine() const;
 #else
-	CEngine* GetEngine();
+	CEngine* GetEngine() const;
 #endif
 
 #if EDITOR_ENGINE
-	class CEditorEngine* GetEditorEngine();
+	class CEditorEngine* GetEditorEngine() const;
 #endif // 0
 
 private:

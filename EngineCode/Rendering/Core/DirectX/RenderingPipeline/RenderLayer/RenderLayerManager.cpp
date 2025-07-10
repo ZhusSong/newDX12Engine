@@ -5,6 +5,7 @@
 #include "RenderLayer/BackgroundRenderLayer.h"
 #include "RenderLayer/OpaqueReflectorRenderLayer.h"
 #include "RenderLayer/OpaqueShadowRenderLayer.h"
+#include "RenderLayer/SelectRenderLayer.h"
 
 std::vector<std::shared_ptr<FRenderLayer>> FRenderLayerManager::RenderLayers;
 
@@ -12,9 +13,9 @@ FRenderLayerManager::FRenderLayerManager()
 {
 	RenderLayers.clear();
 
+	CreateRenderLayer<FSelectRenderLayer>();
 	CreateRenderLayer<FOpaqueShadowRenderLayer>();
 	CreateRenderLayer<FBackgroundRenderLayer>();
-	//CreateRenderLayer<FAlphaTestRenderLayer>();
 	CreateRenderLayer<FOpaqueRenderLayer>();
 	CreateRenderLayer<FTransparentRenderLayer>();
 	CreateRenderLayer<FOpaqueReflectorRenderLayer>();
@@ -95,6 +96,29 @@ std::shared_ptr<FRenderLayer> FRenderLayerManager::FindByRenderLayer(int InRende
 	return NULL;
 }
 
+void FRenderLayerManager::Add(int InLayer, std::weak_ptr<FRenderingData> InRenderingData)
+{
+	if (auto Layer = FindByRenderLayer(InLayer))
+	{
+		Layer->Add(InRenderingData);
+	}
+}
+
+void FRenderLayerManager::Remove(int InLayer, std::weak_ptr<FRenderingData> InRenderingData)
+{
+	if (auto Layer = FindByRenderLayer(InLayer))
+	{
+		Layer->Remove(InRenderingData);
+	}
+}
+
+void FRenderLayerManager::Clear(int InLayer)
+{
+	if (auto Layer = FindByRenderLayer(InLayer))
+	{
+		Layer->Clear();
+	}
+}
 void FRenderLayerManager::PreDraw(float DeltaTime)
 {
 	for (auto& Tmp : RenderLayers)

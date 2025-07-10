@@ -228,3 +228,34 @@ void FRenderLayer::DrawMesh(float DeltaTime, ERenderingConditions RC)
 		DrawObject(DeltaTime, InRenderingData, RC);
 	}
 }
+
+
+void FRenderLayer::Add(std::weak_ptr<FRenderingData> InRenderingData)
+{
+	RenderDatas.push_back(InRenderingData);
+}
+
+void FRenderLayer::Remove(std::weak_ptr<FRenderingData> InRenderingData)
+{
+	if (!InRenderingData.expired())
+	{
+		for (vector<std::weak_ptr<FRenderingData>>::const_iterator Iter = RenderDatas.begin();
+			Iter != RenderDatas.end();
+			++Iter)
+		{
+			if (!Iter->expired())
+			{
+				if (Iter->lock() == InRenderingData.lock())
+				{
+					RenderDatas.erase(Iter);
+					break;
+				}
+			}
+		}
+	}
+}
+
+void FRenderLayer::Clear()
+{
+	RenderDatas.clear();
+}

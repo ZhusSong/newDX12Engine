@@ -32,6 +32,10 @@ public:
 	virtual void PreDraw(float DeltaTime);
 	virtual void Draw(float DeltaTime);
 	virtual void PostDraw(float DeltaTime);
+
+public:
+	FRenderLayerManager* GetRenderLayer() const { return const_cast<FRenderLayerManager*>(&RenderLayer); }
+
 protected:
 
 	// 渲染层级

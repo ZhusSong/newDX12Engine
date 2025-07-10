@@ -88,7 +88,7 @@ public:
 
 	CMeshComponent* CreateMeshComponent(const FCreateObjectParam& InObjectParam, string& InPath);
 
-	FRenderingPipeline& GetRenderingPipeline() { return RenderingPipeline; }
+	FRenderingPipeline* GetRenderingPipeline() const { return const_cast<FRenderingPipeline*>(&RenderingPipeline); }
 
 
 protected:

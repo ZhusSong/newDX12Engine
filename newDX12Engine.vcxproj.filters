@@ -832,6 +832,9 @@
     <ClCompile Include="EngineCode\Collision\CollisionSceneQuery.cpp">
       <Filter>EngineCode\Collision</Filter>
     </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\SelectRenderLayer.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\RednerLayer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="simple_library\public\simple_library.h">
@@ -1389,6 +1392,9 @@
     <ClInclude Include="EngineCode\Collision\CollisionSceneQuery.h">
       <Filter>EngineCode\Collision</Filter>
     </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\SelectRenderLayer.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\RednerLayer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\VertexShader.hlsl">
@@ -1401,6 +1407,9 @@
       <Filter>Shader</Filter>
     </FxCompile>
     <FxCompile Include="Shader\OmnidirectionalShadow.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\SelectShader.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
   </ItemGroup>

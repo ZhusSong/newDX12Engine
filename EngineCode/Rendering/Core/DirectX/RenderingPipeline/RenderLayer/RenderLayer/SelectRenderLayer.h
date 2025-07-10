@@ -1,19 +1,17 @@
 ﻿
-//25.6.17 李
+//25.7.10 李
 #pragma once
 #include "../Core/RenderLayer.h"
 
-class FWireframeRenderLayer :public FRenderLayer
+class FSelectRenderLayer :public FRenderLayer
 {
 	typedef FRenderLayer Super;
 public:
-	FWireframeRenderLayer();
+	FSelectRenderLayer();
 
 	virtual void Draw(float DeltaTime);
 
 	virtual void BuildShader();
-
-	virtual int GetRenderLayerType() const { return 4; }
-
 	virtual void BuildPSO();
+	virtual int GetRenderLayerType() const { return 9; }
 };
