@@ -1,11 +1,13 @@
 ﻿#include "EditorEngine.h"
 #include "LogEditor/LogEditor.h"
 #include "ToolbarEditor/ToolbarEditor.h"
+#include "OutLineEditor/OutLineEditor.h"
 
 CEditorEngine::CEditorEngine()
 {
 	ToolbarEditor = new FToolbarEditor();
 	LogEditor = new FLogEditor();
+	OutLineEditor = new FOutLineEditor();
 }
 
 int CEditorEngine::PreInit(
@@ -54,6 +56,7 @@ void CEditorEngine::BuildEditor()
 
 	ToolbarEditor->BuildEditor();
 	LogEditor->BuildEditor();
+	OutLineEditor->BuildEditor();
 }
 
 void CEditorEngine::DrawEditor(float DeltaTime)
@@ -69,12 +72,14 @@ void CEditorEngine::DrawEditor(float DeltaTime)
 
 	ToolbarEditor->DrawEditor(DeltaTime);
 	LogEditor->DrawEditor(DeltaTime);
+	OutLineEditor->DrawEditor(DeltaTime);
 }
 
 void CEditorEngine::ExitEditor()
 {
 	ToolbarEditor->ExitEditor();
 	LogEditor->ExitEditor();
+	OutLineEditor->ExitEditor();
 }
 
 void CEditorEngine::DrawLayer(float DeltaTime)

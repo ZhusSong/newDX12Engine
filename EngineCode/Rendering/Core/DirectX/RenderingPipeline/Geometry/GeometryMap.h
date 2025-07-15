@@ -12,6 +12,12 @@ class CMaterial;
 struct FRenderingTexture;
 class CFogComponent;
 
+enum EFindValueType
+{
+	TYPE_IN_PROGRAM,
+	TYPE_COMPLETE,
+};
+
 // 几何体描述
 struct FGeometry :public IDirectXDeviceInterface_Struct
 {
@@ -33,6 +39,10 @@ struct FGeometry :public IDirectXDeviceInterface_Struct
 	// 得到顶点与索引缓冲区视图
 	D3D12_VERTEX_BUFFER_VIEW GetVertexBufferView();
 	D3D12_INDEX_BUFFER_VIEW GetIndexBufferView();
+
+public:
+	static void FindRenderingDatas(std::function<EFindValueType(std::shared_ptr<FRenderingData>&)> InFun);
+
 protected:
 	ComPtr<ID3DBlob> CPUVertexBufferPtr;
 	ComPtr<ID3DBlob> CPUIndexBufferPtr;

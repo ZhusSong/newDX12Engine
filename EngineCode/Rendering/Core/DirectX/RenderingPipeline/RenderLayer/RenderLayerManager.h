@@ -4,7 +4,10 @@
 #include "../../../../../Interface/DirectXDeviceInterface.h"
 #include "Core/RenderLayer.h"
 
-class FRenderLayerManager
+class GActorObject;
+class CComponent;
+struct FRenderingData;
+class FRenderLayerManager :public IDirectXDeviceInterface
 {
 	friend class FRenderLayer;
 	friend struct FGeometry;
@@ -27,6 +30,12 @@ public:
 
 
 	virtual void BuildPSO();
+
+	virtual void HighlightDisplayObject(GActorObject* InObject);
+	virtual void HighlightDisplayObject(std::weak_ptr<FRenderingData> RenderingData);
+	virtual void HighlightDisplayObject(CComponent* RenderingData);
+
+
 	// 排序
 	virtual void Sort();
 	// 单独设置PSO

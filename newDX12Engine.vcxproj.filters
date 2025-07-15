@@ -377,6 +377,12 @@
     <Filter Include="EngineCode\Collision">
       <UniqueIdentifier>{d4b4a213-ca51-42f1-bfc8-2c03daf4f3dd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="EditorEngine\OutlineEditor">
+      <UniqueIdentifier>{a5b175e7-f86e-443f-9e5a-2e758be3e3dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{9f8b1f54-dddf-4737-a823-0122d289d297}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="simple_library\private\simple_math\transformation\matrix\matrix_2x2.cpp">
@@ -831,6 +837,12 @@
     </ClCompile>
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\SelectRenderLayer.cpp">
       <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\RednerLayer</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorEngine\OutLineEditor\OutLineEditor.cpp">
+      <Filter>EditorEngine\OutlineEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\EngineVariableTable.cpp">
+      <Filter>Common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1388,6 +1400,12 @@
     </ClInclude>
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\SelectRenderLayer.h">
       <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\RednerLayer</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorEngine\OutLineEditor\OutLineEditor.h">
+      <Filter>EditorEngine\OutlineEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\EngineVariableTable.h">
+      <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

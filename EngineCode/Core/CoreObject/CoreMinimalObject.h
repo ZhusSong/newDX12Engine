@@ -22,13 +22,17 @@ public:
 
 
 	FORCEINLINE CCoreMinimalObject* GetOuter() const { return Outer; }
+
+	FORCEINLINE std::string GetName() const { return Name; }
 	void SetOuter(CCoreMinimalObject* InNewOuter) { Outer = InNewOuter; }
+	void Rename(const std::string& InName) { Name = InName; }
 protected:
 	bool bTick;
 
 
 	// 外层对象
 	CCoreMinimalObject* Outer;
+	std::string Name;
 
 };
 

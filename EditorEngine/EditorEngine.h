@@ -41,4 +41,5 @@ public:
 protected:
 	class FToolbarEditor* ToolbarEditor;
 	class FLogEditor* LogEditor;
+	class FOutLineEditor* OutLineEditor;
 };

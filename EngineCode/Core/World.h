@@ -24,6 +24,13 @@ public:
 	{
 		T* InArray = new T();
 		InArray->SetOuter(this);
+
+
+		char ObjectName[128] = { 0 };
+		sprintf(ObjectName, "Actor_%d", ActorObjects.size());
+
+		InArray->Rename(ObjectName);
+
 		ActorObjects.push_back(InArray);
 
 		return InArray;
@@ -33,6 +40,7 @@ public:
 	bool LineTraceBySingle(FCollisionResult& OutResult, const fvector_3d& InStart, const fvector_3d& InEnd);
 
 
+	const vector<GActorObject*>& GetActors() const { return ActorObjects; }
 protected:
 	CVARIABLE()
 		GCamera* Camera;
