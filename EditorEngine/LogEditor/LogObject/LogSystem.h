@@ -3,6 +3,7 @@
 #include "../../../imgui/imgui.h"
 #include "../../../simple_library/public/simple_library.h"
 
+// 日志对象
 class FEditorLogSystem
 {
 	friend class FLogEditor;
@@ -34,7 +35,7 @@ protected:
 	void HandleBackstageLog(e_error InColorID, int InOldSize);
 protected:
 	ImGuiTextBuffer TextBuff;//字体buff 里面存储字体 用/n来区分
-	ImGuiTextFilter TextFikter;//字体过滤器 用于查询
+	ImGuiTextFilter TextFilter;//字体过滤器 用于查询
 	ImVector<int>	LineOffsets;//每一段字体的偏移，用 /n来区分
 	ImVector<e_error>	PreLineColor; //每一行的颜色
 	bool bAutoScroll;//自动更新到最新日志

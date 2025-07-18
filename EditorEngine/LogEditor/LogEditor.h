@@ -2,6 +2,7 @@
 #pragma once
 #include "../Core/EditorBase.h"
 
+// 日志
 class FLogEditor :public FEditorBase
 {
 public:
