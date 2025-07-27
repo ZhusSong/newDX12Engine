@@ -143,7 +143,7 @@ void FEditorLogSystem::Draw(float DeltaTime)
 
         ImGui::SameLine();
 
-        TextFikter.Draw("LogFilter", -100.0f);
+        TextFilter.Draw("LogFilter", -100.0f);
     }
 
     const char* TextBuffStart = TextBuff.begin();
@@ -154,14 +154,14 @@ void FEditorLogSystem::Draw(float DeltaTime)
     ImGui::BeginChild("LogScrolling", ImVec2(0, 0), false, ImGuiWindowFlags_HorizontalScrollbar);
 
     // 日志筛选器
-    if (TextFikter.IsActive())
+    if (TextFilter.IsActive())
     {
         for (int i = 0; i < LineOffsets.Size; i++)
         {
             const char* LineStart = TextBuffStart + LineOffsets[i];
             const char* LineEnd = (i + 1 < LineOffsets.Size) ? (TextBuffStart + LineOffsets[i + 1] - 1) : TextBuffEnd;
 
-            if (TextFikter.PassFilter(LineStart, LineEnd))
+            if (TextFilter.PassFilter(LineStart, LineEnd))
             {
                 ImGui::PushStyleColor(ImGuiCol_Text, GetColor(PreLineColor[i]));
                 ImGui::TextUnformatted(LineStart, LineEnd);
