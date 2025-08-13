@@ -1,2 +1,0 @@
-﻿E:\VS2022 IDE\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: 中间目录(H:\RiDX12Engine\Intermediate\Other\)包含从另一个项目(DX12EngineBuildingTool.vcxproj, EngineSimpleLibrary.vcxproj, newDX12Engine.vcxproj)共享的文件。   这会导致错误的清除和重新生成行为。
-  DX12EngineModelTool.vcxproj -> H:\RiDX12Engine\Binaries\Win64\DX12EngineModelTool.lib
