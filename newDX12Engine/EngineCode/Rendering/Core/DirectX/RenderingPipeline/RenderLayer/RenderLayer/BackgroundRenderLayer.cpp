@@ -19,11 +19,12 @@ void FBackgroundRenderLayer::BuildShader()
 	//VertexShader.BuildShaders(L"../newDX12Engine/x64/Debug/Shader/Sky.hlsl", "VertexShaderMain", "vs_5_1", D3DShaderMacro.data());
 	//PixelShader.BuildShaders(L"../newDX12Engine/x64/Debug/Shader/Sky.hlsl", "PixelShaderMain", "ps_5_1", D3DShaderMacro.data());
 
-	VertexShader.BuildShaderByName(L"Sky.hlsl", "VertexShaderMain", "vs_5_1", D3DShaderMacro.data());
-	PixelShader.BuildShaderByName(L"Sky.hlsl", "PixelShaderMain", "ps_5_1", D3DShaderMacro.data());
+	//VertexShader.BuildShaderByName(L"Sky.hlsl", "VertexShaderMain", "vs_5_1", D3DShaderMacro.data());
+	//PixelShader.BuildShaderByName(L"Sky.hlsl", "PixelShaderMain", "ps_5_1", D3DShaderMacro.data());
 
-	//VertexShader.BuildShaders(L"../newDX12Engine/Shader/Sky.hlsl", "VertexShaderMain", "vs_5_1", D3DShaderMacro.data());
-	//PixelShader.BuildShaders(L"../newDX12Engine/Shader/Sky.hlsl", "PixelShaderMain", "ps_5_1", D3DShaderMacro.data());
+	VertexShader.BuildShaders(L"../newDX12Engine/Shader/Sky.hlsl", "VertexShaderMain", "vs_5_1", D3DShaderMacro.data());
+	PixelShader.BuildShaders(L"../newDX12Engine/Shader/Sky.hlsl", "PixelShaderMain", "ps_5_1", D3DShaderMacro.data());
+	
 	DirectXPipelineState->BindShader(VertexShader, PixelShader);
 
 	// 输入布局

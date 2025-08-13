@@ -1,7 +1,7 @@
 ﻿// 25.7.7 李
 #pragma once
 #include "../../../imgui/imgui.h"
-#include "../../../simple_library/public/simple_library.h"
+#include "simple_library/public/simple_library.h"
 
 // 日志对象
 class FEditorLogSystem

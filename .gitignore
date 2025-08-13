@@ -34,3 +34,5 @@
 /ReferCodes
 x64/
 log/
+Intermediate/Other/*
+Binaries/Win64/*

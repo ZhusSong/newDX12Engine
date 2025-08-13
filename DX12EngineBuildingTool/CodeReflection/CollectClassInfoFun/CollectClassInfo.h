@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../simple_library/public/simple_library.h"
+#include "../../DX12EngineBuildingTool.h"
 #include "../CppSourceCodeType.h"
 
 namespace CollectClassInfo

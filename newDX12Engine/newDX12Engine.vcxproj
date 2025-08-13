@@ -140,38 +140,6 @@
     <ClCompile Include="imgui\imgui_draw.cpp" />
     <ClCompile Include="imgui\imgui_tables.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
-    <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_core\simple_c_array\simple_c_array_string.c" />
-    <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_core\simple_c_string_algorithm\string_algorithm.c" />
-    <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_guid\simple_guid.c" />
-    <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_helper_file\simple_file_helper.c" />
-    <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_path\simple_c_path.c" />
-    <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_time\simple_c_time.c" />
-    <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_windows\simple_c_windows_register.c" />
-    <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_windows\simple_c_windows_setting.c" />
-    <ClCompile Include="simple_library\private\simple_cpp_core_minimal\simple_cpp_string_algorithm\simple_cpp_string_algorithm.cpp" />
-    <ClCompile Include="simple_library\private\simple_c_log\simple_c_log.c" />
-    <ClCompile Include="simple_library\private\simple_image\simple_image.cpp" />
-    <ClCompile Include="simple_library\private\simple_math\math_utils.cpp" />
-    <ClCompile Include="simple_library\private\simple_math\simple_math.c" />
-    <ClCompile Include="simple_library\private\simple_math\transformation\matrix\matrix_2x2.cpp" />
-    <ClCompile Include="simple_library\private\simple_math\transformation\matrix\matrix_3x3.cpp" />
-    <ClCompile Include="simple_library\private\simple_math\transformation\matrix\matrix_4x3.cpp" />
-    <ClCompile Include="simple_library\private\simple_math\transformation\matrix\matrix_4x4.cpp" />
-    <ClCompile Include="simple_library\private\simple_math\transformation\primitives\line.cpp" />
-    <ClCompile Include="simple_library\private\simple_math\transformation\primitives\triangle.cpp" />
-    <ClCompile Include="simple_library\private\simple_math\transformation\quaternion\quat.cpp" />
-    <ClCompile Include="simple_library\private\simple_math\transformation\rotator\rotator.cpp" />
-    <ClCompile Include="simple_library\private\simple_math\transformation\vector\vector_2d.cpp" />
-    <ClCompile Include="simple_library\private\simple_math\transformation\vector\vector_2id.cpp" />
-    <ClCompile Include="simple_library\private\simple_math\transformation\vector\vector_3d.cpp" />
-    <ClCompile Include="simple_library\private\simple_math\transformation\vector\vector_3id.cpp" />
-    <ClCompile Include="simple_library\private\simple_math\transformation\vector\vector_4d.cpp" />
-    <ClCompile Include="simple_library\private\simple_math\transformation\vector\vector_4id.cpp" />
-    <ClCompile Include="simple_library\private\simple_math\transformation\vector\vector_color.cpp" />
-    <ClCompile Include="simple_library\third_party_library\tinyxml\tinystr.cpp" />
-    <ClCompile Include="simple_library\third_party_library\tinyxml\tinyxml.cpp" />
-    <ClCompile Include="simple_library\third_party_library\tinyxml\tinyxmlerror.cpp" />
-    <ClCompile Include="simple_library\third_party_library\tinyxml\tinyxmlparser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common\EngineVariableTable.h" />
@@ -309,52 +277,6 @@
     <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="imgui\libs\glfw\include\GLFW\glfw3.h" />
     <ClInclude Include="imgui\libs\glfw\include\GLFW\glfw3native.h" />
-    <ClInclude Include="simple_library\public\simple_array\simple_hash_array.h" />
-    <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_core\simple_core_minimal.h" />
-    <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_core\simple_c_array\Core\simple_array_c_macro.h" />
-    <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_core\simple_c_array\simple_c_array.h" />
-    <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_core\simple_c_array\simple_c_array_string.h" />
-    <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_core\simple_c_string_algorithm\string_algorithm.h" />
-    <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_guid\simple_guid.h" />
-    <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_helper_file\simple_file_helper.h" />
-    <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_path\simple_path.h" />
-    <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_time\simple_c_locale_list.h" />
-    <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_time\simple_c_time.h" />
-    <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_windows\simple_c_windows_register.h" />
-    <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_windows\simple_c_windows_setting.h" />
-    <ClInclude Include="simple_library\public\simple_cpp_core_minimal\shared\simple_cpp_shared_ptr.h" />
-    <ClInclude Include="simple_library\public\simple_cpp_core_minimal\shared\simple_cpp_shared_ptr_type.h" />
-    <ClInclude Include="simple_library\public\simple_cpp_core_minimal\simple_cpp_core_minimal.h" />
-    <ClInclude Include="simple_library\public\simple_cpp_core_minimal\simple_cpp_string_algorithm\simple_cpp_string_algorithm.h" />
-    <ClInclude Include="simple_library\public\simple_c_log\simple_c_log.h" />
-    <ClInclude Include="simple_library\public\simple_delegate\simple_delegate.h" />
-    <ClInclude Include="simple_library\public\simple_image\Core\simple_image_bmp.h" />
-    <ClInclude Include="simple_library\public\simple_image\Core\simple_image_type.h" />
-    <ClInclude Include="simple_library\public\simple_image\simple_image.h" />
-    <ClInclude Include="simple_library\public\simple_library.h" />
-    <ClInclude Include="simple_library\public\simple_library_macro.h" />
-    <ClInclude Include="simple_library\public\simple_math\math_libray.hpp" />
-    <ClInclude Include="simple_library\public\simple_math\math_utils.h" />
-    <ClInclude Include="simple_library\public\simple_math\simple_core_math.h" />
-    <ClInclude Include="simple_library\public\simple_math\simple_math.h" />
-    <ClInclude Include="simple_library\public\simple_math\transformation\matrix\matrix_2x2.h" />
-    <ClInclude Include="simple_library\public\simple_math\transformation\matrix\matrix_3x3.h" />
-    <ClInclude Include="simple_library\public\simple_math\transformation\matrix\matrix_4x3.h" />
-    <ClInclude Include="simple_library\public\simple_math\transformation\matrix\matrix_4x4.h" />
-    <ClInclude Include="simple_library\public\simple_math\transformation\primitives\line.h" />
-    <ClInclude Include="simple_library\public\simple_math\transformation\primitives\triangle.h" />
-    <ClInclude Include="simple_library\public\simple_math\transformation\quaternion\quat.h" />
-    <ClInclude Include="simple_library\public\simple_math\transformation\rotator\rotator.h" />
-    <ClInclude Include="simple_library\public\simple_math\transformation\vector\vector_2d.h" />
-    <ClInclude Include="simple_library\public\simple_math\transformation\vector\vector_2id.h" />
-    <ClInclude Include="simple_library\public\simple_math\transformation\vector\vector_3d.h" />
-    <ClInclude Include="simple_library\public\simple_math\transformation\vector\vector_3id.h" />
-    <ClInclude Include="simple_library\public\simple_math\transformation\vector\vector_4d.h" />
-    <ClInclude Include="simple_library\public\simple_math\transformation\vector\vector_4id.h" />
-    <ClInclude Include="simple_library\public\simple_math\transformation\vector\vector_color.h" />
-    <ClInclude Include="simple_library\third_party_library\nlohmann\json.hpp" />
-    <ClInclude Include="simple_library\third_party_library\tinyxml\tinystr.h" />
-    <ClInclude Include="simple_library\third_party_library\tinyxml\tinyxml.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shader\Light.hlsli">
@@ -487,26 +409,26 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir);$(IncludePath);$(SolutionDir)DX12EngineModelTool;$(SolutionDir)newDX12Engine\imgui</IncludePath>
+    <IncludePath>$(ProjectDir);$(IncludePath);$(SolutionDir)EngineSimpleLibrary;$(SolutionDir)DX12EngineModelTool;$(SolutionDir)newDX12Engine\imgui</IncludePath>
     <LibraryPath>$(SolutionDir)Binaries\Win64;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)Binaries\Win64\</OutDir>
     <IntDir>$(SolutionDir)Intermediate\Other\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LibraryPath>$(SolutionDir)Binaries\Win64;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(ProjectDir);$(IncludePath);$(SolutionDir)DX12EngineModelTool;$(SolutionDir)newDX12Engine\imgui</IncludePath>
+    <IncludePath>$(ProjectDir);$(IncludePath);$(SolutionDir)EngineSimpleLibrary;$(SolutionDir)DX12EngineModelTool;$(SolutionDir)newDX12Engine\imgui</IncludePath>
     <OutDir>$(SolutionDir)Binaries\Win64\</OutDir>
     <IntDir>$(SolutionDir)Intermediate\Other\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LibraryPath>$(SolutionDir)Binaries\Win64;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(ProjectDir);$(IncludePath);$(SolutionDir)DX12EngineModelTool;$(SolutionDir)newDX12Engine\imgui</IncludePath>
+    <IncludePath>$(ProjectDir);$(IncludePath);$(SolutionDir)EngineSimpleLibrary;$(SolutionDir)DX12EngineModelTool;$(SolutionDir)newDX12Engine\imgui</IncludePath>
     <OutDir>$(SolutionDir)Binaries\Win64\</OutDir>
     <IntDir>$(SolutionDir)Intermediate\Other\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LibraryPath>$(SolutionDir)Binaries\Win64;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(ProjectDir);$(IncludePath);$(SolutionDir)DX12EngineModelTool;$(SolutionDir)newDX12Engine\imgui</IncludePath>
+    <IncludePath>$(ProjectDir);$(IncludePath);$(SolutionDir)EngineSimpleLibrary;$(SolutionDir)DX12EngineModelTool;$(SolutionDir)newDX12Engine\imgui</IncludePath>
     <OutDir>$(SolutionDir)Binaries\Win64\</OutDir>
     <IntDir>$(SolutionDir)Intermediate\Other\</IntDir>
   </PropertyGroup>
@@ -520,6 +442,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -536,6 +459,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -551,6 +475,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <StackReserveSize>52428800</StackReserveSize>
       <StackCommitSize>52428800</StackCommitSize>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -567,6 +492,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

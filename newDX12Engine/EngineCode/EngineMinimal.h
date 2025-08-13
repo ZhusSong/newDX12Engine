@@ -13,7 +13,10 @@
 
 
 // 定义了需要加载的头文件
-#include "../simple_library/public/simple_library.h"
+#include "simple_library/public/simple_library.h"
+#pragma comment(lib, "EngineSimpleLibrary.lib")
+
+
 #include "Debug/Log/SimpleLog.h"
 
 #include "../imgui/imgui.h"

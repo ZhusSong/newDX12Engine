@@ -69,31 +69,31 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)DX12EngineModelTool\ThirdPartyLibrary\FBX\include;$(ProjectDir);$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)DX12EngineModelTool\ThirdPartyLibrary\FBX\lib\vs2019\x64\debug;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)DX12EngineModelTool\ThirdPartyLibrary\FBX\include;$(SolutionDir)EngineSimpleLibrary;$(ProjectDir);$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)DX12EngineModelTool\ThirdPartyLibrary\FBX\lib\vs2019\x64\debug;$(SolutionDir)Binaries\Win64;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)Binaries\Win64\</OutDir>
     <ExecutablePath>$(VC_ExecutablePath_x64);$(CommonExecutablePath)</ExecutablePath>
     <ReferencePath>$(VC_ReferencesPath_x64)</ReferencePath>
     <IntDir>$(SolutionDir)Intermediate\Other\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)DX12EngineModelTool\ThirdPartyLibrary\FBX\include;$(ProjectDir);$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)DX12EngineModelTool\ThirdPartyLibrary\FBX\lib\vs2019\x64\debug;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)DX12EngineModelTool\ThirdPartyLibrary\FBX\include;$(SolutionDir)EngineSimpleLibrary;$(ProjectDir);$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)DX12EngineModelTool\ThirdPartyLibrary\FBX\lib\vs2019\x64\debug;$(SolutionDir)Binaries\Win64;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)Binaries\Win64\</OutDir>
     <ExecutablePath>$(VC_ExecutablePath_x64);$(CommonExecutablePath)</ExecutablePath>
     <ReferencePath>$(VC_ReferencesPath_x64)</ReferencePath>
     <IntDir>$(SolutionDir)Intermediate\Other\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)DX12EngineModelTool\ThirdPartyLibrary\FBX\include;$(ProjectDir);$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)DX12EngineModelTool\ThirdPartyLibrary\FBX\lib\vs2019\x64\debug;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)DX12EngineModelTool\ThirdPartyLibrary\FBX\include;$(SolutionDir)EngineSimpleLibrary;$(ProjectDir);$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)DX12EngineModelTool\ThirdPartyLibrary\FBX\lib\vs2019\x64\debug;$(SolutionDir)Binaries\Win64;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)Binaries\Win64\</OutDir>
     <ReferencePath>$(VC_ReferencesPath_x64)</ReferencePath>
     <IntDir>$(SolutionDir)Intermediate\Other\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)DX12EngineModelTool\ThirdPartyLibrary\FBX\include;$(ProjectDir);$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)DX12EngineModelTool\ThirdPartyLibrary\FBX\lib\vs2019\x64\debug;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)DX12EngineModelTool\ThirdPartyLibrary\FBX\include;$(SolutionDir)EngineSimpleLibrary;$(ProjectDir);$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)DX12EngineModelTool\ThirdPartyLibrary\FBX\lib\vs2019\x64\debug;$(SolutionDir)Binaries\Win64;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)Binaries\Win64\</OutDir>
     <ReferencePath>$(VC_ReferencesPath_x64)</ReferencePath>
     <IntDir>$(SolutionDir)Intermediate\Other\</IntDir>
@@ -168,6 +168,7 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
   <ItemGroup>
+    <ClInclude Include="DX12EngineModelTool.h" />
     <ClInclude Include="FBXSDK.h" />
     <ClInclude Include="ThirdPartyLibrary\FBX\include\fbxsdk\core\arch\fbxalloc.h" />
     <ClInclude Include="ThirdPartyLibrary\FBX\include\fbxsdk\core\arch\fbxarch.h" />

@@ -116,13 +116,13 @@ namespace CollectClassInfo
 		std::vector<std::string> StringArray;
 		simple_cpp_helper_file::load_file_to_strings(Paths, StringArray);
 
-		// ±éÀúÃ¿Ò»ĞĞ´úÂë
+		// éå†æ¯ä¸€è¡Œä»£ç 
 		for (int i = 0; i < StringArray.size(); i++)
 		{
 			string& Row = StringArray[i];
 			char* RowPtr = const_cast<char*>(Row.c_str());
 
-			// °üº¬
+			// åŒ…å«
 			auto Contain = [&](const char* InSubString)->bool
 				{
 					return simple_cpp_string_algorithm::string_contain(Row, InSubString);
@@ -133,7 +133,7 @@ namespace CollectClassInfo
 				ClassAnalysis.CodeLine = i + 1;
 			}
 
-			// »ñÈ¡ÀàÃûºÍ¼Ì³ĞÃû
+			// è·å–ç±»åå’Œç»§æ‰¿å
 			if ((Contain("\tclass") || Contain("class")) &&
 				Contain(":") &&
 				(Contain("protected") || Contain("private") || Contain("public")))
@@ -154,7 +154,7 @@ namespace CollectClassInfo
 
 					split(RowPtr, SpaceString, L, R, false);
 
-					// APIÃû³Æ
+					// APIåç§°
 					ClassAnalysis.APIName = L;
 
 					Row = R;
@@ -163,12 +163,12 @@ namespace CollectClassInfo
 				vector<string> ElementStr;
 				simple_cpp_string_algorithm::parse_into_vector_array(RowPtr, ElementStr, ColonString);
 
-				// Èç¹ûÇ°ºóÓĞ¿Õ¸ñ ¾Í°ÑËüĞŞ¼ôÁË
+				// å¦‚æœå‰åæœ‰ç©ºæ ¼ å°±æŠŠå®ƒä¿®å‰ªäº†
 				trim_start_and_end_inline(const_cast<char*>(ElementStr[0].c_str()));
 
 				ClassAnalysis.ClassName = ElementStr[0];
 
-				// ¿¼ÂÇµ½¶à¼Ì³ĞÎÊÌâ
+				// è€ƒè™‘åˆ°å¤šç»§æ‰¿é—®é¢˜
 				// public GObject ,public Interxx
 				if (ElementStr.size() >= 2)
 				{
@@ -193,7 +193,7 @@ namespace CollectClassInfo
 				}
 			}
 
-			// »ñÈ¡±ê¼ÇµÄ³ÉÔ±º¯Êı
+			// è·å–æ ‡è®°çš„æˆå‘˜å‡½æ•°
 			if (Contain("UFUNCTION"))
 			{
 				FFunctionAnalysis FunctionAnalysis;
@@ -225,7 +225,7 @@ namespace CollectClassInfo
 						Row = L;
 					}
 
-					// È·¶¨º¯ÊıµÄ·µ»ØÀàĞÍ
+					// ç¡®å®šå‡½æ•°çš„è¿”å›ç±»å‹
 					char Tmp[1024] = { 0 };
 					{
 						//Row =  void Hello1(GObject *Context, int32 &A,float b,bool C);
@@ -253,10 +253,10 @@ namespace CollectClassInfo
 
 						split(Tmp, LeftParenthesisString, RStr, LStr, false);
 
-						// º¯ÊıÃû
+						// å‡½æ•°å
 						FunctionAnalysis.FunctionName = RStr;
 
-						// ½âÎö²ÎÊıºÍ²ÎÊıÃû
+						// è§£æå‚æ•°å’Œå‚æ•°å
 						vector<string> ElementStr;
 						simple_cpp_string_algorithm::parse_into_vector_array(LStr, ElementStr, CommaString);
 
@@ -265,13 +265,13 @@ namespace CollectClassInfo
 						//float b
 						//bool C
 
-						// ÊÕ¼¯±äÁ¿
+						// æ”¶é›†å˜é‡
 						for (std::string& Ele : ElementStr)
 						{
 							char* ElePtr = const_cast<char*>(Ele.c_str());
 
 							// int32 &A
-							// ÒÆ³ıÇ°ºó¿Õ¸ñ
+							// ç§»é™¤å‰åç©ºæ ¼
 							trim_start_and_end_inline(ElePtr);
 
 							FParamElement ParamElement;
@@ -319,7 +319,7 @@ namespace CollectClassInfo
 				}
 			}
 
-			//// »ñÈ¡±ê¼ÇµÄ³ÉÔ±±äÁ¿
+			//// è·å–æ ‡è®°çš„æˆå‘˜å˜é‡
 			if (Contain("UPROPERTY"))
 			{
 				if (Contain("CodeType"))

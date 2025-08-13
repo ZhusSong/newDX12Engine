@@ -1,7 +1,7 @@
 #pragma once
-// 25.7.15 ¿Ó
+// 25.7.15 Êùé
 
-#include "../../simple_library/public/simple_library.h"
+#include "../../DX12EngineBuildingTool.h"
 #include "../CppSourceCodeType.h"
 
 namespace IntermediateFile

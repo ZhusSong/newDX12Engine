@@ -1,16 +1,16 @@
 #pragma once
-// 25.7.15 Àî
+// 25.7.15 æ
 
-#include "../simple_library/public/simple_library.h"
+#include "../DX12EngineBuildingTool.h"
 
-// Àà²ÎÊı
+// ç±»å‚æ•°
 struct FParamElement
 {
 	
-	string Name; //²ÎÊıÃû×Ö                                                                                                          
-	bool bConst;//ÊÇ·ñÊÇconst
-	bool bPointer;//ÊÇ·ñÊÇÖ¸Õë*
-	bool bReference;//ÊÇ·ñÊÇÒıÓÃ&
+	string Name; //å‚æ•°åå­—                                                                                                          
+	bool bConst;//æ˜¯å¦æ˜¯const
+	bool bPointer;//æ˜¯å¦æ˜¯æŒ‡é’ˆ*
+	bool bReference;//æ˜¯å¦æ˜¯å¼•ç”¨&
 	string Type;//float int ...
 
 	FParamElement()
@@ -20,28 +20,28 @@ struct FParamElement
 	{}
 };
 
-// Àà±äÁ¿
+// ç±»å˜é‡
 struct FVariableAnalysis :public FParamElement
 {
 	string CodeType;
-	bool bStatic; //ÊÇ·ñÊÇ¾²Ì¬
+	bool bStatic; //æ˜¯å¦æ˜¯é™æ€
 
 	FVariableAnalysis()
 		:bStatic(false)
 	{}
 };
 
-//º¯Êı½âÎö
+//å‡½æ•°è§£æ
 struct FFunctionAnalysis
 {
-	std::vector<FParamElement> ParamArray;//º¯ÊıµÄ¾²Ì¬Öµ
-	FParamElement Return;//·µ»ØÀàĞÍ
+	std::vector<FParamElement> ParamArray;//å‡½æ•°çš„é™æ€å€¼
+	FParamElement Return;//è¿”å›ç±»å‹
 
-	string FunctionName;//º¯ÊıÃû×Ö
-	bool bStatic;//¾²Ì¬
-	bool bVirtual;//ĞéÄâ
+	string FunctionName;//å‡½æ•°åå­—
+	bool bStatic;//é™æ€
+	bool bVirtual;//è™šæ‹Ÿ
 
-	string CodeType;//´úÂëÀàĞÍ
+	string CodeType;//ä»£ç ç±»å‹
 
 	FFunctionAnalysis()
 		:bStatic(false)
@@ -49,23 +49,23 @@ struct FFunctionAnalysis
 	{}
 };
 
-//Àà½âÎö³ÉÔ±
+//ç±»è§£ææˆå‘˜
 struct FClassAnalysis
 {
-	std::vector<FFunctionAnalysis> Function;//º¯Êı
-	std::vector<FVariableAnalysis> Variable;//¶àÉÙ±äÁ¿
+	std::vector<FFunctionAnalysis> Function;//å‡½æ•°
+	std::vector<FVariableAnalysis> Variable;//å¤šå°‘å˜é‡
 
-	string APIName;//_APIµÄÃû³Æ
-	string ClassName;//ÀàÃû³Æ
+	string APIName;//_APIçš„åç§°
+	string ClassName;//ç±»åç§°
 
-	std::vector<string> InheritName;//¼Ì³ĞÕßÃû×Ö
+	std::vector<string> InheritName;//ç»§æ‰¿è€…åå­—
 
-	string CodeCPPName;//CPPÃû×Ö
-	int CodeLine;//·´Éäºê±ê¼ÇÔÚÄÄĞĞ£¿
+	string CodeCPPName;//CPPåå­—
+	int CodeLine;//åå°„å®æ ‡è®°åœ¨å“ªè¡Œï¼Ÿ
 };
 
 enum ECollectionParmType
 {
-	Type_Return,//ÊÇ·µ»Ø
-	Type_Parm,//²ÎÊı
+	Type_Return,//æ˜¯è¿”å›
+	Type_Parm,//å‚æ•°
 };

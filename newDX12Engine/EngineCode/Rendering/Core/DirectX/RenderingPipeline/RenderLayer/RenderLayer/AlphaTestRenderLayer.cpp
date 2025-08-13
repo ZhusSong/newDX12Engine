@@ -21,11 +21,11 @@ void FAlphaTestRenderLayer::BuildShader()
 	VertexShader.BuildShaders(L"../newDX12Engine/x64/Debug/Shader/VertexShader.hlsl", "VertexShaderMain", "vs_5_1", D3DShaderMacro.data());
 	PixelShader.BuildShaders(L"../newDX12Engine/x64/Debug/Shader/VertexShader.hlsl", "PixelShaderMain", "ps_5_1", D3DShaderMacro.data());*/
 
-	//	VertexShader.BuildShaders(L"../newDX12Engine/Shader/VertexShader.hlsl", "VertexShaderMain", "vs_5_1", D3DShaderMacro.data());
-		//PixelShader.BuildShaders(L"../newDX12Engine/Shader/VertexShader.hlsl", "PixelShaderMain", "ps_5_1", D3DShaderMacro.data());
+	VertexShader.BuildShaders(L"../newDX12Engine/Shader/VertexShader.hlsl", "VertexShaderMain", "vs_5_1", D3DShaderMacro.data());
+	PixelShader.BuildShaders(L"../newDX12Engine/Shader/VertexShader.hlsl", "PixelShaderMain", "ps_5_1", D3DShaderMacro.data());
 
-	VertexShader.BuildShaderByName(L"VertexShader.hlsl", "VertexShaderMain", "vs_5_1", D3DShaderMacro.data());
-	PixelShader.BuildShaderByName(L"VertexShader.hlsl", "PixelShaderMain", "ps_5_1", D3DShaderMacro.data());
+	//VertexShader.BuildShaderByName(L"VertexShader.hlsl", "VertexShaderMain", "vs_5_1", D3DShaderMacro.data());
+	//PixelShader.BuildShaderByName(L"VertexShader.hlsl", "PixelShaderMain", "ps_5_1", D3DShaderMacro.data());
 
 	
 	
