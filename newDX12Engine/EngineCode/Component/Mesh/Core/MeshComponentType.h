@@ -1,0 +1,19 @@
+﻿#pragma once
+//25.6.10 李
+enum EMeshRenderLayerType
+{
+	// 不透明
+	RENDERLAYER_OPAQUE = 0,
+	// 透明
+	RENDERLAYER_TRANSPARENT,
+	// alpha测试
+	RENDERLAYER_ALPHATEST,
+	// 背景
+	RENDERLAYER_BACKGROUND,
+	// 反射
+	RENDERLAYER_OPAQUE_REFLECTOR = 4,
+	// 阴影
+	RENDERLAYER_SHADOW_RENDER = 8,
+	// 选择
+	RENDERLAYER_SELECT = 9,
+};
