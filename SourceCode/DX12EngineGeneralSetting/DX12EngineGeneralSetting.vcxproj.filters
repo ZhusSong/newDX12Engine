@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <ItemGroup>
+        <Filter Include="Core">
+            <UniqueIdentifier>{CBAFC493-62A7-41AF-84AD-B761261156D6}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="Core\Path">
+            <UniqueIdentifier>{522160DC-6E00-40F9-9F52-1EC34CA6E396}</UniqueIdentifier>
+        </Filter>
+    </ItemGroup>
+    <ItemGroup>
+        <ClCompile Include="Core\Path\EnginePath.cpp">
+            <Filter>Core\Path</Filter>
+        </ClCompile>
+    </ItemGroup>
+    <ItemGroup>
+        <ClInclude Include="Core\Path\EnginePath.h">
+            <Filter>Core\Path</Filter>
+        </ClInclude>
+        <ClInclude Include="DX12EngineGeneralSetting.h" />
+        <ClInclude Include="DX12EngineGeneralSettingMarco.h" />
+    </ItemGroup>
+</Project>

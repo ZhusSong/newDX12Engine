@@ -1,0 +1,988 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="EngineCode">
+      <UniqueIdentifier>{768daf3e-16a5-4363-9682-9778f7a5f3bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Config">
+      <UniqueIdentifier>{a1f95a3a-e757-4da0-9e83-1559a853877b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Debug">
+      <UniqueIdentifier>{637d946e-efae-449b-9305-cc7dbedfd5d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Debug\Log">
+      <UniqueIdentifier>{0f482a60-46d8-44a3-97ea-ac3295e7df65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Windows">
+      <UniqueIdentifier>{8b805001-b059-4de4-af59-e6bbe76d35a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Core">
+      <UniqueIdentifier>{671846e0-5c13-4fc9-8230-c69b5131e746}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Math">
+      <UniqueIdentifier>{3d4b5c6b-ef3b-4023-a3ce-59e9d085117e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Mesh">
+      <UniqueIdentifier>{082ff661-4598-4724-82eb-ced851769e0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Shader">
+      <UniqueIdentifier>{09dc547f-8c0f-46b4-8957-7e057b4f364b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering">
+      <UniqueIdentifier>{a997e81a-1eee-45bb-b4ac-888f72575669}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Core">
+      <UniqueIdentifier>{90576393-c62f-4f5a-ac65-0f4f328b7656}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Mesh\Core">
+      <UniqueIdentifier>{ce55ecb1-0c7a-4ddf-8bd5-5b75b3ee7a77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Shader\Core">
+      <UniqueIdentifier>{44974a97-2b02-4ea9-a382-84d7490978be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Core\CoreObject">
+      <UniqueIdentifier>{4b611164-a374-4756-9da3-ee2346e26a14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Component">
+      <UniqueIdentifier>{5de13d9d-94b1-4ad4-9f63-24859c60df0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Component\Core">
+      <UniqueIdentifier>{c9a03d9f-9084-42ee-8071-69a72c2d3bca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\CodeReflection">
+      <UniqueIdentifier>{6fac1f18-c502-4c31-93a4-219ee86bd94c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Component\Input">
+      <UniqueIdentifier>{593733b4-dd75-4eb0-aff1-15e020f4aaec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Engine">
+      <UniqueIdentifier>{cfdb38aa-495f-4a15-a4b9-960eb85618fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Engine\Core">
+      <UniqueIdentifier>{794d5911-23e9-4660-af2f-6844b1b4b195}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Engine\DirectX">
+      <UniqueIdentifier>{f48bcb84-4ecf-4527-b092-163030b1d9d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Engine\DirectX\Core">
+      <UniqueIdentifier>{1e0498d2-76ca-4cac-9f10-846c9fcff33e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Interface">
+      <UniqueIdentifier>{ece235a9-bdf0-457a-a0fc-065ed3496d78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Core\Buffer">
+      <UniqueIdentifier>{8c987ced-4ad7-45b1-971d-15e1c9da4e78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Core\Viewport">
+      <UniqueIdentifier>{ac99bb4e-8ba6-4b5e-a161-7732867577b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Core\DirectX">
+      <UniqueIdentifier>{7728bd0a-94d5-4337-9e6f-57983418068f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline">
+      <UniqueIdentifier>{6748e046-e2c3-4d97-b8b9-1d195101f86b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\ConstantBuffer">
+      <UniqueIdentifier>{91c473c2-26cf-4fba-86f8-77dbf392bae8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DescriptorHeap">
+      <UniqueIdentifier>{e20e40fd-7503-427e-876a-a40192a231f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\Geometry">
+      <UniqueIdentifier>{f7d4f548-9897-41b5-9fc7-057f3d5a4d03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\PipelineState">
+      <UniqueIdentifier>{0b9e6db8-1198-4fba-b059-1f73e642baac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RootSignature">
+      <UniqueIdentifier>{aa0ee951-7472-4f68-9374-e385fd2f474f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Actor">
+      <UniqueIdentifier>{03b0c946-58d3-478f-a83b-7ad92263d7b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Actor\Core">
+      <UniqueIdentifier>{d2bc0840-bcfd-4168-ac7d-0dc9d071f213}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Component\Light">
+      <UniqueIdentifier>{51132f17-d2e3-41a5-b269-fb40ab8c6825}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Component\Light\Core">
+      <UniqueIdentifier>{2f190626-6446-4bf5-80b9-04cf8def866d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Actor\Light">
+      <UniqueIdentifier>{392fac8f-4761-4dd7-b17d-f119df422065}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Mesh\Core\Material">
+      <UniqueIdentifier>{0e7d84d5-8a1d-4d5e-9b47-1d3fe6e8d7dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Component\Mesh">
+      <UniqueIdentifier>{f093962b-d3d1-4b8e-b725-608a461961de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Component\Mesh\Core">
+      <UniqueIdentifier>{b296f8c3-32a0-494b-a0ff-e758fe123f79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Actor\Light\Core">
+      <UniqueIdentifier>{4338979b-2caa-4fe8-8e33-3bbc4971a389}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\DirectX12">
+      <UniqueIdentifier>{83a4da36-920e-4228-88c3-424b78decfad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Manager">
+      <UniqueIdentifier>{bb5d3e07-b5b6-426c-a3ed-9356c093d0d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer">
+      <UniqueIdentifier>{97a18296-b798-46c6-a7e8-871f635cad44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\Core">
+      <UniqueIdentifier>{0f3bee4e-a42a-4825-9707-1d16188418e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\RednerLayer">
+      <UniqueIdentifier>{2a33d062-3819-4e08-b3c0-80436d8e9db8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Core\Construction">
+      <UniqueIdentifier>{43f21d14-0769-40d3-ab08-aa2f2818b59e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Component\Sky">
+      <UniqueIdentifier>{46cbcb28-dbba-46b1-811f-ce3267abc4e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Actor\Sky">
+      <UniqueIdentifier>{f846dec3-903d-4cc0-a2fa-2dd32338c22a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\StaticSampler">
+      <UniqueIdentifier>{a7f706b5-a383-49c5-85a2-a00b17df3e5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget">
+      <UniqueIdentifier>{02ef5286-a90b-41b1-8665-eef0fc713910}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap">
+      <UniqueIdentifier>{f5442ce2-c106-40c4-a7b6-624ab703ce64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\Core">
+      <UniqueIdentifier>{51291365-8dab-4684-b11f-86db81590cf0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\DynamicCubeMap">
+      <UniqueIdentifier>{3b11e516-7ac5-4acd-9214-34a3ca4d2fe4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\DynamicShadowMap">
+      <UniqueIdentifier>{e7058d27-f335-49be-9349-9f3bd7b4010b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\Core">
+      <UniqueIdentifier>{a138d020-2c90-4ad0-b389-bfee485a8bc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="imgui">
+      <UniqueIdentifier>{125f492c-9613-46cc-86e1-e0787fecd860}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="imgui\backends">
+      <UniqueIdentifier>{873287da-5be8-42e9-ad5a-5be16d907d80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="imgui\libs">
+      <UniqueIdentifier>{cb181998-5db2-4ab7-a651-261c70df1053}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\UI">
+      <UniqueIdentifier>{8156c3ce-4b5d-43f4-9df1-6f965a405b9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EditorEngine">
+      <UniqueIdentifier>{4c824295-6f75-463c-bdd7-4d99b74741fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EditorEngine\LogEditor">
+      <UniqueIdentifier>{59cd8b8d-b398-409c-a0fb-b8037a6b958f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EditorEngine\ToolbarEditor">
+      <UniqueIdentifier>{7d8e607f-90a3-42ec-8077-1fb7a1992f93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EditorEngine\LogEditor\LogObject">
+      <UniqueIdentifier>{7e60fdf4-f346-4755-8890-3985396d8e0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EditorEngine\Core">
+      <UniqueIdentifier>{a032bb4d-151d-46fb-a11e-5779e49ade72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Library">
+      <UniqueIdentifier>{006bafab-5f8e-42dc-9bb7-5d7b9abaf2aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Collision">
+      <UniqueIdentifier>{d4b4a213-ca51-42f1-bfc8-2c03daf4f3dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EditorEngine\OutlineEditor">
+      <UniqueIdentifier>{a5b175e7-f86e-443f-9e5a-2e758be3e3dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{9f8b1f54-dddf-4737-a823-0122d289d297}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="EngineCode\Config\EngineRenderConfig.cpp">
+      <Filter>EngineCode\Config</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Windows\WindowsEngine.cpp">
+      <Filter>EngineCode\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Windows\WindowsMessageProcessing.cpp">
+      <Filter>EngineCode\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\DX12Engine.cpp">
+      <Filter>EngineCode</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\EngineFactory.cpp">
+      <Filter>EngineCode</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Math\EngineMath.cpp">
+      <Filter>EngineCode\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Mesh\BoxMesh.cpp">
+      <Filter>EngineCode\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Mesh\Core\Mesh.cpp">
+      <Filter>EngineCode\Mesh\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Mesh\Core\MeshType.cpp">
+      <Filter>EngineCode\Mesh\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Shader\Core\Shader.cpp">
+      <Filter>EngineCode\Shader\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\Rendering.cpp">
+      <Filter>EngineCode\Rendering\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Core\Engine.cpp">
+      <Filter>EngineCode\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Core\WinMainCommandParameters.cpp">
+      <Filter>EngineCode\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Core\CoreObject\CoreMinimalObject.cpp">
+      <Filter>EngineCode\Core\CoreObject</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\TransformComponent.cpp">
+      <Filter>EngineCode\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\InputComponent.cpp">
+      <Filter>EngineCode\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Core\Component.cpp">
+      <Filter>EngineCode\Component\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Core\Camera.cpp">
+      <Filter>EngineCode\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Input\InputType.cpp">
+      <Filter>EngineCode\Component\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Core\CoreObject\GuidInterface.cpp">
+      <Filter>EngineCode\Core\CoreObject</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Core\World.cpp">
+      <Filter>EngineCode\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Engine\Core\RenderingEngine.cpp">
+      <Filter>EngineCode\Rendering\Engine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\RenderingResourcesUpdate.cpp">
+      <Filter>EngineCode\Rendering\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Mesh\ConeMesh.cpp">
+      <Filter>EngineCode\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Mesh\CustomMesh.cpp">
+      <Filter>EngineCode\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Mesh\CylinderMesh.cpp">
+      <Filter>EngineCode\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Mesh\PlaneMesh.cpp">
+      <Filter>EngineCode\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Mesh\SphereMesh.cpp">
+      <Filter>EngineCode\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Mesh\Core\MeshManager.cpp">
+      <Filter>EngineCode\Mesh\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Mesh\Core\ObjectTransform.cpp">
+      <Filter>EngineCode\Mesh\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Engine\DirectX\Core\DirectXRenderingEngine.cpp">
+      <Filter>EngineCode\Rendering\Engine\DirectX\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Engine\DirectX\DirectX12RenderingEngine.cpp">
+      <Filter>EngineCode\Rendering\Engine\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Input\Input.cpp">
+      <Filter>EngineCode\Component\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Interface\DirectXDeviceInterface.cpp">
+      <Filter>EngineCode\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\Buffer\ConstructBuffer.cpp">
+      <Filter>EngineCode\Rendering\Core\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Core\Viewport\ViewportInfo.cpp">
+      <Filter>EngineCode\Core\Viewport</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Core\Viewport\ViewportTransformation.cpp">
+      <Filter>EngineCode\Core\Viewport</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Core\Viewport\Viewport.cpp">
+      <Filter>EngineCode\Core\Viewport</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\ConstantBuffer\ConstantBufferViews.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\ConstantBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DescriptorHeap\DirectXDescriptorHeap.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\DescriptorHeap</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\Geometry\RenderingData.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\PipelineState\DirectXPipelineState.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\PipelineState</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RootSignature\DirectXRootSignature.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RootSignature</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderingPipeline.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\Geometry\GeometryMap.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Actor\Core\ActorObject.cpp">
+      <Filter>EngineCode\Actor\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Light\Core\LightComponent.cpp">
+      <Filter>EngineCode\Component\Light\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Light\Core\LightConstantBuffer.cpp">
+      <Filter>EngineCode\Component\Light\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Light\ParallelLightComponent.cpp">
+      <Filter>EngineCode\Component\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Actor\Light\ParallelLight.cpp">
+      <Filter>EngineCode\Actor\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Mesh\Core\Material\Material.cpp">
+      <Filter>EngineCode\Mesh\Core\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Mesh\Core\Material\MaterialConstantBuffer.cpp">
+      <Filter>EngineCode\Mesh\Core\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Mesh\Core\Material\MaterialType.cpp">
+      <Filter>EngineCode\Mesh\Core\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Mesh\Core\MeshComponent.cpp">
+      <Filter>EngineCode\Component\Mesh\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Mesh\BoxMeshComponent.cpp">
+      <Filter>EngineCode\Component\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Mesh\ConeMeshComponent.cpp">
+      <Filter>EngineCode\Component\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Mesh\CustomMeshComponent.cpp">
+      <Filter>EngineCode\Component\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Mesh\CylinderMeshComponent.cpp">
+      <Filter>EngineCode\Component\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Mesh\PlaneMeshComponent.cpp">
+      <Filter>EngineCode\Component\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Mesh\SphereMeshComponent.cpp">
+      <Filter>EngineCode\Component\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Manager\LightManager.cpp">
+      <Filter>EngineCode\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Actor\Light\SpotLight.cpp">
+      <Filter>EngineCode\Actor\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Actor\Light\Core\Light.cpp">
+      <Filter>EngineCode\Actor\Light\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Light\SpotLightComponent.cpp">
+      <Filter>EngineCode\Component\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Light\Core\RangeLightComponent.cpp">
+      <Filter>EngineCode\Component\Light\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Actor\Light\Core\RangeLight.cpp">
+      <Filter>EngineCode\Actor\Light\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Actor\Light\PointLight.cpp">
+      <Filter>EngineCode\Actor\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Light\PointLightComponent.cpp">
+      <Filter>EngineCode\Component\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\DirectX12\DDSTextureLoader.cpp">
+      <Filter>EngineCode\Rendering\DirectX12</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\RenderingTextureResourcesUpdate.cpp">
+      <Filter>EngineCode\Rendering\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Mesh\Core\ShellMeshComponent.cpp">
+      <Filter>EngineCode\Component\Mesh\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Mesh\PipeMeshComponent.cpp">
+      <Filter>EngineCode\Component\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Mesh\PyramidMeshComponent.cpp">
+      <Filter>EngineCode\Component\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Mesh\TorusMeshComponent.cpp">
+      <Filter>EngineCode\Component\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\StaticSampler\StaticSamplerObject.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\StaticSampler</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Mesh\PipeMesh.cpp">
+      <Filter>EngineCode\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Mesh\PyramidMesh.cpp">
+      <Filter>EngineCode\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Mesh\TorusMesh.cpp">
+      <Filter>EngineCode\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayerManager.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\Core\RenderLayer.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\AlphaTestRenderLayer.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\RednerLayer</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\OpaqueRenderLayer.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\RednerLayer</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\TransparentRenderLayer.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\RednerLayer</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Core\Construction\ActorMeshConstruction.cpp">
+      <Filter>EngineCode\Core\Construction</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Core\Construction\MeshConstruction.cpp">
+      <Filter>EngineCode\Core\Construction</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Core\Construction\ObjectConstruction.cpp">
+      <Filter>EngineCode\Core\Construction</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\BackgroundRenderLayer.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\RednerLayer</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Sky\FogComponent.cpp">
+      <Filter>EngineCode\Component\Sky</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Sky\SkyConstantBuffer.cpp">
+      <Filter>EngineCode\Component\Sky</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Actor\Sky\Fog.cpp">
+      <Filter>EngineCode\Actor\Sky</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Actor\Sky\Sky.cpp">
+      <Filter>EngineCode\Actor\Sky</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Shader\Core\ShaderType.cpp">
+      <Filter>EngineCode\Shader\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Core\Viewport\ClientViewport.cpp">
+      <Filter>EngineCode\Core\Viewport</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\CubeMapRenderTarget.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\OpaqueReflectorRenderLayer.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\RednerLayer</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\Core\DynamicMap.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\ShadowMap\DynamicShadowMap.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\DynamicShadowMap</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\Core\RenderTarget.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\ShadowMapRenderTarget.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\OpaqueShadowRenderLayer.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\RednerLayer</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\ShadowMap\DynamicShadowCubeMap.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\DynamicShadowMap</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\Core\DynamicCubeMap.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\CubeMap\DynamicReflectionCubeMap.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\DynamicCubeMap</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\backends\imgui_impl_dx12.cpp">
+      <Filter>imgui\backends</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\backends\imgui_impl_win32.cpp">
+      <Filter>imgui\backends</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\UI\IMGUIPipeline.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_demo.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_draw.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_tables.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_widgets.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorEngine\EditorEngine.cpp">
+      <Filter>EditorEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorEngine\ToolbarEditor\ToolbarEditor.cpp">
+      <Filter>EditorEngine\ToolbarEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorEngine\LogEditor\LogEditor.cpp">
+      <Filter>EditorEngine\LogEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorEngine\LogEditor\LogObject\LogSystem.cpp">
+      <Filter>EditorEngine\LogEditor\LogObject</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\EngineType.cpp">
+      <Filter>EngineCode</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Library\RaycastSystemLibrary.cpp">
+      <Filter>EngineCode\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Collision\CollisionSceneQuery.cpp">
+      <Filter>EngineCode\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\SelectRenderLayer.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\RednerLayer</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorEngine\OutLineEditor\OutLineEditor.cpp">
+      <Filter>EditorEngine\OutlineEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\EngineVariableTable.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="EngineCode\Config\EngineRenderConfig.h">
+      <Filter>EngineCode\Config</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Windows\WindowsEngine.h">
+      <Filter>EngineCode\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Windows\WindowsMessageProcessing.h">
+      <Filter>EngineCode\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\EngineFactory.h">
+      <Filter>EngineCode</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\EngineMinimal.h">
+      <Filter>EngineCode</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Debug\EngineDebug.h">
+      <Filter>EngineCode\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Debug\Log\SimpleLog.h">
+      <Filter>EngineCode\Debug\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Math\EngineMath.h">
+      <Filter>EngineCode\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Mesh\BoxMesh.h">
+      <Filter>EngineCode\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Mesh\Core\Mesh.h">
+      <Filter>EngineCode\Mesh\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Mesh\Core\MeshType.h">
+      <Filter>EngineCode\Mesh\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Shader\Core\Shader.h">
+      <Filter>EngineCode\Shader\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\Rendering.h">
+      <Filter>EngineCode\Rendering\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Core\Engine.h">
+      <Filter>EngineCode\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Core\WinMainCommandParameters.h">
+      <Filter>EngineCode\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Core\CoreObject\CoreMinimalObject.h">
+      <Filter>EngineCode\Core\CoreObject</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\TransformComponent.h">
+      <Filter>EngineCode\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\InputComponent.h">
+      <Filter>EngineCode\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Core\Component.h">
+      <Filter>EngineCode\Component\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Core\Camera.h">
+      <Filter>EngineCode\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\CodeReflection\CodeReflectionMacroTag.h">
+      <Filter>EngineCode\CodeReflection</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Input\InputType.h">
+      <Filter>EngineCode\Component\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Core\CoreObject\GuidInterface.h">
+      <Filter>EngineCode\Core\CoreObject</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Core\World.h">
+      <Filter>EngineCode\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Engine\Core\RenderingEngine.h">
+      <Filter>EngineCode\Rendering\Engine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\RenderingResourcesUpdate.h">
+      <Filter>EngineCode\Rendering\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Mesh\ConeMesh.h">
+      <Filter>EngineCode\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Mesh\CustomMesh.h">
+      <Filter>EngineCode\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Mesh\CylinderMesh.h">
+      <Filter>EngineCode\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Mesh\PlaneMesh.h">
+      <Filter>EngineCode\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Mesh\SphereMesh.h">
+      <Filter>EngineCode\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Mesh\Core\MeshManager.h">
+      <Filter>EngineCode\Mesh\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Mesh\Core\ObjectTransform.h">
+      <Filter>EngineCode\Mesh\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Engine\DirectX\Core\DirectXRenderingEngine.h">
+      <Filter>EngineCode\Rendering\Engine\DirectX\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Engine\DirectX\DirectX12RenderingEngine.h">
+      <Filter>EngineCode\Rendering\Engine\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Windows\WindowsPlatform.h">
+      <Filter>EngineCode\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Input\Input.h">
+      <Filter>EngineCode\Component\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Interface\DirectXDeviceInterface.h">
+      <Filter>EngineCode\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\Buffer\ConstructBuffer.h">
+      <Filter>EngineCode\Rendering\Core\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Core\Viewport\Viewport.h">
+      <Filter>EngineCode\Core\Viewport</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Core\Viewport\ViewportInfo.h">
+      <Filter>EngineCode\Core\Viewport</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Core\Viewport\ViewportTransformation.h">
+      <Filter>EngineCode\Core\Viewport</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Core\CameraType.h">
+      <Filter>EngineCode\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\ConstantBuffer\ConstantBufferViews.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\ConstantBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DescriptorHeap\DirectXDescriptorHeap.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\DescriptorHeap</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\Geometry\RenderingData.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\PipelineState\DirectXPipelineState.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\PipelineState</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RootSignature\DirectXRootSignature.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RootSignature</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderingPipeline.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\Geometry\GeometryMap.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Actor\Core\ActorObject.h">
+      <Filter>EngineCode\Actor\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Light\Core\LightComponent.h">
+      <Filter>EngineCode\Component\Light\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Light\Core\LightConstantBuffer.h">
+      <Filter>EngineCode\Component\Light\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Light\ParallelLightComponent.h">
+      <Filter>EngineCode\Component\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Actor\Light\ParallelLight.h">
+      <Filter>EngineCode\Actor\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Mesh\Core\Material\Material.h">
+      <Filter>EngineCode\Mesh\Core\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Mesh\Core\Material\MaterialConstantBuffer.h">
+      <Filter>EngineCode\Mesh\Core\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderingPipelineType.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Mesh\Core\Material\MaterialType.h">
+      <Filter>EngineCode\Mesh\Core\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Mesh\Core\MeshComponent.h">
+      <Filter>EngineCode\Component\Mesh\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Mesh\BoxMeshComponent.h">
+      <Filter>EngineCode\Component\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Mesh\ConeMeshComponent.h">
+      <Filter>EngineCode\Component\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Mesh\CustomMeshComponent.h">
+      <Filter>EngineCode\Component\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Mesh\CylinderMeshComponent.h">
+      <Filter>EngineCode\Component\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Mesh\PlaneMeshComponent.h">
+      <Filter>EngineCode\Component\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Mesh\SphereMeshComponent.h">
+      <Filter>EngineCode\Component\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Manager\LightManager.h">
+      <Filter>EngineCode\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Actor\Light\SpotLight.h">
+      <Filter>EngineCode\Actor\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Actor\Light\Core\Light.h">
+      <Filter>EngineCode\Actor\Light\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Light\SpotLightComponent.h">
+      <Filter>EngineCode\Component\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Light\Core\LightType.h">
+      <Filter>EngineCode\Component\Light\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Light\Core\RangeLightComponent.h">
+      <Filter>EngineCode\Component\Light\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Actor\Light\Core\RangeLight.h">
+      <Filter>EngineCode\Actor\Light\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Actor\Light\PointLight.h">
+      <Filter>EngineCode\Actor\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Light\PointLightComponent.h">
+      <Filter>EngineCode\Component\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\DirectX12\d3dx12.h">
+      <Filter>EngineCode\Rendering\DirectX12</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\DirectX12\DDSTextureLoader.h">
+      <Filter>EngineCode\Rendering\DirectX12</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\RenderingTextureResourcesUpdate.h">
+      <Filter>EngineCode\Rendering\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Mesh\Core\ShellMeshComponent.h">
+      <Filter>EngineCode\Component\Mesh\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Mesh\PipeMeshComponent.h">
+      <Filter>EngineCode\Component\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Mesh\PyramidMeshComponent.h">
+      <Filter>EngineCode\Component\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Mesh\TorusMeshComponent.h">
+      <Filter>EngineCode\Component\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\StaticSampler\StaticSamplerObject.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\StaticSampler</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Mesh\PipeMesh.h">
+      <Filter>EngineCode\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Mesh\PyramidMesh.h">
+      <Filter>EngineCode\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Mesh\TorusMesh.h">
+      <Filter>EngineCode\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayerManager.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\Core\RenderLayer.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\AlphaTestRenderLayer.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\RednerLayer</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\OpaqueRenderLayer.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\RednerLayer</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\TransparentRenderLayer.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\RednerLayer</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Mesh\Core\MeshComponentType.h">
+      <Filter>EngineCode\Component\Mesh\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Core\Construction\ActorMeshConstruction.h">
+      <Filter>EngineCode\Core\Construction</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Core\Construction\MacroConstruction.h">
+      <Filter>EngineCode\Core\Construction</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Core\Construction\MeshConstruction.h">
+      <Filter>EngineCode\Core\Construction</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Core\Construction\ObjectConstruction.h">
+      <Filter>EngineCode\Core\Construction</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\BackgroundRenderLayer.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\RednerLayer</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Sky\FogComponent.h">
+      <Filter>EngineCode\Component\Sky</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Sky\SkyConstantBuffer.h">
+      <Filter>EngineCode\Component\Sky</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Actor\Sky\Fog.h">
+      <Filter>EngineCode\Actor\Sky</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Actor\Sky\Sky.h">
+      <Filter>EngineCode\Actor\Sky</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Shader\Core\ShaderType.h">
+      <Filter>EngineCode\Shader\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Core\Viewport\ClientViewport.h">
+      <Filter>EngineCode\Core\Viewport</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\CubeMapRenderTarget.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\OpaqueReflectorRenderLayer.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\RednerLayer</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\Core\DynamicMap.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\ShadowMap\DynamicShadowMap.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\DynamicShadowMap</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\Core\RenderTarget.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\ShadowMapRenderTarget.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\OpaqueShadowRenderLayer.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\RednerLayer</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\ShadowMap\DynamicShadowCubeMap.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\DynamicShadowMap</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\Core\DynamicCubeMap.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\CubeMap\DynamicReflectionCubeMap.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\DynamicCubeMap</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\backends\imgui_impl_dx12.h">
+      <Filter>imgui\backends</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\backends\imgui_impl_win32.h">
+      <Filter>imgui\backends</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\libs\glfw\include\GLFW\glfw3.h">
+      <Filter>imgui\libs</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\libs\glfw\include\GLFW\glfw3native.h">
+      <Filter>imgui\libs</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\UI\IMGUIPipeline.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imconfig.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_internal.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_rectpack.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_textedit.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_truetype.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorEngine\EditorEngine.h">
+      <Filter>EditorEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorEngine\ToolbarEditor\ToolbarEditor.h">
+      <Filter>EditorEngine\ToolbarEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorEngine\LogEditor\LogEditor.h">
+      <Filter>EditorEngine\LogEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorEngine\LogEditor\LogObject\LogSystem.h">
+      <Filter>EditorEngine\LogEditor\LogObject</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorEngine\Core\EditorBase.h">
+      <Filter>EditorEngine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\EngineType.h">
+      <Filter>EngineCode</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Library\RaycastSystemLibrary.h">
+      <Filter>EngineCode\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Collision\CollisionSceneQuery.h">
+      <Filter>EngineCode\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\SelectRenderLayer.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\RednerLayer</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorEngine\OutLineEditor\OutLineEditor.h">
+      <Filter>EditorEngine\OutlineEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\EngineVariableTable.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
