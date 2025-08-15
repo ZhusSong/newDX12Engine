@@ -24,6 +24,8 @@
     <ClCompile Include="EditorEngine\LogEditor\LogEditor.cpp" />
     <ClCompile Include="EditorEngine\LogEditor\LogObject\LogSystem.cpp" />
     <ClCompile Include="EditorEngine\OutLineEditor\OutLineEditor.cpp" />
+    <ClCompile Include="EditorEngine\SelectEditor\OperationHandle\Core\OperationHandleBase.cpp" />
+    <ClCompile Include="EditorEngine\SelectEditor\OperationHandle\MoveArrow.cpp" />
     <ClCompile Include="EditorEngine\ToolbarEditor\ToolbarEditor.cpp" />
     <ClCompile Include="EngineCode\Actor\Core\ActorObject.cpp" />
     <ClCompile Include="EngineCode\Actor\Light\Core\Light.cpp" />
@@ -148,6 +150,8 @@
     <ClInclude Include="EditorEngine\LogEditor\LogEditor.h" />
     <ClInclude Include="EditorEngine\LogEditor\LogObject\LogSystem.h" />
     <ClInclude Include="EditorEngine\OutLineEditor\OutLineEditor.h" />
+    <ClInclude Include="EditorEngine\SelectEditor\OperationHandle\Core\OperationHandleBase.h" />
+    <ClInclude Include="EditorEngine\SelectEditor\OperationHandle\MoveArrow.h" />
     <ClInclude Include="EditorEngine\ToolbarEditor\ToolbarEditor.h" />
     <ClInclude Include="EngineCode\Actor\Core\ActorObject.h" />
     <ClInclude Include="EngineCode\Actor\Light\Core\Light.h" />

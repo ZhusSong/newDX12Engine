@@ -19,6 +19,9 @@ public:
 		FCaptureOnMouseDelegate OnLMouseButtonDownDelegate;
 
 	CVARIABLE(xxx, aaaa)
+		FCaptureOnMouseDelegate OnLMouseButtonUpDelegate;
+
+	CVARIABLE(xxx, aaaa)
 		FCaptureOnMouseDelegate OnMouseButtonDownDelegate;
 
 	CVARIABLE(aaa, vvv)

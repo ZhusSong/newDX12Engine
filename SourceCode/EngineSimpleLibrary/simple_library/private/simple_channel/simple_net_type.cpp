@@ -1,4 +1,4 @@
-﻿#include "..\..\public\simple_channel\simple_net_type.h"
+﻿#include "simple_library/public/simple_channel/simple_net_type.h"
 
 FSimpleIOData::FSimpleIOData()
 {

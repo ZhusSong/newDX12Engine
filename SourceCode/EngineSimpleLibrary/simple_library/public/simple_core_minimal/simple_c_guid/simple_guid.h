@@ -1,6 +1,5 @@
 ﻿#pragma once
-
-#include "../simple_c_core/simple_core_minimal.h"
+#include "simple_library/public/simple_core_minimal/simple_c_core/simple_core_minimal.h"
 
 _CRT_BEGIN_C_HEADER
 typedef struct

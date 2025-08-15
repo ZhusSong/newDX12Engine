@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "assert.h" 
-#include "../../../simple_library_macro.h"
+#include "simple_library/public/simple_library_macro.h"
 
 struct SIMPLE_LIBRARY_API fvector_4d
 {

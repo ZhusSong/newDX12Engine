@@ -1,6 +1,6 @@
-﻿#include "..\..\..\public\simple_channel\simple_core\simple_connetion.h"
-#include "..\..\..\public\simple_channel\simple_net_protocols.h"
-#include "..\..\..\public\simple_c_log\simple_c_log.h"
+﻿#include "simple_library/public/simple_channel/simple_core/simple_connetion.h"
+#include "simple_library/public/simple_channel/simple_net_protocols.h"
+#include "simple_library/public/simple_c_log/simple_c_log.h"
 //#include "..\..\..\public\simple_channel\simple_core\simple_channel.h"
 
 FSimpleConnetion::FSimpleConnetion()

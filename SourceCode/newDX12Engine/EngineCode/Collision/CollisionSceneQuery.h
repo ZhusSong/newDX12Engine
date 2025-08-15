@@ -12,4 +12,13 @@ struct FCollisionSceneQuery
 		const XMVECTOR& Direction,
 		const XMMATRIX& ViewInverseMatrix,
 		FCollisionResult& OutResult);
+
+
+	static bool RaycastSingle(
+		CWorld* InWorld,
+		GActorObject* InSpecificObjects,
+		const XMVECTOR& OriginPoint,
+		const XMVECTOR& Direction,
+		const XMMATRIX& ViewInverseMatrix,
+		FCollisionResult& OutResult);
 };

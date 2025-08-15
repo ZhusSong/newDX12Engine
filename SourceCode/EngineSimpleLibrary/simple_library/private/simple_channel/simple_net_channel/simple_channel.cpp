@@ -1,6 +1,6 @@
-﻿#include "../../../public/simple_channel/simple_core/simple_channel.h"
-#include "../../../public/simple_channel/simple_core/simple_connetion.h"
-#include "../../../public/simple_math/simple_math.h"
+﻿#include "simple_library/public/simple_channel/simple_core/simple_channel.h"
+#include "simple_library/public/simple_channel/simple_core/simple_connetion.h"
+#include "simple_library/public/simple_math/simple_math.h"
 
 FSimpleChannel::FSimpleChannel()
 	:Connetion(nullptr)

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #ifndef RI_ENGINESETTING_EXPORTS
 #define RI_ENGINESETTING_EXPORTS

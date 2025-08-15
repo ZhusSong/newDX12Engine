@@ -3,6 +3,31 @@
 #include "../Core/World.h"
 #include "../Component/Mesh/Core/MeshComponent.h"
 #include "../Actor/Core/ActorObject.h"
+#include "../Core/Camera.h"
+
+void GetRaycastDataByLocal(
+	std::shared_ptr<FRenderingData>& InRenderingData,
+	const XMVECTOR& OriginPoint,
+	const XMVECTOR& Direction,
+	const XMMATRIX& ViewInverseMatrix,
+	XMVECTOR& OutLocalOriginPoint,
+	XMVECTOR& OutLocalDirection)
+{
+	//转模型局部
+	XMMATRIX WorldMatrix = XMLoadFloat4x4(&InRenderingData->WorldMatrix);
+	XMVECTOR WorldMatrixDeterminant = XMMatrixDeterminant(WorldMatrix);
+	XMMATRIX WorldMatrixInverse = XMMatrixInverse(&WorldMatrixDeterminant, WorldMatrix);
+
+	//局部矩阵
+	XMMATRIX LocalMatrix = XMMatrixMultiply(ViewInverseMatrix, WorldMatrixInverse);
+
+	//局部空间的射线点位置
+	OutLocalOriginPoint = XMVector3TransformCoord(OriginPoint, LocalMatrix);
+	OutLocalDirection = XMVector3TransformNormal(Direction, LocalMatrix);
+
+	//单位化
+	OutLocalDirection = XMVector3Normalize(OutLocalDirection);
+}
 
 
 bool FCollisionSceneQuery::RaycastSingle(
@@ -87,4 +112,54 @@ bool FCollisionSceneQuery::RaycastSingle(
 	}
 
 	return false;
+}
+
+
+
+bool FCollisionSceneQuery::RaycastSingle(
+	CWorld* InWorld,
+	GActorObject* InSpecificObjects,
+	const XMVECTOR& OriginPoint,
+	const XMVECTOR& Direction,
+	const XMMATRIX& ViewInverseMatrix,
+	FCollisionResult& OutResult)
+{
+	for (size_t i = 0; i < FGeometry::RenderingDatas.size(); i++)
+	{
+		std::shared_ptr<FRenderingData>& InRenderingData = FGeometry::RenderingDatas[i];
+
+		if (InRenderingData->Mesh->IsPickup())
+		{
+			XMVECTOR LocalOriginPoint;
+			XMVECTOR LocalDirection;
+
+			GetRaycastDataByLocal(
+				InRenderingData,
+				OriginPoint,
+				Direction,
+				ViewInverseMatrix,
+				LocalOriginPoint,
+				LocalDirection);
+
+			float BoundTime = 0.f;
+			if (InRenderingData->Bounds.Intersects(LocalOriginPoint, LocalDirection, BoundTime))
+			{
+				if (GActorObject* InActorObject = dynamic_cast<GActorObject*>(InRenderingData->Mesh->GetOuter()))
+				{
+					if (InActorObject == InSpecificObjects)
+					{
+						OutResult.bHit = true;
+						OutResult.Component = InRenderingData->Mesh;
+						OutResult.Time = BoundTime;
+						OutResult.Actor = InActorObject;
+
+						//拿到渲染数据
+						OutResult.RenderingData = InRenderingData;
+					}
+				}
+			}
+		}
+	}
+
+	return OutResult.bHit;
 }

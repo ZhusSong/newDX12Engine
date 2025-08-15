@@ -212,6 +212,15 @@
     <Filter Include="Common">
       <UniqueIdentifier>{9f8b1f54-dddf-4737-a823-0122d289d297}</UniqueIdentifier>
     </Filter>
+    <Filter Include="EditorEngine\SelectEditor">
+      <UniqueIdentifier>{eb4d3d26-1a61-4638-aa77-92b973b02308}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EditorEngine\SelectEditor\OperationHandle">
+      <UniqueIdentifier>{d10420e1-22a6-4461-bdfc-c85e820ec747}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EditorEngine\SelectEditor\OperationHandle\Core">
+      <UniqueIdentifier>{8cfadb77-2639-476e-8c65-69f7cb76f556}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EngineCode\Config\EngineRenderConfig.cpp">
@@ -576,6 +585,12 @@
     </ClCompile>
     <ClCompile Include="Common\EngineVariableTable.cpp">
       <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorEngine\SelectEditor\OperationHandle\MoveArrow.cpp">
+      <Filter>EditorEngine\SelectEditor\OperationHandle</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorEngine\SelectEditor\OperationHandle\Core\OperationHandleBase.cpp">
+      <Filter>EditorEngine\SelectEditor\OperationHandle\Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -983,6 +998,12 @@
     </ClInclude>
     <ClInclude Include="Common\EngineVariableTable.h">
       <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorEngine\SelectEditor\OperationHandle\MoveArrow.h">
+      <Filter>EditorEngine\SelectEditor\OperationHandle</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorEngine\SelectEditor\OperationHandle\Core\OperationHandleBase.h">
+      <Filter>EditorEngine\SelectEditor\OperationHandle\Core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

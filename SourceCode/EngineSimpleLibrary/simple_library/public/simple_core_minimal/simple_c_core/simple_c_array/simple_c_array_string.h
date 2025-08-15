@@ -1,7 +1,6 @@
 ﻿#pragma once
 
 #include "Core/simple_array_c_macro.h"
-#include "../../../simple_library_macro.h"
 
 typedef struct
 {

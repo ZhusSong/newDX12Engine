@@ -41,9 +41,15 @@ public:
 	void SetPickup(bool bNewPickup) { bPickup = bNewPickup; }
 	bool IsPickup()const { return bPickup; }
 
+	// 设置是否可见
+	void SetVisible(bool bNewVisible) { bVisible = bNewVisible; }
+	bool IsVisible()const { return bVisible; }
+
 protected:
 	// 是否产生阴影
 	bool bCastShadow;
 	// 是否可被拾取
 	bool bPickup;
+	// 是否可见
+	bool bVisible;
 };

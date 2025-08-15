@@ -7,4 +7,15 @@ struct FRaycastSystemLibrary
 {
 	// 判断射线检测结果
 	static bool HitResultByScreen(CWorld* InWorld, int ScreenX, int ScreenY, FCollisionResult& OutResult);
+	
+	// 判断射线是否点击到物体
+	static bool HitSpecificObjectsResultByScreen(CWorld* InWorld, GActorObject* InSpecificObjects, int ScreenX, int ScreenY, FCollisionResult& OutResult);
+
+	static bool GetRaycastByScreenParam(
+		CWorld* InWorld,
+		const fvector_2id& ScreenXY,
+		XMVECTOR& OriginPoint,
+		XMVECTOR& Direction,
+		XMMATRIX& ViewInverseMatrix);
+
 };
