@@ -97,15 +97,20 @@ void FRenderLayer::DrawObject(float DeltaTime, std::weak_ptr<FRenderingData>& In
 	{
 		auto GetRenderingConditions = [&]() -> bool
 			{
-				switch (RC)
+				// 设置移动箭头是否可显示
+				if (InRenderingData->Mesh->IsVisible())
 				{
-				case RC_Shadow:
-				{
-					return InRenderingData->Mesh->IsCastShadow();
-				}
-				}
+					switch (RC)
+					{
+						case RC_Shadow:
+						{
+							return InRenderingData->Mesh->IsCastShadow();
+						}
+					}
 
-				return true;
+					return true;
+				}
+				return false;
 			};
 
 		if (GetRenderingConditions())
@@ -188,10 +193,10 @@ void FRenderLayer::UpdateCalculations(float DeltaTime, const FViewportInfo& View
 					XMFLOAT3 ForwardVector = InRenderingData->Mesh->GetForwardVector();
 
 					InRenderingData->WorldMatrix = {
-						RightVector.x * Scale.x,	UPVector.x,				ForwardVector.x,			0.f,
-						RightVector.y,				UPVector.y * Scale.y,	ForwardVector.y,			0.f,
-						RightVector.z,				UPVector.z ,			ForwardVector.z * Scale.z,	0.f,
-						Position.x,					Position.y,				Position.z,					1.f };
+						RightVector.x* Scale.x,		UPVector.x* Scale.y,	ForwardVector.x* Scale.z,	0.f,
+						RightVector.y* Scale.x,		UPVector.y* Scale.y,	ForwardVector.y* Scale.z,	0.f,
+						RightVector.z* Scale.x,		UPVector.z* Scale.y,	ForwardVector.z* Scale.z,	0.f,
+						Position.x,						Position.y,				Position.z,					1.f };
 				}
 
 				//更新模型位置

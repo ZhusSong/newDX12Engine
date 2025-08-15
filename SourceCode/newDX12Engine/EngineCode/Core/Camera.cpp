@@ -19,24 +19,23 @@ GCamera::GCamera()
 	CmeraType = ECmeraType::CameraRoaming;
 
 	Radius = 10.f;
-	A = XM_PI;//
+	A = XM_PI;
 	B = XM_PI;
 }
 void GCamera::BeginInit()
 {
-	// 初始化我们的投影矩阵
+	// 初始化投影矩阵
 	ViewportInit();
 	// 绑定代理
 	InputComponent->CaptureKeyboardInforDelegate.Bind(this, &GCamera::ExecuteKeyboard);
-	
-	InputComponent->OnLMouseButtonDownDelegate.Bind(this, &GCamera::OnLeftMouseButtonDown);
 
+	InputComponent->OnLMouseButtonDownDelegate.Bind(this, &GCamera::OnLeftMouseButtonDown);
 	InputComponent->OnMouseButtonDownDelegate.Bind(this, &GCamera::OnMouseButtonDown);
 	InputComponent->OnMouseButtonUpDelegate.Bind(this, &GCamera::OnMouseButtonUp);
 	InputComponent->OnMouseMoveDelegate.Bind(this, &GCamera::OnMouseMove);
 	InputComponent->OnMouseWheelDelegate.Bind(this, &GCamera::OnMouseWheel);
-
 }
+
 void GCamera::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -221,29 +220,63 @@ void GCamera::MoveRight(float InValue)
 	}
 }
 
+// 添加选择箭头支持
+extern GActorObject* SelectedObject;
+extern CMeshComponent* SelectAxisComponent;
+#if EDITOR_ENGINE
+#include "../../EditorEngine/SelectEditor/OperationHandle/MoveArrow.h"
+extern GMoveArrow* MoveArrow;
+#endif // 0
+
 void GCamera::OnClickedScreen(int X, int Y)
 {
-	FCollisionResult CollisionResult;
-	FRaycastSystemLibrary::HitResultByScreen(GetWorld(), X, Y, CollisionResult);
-
-	if (CollisionResult.bHit)
+	if (!SelectAxisComponent)
 	{
-		Engine_Log("Clicked successfully.[time]=%f", CollisionResult.Time);
+		FCollisionResult CollisionResult;
+		FRaycastSystemLibrary::HitResultByScreen(GetWorld(), X, Y, CollisionResult);
 
-		if (FRenderLayerManager* InLayer = GetRenderLayerManager())
+		if (CollisionResult.bHit)
 		{
-			InLayer->HighlightDisplayObject(CollisionResult.RenderingData);
+			Engine_Log("Clicked successfully.[time]=%f", CollisionResult.Time);
+
+			if (FRenderLayerManager* InLayer = GetRenderLayerManager())
+			{
+				InLayer->HighlightDisplayObject(CollisionResult.RenderingData);
+			}
+
+			SelectedObject = CollisionResult.Actor;
+
+#if EDITOR_ENGINE
+			if (MoveArrow)
+			{
+				if (CollisionResult.Actor != nullptr)
+				{
+					MoveArrow->SetPosition(CollisionResult.Actor->GetPosition());
+					MoveArrow->SetVisible(true);
+				}
+					
+			}
+#endif
+		}
+		else
+		{
+			if (FRenderLayerManager* InLayer = GetRenderLayerManager())
+			{
+				InLayer->Clear(EMeshRenderLayerType::RENDERLAYER_SELECT);
+			}
+
+			SelectedObject = nullptr;
+
+#if EDITOR_ENGINE
+			if (MoveArrow)
+			{
+				MoveArrow->SetVisible(false);
+			}
+#endif
 		}
 	}
-	else
-	{
-		if (FRenderLayerManager* InLayer = GetRenderLayerManager())
-		{
-			InLayer->Clear(EMeshRenderLayerType::RENDERLAYER_SELECT);
-		}
-	}
-
 }
+
 
 
 void GCamera::RotateAroundXAxis(float InRotateDegrees)

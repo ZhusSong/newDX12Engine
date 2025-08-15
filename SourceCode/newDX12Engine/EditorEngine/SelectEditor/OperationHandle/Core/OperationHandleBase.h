@@ -41,6 +41,7 @@ public:
 
 public:
 	virtual void SetPosition(const XMFLOAT3& InNewPosition);
+	virtual void SetScale(const fvector_3d& InNewScale);
 
 public:
 	ESelectAxisType GetSelectAxis();
@@ -51,6 +52,7 @@ public:
 
 public:
 	virtual void BeginInit();
+	virtual void Tick(float DeltaTime);
 	virtual void SetVisible(bool bNewVisible);
 	// virtual bool IsVisible()const;
 protected:
@@ -58,4 +60,7 @@ protected:
 	virtual void OnLeftMouseButtonDown(int X, int Y);
 	virtual void OnLeftMouseButtonUp(int X, int Y);
 
+protected:
+	// 缩放标准值
+	float FixedZoom;
 };

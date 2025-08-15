@@ -2,12 +2,17 @@
 #include "../../EngineCode/Core/World.h"
 #include "../../EngineCode/Actor/Core/ActorObject.h"
 #include "../../EngineCode/Rendering/Core/DirectX/RenderingPipeline/RenderLayer/RenderLayerManager.h"
+#include "../SelectEditor/OperationHandle/MoveArrow.h"
 
 
 void FOutLineEditor::BuildEditor()
 {
 }
 extern int ActorSelected;
+
+// 添加移动支持
+extern GActorObject* SelectedObject;
+extern GMoveArrow* MoveArrow;
 
 void FOutLineEditor::DrawEditor(float DeltaTime)
 {
@@ -25,6 +30,14 @@ void FOutLineEditor::DrawEditor(float DeltaTime)
 			if (ImGui::Selectable(ObjectNameString, ActorSelected == i))
 			{
 				HighlightDisplayObject(Actors[i]);
+
+				SelectedObject = Actors[i];
+
+				if (MoveArrow)
+				{
+					MoveArrow->SetPosition(Actors[i]->GetPosition());
+					MoveArrow->SetVisible(true);
+				}
 			}
 		}
 

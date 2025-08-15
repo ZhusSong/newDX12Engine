@@ -16,8 +16,8 @@ protected:
 	virtual void OnLeftMouseButtonDown(int X, int Y);
 	virtual void OnLeftMouseButtonUp(int X, int Y);
 
-	//通过屏幕映射到物体企图移动的下一个位置
-	float GetMouseCreenMovePosition(int X, int Y,
+	// 通过屏幕映射到物体企图移动的下一个位置
+	float GetMouseScreenMovePosition(int X, int Y,
 		fvector_3d& ActorWorldPosition,
 		fvector_3d& ActorWorldDir);
 protected:

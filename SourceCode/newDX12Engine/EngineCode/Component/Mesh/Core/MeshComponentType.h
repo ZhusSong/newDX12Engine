@@ -18,6 +18,6 @@ enum EMeshRenderLayerType
 	RENDERLAYER_SELECT = 9,
 	// 方向箭头
 	RENDERLAYER_OPERATION_HANDLE = 10,
-	// 法线
+	// 
 	RENDERLAYER_NORMAL = 20,
 };

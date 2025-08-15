@@ -14,11 +14,19 @@
 #include "../../../../../Core/World.h"
 #include "../../../../../Actor/Core/ActorObject.h"
 
+#if EDITOR_ENGINE
+#include "RenderLayer/OperationHandleRenderLayer.h"
+#endif
+
 std::vector<std::shared_ptr<FRenderLayer>> FRenderLayerManager::RenderLayers;
 
 FRenderLayerManager::FRenderLayerManager()
 {
 	RenderLayers.clear();
+
+#if EDITOR_ENGINE
+	CreateRenderLayer<FOperationHandleRenderLayer>();
+#endif
 
 	CreateRenderLayer<FSelectRenderLayer>();
 	CreateRenderLayer<FOpaqueShadowRenderLayer>();

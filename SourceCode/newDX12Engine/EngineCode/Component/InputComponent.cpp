@@ -5,9 +5,13 @@
 void CInputComponent::BeginInit()
 {
 	LMouseDownDelegate.AddFunction(this, &CInputComponent::OnLeftMouseButtonDown);
+	LMouseUpDelegate.AddFunction(this, &CInputComponent::OnLeftMouseButtonUp);
+
 	MouseDownDelegate.AddFunction(this, &CInputComponent::OnMouseButtonDown);
 	MouseUpDelegate.AddFunction(this, &CInputComponent::OnMouseButtonUp);
+
 	MouseMoveDelegate.AddFunction(this, &CInputComponent::OnMouseMove);
+
 	MousesWheelsDelegate.AddFunction(this, &CInputComponent::OnMouseWheel);
 }
 // 每帧运行
@@ -55,6 +59,13 @@ void CInputComponent::OnLeftMouseButtonDown(int X, int Y)
 	if (OnLMouseButtonDownDelegate.IsBound())
 	{
 		OnLMouseButtonDownDelegate.Execute((int)X, (int)Y);
+	}
+}
+void CInputComponent::OnLeftMouseButtonUp(int X, int Y)
+{
+	if (OnLMouseButtonUpDelegate.IsBound())
+	{
+		OnLMouseButtonUpDelegate.Execute((int)X, (int)Y);
 	}
 }
 // 鼠标右键按下时

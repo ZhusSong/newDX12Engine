@@ -37,6 +37,7 @@ public:
 	virtual void Tick(float DeltaTime);
 
 	virtual void OnLeftMouseButtonDown(int X, int Y);
+	virtual void OnLeftMouseButtonUp(int X, int Y);
 	virtual void OnMouseButtonDown(int X, int Y);
 	virtual void OnMouseButtonUp(int X, int Y);
 	virtual void OnMouseMove(int X, int Y);

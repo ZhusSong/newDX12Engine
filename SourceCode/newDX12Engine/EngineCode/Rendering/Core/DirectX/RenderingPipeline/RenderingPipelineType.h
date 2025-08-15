@@ -11,7 +11,9 @@ enum EPipelineState
 	OrthogonalShadow = 6,   //正交阴影(平行光)
 	PerspectiveShadow = 7,  //透视阴影(聚光灯)
 	OmnidirectionalShadow = 8,  //万向阴影(点光)
-	Select=9,
+	Select=9,                //选择描边
+	Operation_Handle = 10,    //方向箭头
+	State_Normal = 20,         
 };
 
 // 渲染条件

@@ -4,11 +4,16 @@
 #include "../../../../EngineCode/Mesh/Core/Material/Material.h"
 #include "../../../../EngineCode/Component/InputComponent.h"
 #include "../../../../EngineCode/Library/RaycastSystemLibrary.h"
+#include "../../../../EngineCode/Core/World.h"
+#include "../../../../EngineCode/Core/Camera.h"
+#include "../../../../EngineCode/Math/EngineMath.h"
 
 extern CMeshComponent* SelectAxisComponent;
 
 GOperationHandleBase::GOperationHandleBase()
 {
+	FixedZoom = 50.f;
+
 	FCreateObjectParam Param;
 	Param.Outer = this;
 
@@ -24,9 +29,26 @@ void GOperationHandleBase::SetMeshRenderLayerType(EMeshRenderLayerType InRenderL
 
 void GOperationHandleBase::SetPosition(const XMFLOAT3& InNewPosition)
 {
+	Super::SetPosition(InNewPosition);
+
 	XAxisComponent->SetPosition(InNewPosition);
 	YAxisComponent->SetPosition(InNewPosition);
 	ZAxisComponent->SetPosition(InNewPosition);
+}
+
+void GOperationHandleBase::SetScale(const fvector_3d& InNewScale)
+{
+	Super::SetScale(InNewScale);
+
+	if (InNewScale >= fvector_3d(0.3f))
+	{
+		if (XAxisComponent && YAxisComponent && ZAxisComponent)
+		{
+			XAxisComponent->SetScale(InNewScale);
+			YAxisComponent->SetScale(InNewScale);
+			ZAxisComponent->SetScale(InNewScale);
+		}
+	}
 }
 
 GOperationHandleBase::ESelectAxisType GOperationHandleBase::GetSelectAxis()
@@ -91,13 +113,29 @@ void GOperationHandleBase::BeginInit()
 	SetVisible(false);
 }
 
+void GOperationHandleBase::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	if (GetWorld())
+	{
+		if (GetWorld()->GetCamera())
+		{
+			fvector_3d New3Value = EngineMath::ToVector3d(GetWorld()->GetCamera()->GetPosition()) - EngineMath::ToVector3d(GetPosition());
+			fvector_3d Scale = New3Value.len() / FixedZoom;
+
+			SetScale(Scale);
+		}
+	}
+}
+
 void GOperationHandleBase::SetVisible(bool bNewVisible)
 {
 	XAxisComponent->SetVisible(bNewVisible);
 	YAxisComponent->SetVisible(bNewVisible);
 	ZAxisComponent->SetVisible(bNewVisible);
 }
-
+extern GActorObject* SelectedObject;
 extern bool bOperationHandleSelect;
 void GOperationHandleBase::OnMouseMove(int X, int Y)
 {
@@ -122,6 +160,11 @@ void GOperationHandleBase::OnMouseMove(int X, int Y)
 		else
 		{
 			SelectAxisComponent = nullptr;
+
+			if (!SelectedObject)
+			{
+				SetVisible(false);
+			}
 		}
 	}
 }

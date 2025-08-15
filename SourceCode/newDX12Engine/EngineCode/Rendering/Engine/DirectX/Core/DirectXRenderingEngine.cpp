@@ -36,13 +36,11 @@
 #if defined(_WIN32)
 #include "../../../../Core/WinMainCommandParameters.h"
 
-//class FVector
-//{
-//	unsigned char r;//255 ->[0,1]
-//	unsigned char g;//255
-//	unsigned char b;//255
-//	unsigned char a;//255
-//};
+// 添加编辑器界面移动箭头支持
+#if EDITOR_ENGINE
+#include "../../../../../EditorEngine/SelectEditor/OperationHandle/MoveArrow.h"
+#endif
+
 
 CDirectXRenderingEngine::CDirectXRenderingEngine()
 	:CurrentFenceIndex(0)
@@ -90,12 +88,23 @@ int CDirectXRenderingEngine::Init(FWinMainCommandParameters InParameters)
 	return 0;
 }
 
+// 添加移动箭头
+extern GMoveArrow* MoveArrow;
 int CDirectXRenderingEngine::PostInit()
 {
 	Engine_Log("Engine post initialization complete.");
 
 	ANALYSIS_HRESULT(GraphicsCommandList->Reset(CommandAllocator.Get(), NULL));
 	{
+		// 添加移动箭头
+#if EDITOR_ENGINE
+		if (GMoveArrow* InMoveArrow = World->CreateActorObject<GMoveArrow>())
+		{
+			InMoveArrow->CreateMesh();
+
+			MoveArrow = InMoveArrow;
+		}
+#endif
 		// 创建灯光
 		
 		////  聚光灯
@@ -127,8 +136,25 @@ int CDirectXRenderingEngine::PostInit()
 			ParallelLight->SetRotation(fvector_3d(30.f, 0.f, 0.f));
 			ParallelLight->SetScale(fvector_3d(1));
 			ParallelLight->SetLightIntensity(fvector_3d(1.1f, 1.1f, 1.1f));
+
 		}
 	
+		// 地板
+		if (GPlaneMesh* InPlaneMesh = World->CreateActorObject<GPlaneMesh>())
+		{
+			InPlaneMesh->CreateMesh(4.f, 3.f, 20, 20);
+
+			InPlaneMesh->SetPosition(XMFLOAT3(0.f, -12.f, 0.f));
+			InPlaneMesh->SetScale(fvector_3d(50.f, 1.f, 50.f));
+			// 地面不显示阴影
+			InPlaneMesh->SetCastShadow(false);
+			InPlaneMesh->SetPickup(false);
+			if (CMaterial* InMaterial = (*InPlaneMesh->GetMaterials())[0])
+			{
+				InMaterial->SetMaterialType(EMaterialType::Lambert);
+			}
+
+		}
 
 		//甜甜圈
 		if (GTorusMesh* InTorusMesh = World->CreateActorObject<GTorusMesh>())
@@ -154,7 +180,6 @@ int CDirectXRenderingEngine::PostInit()
 			InPyramidMesh->SetScale(fvector_3d(1.f));
 			if (CMaterial* InMaterial = (*InPyramidMesh->GetMaterials())[0])
 			{
-				InMaterial->SetBaseColor(fvector_4d(4.f, 0.f, 0.f, 1.f));
 				InMaterial->SetMaterialType(EMaterialType::HalfLambert);
 			}
 		}
@@ -220,22 +245,7 @@ int CDirectXRenderingEngine::PostInit()
 			}
 		}
 
-		if (GPlaneMesh* InPlaneMesh = World->CreateActorObject<GPlaneMesh>())
-		{
-			InPlaneMesh->CreateMesh(4.f, 3.f, 20, 20);
-
-			InPlaneMesh->SetPosition(XMFLOAT3(0.f, -12.f, 0.f));
-			InPlaneMesh->SetScale(fvector_3d(50.f, 1.f, 50.f));
-			// 地面不显示阴影
-			InPlaneMesh->SetCastShadow(false);
-			InPlaneMesh->SetPickup(false);
-			if (CMaterial* InMaterial = (*InPlaneMesh->GetMaterials())[0])
-			{
-				InMaterial->SetMaterialType(EMaterialType::Lambert);
-			}
-
-		}
-
+	
 		//兰伯特
 		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 		{
@@ -714,7 +724,7 @@ int CDirectXRenderingEngine::PostInit()
 		
 			}
 		}
-
+	
 		////well
 		//if (GBoxMesh* InBoxMesh = World->CreateActorObject<GBoxMesh>())
 		//{

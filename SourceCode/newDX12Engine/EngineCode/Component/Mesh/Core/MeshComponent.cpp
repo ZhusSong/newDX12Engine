@@ -12,6 +12,7 @@ CMeshComponent::CMeshComponent()
 
 	bCastShadow = true;
 	bPickup = true;
+	bVisible = true;
 }
 
 void CMeshComponent::Init()

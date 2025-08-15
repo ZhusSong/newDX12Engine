@@ -13,8 +13,8 @@ namespace ActorMeshConstruction
 	}
 
 	template<class T, typename ...ParamTypes>
-	T* CreateMeshRenderDataByComponent(CMeshManager* InManage, T* InMeshComponent, ParamTypes &&...Params)
+	T* CreateMeshRenderDataByComponent(CMeshManager* InManager, T* InMeshComponent, ParamTypes &&...Params)
 	{
-		return MeshConstruction::CreateMeshComponent<T>(InManage, InMeshComponent, Params...);
+		return MeshConstruction::CreateMeshComponent<T>(InManager, InMeshComponent, Params...);
 	}
 }

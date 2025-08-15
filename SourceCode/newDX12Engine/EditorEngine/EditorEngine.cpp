@@ -106,7 +106,7 @@ void CEditorEngine::DrawLayer(float DeltaTime)
 	DockspaceFlags |= ImGuiDockNodeFlags_PassthruCentralNode;
 
 	bool bOpenWindows = true;
-	ImGui::Begin("Hell", &bOpenWindows, WindowFlags);
+	ImGui::Begin("Hello", &bOpenWindows, WindowFlags);
 	ImGui::PopStyleVar();
 	ImGui::PopStyleVar(2);
 

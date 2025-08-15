@@ -81,12 +81,13 @@ int CWindowsEngine::PostInit()
 {
 	Engine_Log("Engine post initialization complete.");
 
+	// 先初始化渲染引擎
+	RenderingEngine->PostInit();
 
 	for (auto& Tmp : GObjects)
 	{
 		Tmp->BeginInit();
 	}
-	RenderingEngine->PostInit();
 
 	return 0;
 }

@@ -113,6 +113,7 @@ void CPyramidMeshComponent::CreateMesh(
 		}
 	}
 
+
 	//绘制南极
 	uint32_t SouthBaseIndex = MeshData.VertexData.size() - 1;
 	BaseIndex = SouthBaseIndex - VertexCircleNum;

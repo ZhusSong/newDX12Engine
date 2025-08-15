@@ -33,7 +33,7 @@ extern GActorObject* SelectedObject;
 extern bool bOperationHandleSelect;
 extern CMeshComponent* SelectAxisComponent;
 
-float GMoveArrow::GetMouseCreenMovePosition(
+float GMoveArrow::GetMouseScreenMovePosition(
 	int X, int Y,
 	fvector_3d& ActorWorldPosition,
 	fvector_3d& ActorWorldDir)
@@ -71,17 +71,37 @@ float GMoveArrow::GetMouseCreenMovePosition(
 			WorldDirection.normalize();
 
 			ActorWorldPosition = EngineMath::ToVector3d(SelectedObject->GetPosition());
-			switch (AxisType)
+			if (true)
 			{
-			case GOperationHandleBase::SELECTAXIS_X:
-				ActorWorldDir = EngineMath::ToVector3d(SelectedObject->GetRightVector());
-				break;
-			case GOperationHandleBase::SELECTAXIS_Y:
-				ActorWorldDir = EngineMath::ToVector3d(SelectedObject->GetUPVector());
-				break;
-			case GOperationHandleBase::SELECTAXIS_Z:
-				ActorWorldDir = EngineMath::ToVector3d(SelectedObject->GetForwardVector());
-				break;
+				//按世界方向
+				switch (AxisType)
+				{
+				case GOperationHandleBase::SELECTAXIS_X:
+					ActorWorldDir = fvector_3d(1.f, 0.f, 0.f);
+					break;
+				case GOperationHandleBase::SELECTAXIS_Y:
+					ActorWorldDir = fvector_3d(0.f, 1.f, 0.f);
+					break;
+				case GOperationHandleBase::SELECTAXIS_Z:
+					ActorWorldDir = fvector_3d(0.f, 0.f, 1.f);
+					break;
+				}
+			}
+			else
+			{
+				//按对象方向
+				switch (AxisType)
+				{
+				case GOperationHandleBase::SELECTAXIS_X:
+					ActorWorldDir = EngineMath::ToVector3d(SelectedObject->GetRightVector());
+					break;
+				case GOperationHandleBase::SELECTAXIS_Y:
+					ActorWorldDir = EngineMath::ToVector3d(SelectedObject->GetUPVector());
+					break;
+				case GOperationHandleBase::SELECTAXIS_Z:
+					ActorWorldDir = EngineMath::ToVector3d(SelectedObject->GetForwardVector());
+					break;
+				}
 			}
 
 			fvector_3d V1xV2 = fvector_3d::cross_product(WorldDirection, ActorWorldDir);
@@ -106,7 +126,7 @@ void GMoveArrow::OnMouseMove(int X, int Y)
 		{
 			fvector_3d ActorWorldPosition;
 			fvector_3d ActorWorldDir;
-			float T1 = GetMouseCreenMovePosition(X, Y, ActorWorldPosition, ActorWorldDir);
+			float T1 = GetMouseScreenMovePosition(X, Y, ActorWorldPosition, ActorWorldDir);
 			if (T1 != -1)
 			{
 				fvector_3d WorldMovePosition = ActorWorldDir * T1 + ActorWorldPosition + RelativePosition;
@@ -132,7 +152,7 @@ void GMoveArrow::OnLeftMouseButtonDown(int X, int Y)
 
 		fvector_3d ActorWorldPosition;
 		fvector_3d ActorWorldDir;
-		float T1 = GetMouseCreenMovePosition(X, Y, ActorWorldPosition, ActorWorldDir);
+		float T1 = GetMouseScreenMovePosition(X, Y, ActorWorldPosition, ActorWorldDir);
 		if (T1 != -1)
 		{
 			fvector_3d WorldMovePosition = ActorWorldDir * T1 + ActorWorldPosition;

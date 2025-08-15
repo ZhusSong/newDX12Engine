@@ -34,7 +34,6 @@ public:
 
 
 public:
-	//矫正Up right look(fd) 返回 pos
 	void CorrectionVector();
 
 	fvector_3d GetCorrectionPosition();

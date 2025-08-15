@@ -140,10 +140,10 @@ void FRenderingPipeline::PreDraw(float DeltaTime)
 	// 渲染灯光材质贴图等
 	GeometryMap.Draw(DeltaTime);
 
-	//渲染shadowCubeMap
+	// 渲染shadowCubeMap
 	GeometryMap.DynamicShadowCubeMap.PreDraw(DeltaTime);
 
-	//渲染阴影
+	// 渲染阴影
 	GeometryMap.DrawShadow(DeltaTime);
 
 	// 动态反射
@@ -168,8 +168,11 @@ void FRenderingPipeline::Draw(float DeltaTime)
 	RenderLayer.Draw(RENDERLAYER_OPAQUE, DeltaTime);
 	RenderLayer.Draw(RENDERLAYER_TRANSPARENT, DeltaTime);
 
-	// 选择层
+	// 渲染选择层
 	RenderLayer.Draw(RENDERLAYER_SELECT, DeltaTime);
+
+	// 渲染操作手柄
+	RenderLayer.Draw(RENDERLAYER_OPERATION_HANDLE, DeltaTime);
 
 	// 最后渲染UI
 	UIPipeline.Draw(DeltaTime);
