@@ -27,13 +27,15 @@ void GCamera::BeginInit()
 	// 初始化投影矩阵
 	ViewportInit();
 	// 绑定代理
-	InputComponent->CaptureKeyboardInforDelegate.Bind(this, &GCamera::ExecuteKeyboard);
-
 	InputComponent->OnLMouseButtonDownDelegate.Bind(this, &GCamera::OnLeftMouseButtonDown);
 	InputComponent->OnMouseButtonDownDelegate.Bind(this, &GCamera::OnMouseButtonDown);
 	InputComponent->OnMouseButtonUpDelegate.Bind(this, &GCamera::OnMouseButtonUp);
 	InputComponent->OnMouseMoveDelegate.Bind(this, &GCamera::OnMouseMove);
 	InputComponent->OnMouseWheelDelegate.Bind(this, &GCamera::OnMouseWheel);
+	
+	InputComponent->CaptureKeyboardInforDelegate.Bind(this, &GCamera::ExecuteKeyboard);
+
+	
 }
 
 void GCamera::Tick(float DeltaTime)
@@ -251,6 +253,7 @@ void GCamera::OnClickedScreen(int X, int Y)
 			{
 				if (CollisionResult.Actor != nullptr)
 				{
+					MoveArrow->SetHitActor(true);
 					MoveArrow->SetPosition(CollisionResult.Actor->GetPosition());
 					MoveArrow->SetVisible(true);
 				}
@@ -270,11 +273,13 @@ void GCamera::OnClickedScreen(int X, int Y)
 #if EDITOR_ENGINE
 			if (MoveArrow)
 			{
+				MoveArrow->SetHitActor(false);
 				MoveArrow->SetVisible(false);
 			}
 #endif
 		}
 	}
+	
 }
 
 

@@ -1,0 +1,90 @@
+[LOG] [Sun Aug 17 23:36:54 2025] Log Init. 
+[LOG] [Sun Aug 17 23:36:54 2025] Engine pre initialization complete. 
+[LOG] [Sun Aug 17 23:36:54 2025] DirectXRenderingEngine pre initialization complete. 
+[LOG] [Sun Aug 17 23:36:54 2025] InitWindows complete. 
+[LOG] [Sun Aug 17 23:36:55 2025] DirectXRenderingEngine initialization complete. 
+[LOG] [Sun Aug 17 23:36:55 2025] Engine initialization complete. 
+[LOG] [Sun Aug 17 23:36:55 2025] Engine post initialization complete. 
+[LOG] [Sun Aug 17 23:36:55 2025] Engine post initialization complete. 
+[LOG] [Sun Aug 17 23:36:56 2025] Load texture root path: [H:/RiDX12Engine/Asset] 
+[LOG] [Sun Aug 17 23:36:56 2025] Load texture num: [27] 
+[LOG] [Sun Aug 17 23:36:56 2025] Texture number is 17 
+[ERROR] [Sun Aug 17 23:36:56 2025] Material.hlsli(79,5-60): warning X3206: implicit truncation of vector type
+ 
+[ERROR] [Sun Aug 17 23:36:56 2025] Material.hlsli(79,5-60): warning X3206: implicit truncation of vector type
+ 
+[ERROR] [Sun Aug 17 23:36:56 2025] Material.hlsli(79,5-60): warning X3206: implicit truncation of vector type
+ 
+[ERROR] [Sun Aug 17 23:36:56 2025] Material.hlsli(79,5-60): warning X3206: implicit truncation of vector type
+ 
+[ERROR] [Sun Aug 17 23:36:56 2025] Material.hlsli(79,5-60): warning X3206: implicit truncation of vector type
+ShadowFunction.hlsli(105,12-101): warning X3206: 'SampleCmpLevelZero': implicit truncation of vector type
+ 
+[ERROR] [Sun Aug 17 23:36:56 2025] Material.hlsli(79,5-60): warning X3206: implicit truncation of vector type
+ShadowFunction.hlsli(105,12-101): warning X3206: 'SampleCmpLevelZero': implicit truncation of vector type
+Material.hlsli(24,5): warning X4000: use of potentially uninitialized variable (GetMaterialBaseColor)
+Material.hlsli(57,5): warning X4000: use of potentially uninitialized variable (GetMaterialSpecular)
+Material.hlsli(47,5): warning X4000: use of potentially uninitialized variable (GetMaterialNormals)
+Material.hlsli(57,5): warning X4000: use of potentially uninitialized variable (GetMaterialSpecular)
+Light.hlsli(39,5): warning X4000: use of potentially uninitialized variable (GetLightDirection)
+Light.hlsli(84,9): warning X4000: use of potentially uninitialized variable (ComputeLightStrength)
+Light.hlsli(118,5): warning X4000: use of potentially uninitialized variable (ComputeLightStrength)
+Light.hlsli(119,4): warning X4000: use of potentially uninitialized variable (ComputeLightStrength)
+Light.hlsli(120,5): warning X4000: use of potentially uninitialized variable (ComputeLightStrength)
+ 
+[ERROR] [Sun Aug 17 23:36:57 2025] Material.hlsli(79,5-60): warning X3206: implicit truncation of vector type
+ShadowFunction.hlsli(105,12-101): warning X3206: 'SampleCmpLevelZero': implicit truncation of vector type
+ 
+[ERROR] [Sun Aug 17 23:36:57 2025] Material.hlsli(79,5-60): warning X3206: implicit truncation of vector type
+ShadowFunction.hlsli(105,12-101): warning X3206: 'SampleCmpLevelZero': implicit truncation of vector type
+Material.hlsli(24,5): warning X4000: use of potentially uninitialized variable (GetMaterialBaseColor)
+Material.hlsli(57,5): warning X4000: use of potentially uninitialized variable (GetMaterialSpecular)
+Material.hlsli(47,5): warning X4000: use of potentially uninitialized variable (GetMaterialNormals)
+Material.hlsli(57,5): warning X4000: use of potentially uninitialized variable (GetMaterialSpecular)
+Light.hlsli(39,5): warning X4000: use of potentially uninitialized variable (GetLightDirection)
+Light.hlsli(84,9): warning X4000: use of potentially uninitialized variable (ComputeLightStrength)
+Light.hlsli(118,5): warning X4000: use of potentially uninitialized variable (ComputeLightStrength)
+Light.hlsli(119,4): warning X4000: use of potentially uninitialized variable (ComputeLightStrength)
+Light.hlsli(120,5): warning X4000: use of potentially uninitialized variable (ComputeLightStrength)
+ 
+[ERROR] [Sun Aug 17 23:36:57 2025] Material.hlsli(79,5-60): warning X3206: implicit truncation of vector type
+ShadowFunction.hlsli(105,12-101): warning X3206: 'SampleCmpLevelZero': implicit truncation of vector type
+ 
+[ERROR] [Sun Aug 17 23:36:57 2025] Material.hlsli(79,5-60): warning X3206: implicit truncation of vector type
+ShadowFunction.hlsli(105,12-101): warning X3206: 'SampleCmpLevelZero': implicit truncation of vector type
+Material.hlsli(24,5): warning X4000: use of potentially uninitialized variable (GetMaterialBaseColor)
+Material.hlsli(57,5): warning X4000: use of potentially uninitialized variable (GetMaterialSpecular)
+Material.hlsli(47,5): warning X4000: use of potentially uninitialized variable (GetMaterialNormals)
+Material.hlsli(57,5): warning X4000: use of potentially uninitialized variable (GetMaterialSpecular)
+Light.hlsli(39,5): warning X4000: use of potentially uninitialized variable (GetLightDirection)
+Light.hlsli(84,9): warning X4000: use of potentially uninitialized variable (ComputeLightStrength)
+Light.hlsli(118,5): warning X4000: use of potentially uninitialized variable (ComputeLightStrength)
+Light.hlsli(119,4): warning X4000: use of potentially uninitialized variable (ComputeLightStrength)
+Light.hlsli(120,5): warning X4000: use of potentially uninitialized variable (ComputeLightStrength)
+ 
+[ERROR] [Sun Aug 17 23:36:57 2025] Material.hlsli(79,5-60): warning X3206: implicit truncation of vector type
+ 
+[ERROR] [Sun Aug 17 23:36:57 2025] Material.hlsli(79,5-60): warning X3206: implicit truncation of vector type
+ 
+[ERROR] [Sun Aug 17 23:36:57 2025] Material.hlsli(79,5-60): warning X3206: implicit truncation of vector type
+ 
+[ERROR] [Sun Aug 17 23:36:57 2025] Material.hlsli(79,5-60): warning X3206: implicit truncation of vector type
+ 
+[LOG] [Sun Aug 17 23:37:01 2025] Clicked successfully.[time]=30.867971 
+[LOG] [Sun Aug 17 23:37:02 2025] Clicked successfully.[time]=38.262218 
+[LOG] [Sun Aug 17 23:37:05 2025] Clicked successfully.[time]=30.577637 
+[LOG] [Sun Aug 17 23:37:08 2025] Clicked successfully.[time]=23.919720 
+[LOG] [Sun Aug 17 23:37:09 2025] Clicked successfully.[time]=30.669735 
+[LOG] [Sun Aug 17 23:37:12 2025] Clicked successfully.[time]=25.183964 
+[LOG] [Sun Aug 17 23:37:15 2025] Clicked successfully.[time]=24.321163 
+[LOG] [Sun Aug 17 23:37:18 2025] Clicked successfully.[time]=30.104397 
+[LOG] [Sun Aug 17 23:37:21 2025] Clicked successfully.[time]=37.345749 
+[LOG] [Sun Aug 17 23:37:26 2025] Clicked successfully.[time]=29.637892 
+[LOG] [Sun Aug 17 23:37:30 2025] Clicked successfully.[time]=33.023727 
+[LOG] [Sun Aug 17 23:37:32 2025] Clicked successfully.[time]=14.305521 
+[LOG] [Sun Aug 17 23:37:35 2025] Clicked successfully.[time]=14.189708 
+[LOG] [Sun Aug 17 23:40:08 2025] Clicked successfully.[time]=49.349911 
+[LOG] [Sun Aug 17 23:40:10 2025] Clicked successfully.[time]=46.258350 
+[LOG] [Sun Aug 17 23:40:15 2025] Clicked successfully.[time]=59.186554 
+[LOG] [Sun Aug 17 23:40:28 2025] Clicked successfully.[time]=46.713722 
+[LOG] [Sun Aug 17 23:40:31 2025] Clicked successfully.[time]=59.342068 

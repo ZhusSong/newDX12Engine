@@ -13,19 +13,19 @@ void GetRaycastDataByLocal(
 	XMVECTOR& OutLocalOriginPoint,
 	XMVECTOR& OutLocalDirection)
 {
-	//转模型局部
+	// 转模型局部
 	XMMATRIX WorldMatrix = XMLoadFloat4x4(&InRenderingData->WorldMatrix);
 	XMVECTOR WorldMatrixDeterminant = XMMatrixDeterminant(WorldMatrix);
 	XMMATRIX WorldMatrixInverse = XMMatrixInverse(&WorldMatrixDeterminant, WorldMatrix);
 
-	//局部矩阵
+	// 局部矩阵
 	XMMATRIX LocalMatrix = XMMatrixMultiply(ViewInverseMatrix, WorldMatrixInverse);
 
-	//局部空间的射线点位置
+	// 局部空间的射线点位置
 	OutLocalOriginPoint = XMVector3TransformCoord(OriginPoint, LocalMatrix);
 	OutLocalDirection = XMVector3TransformNormal(Direction, LocalMatrix);
 
-	//单位化
+	// 单位化
 	OutLocalDirection = XMVector3Normalize(OutLocalDirection);
 }
 
@@ -41,24 +41,22 @@ bool FCollisionSceneQuery::RaycastSingle(
 	for (size_t i = 0; i < FGeometry::RenderingDatas.size(); i++)
 	{
 		std::shared_ptr<FRenderingData>& InRenderingData = FGeometry::RenderingDatas[i];
+
 		if (InRenderingData->Mesh->IsPickup())
 		{
-			// 转模型局部
-			XMMATRIX WorldMatrix = XMLoadFloat4x4(&InRenderingData->WorldMatrix);
-			XMVECTOR WorldMatrixDeterminant = XMMatrixDeterminant(WorldMatrix);
-			XMMATRIX WorldMatrixInverse = XMMatrixInverse(&WorldMatrixDeterminant, WorldMatrix);
+			XMVECTOR LocalOriginPoint;
+			XMVECTOR LocalDirection;
 
-			// 局部矩阵
-			XMMATRIX LocalMatrix = XMMatrixMultiply(ViewInverseMatrix, WorldMatrixInverse);
+			// 转为局部坐标
+			GetRaycastDataByLocal(
+				InRenderingData,
+				OriginPoint,
+				Direction,
+				ViewInverseMatrix,
+				LocalOriginPoint,
+				LocalDirection);
 
-			// 局部空间的射线点位置
-			XMVECTOR LocalOriginPoint = XMVector3TransformCoord(OriginPoint, LocalMatrix);
-			XMVECTOR LocalDirection = XMVector3TransformNormal(Direction, LocalMatrix);
-
-			// 单位化
-			LocalDirection = XMVector3Normalize(LocalDirection);
-
-			// 射线是否和AABB相交
+			// 射线是否可以和AABB相交
 			float BoundTime = 0.f;
 			if (InRenderingData->Bounds.Intersects(LocalOriginPoint, LocalDirection, BoundTime))
 			{
@@ -69,8 +67,8 @@ bool FCollisionSceneQuery::RaycastSingle(
 						if (InRenderingData->MeshRenderingData)
 						{
 							UINT TriangleNumber = InRenderingData->IndexSize / 3;
-							float TriangleTime = FLT_MAX;
 
+							float TriangleTime = FLT_MAX;
 							for (UINT i = 0; i < TriangleNumber; i++)
 							{
 								fvector_3id Indices;
@@ -98,9 +96,8 @@ bool FCollisionSceneQuery::RaycastSingle(
 											OutResult.Actor = dynamic_cast<GActorObject*>(InRenderingData->Mesh->GetOuter());
 										}
 
-										// 获取渲染数据
+										// 拿到渲染数据
 										OutResult.RenderingData = InRenderingData;
-
 									}
 								}
 							}
@@ -111,7 +108,7 @@ bool FCollisionSceneQuery::RaycastSingle(
 		}
 	}
 
-	return false;
+	return OutResult.bHit;
 }
 
 

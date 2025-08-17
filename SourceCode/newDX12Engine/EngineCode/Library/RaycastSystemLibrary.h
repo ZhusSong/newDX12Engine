@@ -11,6 +11,7 @@ struct FRaycastSystemLibrary
 	// 判断射线是否点击到物体
 	static bool HitSpecificObjectsResultByScreen(CWorld* InWorld, GActorObject* InSpecificObjects, int ScreenX, int ScreenY, FCollisionResult& OutResult);
 
+	// 从屏幕坐标到世界空间的转换
 	static bool GetRaycastByScreenParam(
 		CWorld* InWorld,
 		const fvector_2id& ScreenXY,

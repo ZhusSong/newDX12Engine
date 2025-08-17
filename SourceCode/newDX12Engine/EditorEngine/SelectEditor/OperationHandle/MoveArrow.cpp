@@ -160,6 +160,9 @@ void GMoveArrow::OnLeftMouseButtonDown(int X, int Y)
 			RelativePosition = ActorWorldPosition - WorldMovePosition;
 		}
 	}
+	if (!bIsHitActor)
+		SetVisible(false);
+
 }
 
 void GMoveArrow::OnLeftMouseButtonUp(int X, int Y)
@@ -171,5 +174,7 @@ void GMoveArrow::OnLeftMouseButtonUp(int X, int Y)
 	if (SelectAxisComponent)
 	{
 		ResetVisible();
+		if (!bIsHitActor)
+			SetVisible(false);
 	}
 }

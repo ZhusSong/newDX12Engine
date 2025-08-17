@@ -11,6 +11,7 @@ public:
 
 	void CreateMesh();
 
+	void SetHitActor(bool isHit) { bIsHitActor = isHit; };
 protected:
 	virtual void OnMouseMove(int X, int Y);
 	virtual void OnLeftMouseButtonDown(int X, int Y);
@@ -22,4 +23,7 @@ protected:
 		fvector_3d& ActorWorldDir);
 protected:
 	fvector_3d RelativePosition;
+
+	// 是否点击到物体
+	bool bIsHitActor = false;
 };

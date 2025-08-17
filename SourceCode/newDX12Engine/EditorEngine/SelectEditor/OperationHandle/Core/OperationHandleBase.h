@@ -63,4 +63,6 @@ protected:
 protected:
 	// 缩放标准值
 	float FixedZoom;
+
+	
 };
