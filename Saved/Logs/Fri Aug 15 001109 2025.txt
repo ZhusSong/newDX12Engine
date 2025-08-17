@@ -1,8 +1,0 @@
-[LOG] [Fri Aug 15 00:11:09 2025] Log Init. 
-[LOG] [Fri Aug 15 00:11:09 2025] Engine pre initialization complete. 
-[LOG] [Fri Aug 15 00:11:09 2025] DirectXRenderingEngine pre initialization complete. 
-[LOG] [Fri Aug 15 00:11:09 2025] InitWindows complete. 
-[LOG] [Fri Aug 15 00:11:09 2025] DirectXRenderingEngine initialization complete. 
-[LOG] [Fri Aug 15 00:11:09 2025] Engine initialization complete. 
-[LOG] [Fri Aug 15 00:11:09 2025] Engine post initialization complete. 
-[LOG] [Fri Aug 15 00:11:09 2025] Engine post initialization complete. 
