@@ -21,22 +21,23 @@ GCamera::GCamera()
 	Radius = 10.f;
 	A = XM_PI;
 	B = XM_PI;
+	bRightMouseDown = false;
 }
 void GCamera::BeginInit()
 {
 	// 初始化投影矩阵
 	ViewportInit();
 	// 绑定代理
-	InputComponent->OnLMouseButtonDownDelegate.Bind(this, &GCamera::OnLeftMouseButtonDown);
-	InputComponent->OnMouseButtonDownDelegate.Bind(this, &GCamera::OnMouseButtonDown);
-	InputComponent->OnMouseButtonUpDelegate.Bind(this, &GCamera::OnMouseButtonUp);
-	InputComponent->OnMouseMoveDelegate.Bind(this, &GCamera::OnMouseMove);
-	InputComponent->OnMouseWheelDelegate.Bind(this, &GCamera::OnMouseWheel);
-	
 	InputComponent->CaptureKeyboardInforDelegate.Bind(this, &GCamera::ExecuteKeyboard);
 
-	
+	InputComponent->OnLMouseButtonUpDelegate.Bind(this, &GCamera::OnLeftMouseButtoUP);
+	InputComponent->OnLMouseButtonDownDelegate.Bind(this, &GCamera::OnLeftMouseButtonDown);
+	InputComponent->OnRMouseButtonDownDelegate.Bind(this, &GCamera::OnRightMouseButtonDown);
+	InputComponent->OnRMouseButtonUpDelegate.Bind(this, &GCamera::OnRightMouseButtonUp);
+	InputComponent->OnMouseMoveDelegate.Bind(this, &GCamera::OnMouseMove);
+	InputComponent->OnMouseWheelDelegate.Bind(this, &GCamera::OnMouseWheel);
 }
+	
 
 void GCamera::Tick(float DeltaTime)
 {
@@ -45,36 +46,53 @@ void GCamera::Tick(float DeltaTime)
 
 void GCamera::ExecuteKeyboard(const FInputKey& InputKey)
 {
-	if (InputKey.KeyName == "W")
+	if (bLeftMouseDown || bRightMouseDown)
 	{
-		MoveForward(1.f);
-		SetDirty(true);
+		if (InputKey.KeyName == "W")
+		{
+			MoveForward(1.f);
+
+			SetDirty(true);
+		}
+		else if (InputKey.KeyName == "S")
+		{
+			MoveForward(-1.f);
+
+			SetDirty(true);
+		}
+		else if (InputKey.KeyName == "A")
+		{
+			MoveRight(-1.f);
+
+			SetDirty(true);
+		}
+		else if (InputKey.KeyName == "D")
+		{
+			MoveRight(1.f);
+
+			SetDirty(true);
+		}
 	}
-	else if (InputKey.KeyName == "S")
+
+	/*if (InputKey.KeyName == "F")
 	{
-		MoveForward(-1.f);
-		SetDirty(true);
-	}
-	else if (InputKey.KeyName == "A")
-	{
-		MoveRight(-1.f);
-		SetDirty(true);
-	}
-	else if (InputKey.KeyName == "D")
-	{
-		MoveRight(1.f);
-		SetDirty(true);
-	}
-	else if (InputKey.KeyName == "Q")
-	{
-		CmeraType = ECmeraType::ObservationObject;
-		SetDirty(true);
-	}
-	else  if (InputKey.KeyName == "E")
-	{
-		CmeraType = ECmeraType::CameraRoaming;
-		SetDirty(true);
-	}
+		if (!bFPress)
+		{
+			FTimelineDelegate TimelineDelegate;
+			TimelineDelegate.Bind(this, &GCamera::LookAtAndMoveToSelectedObject);
+			Timeline.BindTimeLineEvent(0.4f, TimelineDelegate);
+
+			bFPress = true;
+		}
+	}*/
+
+	// 观察模式
+	//if (InputKey.KeyName == "alt")
+	//{
+	//	CmeraType = ECmeraType::ObservationObject;
+
+	//	SetDirty(true);
+	//}
 }
 
 void GCamera::BuildViewMatrix(float DeltaTime)
@@ -108,6 +126,8 @@ void GCamera::BuildViewMatrix(float DeltaTime)
 
 void GCamera::OnLeftMouseButtonDown(int X, int Y)
 {
+	bLeftMouseDown = true;
+
 	LastMousePosition.x = X;
 	LastMousePosition.y = Y;
 
@@ -116,10 +136,14 @@ void GCamera::OnLeftMouseButtonDown(int X, int Y)
 	SetCapture(GetMainWindowsHandle());
 }
 
-
-void GCamera::OnMouseButtonDown(int X, int Y)
+void GCamera::OnLeftMouseButtoUP(int X, int Y)
 {
-	bLeftMouseDown = true;
+	bLeftMouseDown = false;
+}
+
+void GCamera::OnRightMouseButtonDown(int X, int Y)
+{
+	bRightMouseDown = true;
 
 	LastMousePosition.x = X;
 	LastMousePosition.y = Y;
@@ -131,9 +155,9 @@ void GCamera::OnMouseButtonDown(int X, int Y)
 	SetDirty(true);
 }
 
-void GCamera::OnMouseButtonUp(int X, int Y)
+void GCamera::OnRightMouseButtonUp(int X, int Y)
 {
-	bLeftMouseDown = false;
+	bRightMouseDown = false;
 
 	ReleaseCapture();
 
@@ -145,7 +169,7 @@ void GCamera::OnMouseButtonUp(int X, int Y)
 
 void GCamera::OnMouseMove(int X, int Y)
 {
-	if (bLeftMouseDown)
+	if (bRightMouseDown)
 	{
 		float XRadians = XMConvertToRadians((float)(X - LastMousePosition.x) * MouseSensitivity);
 		float YRadians = XMConvertToRadians((float)(Y - LastMousePosition.y) * MouseSensitivity);
@@ -223,12 +247,11 @@ void GCamera::MoveRight(float InValue)
 }
 
 // 添加选择箭头支持
-extern GActorObject* SelectedObject;
 extern CMeshComponent* SelectAxisComponent;
 #if EDITOR_ENGINE
-#include "../../EditorEngine/SelectEditor/OperationHandle/MoveArrow.h"
-extern GMoveArrow* MoveArrow;
+#include "../../Common/OperationHandleSelectManager.h"
 #endif // 0
+
 
 void GCamera::OnClickedScreen(int X, int Y)
 {
@@ -246,19 +269,13 @@ void GCamera::OnClickedScreen(int X, int Y)
 				InLayer->HighlightDisplayObject(CollisionResult.RenderingData);
 			}
 
-			SelectedObject = CollisionResult.Actor;
 
 #if EDITOR_ENGINE
-			if (MoveArrow)
-			{
-				if (CollisionResult.Actor != nullptr)
-				{
-					MoveArrow->SetHitActor(true);
-					MoveArrow->SetPosition(CollisionResult.Actor->GetPosition());
-					MoveArrow->SetVisible(true);
-				}
-					
-			}
+			//设置选择对象
+			FOperationHandleSelectManager::Get()->SetNewSelectedObject(CollisionResult.Actor);
+
+			//显示操作手柄
+			FOperationHandleSelectManager::Get()->DisplaySelectedOperationHandle();
 #endif
 		}
 		else
@@ -268,14 +285,13 @@ void GCamera::OnClickedScreen(int X, int Y)
 				InLayer->Clear(EMeshRenderLayerType::RENDERLAYER_SELECT);
 			}
 
-			SelectedObject = nullptr;
 
 #if EDITOR_ENGINE
-			if (MoveArrow)
-			{
-				MoveArrow->SetHitActor(false);
-				MoveArrow->SetVisible(false);
-			}
+			//设置选择对象
+			FOperationHandleSelectManager::Get()->SetNewSelectedObject(nullptr);
+
+			//显示操作手柄
+			FOperationHandleSelectManager::Get()->HideSelectedOperationHandle();
 #endif
 		}
 	}

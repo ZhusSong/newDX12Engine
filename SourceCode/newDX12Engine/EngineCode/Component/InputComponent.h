@@ -22,10 +22,10 @@ public:
 		FCaptureOnMouseDelegate OnLMouseButtonUpDelegate;
 
 	CVARIABLE(xxx, aaaa)
-		FCaptureOnMouseDelegate OnMouseButtonDownDelegate;
+		FCaptureOnMouseDelegate OnRMouseButtonDownDelegate;
 
 	CVARIABLE(aaa, vvv)
-		FCaptureOnMouseDelegate OnMouseButtonUpDelegate;
+		FCaptureOnMouseDelegate OnRMouseButtonUpDelegate;
 
 	CVARIABLE(xxx, www)
 		FCaptureOnMouseDelegate OnMouseMoveDelegate;
@@ -38,8 +38,8 @@ public:
 
 	virtual void OnLeftMouseButtonDown(int X, int Y);
 	virtual void OnLeftMouseButtonUp(int X, int Y);
-	virtual void OnMouseButtonDown(int X, int Y);
-	virtual void OnMouseButtonUp(int X, int Y);
+	virtual void OnRightMouseButtonDown(int X, int Y);
+	virtual void OnRightMouseButtonUp(int X, int Y);
 	virtual void OnMouseMove(int X, int Y);
 	virtual void OnMouseWheel(int X, int Y, float InDelta);
 };

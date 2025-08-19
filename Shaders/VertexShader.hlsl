@@ -46,11 +46,11 @@ MeshVertexOut VertexShaderMain(MeshVertexIn MV)
     else
     {
 		// 转法线
-        MOut.Normal = mul(MV.Normal, (float3x3) WorldMatrix);
+       	MOut.Normal = mul(MV.Normal, (float3x3)NormalTransformation);
     }
 	
 	// 切线
-    MOut.UTangent = mul(MV.UTangent, (float3x3) WorldMatrix);
+    MOut.UTangent = mul(MV.UTangent, (float3x3)NormalTransformation);
 
 	// ui坐标
     float4 MyTexCoord = mul(float4(MV.TexCoord, 0.0f, 1.f), ObjectTextureTransform);

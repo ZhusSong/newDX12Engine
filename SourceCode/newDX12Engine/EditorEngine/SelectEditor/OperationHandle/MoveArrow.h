@@ -12,15 +12,22 @@ public:
 	void CreateMesh();
 
 	void SetHitActor(bool isHit) { bIsHitActor = isHit; };
+
+
+protected:
+	virtual fvector_3d AnyAxis(
+		const fvector_3d& InRayWorldOriginPoint,
+		const fvector_3d& InRayWorldDirection,
+		const fvector_3d& InActorWorldOriginPoint);
+
 protected:
 	virtual void OnMouseMove(int X, int Y);
 	virtual void OnLeftMouseButtonDown(int X, int Y);
 	virtual void OnLeftMouseButtonUp(int X, int Y);
 
-	// 通过屏幕映射到物体企图移动的下一个位置
-	float GetMouseScreenMovePosition(int X, int Y,
-		fvector_3d& ActorWorldPosition,
-		fvector_3d& ActorWorldDir);
+	virtual void OnCaptureKeyboardInfor(const FInputKey& InKey);
+
+
 protected:
 	fvector_3d RelativePosition;
 

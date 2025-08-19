@@ -38,8 +38,17 @@
 
 // 添加编辑器界面移动箭头支持
 #if EDITOR_ENGINE
+
 #include "../../../../../EditorEngine/SelectEditor/OperationHandle/MoveArrow.h"
+#include "../../../../../EditorEngine/SelectEditor/OperationHandle/RotatorArrow.h"
+#include "../../../../../EditorEngine/SelectEditor/OperationHandle/ScalingArrow.h"
 #endif
+
+
+// 声明控制手柄
+extern GMoveArrow* MoveArrow;
+extern GScalingArrow* ScalingArrow;
+extern GRotatorArrow* RotatorArrow;
 
 
 CDirectXRenderingEngine::CDirectXRenderingEngine()
@@ -88,21 +97,32 @@ int CDirectXRenderingEngine::Init(FWinMainCommandParameters InParameters)
 	return 0;
 }
 
-// 添加移动箭头
-extern GMoveArrow* MoveArrow;
 int CDirectXRenderingEngine::PostInit()
 {
 	Engine_Log("Engine post initialization complete.");
 
 	ANALYSIS_HRESULT(GraphicsCommandList->Reset(CommandAllocator.Get(), NULL));
 	{
-		// 添加移动箭头
+		// 创建控制手柄
 #if EDITOR_ENGINE
 		if (GMoveArrow* InMoveArrow = World->CreateActorObject<GMoveArrow>())
 		{
 			InMoveArrow->CreateMesh();
 
 			MoveArrow = InMoveArrow;
+		}
+		if (GScalingArrow* InScalingArrow = World->CreateActorObject<GScalingArrow>())
+		{
+			InScalingArrow->CreateMesh();
+
+			ScalingArrow = InScalingArrow;
+		}
+
+		if (GRotatorArrow* InRotatorArrow = World->CreateActorObject<GRotatorArrow>())
+		{
+			InRotatorArrow->CreateMesh();
+
+			RotatorArrow = InRotatorArrow;
 		}
 #endif
 		// 创建灯光

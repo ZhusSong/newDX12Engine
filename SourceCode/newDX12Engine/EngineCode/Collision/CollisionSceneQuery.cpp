@@ -29,6 +29,18 @@ void GetRaycastDataByLocal(
 	OutLocalDirection = XMVector3Normalize(OutLocalDirection);
 }
 
+bool FCollisionSceneQuery::IsIgnoreComponents(CComponent* InComponent, const std::vector<CComponent*>& IgnoreComponents)
+{
+	for (auto& Tmp : IgnoreComponents)
+	{
+		if (Tmp == InComponent)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
 
 bool FCollisionSceneQuery::RaycastSingle(
     CWorld* InWorld, 
@@ -116,6 +128,7 @@ bool FCollisionSceneQuery::RaycastSingle(
 bool FCollisionSceneQuery::RaycastSingle(
 	CWorld* InWorld,
 	GActorObject* InSpecificObjects,
+	const std::vector<CComponent*>& IgnoreComponents,
 	const XMVECTOR& OriginPoint,
 	const XMVECTOR& Direction,
 	const XMMATRIX& ViewInverseMatrix,
@@ -127,31 +140,34 @@ bool FCollisionSceneQuery::RaycastSingle(
 
 		if (InRenderingData->Mesh->IsPickup())
 		{
-			XMVECTOR LocalOriginPoint;
-			XMVECTOR LocalDirection;
-
-			GetRaycastDataByLocal(
-				InRenderingData,
-				OriginPoint,
-				Direction,
-				ViewInverseMatrix,
-				LocalOriginPoint,
-				LocalDirection);
-
-			float BoundTime = 0.f;
-			if (InRenderingData->Bounds.Intersects(LocalOriginPoint, LocalDirection, BoundTime))
+			if (!IsIgnoreComponents(InRenderingData->Mesh, IgnoreComponents))
 			{
-				if (GActorObject* InActorObject = dynamic_cast<GActorObject*>(InRenderingData->Mesh->GetOuter()))
-				{
-					if (InActorObject == InSpecificObjects)
-					{
-						OutResult.bHit = true;
-						OutResult.Component = InRenderingData->Mesh;
-						OutResult.Time = BoundTime;
-						OutResult.Actor = InActorObject;
+				XMVECTOR LocalOriginPoint;
+				XMVECTOR LocalDirection;
 
-						//拿到渲染数据
-						OutResult.RenderingData = InRenderingData;
+				GetRaycastDataByLocal(
+					InRenderingData,
+					OriginPoint,
+					Direction,
+					ViewInverseMatrix,
+					LocalOriginPoint,
+					LocalDirection);
+
+				float BoundTime = 0.f;
+				if (InRenderingData->Bounds.Intersects(LocalOriginPoint, LocalDirection, BoundTime))
+				{
+					if (GActorObject* InActorObject = dynamic_cast<GActorObject*>(InRenderingData->Mesh->GetOuter()))
+					{
+						if (InActorObject == InSpecificObjects)
+						{
+							OutResult.bHit = true;
+							OutResult.Component = InRenderingData->Mesh;
+							OutResult.Time = BoundTime;
+							OutResult.Actor = InActorObject;
+
+							//拿到渲染数据
+							OutResult.RenderingData = InRenderingData;
+						}
 					}
 				}
 			}

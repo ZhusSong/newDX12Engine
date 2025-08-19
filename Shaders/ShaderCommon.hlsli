@@ -35,8 +35,9 @@ Texture2D SimpleTexture2DMap[TEXTURE2D_MAP_NUM] : register(t3);
 
 cbuffer ObjectConstBuffer : register(b0) 
 {
-    float4x4 WorldMatrix;
+    float4x4 WorldMatrix;          //世界矩阵 处理法线不等比缩放 
     float4x4 ObjectTextureTransform;
+    float4x4 NormalTransformation;  //法线矩阵 处理法线不等比缩放
     uint MaterialIndex;
     uint RR1;
     uint RR2;
@@ -73,9 +74,9 @@ struct MaterialConstBuffer
     int NormalIndex;
 
     int SpecularIndex;
-    int XX1;
-    int XX2;
-    int XX3;
+    float Param0; //自定义
+    float Param1; //自定义
+    float Param2; //自定义
 
     float4 BaseColor;
 

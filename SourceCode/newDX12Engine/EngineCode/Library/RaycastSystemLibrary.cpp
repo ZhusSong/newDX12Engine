@@ -54,7 +54,12 @@ bool FRaycastSystemLibrary::HitResultByScreen(CWorld* InWorld, int ScreenX, int 
 	return false;
 }
 
-bool FRaycastSystemLibrary::HitSpecificObjectsResultByScreen(CWorld* InWorld, GActorObject* InSpecificObjects, int ScreenX, int ScreenY, FCollisionResult& OutResult)
+bool FRaycastSystemLibrary::HitSpecificObjectsResultByScreen(
+	CWorld* InWorld,
+	GActorObject* InSpecificObjects,
+	const std::vector<CComponent*>& IgnoreComponents,
+	int ScreenX, int ScreenY, 
+	FCollisionResult& OutResult)
 {
 	XMVECTOR OriginPoint;
 	XMVECTOR Direction;
@@ -66,6 +71,10 @@ bool FRaycastSystemLibrary::HitSpecificObjectsResultByScreen(CWorld* InWorld, GA
 		Direction,
 		ViewInverseMatrix))
 	{
-		return FCollisionSceneQuery::RaycastSingle(InWorld, InSpecificObjects, OriginPoint, Direction, ViewInverseMatrix, OutResult);
+		return FCollisionSceneQuery::RaycastSingle(
+			InWorld,
+			InSpecificObjects,
+			IgnoreComponents,
+			OriginPoint, Direction, ViewInverseMatrix, OutResult);
 	}
 }

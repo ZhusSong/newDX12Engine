@@ -177,6 +177,12 @@ void FGeometryMap::UpdateMaterialShaderResourceView(float DeltaTime, const FView
 
 				InMaterial->SetDirty(false);
 
+				// 自定义项
+				// float
+				MaterialConstantBuffer.Param0 = InMaterial->GetFloatParam(0);
+				MaterialConstantBuffer.Param1 = InMaterial->GetFloatParam(1);
+				MaterialConstantBuffer.Param2 = InMaterial->GetFloatParam(2);
+
 				MaterialConstantBufferViews.Update(InMaterial->GetMaterialIndex(), &MaterialConstantBuffer);
 			}
 		}
@@ -474,32 +480,27 @@ void FGeometryMap::BuildMaterialShaderResourceView()
 {
 	// 收集材质
 	// 更新Shader-Index
-	for (auto& Tmp : FRenderLayerManager::RenderLayers)
+	for (auto& InData : FGeometry::RenderingDatas)
 	{
-		for (auto& InData : Tmp->RenderDatas)
+		if (auto InMaterials = InData->Mesh->GetMaterials())
 		{
-			if (!InData.expired())
+			for (size_t j = 0; j < InMaterials->size(); j++)
 			{
-				if (auto InMaterials = InData.lock()->Mesh->GetMaterials())
-				{
-					for (size_t j = 0; j < InMaterials->size(); j++)
-					{
-						(*InMaterials)[j]->SetMaterialIndex(Materials.size());
+				//做ShaderIndex所有
+				(*InMaterials)[j]->SetMaterialIndex(Materials.size());
 
-						Materials.push_back((*InMaterials)[j]);
-					}
-				}
+				Materials.push_back((*InMaterials)[j]);
 			}
 		}
 	}
 
-
-	// 创建常量缓冲区
+	//创建常量缓冲区
 	MaterialConstantBufferViews.CreateConstant(
 		sizeof(FMaterialConstantBuffer),
 		GetDrawMaterialObjectNumber(),
 		false);
 }
+
 
 void FGeometryMap::BuildLightConstantBuffer()
 {

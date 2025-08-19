@@ -598,6 +598,18 @@
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\OperationHandleRenderLayer.cpp">
       <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\RednerLayer</Filter>
     </ClCompile>
+    <ClCompile Include="Common\OperationHandleSelectManager.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorEngine\SelectEditor\OperationHandle\RotatorArrow.cpp">
+      <Filter>EditorEngine\SelectEditor\OperationHandle</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorEngine\SelectEditor\OperationHandle\ScalingArrow.cpp">
+      <Filter>EditorEngine\SelectEditor\OperationHandle</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\OperationHandleRotPlaneRenderLayer.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\RednerLayer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EngineCode\Config\EngineRenderConfig.h">
@@ -1014,6 +1026,18 @@
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\OperationHandleRenderLayer.h">
       <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\RednerLayer</Filter>
     </ClInclude>
+    <ClInclude Include="Common\OperationHandleSelectManager.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorEngine\SelectEditor\OperationHandle\RotatorArrow.h">
+      <Filter>EditorEngine\SelectEditor\OperationHandle</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorEngine\SelectEditor\OperationHandle\ScalingArrow.h">
+      <Filter>EditorEngine\SelectEditor\OperationHandle</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\OperationHandleRotPlaneRenderLayer.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\RednerLayer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Shaders\Fog.hlsli">
@@ -1055,6 +1079,9 @@
       <Filter>Shaders</Filter>
     </FxCompile>
     <FxCompile Include="..\..\Shaders\VertexShader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\Shaders\OperationRotPlaneHandle.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
   </ItemGroup>

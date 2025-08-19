@@ -5,4 +5,5 @@
 class CComponent :public CCoreMinimalObject
 {
 
+public:
 };

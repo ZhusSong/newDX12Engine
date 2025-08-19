@@ -10,6 +10,7 @@ struct FObjectTransform
 	XMFLOAT4X4 World;
 
 	XMFLOAT4X4 TextureTransformation;
+	XMFLOAT4X4 NormalTransformation;
 	UINT MaterialIndex;
 	// 占位
 	UINT VV1;

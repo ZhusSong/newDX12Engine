@@ -13,6 +13,7 @@ enum EPipelineState
 	OmnidirectionalShadow = 8,  //万向阴影(点光)
 	Select=9,                //选择描边
 	Operation_Handle = 10,    //方向箭头
+	Operation_Handle_Rot_Plane = 11,
 	State_Normal = 20,         
 };
 

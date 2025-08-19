@@ -31,10 +31,12 @@ MeshVertexOut VertexShaderMain(MeshVertexIn MV)
 
 	Out.PositionH = mul(Out.WorldPosition, ViewProjectionMatrix);
 
+	// UI坐标
 	float4 MyTexCoord = mul(float4(MV.TexCoord, 0.0f, 1.f), ObjectTextureTransform);
 	Out.TexCoord = mul(MyTexCoord, MatConstBuffer.TransformInformation).xy;
 
-	Out.Normal = mul(MV.Normal, (float3x3)WorldMatrix);
+	// 法线
+	Out.Normal = mul(MV.Normal, (float3x3)NormalTransformation);
 
 	return Out;
 }
@@ -44,7 +46,16 @@ float4 PixelShaderMain(MeshVertexOut MVOut) :SV_TARGET
 	float3 ModelNormal = normalize(MVOut.Normal);
 
 	float3 ViewDirection = normalize(ViewportPosition.xyz - MVOut.WorldPosition.xyz);
-	float DotValue = pow(1.f - max(dot(ModelNormal, ViewDirection), 0.0), 3.f);
 
-	return float4(1.f, 0.f, 0.f, 1.f) * DotValue;
+	// 菲尼尔式描边
+	//float DotValue = pow(1.f - max(dot(ModelNormal, ViewDirection), 0.0), 3.f);
+	//
+	//return float4(1.f, 0.f, 0.f, 1.f) * DotValue;
+	float NoV = dot(ModelNormal, ViewDirection);
+	if (NoV <= 0.2f)
+	{
+		return float4(1.f, 1.f, 0.f, 1.f);
+	}
+
+	return float4(0.f, 0.f, 0.f, 0.f);
 }

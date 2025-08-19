@@ -14,6 +14,9 @@
 #include "../../../../../Core/World.h"
 #include "../../../../../Actor/Core/ActorObject.h"
 
+
+#include "RenderLayer/OperationHandleRotPlaneRenderLayer.h"
+
 #if EDITOR_ENGINE
 #include "RenderLayer/OperationHandleRenderLayer.h"
 #endif
@@ -27,6 +30,8 @@ FRenderLayerManager::FRenderLayerManager()
 #if EDITOR_ENGINE
 	CreateRenderLayer<FOperationHandleRenderLayer>();
 #endif
+
+	CreateRenderLayer<FOperationHandleRotPlaneRenderLayer>();
 
 	CreateRenderLayer<FSelectRenderLayer>();
 	CreateRenderLayer<FOpaqueShadowRenderLayer>();

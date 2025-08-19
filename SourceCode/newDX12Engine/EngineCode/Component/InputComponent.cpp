@@ -7,8 +7,8 @@ void CInputComponent::BeginInit()
 	LMouseDownDelegate.AddFunction(this, &CInputComponent::OnLeftMouseButtonDown);
 	LMouseUpDelegate.AddFunction(this, &CInputComponent::OnLeftMouseButtonUp);
 
-	MouseDownDelegate.AddFunction(this, &CInputComponent::OnMouseButtonDown);
-	MouseUpDelegate.AddFunction(this, &CInputComponent::OnMouseButtonUp);
+	MouseDownDelegate.AddFunction(this, &CInputComponent::OnRightMouseButtonDown);
+	MouseUpDelegate.AddFunction(this, &CInputComponent::OnRightMouseButtonUp);
 
 	MouseMoveDelegate.AddFunction(this, &CInputComponent::OnMouseMove);
 
@@ -21,29 +21,41 @@ void CInputComponent::Tick(float DeltaTime)
 	if (CaptureKeyboardInforDelegate.IsBound())
 	{
 		FInputKey InputKey;
-		if (GetAsyncKeyState('W') & 0x8000)
+		if (GetAsyncKeyState('W') & KF_UP)
 		{
 			InputKey.KeyName = "W";
 		}
-		else if (GetAsyncKeyState('S') & 0x8000)
+		else if (GetAsyncKeyState('S') & KF_UP)
 		{
 			InputKey.KeyName = "S";
 		}
-		else if (GetAsyncKeyState('A') & 0x8000)
+		else if (GetAsyncKeyState('A') & KF_UP)
 		{
 			InputKey.KeyName = "A";
 		}
-		else if (GetAsyncKeyState('D') & 0x8000)
+		else if (GetAsyncKeyState('D') & KF_UP)
 		{
 			InputKey.KeyName = "D";
 		}
-		else if (GetAsyncKeyState('Q') & 0x8000)
+		else if (GetAsyncKeyState('Q') & KF_UP)
 		{
 			InputKey.KeyName = "Q";
 		}
-		else if (GetAsyncKeyState('E') & 0x8000)
+		else if (GetAsyncKeyState('E') & KF_UP)
 		{
 			InputKey.KeyName = "E";
+		}
+		else if (GetAsyncKeyState('R') & KF_UP)
+		{
+			InputKey.KeyName = "R";
+		}
+		else if (GetAsyncKeyState('F') & KF_UP)
+		{
+			InputKey.KeyName = "F";
+		}
+		else if (GetAsyncKeyState(VK_MENU) & KF_UP)//alt
+		{
+			InputKey.KeyName = "alt";
 		}
 		else
 		{
@@ -69,20 +81,20 @@ void CInputComponent::OnLeftMouseButtonUp(int X, int Y)
 	}
 }
 // 鼠标右键按下时
-void CInputComponent::OnMouseButtonDown(int X, int Y)
+void CInputComponent::OnRightMouseButtonDown(int X, int Y)
 {
-	if (OnMouseButtonDownDelegate.IsBound())
+	if (OnRMouseButtonDownDelegate.IsBound())
 	{
-		OnMouseButtonDownDelegate.Execute((int)X, (int)Y);
+		OnRMouseButtonDownDelegate.Execute((int)X, (int)Y);
 	}
 }
 
 // 鼠标抬起时
-void CInputComponent::OnMouseButtonUp(int X, int Y)
+void CInputComponent::OnRightMouseButtonUp(int X, int Y)
 {
-	if (OnMouseButtonUpDelegate.IsBound())
+	if (OnRMouseButtonUpDelegate.IsBound())
 	{
-		OnMouseButtonUpDelegate.Execute((int)X, (int)Y);
+		OnRMouseButtonUpDelegate.Execute((int)X, (int)Y);
 	}
 }
 

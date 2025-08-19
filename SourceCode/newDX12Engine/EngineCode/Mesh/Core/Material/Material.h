@@ -47,6 +47,12 @@ public:
 	  // 设置金属度
 	  void SetMetallicity(float InMetallicity);
 
+	  //自定义参数
+public:
+	void SetFloatParam(int ParamIndex, float InValue);
+	float GetFloatParam(int ParamIndex) const;
+
+public:
 	  // 动态反射
 	  FORCEINLINE float IsDynamicReflection() const {
 		  return bDynamicReflection &&
@@ -122,4 +128,10 @@ private:
 
 	
 	float Refractive;			//折射率
+
+	//自定义参数
+private:
+	float Param0;//自定义
+	float Param1;//自定义
+	float Param2;//自定义
 };

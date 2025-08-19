@@ -30,7 +30,7 @@ void frotator::object_to_inertia(const fquat& in_quat)
 	feuler euler;
 	euler.pitch = -2.f * (in_quat.y * in_quat.z - in_quat.w * in_quat.x);
 
-	if (fabsf(euler.pitch)>0.99999f)
+	if (fabsf(euler.pitch) > 0.99999f)
 	{
 		euler.pitch *= (3.1415926f * 0.5f);
 		euler.heading = atan2(-in_quat.x * in_quat.z + in_quat.w * in_quat.y,
@@ -61,7 +61,7 @@ void frotator::rotator_to_euler(feuler& in_euler) const
 	//将角度转为弧度
 	in_euler.heading = math_utils::angle_to_radian(pitch);//y
 	in_euler.pitch = math_utils::angle_to_radian(roll);//x
-	in_euler.bank  = math_utils::angle_to_radian(yaw);//z
+	in_euler.bank = math_utils::angle_to_radian(yaw);//z
 }
 
 feuler frotator::rotator_to_euler() const
@@ -105,8 +105,8 @@ frotator::frotator()
 
 frotator::frotator(float in_pitch, float in_yaw, float in_roll)
 	:pitch(in_pitch)
-	,yaw(in_yaw)
-	,roll(in_roll)
+	, yaw(in_yaw)
+	, roll(in_roll)
 {
 }
 

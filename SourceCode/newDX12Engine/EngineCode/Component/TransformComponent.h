@@ -6,17 +6,19 @@ class CTransformComponent :public CComponent
 {public:
 	CTransformComponent();
 
-	void SetPosition(const XMFLOAT3& InNewPosition);
 
-	void SetRotation(const fvector_3d& InNewRotation);
+	virtual void SetPosition(const XMFLOAT3& InNewPosition);
+	
+	virtual void SetRotation(const fvector_3d& InNewRotation);//add 旋转
+	virtual void SetRotation(const frotator& InNewRotation);
+	
+	virtual void SetScale(const fvector_3d& InNewScale);
 
-	void SetScale(const fvector_3d& InNewScale);
-
-	void SetForwardVector(const XMFLOAT3& InForwardVector);
-
-	void SetRightVector(const XMFLOAT3& InRightVector);
-
-	void SetUPVector(const XMFLOAT3& InUPVector);
+	virtual void SetForwardVector(const XMFLOAT3& InForwardVector);
+	
+	virtual void SetRightVector(const XMFLOAT3& InRightVector);
+	
+	virtual void SetUPVector(const XMFLOAT3& InUPVector);
 
 public:
 	XMFLOAT3& GetPosition() { return Position; }

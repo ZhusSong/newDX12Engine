@@ -1,4 +1,5 @@
 ﻿#include "TransformComponent.h"
+#include "../Math/EngineMath.h"
 
 // 初始化Transform组件
 CTransformComponent::CTransformComponent()
@@ -19,9 +20,12 @@ void CTransformComponent::SetPosition(const XMFLOAT3& InNewPosition)
 
 void CTransformComponent::SetRotation(const fvector_3d& InNewRotation)
 {
-	float RollRadians = XMConvertToRadians(InNewRotation.z);
-	float PithRadians = XMConvertToRadians(InNewRotation.x);
-	float YawRadians = XMConvertToRadians(InNewRotation.y);
+	fvector_3d LastRotation = EngineMath::ToVector3d(Rotation);
+	fvector_3d OffsetRotation = InNewRotation - LastRotation;
+
+	float RollRadians = XMConvertToRadians(OffsetRotation.z);
+	float PithRadians = XMConvertToRadians(OffsetRotation.x);
+	float YawRadians = XMConvertToRadians(OffsetRotation.y);
 
 	//旋转矩阵
 	XMMATRIX RotationRollPitchYawMatrix = XMMatrixRotationRollPitchYaw(
@@ -34,8 +38,33 @@ void CTransformComponent::SetRotation(const fvector_3d& InNewRotation)
 	XMStoreFloat3(&RightVector, XMVector3TransformNormal(XMLoadFloat3(&RightVector), RotationRollPitchYawMatrix));
 	XMStoreFloat3(&UPVector, XMVector3TransformNormal(XMLoadFloat3(&UPVector), RotationRollPitchYawMatrix));
 	XMStoreFloat3(&ForwardVector, XMVector3TransformNormal(XMLoadFloat3(&ForwardVector), RotationRollPitchYawMatrix));
+
+	//保存一下值
+	Rotation = EngineMath::ToFloat3(LastRotation);
 }
 
+void CTransformComponent::SetRotation(const frotator& InNewRotation)
+{
+	float RollRadians = XMConvertToRadians(InNewRotation.roll);
+	float PithRadians = XMConvertToRadians(InNewRotation.pitch);
+	float YawRadians = XMConvertToRadians(InNewRotation.yaw);
+
+	//旋转矩阵
+	XMMATRIX RotationRollPitchYawMatrix = XMMatrixRotationRollPitchYaw(
+		PithRadians, YawRadians, RollRadians);
+
+	//还原为最原始的
+	XMVECTOR Right = XMVectorSet(1.f, 0.f, 0.f, 0.f);
+	XMVECTOR Up = XMVectorSet(0.f, 1.f, 0.f, 0.f);
+	XMVECTOR Forward = XMVectorSet(0.f, 0.f, 1.f, 0.f);
+
+	XMStoreFloat3(&RightVector, XMVector3TransformNormal(Right, RotationRollPitchYawMatrix));
+	XMStoreFloat3(&UPVector, XMVector3TransformNormal(Up, RotationRollPitchYawMatrix));
+	XMStoreFloat3(&ForwardVector, XMVector3TransformNormal(Forward, RotationRollPitchYawMatrix));
+
+	//保存一下值
+	Rotation = XMFLOAT3(InNewRotation.yaw, InNewRotation.pitch, InNewRotation.roll);
+}
 void CTransformComponent::SetScale(const fvector_3d& InNewScale)
 {
 	Scale.x = InNewScale.x;

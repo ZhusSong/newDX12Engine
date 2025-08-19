@@ -202,10 +202,15 @@ void FRenderLayer::UpdateCalculations(float DeltaTime, const FViewportInfo& View
 				//更新模型位置
 				XMMATRIX ATRIXWorld = XMLoadFloat4x4(&InRenderingData->WorldMatrix);
 				XMMATRIX ATRIXTextureTransform = XMLoadFloat4x4(&InRenderingData->TextureTransform);
+				
+				//法线矩阵
+				XMVECTOR AATRIXWorldDeterminant = XMMatrixDeterminant(ATRIXWorld);
+				XMMATRIX NormalInverseMatrix = XMMatrixInverse(&AATRIXWorldDeterminant, ATRIXWorld);
 
 				FObjectTransform ObjectTransformation;
 				XMStoreFloat4x4(&ObjectTransformation.World, XMMatrixTranspose(ATRIXWorld));
 				XMStoreFloat4x4(&ObjectTransformation.TextureTransformation, XMMatrixTranspose(ATRIXTextureTransform));
+				XMStoreFloat4x4(&ObjectTransformation.NormalTransformation, NormalInverseMatrix);
 
 				//收集材质Index
 				if (auto& InMater = (*InRenderingData->Mesh->GetMaterials())[0])

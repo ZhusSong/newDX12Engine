@@ -8,4 +8,6 @@ bool bOperationHandleSelect = false;
 
 #if EDITOR_ENGINE
 class GMoveArrow* MoveArrow = nullptr;
+class GScalingArrow* ScalingArrow = nullptr;
+class GRotatorArrow* RotatorArrow = nullptr;
 #endif // EDITOR_ENGINE

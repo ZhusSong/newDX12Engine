@@ -55,6 +55,11 @@ void FSelectRenderLayer::BuildPSO()
 
 	DirectXPipelineState->SetRenderTarget(0, RenderTargetBlendDesc);
 
+	// 不进行遮挡剔除
+	CD3DX12_DEPTH_STENCIL_DESC DepthStencilDesc = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
+	DepthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_ALWAYS;
+	DirectXPipelineState->SetDepthStencilState(DepthStencilDesc);
+
 	DirectXPipelineState->Build(Select);
 }
 

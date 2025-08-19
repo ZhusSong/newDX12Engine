@@ -171,6 +171,9 @@ void FRenderingPipeline::Draw(float DeltaTime)
 	// 渲染选择层
 	RenderLayer.Draw(RENDERLAYER_SELECT, DeltaTime);
 
+	// 渲染旋转面片
+	RenderLayer.Draw(RENDERLAYER_OPERATION_HANDLE_ROT_PLANE, DeltaTime);
+
 	// 渲染操作手柄
 	RenderLayer.Draw(RENDERLAYER_OPERATION_HANDLE, DeltaTime);
 

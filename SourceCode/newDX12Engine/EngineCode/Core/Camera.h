@@ -28,9 +28,10 @@ public:
 	virtual void BuildViewMatrix(float DeltaTime);
 public:
 	// 鼠标处理相关
+	virtual void OnLeftMouseButtoUP(int X, int Y);
 	virtual void OnLeftMouseButtonDown(int X, int Y);
-	virtual void OnMouseButtonDown(int X, int Y);
-	virtual void OnMouseButtonUp(int X, int Y);
+	virtual void OnRightMouseButtonDown(int X, int Y);
+	virtual void OnRightMouseButtonUp(int X, int Y);
 	virtual void OnMouseMove(int X, int Y);
 	virtual void OnMouseWheel(int X, int Y, float InDelta);
 
@@ -53,6 +54,8 @@ public:
 protected:
 	POINT LastMousePosition;
 	bool bLeftMouseDown;
+	bool bRightMouseDown;
+
 
 	float MouseSensitivity;
 	ECmeraType CmeraType;
@@ -62,4 +65,8 @@ protected:
 	float B;//
 
 	class CMeshComponent* SphereMesh;
+	fvector_3d FocusPoint;
+
+	bool bFPress;
+	FTimeline Timeline;
 };

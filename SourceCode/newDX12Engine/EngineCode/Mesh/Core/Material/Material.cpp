@@ -15,6 +15,9 @@ CMaterial::CMaterial()
 	, bDynamicReflection(false)
 	, Refractive(1.1f)
 {
+	Param0 = 0.f;
+	Param1 = 0.f;
+	Param2 = 0.f;
 }
 
 
@@ -117,3 +120,50 @@ void CMaterial::SetMetallicity(float InMetallicity)
 
 	SetDirty(true);
 }
+
+
+void CMaterial::SetFloatParam(int ParamIndex, float InValue)
+{
+	switch (ParamIndex)
+	{
+	case 0:
+	{
+		Param0 = InValue;
+		break;
+	}
+	case 1:
+	{
+		Param1 = InValue;
+		break;
+	}
+	case 2:
+	{
+		Param2 = InValue;
+		break;
+	}
+	}
+
+	SetDirty(true);
+}
+
+float CMaterial::GetFloatParam(int ParamIndex) const
+{
+	switch (ParamIndex)
+	{
+	case 0:
+	{
+		return Param0;
+	}
+	case 1:
+	{
+		return Param1;
+	}
+	case 2:
+	{
+		return Param2;
+	}
+	}
+
+	return -1.f;
+}
+
