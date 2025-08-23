@@ -68,5 +68,4 @@ protected:
 	fvector_3d FocusPoint;
 
 	bool bFPress;
-	FTimeline Timeline;
 };

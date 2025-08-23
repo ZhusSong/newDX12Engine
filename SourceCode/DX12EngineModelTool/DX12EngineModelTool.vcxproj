@@ -85,8 +85,8 @@
     <IntDir>$(SolutionDir)Intermediate\Other\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>H:\RiDX12Engine\SourceCode\DX12EngineModelTool\ThirdPartyLibrary\FBX\include;$(SolutionDir)SourceCode\EngineSimpleLibrary;$(ProjectDir);$(IncludePath)</IncludePath>
-    <LibraryPath>H:\RiDX12Engine\SourceCode\DX12EngineModelTool\ThirdPartyLibrary\FBX\lib\vs2019\x64\debug;H:\RiDX12Engine\Binaries\Win64;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\SourceCode\DX12EngineModelTool\ThirdPartyLibrary\FBX\include;$(SolutionDir)SourceCode\EngineSimpleLibrary;$(ProjectDir);$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\SourceCode\DX12EngineModelTool\ThirdPartyLibrary\FBX\lib\vs2019\x64\debug;$(SolutionDir)\Binaries\Win64;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)Binaries\Win64\</OutDir>
     <ReferencePath>$(VC_ReferencesPath_x64)</ReferencePath>
     <IntDir>$(SolutionDir)Intermediate\Other\</IntDir>

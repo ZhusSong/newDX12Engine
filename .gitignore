@@ -22,12 +22,15 @@
 *.lai
 *.la
 *.a
-*.lib
 
 # Executables
 *.exe
 *.out
 *.app
+*.exp
+*.pdb
+*.idb
+*.cso
 
 /.vs/
 /x64/
