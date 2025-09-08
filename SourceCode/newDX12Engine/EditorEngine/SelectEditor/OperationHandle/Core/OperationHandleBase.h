@@ -58,6 +58,9 @@ public:
 	void ResetColor();
 	void ResetColor(CCustomMeshComponent* InAxisComponent, const fvector_4d& InColor);
 
+	// 是否点击到物体
+	void SetHitActor(bool isHit) { bIsHitActor = isHit; };
+
 public:
 	virtual void BeginInit();
 	virtual void Tick(float DeltaTime);
@@ -102,5 +105,10 @@ protected:
 	std::vector<CComponent*> IgnoreComponents;
 	bool bPressRightMouse;
 
+	// 未选中目标时操作手柄的位置
+	XMFLOAT3 HiddenPosition= XMFLOAT3(10000,10000,10000);
+
+	// 是否点击到物体
+	bool bIsHitActor = false;
 	
 };

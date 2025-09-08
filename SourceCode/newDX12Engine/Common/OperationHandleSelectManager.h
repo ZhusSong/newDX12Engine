@@ -4,6 +4,7 @@
 #if EDITOR_ENGINE
 class GActorObject;
 
+// 可操作手柄管理
 class FOperationHandleSelectManager
 {
 public:
@@ -26,6 +27,8 @@ public:
 	void SetNewSelectedOperationHandle(GActorObject* InNewSelectedObject);
 	// 设置选择对象
 	void SetNewSelectedObject(GActorObject* InNewSelectedObject);
+
+	void SetHitObject(bool isHit);
 
 public:
 	GActorObject* GetSelectedOperationHandle();

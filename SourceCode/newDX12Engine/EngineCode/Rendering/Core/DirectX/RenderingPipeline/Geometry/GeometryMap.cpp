@@ -677,10 +677,13 @@ void FGeometry::BuildMesh(
 
 		// 计算AABB包围盒
 		{
+			//XMFLOAT4X4 WorldMatrix = InRenderingData->GetWorldMatrix();
+
 			fvector_3d MaxPoint = fvector_3d(-FLT_MAX);
 			fvector_3d MinPoint = fvector_3d(+FLT_MAX);
 			for (auto& Tmp : MeshData.VertexData)
 			{
+
 				MinPoint.x = math_libray::Min(Tmp.Position.x, MinPoint.x);
 				MinPoint.y = math_libray::Min(Tmp.Position.y, MinPoint.y);
 				MinPoint.z = math_libray::Min(Tmp.Position.z, MinPoint.z);

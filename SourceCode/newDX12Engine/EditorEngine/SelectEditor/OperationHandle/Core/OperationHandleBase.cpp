@@ -277,7 +277,10 @@ void GOperationHandleBase::OnLeftMouseButtonDown(int X, int Y)
 
 void GOperationHandleBase::OnLeftMouseButtonUp(int X, int Y)
 {
-
+	if (!bIsHitActor)
+	{
+		SetPosition(HiddenPosition);
+	}
 }
 
 void GOperationHandleBase::OnRMouseButtonDown(int X, int Y)

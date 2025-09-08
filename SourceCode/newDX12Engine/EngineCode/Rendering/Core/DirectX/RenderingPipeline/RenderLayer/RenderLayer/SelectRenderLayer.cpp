@@ -55,10 +55,26 @@ void FSelectRenderLayer::BuildPSO()
 
 	DirectXPipelineState->SetRenderTarget(0, RenderTargetBlendDesc);
 
-	// 不进行遮挡剔除
+	//// 不进行遮挡剔除
+	//CD3DX12_DEPTH_STENCIL_DESC DepthStencilDesc = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
+	//DepthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_ALWAYS;
+	//DirectXPipelineState->SetDepthStencilState(DepthStencilDesc);
+	
+	// 双pass描边
+	// 关闭深度写入，但保留深度测试
 	CD3DX12_DEPTH_STENCIL_DESC DepthStencilDesc = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
-	DepthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_ALWAYS;
+	DepthStencilDesc.DepthEnable = TRUE;                        // 启用深度测试
+	DepthStencilDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO; // 不写入深度缓冲
+	DepthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS;    // 使用正常的深度比较
 	DirectXPipelineState->SetDepthStencilState(DepthStencilDesc);
+
+	// 渲染背面
+	CD3DX12_RASTERIZER_DESC RasterizerDesc = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
+	RasterizerDesc.CullMode = D3D12_CULL_MODE_FRONT;  // 剔除正面，只渲染背面
+	RasterizerDesc.FillMode = D3D12_FILL_MODE_SOLID;
+	RasterizerDesc.FrontCounterClockwise = FALSE;     // 确保正确的正面定义
+	DirectXPipelineState->SetRasterizerState(RasterizerDesc);
+
 
 	DirectXPipelineState->Build(Select);
 }

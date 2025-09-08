@@ -46,6 +46,7 @@ public:
 
 	//渲染 不包含设置PSO
 	virtual void DrawMesh(float DeltaTime, ERenderingConditions RC = ERenderingConditions::RC_None);
+
 public:
 	std::wstring BuildShadersPaths(const std::wstring& InShadersHLSLName);
 public:

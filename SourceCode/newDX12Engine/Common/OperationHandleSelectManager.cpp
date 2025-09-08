@@ -107,6 +107,13 @@ void FOperationHandleSelectManager::SetNewSelectedObject(GActorObject* InNewSele
 	SelectedObject = InNewSelectedObject;
 }
 
+void FOperationHandleSelectManager::SetHitObject(bool isHit)
+{
+	MoveArrow->SetHitActor(isHit);
+	ScalingArrow->SetHitActor(isHit);
+	RotatorArrow->SetHitActor(isHit);
+}
+
 GActorObject* FOperationHandleSelectManager::GetSelectedOperationHandle()
 {
 	return SelectedOperationHandle;

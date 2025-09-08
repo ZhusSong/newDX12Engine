@@ -37,6 +37,8 @@ public:
 public:
 	UINT GetVertexSizeInBytes()const { return VertexSize * VertexTypeSize; }
 	UINT GetIndexSizeInBytes()const { return IndexSize * IndexTypeSize; }
+
+	XMFLOAT4X4 GetWorldMatrix()const { return WorldMatrix; }
 public:
 	DXGI_FORMAT IndexFormat;
 

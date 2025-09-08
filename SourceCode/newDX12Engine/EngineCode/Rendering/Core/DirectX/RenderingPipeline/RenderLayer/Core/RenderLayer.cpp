@@ -239,6 +239,8 @@ void FRenderLayer::DrawMesh(float DeltaTime, ERenderingConditions RC)
 	}
 }
 
+
+
 std::wstring FRenderLayer::BuildShadersPaths(const std::wstring& InShadersHLSLName)
 {
 	return FEnginePathHelper::GetEngineShadersPath() + L"\\" + InShadersHLSLName + L".hlsl";

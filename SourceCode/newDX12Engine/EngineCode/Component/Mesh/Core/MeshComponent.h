@@ -45,6 +45,7 @@ public:
 	void SetVisible(bool bNewVisible) { bVisible = bNewVisible; }
 	bool IsVisible()const { return bVisible; }
 
+
 protected:
 	// 是否产生阴影
 	bool bCastShadow;

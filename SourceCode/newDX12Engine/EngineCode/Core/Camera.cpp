@@ -271,11 +271,14 @@ void GCamera::OnClickedScreen(int X, int Y)
 
 
 #if EDITOR_ENGINE
-			//设置选择对象
+			// 设置选择对象
 			FOperationHandleSelectManager::Get()->SetNewSelectedObject(CollisionResult.Actor);
 
-			//显示操作手柄
+			// 显示操作手柄
 			FOperationHandleSelectManager::Get()->DisplaySelectedOperationHandle();
+
+			// 设置是否点击到物体
+			FOperationHandleSelectManager::Get()->SetHitObject(true);
 #endif
 		}
 		else
@@ -287,14 +290,17 @@ void GCamera::OnClickedScreen(int X, int Y)
 
 
 #if EDITOR_ENGINE
-			//设置选择对象
+			// 设置选择对象
 			FOperationHandleSelectManager::Get()->SetNewSelectedObject(nullptr);
 
-			//显示操作手柄
+			// 隐藏操作手柄
 			FOperationHandleSelectManager::Get()->HideSelectedOperationHandle();
+			// 设置是否点击到物体
+			FOperationHandleSelectManager::Get()->SetHitObject(false);
 #endif
 		}
 	}
+	
 	
 }
 

@@ -13,6 +13,7 @@ void GetRaycastDataByLocal(
 	XMVECTOR& OutLocalOriginPoint,
 	XMVECTOR& OutLocalDirection)
 {
+
 	// 转模型局部
 	XMMATRIX WorldMatrix = XMLoadFloat4x4(&InRenderingData->WorldMatrix);
 	XMVECTOR WorldMatrixDeterminant = XMMatrixDeterminant(WorldMatrix);

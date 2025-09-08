@@ -72,6 +72,7 @@ void FRenderLayerManager::BuildPSO()
 }
 
 
+// 高亮选择物体
 void FRenderLayerManager::HighlightDisplayObject(GActorObject* InObject)
 {
 	FGeometry::FindRenderingDatas(

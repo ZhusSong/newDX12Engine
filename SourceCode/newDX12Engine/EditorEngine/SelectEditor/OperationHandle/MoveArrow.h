@@ -11,7 +11,6 @@ public:
 
 	void CreateMesh();
 
-	void SetHitActor(bool isHit) { bIsHitActor = isHit; };
 
 
 protected:
@@ -31,6 +30,4 @@ protected:
 protected:
 	fvector_3d RelativePosition;
 
-	// 是否点击到物体
-	bool bIsHitActor = false;
 };
