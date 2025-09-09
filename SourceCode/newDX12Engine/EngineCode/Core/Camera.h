@@ -3,6 +3,7 @@
 #include "Viewport/ClientViewport.h"
 #include "../CodeReflection/CodeReflectionMacroTag.h"
 #include "../Interface/DirectXDeviceInterface.h"
+#include "../Component/TimelineComponent.h"
 
 enum ECmeraType;
 struct FInputKey;
@@ -47,6 +48,10 @@ protected:
 	void RotateAroundXAxis(float InRotateDegrees);
 	void RotateAroundYAxis(float InRotateDegrees);
 
+protected:
+	// 返回选中目标
+	void LookAtAndMoveToSelectedObject(float InTime, float InDeltaTime);
+
 public:
 	FORCEINLINE 	CInputComponent* GetInputComponent() { return InputComponent; }
 
@@ -65,7 +70,9 @@ protected:
 	float B;//
 
 	class CMeshComponent* SphereMesh;
+
 	fvector_3d FocusPoint;
 
+	FTimeline Timeline;
 	bool bFPress;
 };

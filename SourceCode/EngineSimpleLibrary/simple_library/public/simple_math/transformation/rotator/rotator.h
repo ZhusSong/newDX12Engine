@@ -10,11 +10,11 @@ struct SIMPLE_LIBRARY_API feuler
 {
 	feuler()
 		:heading(0.f)
-		,pitch(0.f)
-		,bank(0.f)
+		, pitch(0.f)
+		, bank(0.f)
 	{}
 
-	feuler(float in_heading,float in_pitch,float in_bank)
+	feuler(float in_heading, float in_pitch, float in_bank)
 		:heading(in_heading)
 		, pitch(in_pitch)
 		, bank(in_bank)
@@ -22,9 +22,9 @@ struct SIMPLE_LIBRARY_API feuler
 
 	feuler operator/(float k)
 	{
-		assert(k!=0.f);
+		assert(k != 0.f);
 
-		return feuler(heading/k, pitch/k, bank/k);
+		return feuler(heading / k, pitch / k, bank / k);
 	}
 
 	feuler operator/=(float k)
@@ -52,14 +52,23 @@ struct SIMPLE_LIBRARY_API frotator
 public:
 	frotator operator-(const frotator& a) const
 	{
-		return frotator(pitch-a.pitch,yaw-a.yaw,roll-a.roll);
+		return frotator(pitch - a.pitch, yaw - a.yaw, roll - a.roll);
 	}
 
+	frotator operator+(const frotator& a) const
+	{
+		return frotator(pitch + a.pitch, yaw + a.yaw, roll + a.roll);
+	}
+
+	frotator operator*(const float a) const
+	{
+		return frotator(pitch * a, yaw * a, roll * a);
+	}
 public:
-	
+
 	frotator();
 
-	frotator(float in_pitch,float in_yaw,float in_roll);
+	frotator(float in_pitch, float in_yaw, float in_roll);
 
 	//矩阵 转 欧拉角
 	//惯性->物体

@@ -35,6 +35,7 @@ GRotatorArrow::GRotatorArrow()
 	ZPlaneComponent->SetMeshRenderLayerType(EMeshRenderLayerType::RENDERLAYER_OPERATION_HANDLE_ROT_PLANE);
 
 	LastT2Value = 0.f;
+	LastT2Value = 0.f;
 }
 
 
@@ -417,6 +418,7 @@ float GRotatorArrow::GetSymbolByCubeIndex(float InValueOffset)
 	return Symbol;
 }
 
+// 通过8方向立方体索引判断材质方向是否需要翻转
 float GRotatorArrow::GetSymbolMaterialByCubeIndex(float InValueOffset)
 {
 	float Symbol = 1.f;
@@ -625,6 +627,8 @@ void GRotatorArrow::OnLeftMouseButtonDown(int X, int Y)
 			float T2 = GetMouseCreenMovePosition(X, Y, ActorWorldPosition, ActorWorldDir);
 			if (T2 != -1)
 			{
+				// 清除上一次旋转的影响
+				RotatorRatio = 0.f;
 				LastT2Value = T2;
 			}
 		}

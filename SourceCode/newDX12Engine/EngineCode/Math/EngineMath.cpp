@@ -290,6 +290,7 @@ namespace EngineMath
 
         Rotator.inertia_to_object(RotatorMatrix);
 
+        // 转为DirectX的旋转矩阵
         return EngineMath::ToDXRotator(Rotator);;
     }
 

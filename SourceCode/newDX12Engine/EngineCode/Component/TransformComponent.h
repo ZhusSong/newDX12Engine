@@ -11,7 +11,9 @@ class CTransformComponent :public CComponent
 	
 	virtual void SetRotation(const fvector_3d& InNewRotation);//add 旋转
 	virtual void SetRotation(const frotator& InNewRotation);
-	
+
+	// 四元数旋转
+	virtual void SetRotationQuat(const fquat& InNewQuatRotation);
 	virtual void SetScale(const fvector_3d& InNewScale);
 
 	virtual void SetForwardVector(const XMFLOAT3& InForwardVector);
@@ -22,11 +24,12 @@ class CTransformComponent :public CComponent
 
 public:
 	XMFLOAT3& GetPosition() { return Position; }
-
-	fvector_3d GetRotation() const { return fvector_3d(Rotation.x, Rotation.y, Rotation.z); }
 	
+	frotator GetRotation() const;
 	fvector_3d GetScale() const { return fvector_3d(Scale.x, Scale.y, Scale.z); }
-
+	
+	// 四元数旋转
+	fquat GetRotationQuat() const;
 	
 	XMFLOAT3& GetForwardVector() { return ForwardVector; }
 	

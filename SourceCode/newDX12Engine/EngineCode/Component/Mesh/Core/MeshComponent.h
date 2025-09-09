@@ -20,6 +20,12 @@ public:
 	void SetMeshRenderLayerType(EMeshRenderLayerType InRenderLayerType);
 
 public:
+
+	// 获取碰撞盒
+	void GetBoundingBox(BoundingBox& OutBoundingBox);
+	BoundingBox GetBoundingBox();
+
+public:
 	UINT GetMaterialNum()const;
 
 	EMeshRenderLayerType GetRenderLayerType()const { return MeshRenderLayerType; }

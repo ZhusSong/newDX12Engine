@@ -39,6 +39,7 @@ namespace EngineMath
 
 	frotator BuildRotatorMatrix(const fvector_3d& InForwardVector, const fvector_3d& InUPVector = fvector_3d(0.f, 1.f, 0.f));
 
+	// 与DirectX的旋转矩阵做转换
 	frotator ToDXRotator(const frotator& InRotator);
 
 	void BuildRotatorMatrix(

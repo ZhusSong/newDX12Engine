@@ -1,6 +1,8 @@
 ﻿// 25.5.16 李
 #include "MeshComponent.h"
 #include "../../../Mesh/Core/Material/Material.h"
+#include "../../../Rendering/Core/DirectX/RenderingPipeline/Geometry/GeometryMap.h"
+
 
 CMeshComponent::CMeshComponent()
 {
@@ -25,6 +27,30 @@ void CMeshComponent::BuildMesh(const FMeshRenderingData* InRenderingData)
 void CMeshComponent::SetMeshRenderLayerType(EMeshRenderLayerType InRenderLayerType)
 {
 	MeshRenderLayerType = InRenderLayerType;
+}
+
+void CMeshComponent::GetBoundingBox(BoundingBox& OutBoundingBox)
+{
+	FGeometry::FindRenderingDatas(
+		[&](std::shared_ptr<FRenderingData>& InRenderingData)->EFindValueType
+		{
+			if (InRenderingData->Mesh == this)
+			{
+				OutBoundingBox = InRenderingData->Bounds;
+
+				return EFindValueType::TYPE_COMPLETE;
+			}
+
+			return EFindValueType::TYPE_IN_PROGRAM;
+		});
+}
+
+BoundingBox CMeshComponent::GetBoundingBox()
+{
+	BoundingBox AABB;
+	GetBoundingBox(AABB);
+
+	return AABB;
 }
 UINT CMeshComponent::GetMaterialNum() const
 {

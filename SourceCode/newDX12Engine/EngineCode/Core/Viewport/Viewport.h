@@ -6,7 +6,6 @@ class FViewport
 public:
 	FViewport();
 
-	void ViewportInit();
 
 
 public:

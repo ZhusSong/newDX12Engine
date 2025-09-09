@@ -16,20 +16,6 @@ FViewport::FViewport()
         FEngineRenderConfig::GetRenderConfig()->ScrrenHight);
 }
 
-void FViewport::ViewportInit()
-{
-    float AspectRatio = (float)FEngineRenderConfig::GetRenderConfig()->ScrrenWidth / (float)FEngineRenderConfig::GetRenderConfig()->ScrrenHight;
-    // (1,1,0) (-1,1,0) (-1,-1,0) (1,-1,0) (1,1,1) (-1,1,1) (-1,-1,1) (1,-1,1)
-    // LH视角设置
-    XMMATRIX Project = XMMatrixPerspectiveFovLH(
-        0.25f * XM_PI, 
-        AspectRatio,
-        1.0f,
-        10000.f
-    );
-
-    XMStoreFloat4x4(&ProjectMatrix, Project);
-}
 
 
 void FViewport::ResetViewport(UINT InWidth, UINT InHeight)

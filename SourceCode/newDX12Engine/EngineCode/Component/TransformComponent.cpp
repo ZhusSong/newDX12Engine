@@ -20,12 +20,9 @@ void CTransformComponent::SetPosition(const XMFLOAT3& InNewPosition)
 
 void CTransformComponent::SetRotation(const fvector_3d& InNewRotation)
 {
-	fvector_3d LastRotation = EngineMath::ToVector3d(Rotation);
-	fvector_3d OffsetRotation = InNewRotation - LastRotation;
-
-	float RollRadians = XMConvertToRadians(OffsetRotation.z);
-	float PithRadians = XMConvertToRadians(OffsetRotation.x);
-	float YawRadians = XMConvertToRadians(OffsetRotation.y);
+	float RollRadians = XMConvertToRadians(InNewRotation.z);
+	float PithRadians = XMConvertToRadians(InNewRotation.x);
+	float YawRadians = XMConvertToRadians(InNewRotation.y);
 
 	//旋转矩阵
 	XMMATRIX RotationRollPitchYawMatrix = XMMatrixRotationRollPitchYaw(
@@ -38,9 +35,6 @@ void CTransformComponent::SetRotation(const fvector_3d& InNewRotation)
 	XMStoreFloat3(&RightVector, XMVector3TransformNormal(XMLoadFloat3(&RightVector), RotationRollPitchYawMatrix));
 	XMStoreFloat3(&UPVector, XMVector3TransformNormal(XMLoadFloat3(&UPVector), RotationRollPitchYawMatrix));
 	XMStoreFloat3(&ForwardVector, XMVector3TransformNormal(XMLoadFloat3(&ForwardVector), RotationRollPitchYawMatrix));
-
-	//保存一下值
-	Rotation = EngineMath::ToFloat3(LastRotation);
 }
 
 void CTransformComponent::SetRotation(const frotator& InNewRotation)
@@ -61,9 +55,29 @@ void CTransformComponent::SetRotation(const frotator& InNewRotation)
 	XMStoreFloat3(&RightVector, XMVector3TransformNormal(Right, RotationRollPitchYawMatrix));
 	XMStoreFloat3(&UPVector, XMVector3TransformNormal(Up, RotationRollPitchYawMatrix));
 	XMStoreFloat3(&ForwardVector, XMVector3TransformNormal(Forward, RotationRollPitchYawMatrix));
+}
 
-	//保存一下值
-	Rotation = XMFLOAT3(InNewRotation.yaw, InNewRotation.pitch, InNewRotation.roll);
+
+void CTransformComponent::SetRotationQuat(const fquat& InNewQuatRotation)
+{
+	fmatrix_3x3 MatrixRotation;
+	math_utils::object_to_inertia(InNewQuatRotation, MatrixRotation);
+
+	fvector_3d Right = fvector_3d(1.f, 0.f, 0.f);
+	fvector_3d Up = fvector_3d(0.f, 1.f, 0.f);
+	fvector_3d Forward = fvector_3d(0.f, 0.f, 1.f);
+
+	Right = math_utils::mul(Right, MatrixRotation);
+	Up = math_utils::mul(Up, MatrixRotation);
+	Forward = math_utils::mul(Forward, MatrixRotation);
+
+	Right.normalize();
+	Up.normalize();
+	Forward.normalize();
+
+	RightVector = EngineMath::ToFloat3(Right);
+	UPVector = EngineMath::ToFloat3(Up);
+	ForwardVector = EngineMath::ToFloat3(Forward);
 }
 void CTransformComponent::SetScale(const fvector_3d& InNewScale)
 {
@@ -84,6 +98,38 @@ void CTransformComponent::SetRightVector(const XMFLOAT3& InRightVector)
 void CTransformComponent::SetUPVector(const XMFLOAT3& InUPVector)
 {
 	UPVector = InUPVector;
+}
+
+frotator CTransformComponent::GetRotation() const
+{
+	frotator Rotator;
+	fmatrix_3x3 RotatorMatrix;
+	EngineMath::BuildRotatorMatrix(
+		RotatorMatrix,
+		RightVector,
+		UPVector,
+		ForwardVector);
+
+	Rotator.inertia_to_object(RotatorMatrix);
+
+	// 转为DirectX的旋转矩阵
+	return EngineMath::ToDXRotator(Rotator);
+}
+
+fquat CTransformComponent::GetRotationQuat() const
+{
+	fquat Quat;
+
+	fmatrix_3x3 RotatorMatrix;
+	EngineMath::BuildRotatorMatrix(
+		RotatorMatrix,
+		RightVector,
+		UPVector,
+		ForwardVector);
+
+	math_utils::matrix_to_quat(RotatorMatrix, Quat);
+
+	return Quat;
 }
 
 // 矫正位置矩阵

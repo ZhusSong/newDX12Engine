@@ -59,7 +59,10 @@ protected:
 	void PrintAix(ESelectAxisType InAxisType);
 
 protected:
+	// 上一次拖拽的值
 	float LastT2Value;
+	// 上一次的旋转变化量
 	float RotatorRatio;
+	// 立方体索引
 	int Sample8CubeIndex;
 };
