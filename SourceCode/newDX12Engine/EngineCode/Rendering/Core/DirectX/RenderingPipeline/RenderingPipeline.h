@@ -11,6 +11,8 @@
 
 #include "UI/IMGUIPipeline.h"
 
+#include "AmbientOcclusion/ScreenSpace/ScreenSpaceAmbientOcclusion.h"
+
 class CMeshComponent;
 
 // 渲染流水线基类
@@ -52,5 +54,9 @@ protected:
 
 	// UI
 	FIMGUIPipeline UIPipeline;
+
+
+	// SSAO
+	FScreenSpaceAmbientOcclusion SSAO;
 
 };

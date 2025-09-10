@@ -26,6 +26,12 @@ void FDynamicMap::Init(FGeometryMap* InGeometryMap, FDirectXPipelineState* InDir
 	RenderLayer = InRenderLayer;
 }
 
+void FDynamicMap::Init(int InWidth, int InHeight)
+{
+	Width = InWidth;
+	Height = InHeight;
+}
+
 void FDynamicMap::PreDraw(float DeltaTime)
 {
 

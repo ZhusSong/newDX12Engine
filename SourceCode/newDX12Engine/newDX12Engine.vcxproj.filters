@@ -224,6 +224,21 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{3ed8cf10-f7cc-4b62-acc3-7b9ac2d30faf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer">
+      <UniqueIdentifier>{331e18a4-abdd-4d24-9f1f-14e571b35a22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer\Core">
+      <UniqueIdentifier>{895b7704-54a0-4b51-84f8-be93385d4f18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\AmbientOcclusion">
+      <UniqueIdentifier>{75f26ea8-a5bf-4f1e-954c-9efd8d9a614c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\AmbientOcclusion\ScreenSpace">
+      <UniqueIdentifier>{b1c09111-eb2d-4492-b96e-57b7b39c5d2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\BufferRednerLayer">
+      <UniqueIdentifier>{975e0382-745b-4458-9d73-6377fe5b2729}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EngineCode\Config\EngineRenderConfig.cpp">
@@ -615,6 +630,21 @@
     </ClCompile>
     <ClCompile Include="EngineCode\Core\Construction\ConstructionComponents.cpp">
       <Filter>EngineCode\Core\Construction</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer\NormalBuffer.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer\Core\RenderBuffer.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\AmbientOcclusion\ScreenSpace\ScreenSpaceAmbientOcclusion.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\AmbientOcclusion\ScreenSpace</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\BufferRenderTarget.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\BufferRenderLayer\NormalBufferRenderLayer.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\BufferRednerLayer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1049,6 +1079,21 @@
     </ClInclude>
     <ClInclude Include="EngineCode\Core\Construction\ConstructionComponents.h">
       <Filter>EngineCode\Core\Construction</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer\NormalBuffer.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer\Core\RenderBuffer.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\AmbientOcclusion\ScreenSpace\ScreenSpaceAmbientOcclusion.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\AmbientOcclusion\ScreenSpace</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\BufferRenderTarget.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\BufferRenderLayer\NormalBufferRenderLayer.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\BufferRednerLayer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

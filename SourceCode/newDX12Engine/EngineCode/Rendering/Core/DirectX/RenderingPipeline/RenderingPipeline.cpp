@@ -55,6 +55,14 @@ void FRenderingPipeline::BuildPipeline()
 		&DirectXPipelineState,
 		&RenderLayer);
 
+	// 构建SSAO
+	SSAO.Init(
+		&GeometryMap,
+		&DirectXPipelineState,
+		&RenderLayer);
+
+	SSAO.Init(256, 256);
+
 	// 构建普通阴影map
 	GeometryMap.DynamicShadowMap.Init(
 		&GeometryMap,
@@ -79,6 +87,9 @@ void FRenderingPipeline::BuildPipeline()
 
 	// 构建常量描述堆
 	GeometryMap.BuildDescriptorHeap();
+
+	// 构建SSAO描述堆
+	SSAO.BuildDescriptors();
 
 	// 初始化UI管线
 	UIPipeline.Init(
@@ -145,6 +156,9 @@ void FRenderingPipeline::PreDraw(float DeltaTime)
 
 	// 渲染阴影
 	GeometryMap.DrawShadow(DeltaTime);
+
+	//渲染SSAO
+	SSAO.Draw(DeltaTime);
 
 	// 动态反射
 	if (DynamicCubeMap.IsExitDynamicReflectionMesh())

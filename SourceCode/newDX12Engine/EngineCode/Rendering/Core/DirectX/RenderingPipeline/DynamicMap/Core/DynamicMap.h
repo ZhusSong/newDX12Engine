@@ -17,6 +17,9 @@ public:
 public:
 	virtual void UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo);
 	virtual void Init(FGeometryMap* InGeometryMap, FDirectXPipelineState* InDirectXPipelineState, FRenderLayerManager* InRenderLayer);
+	
+	// 根据屏幕宽高进行初始化
+	virtual void Init(int InWidth, int InHeight);
 	virtual void PreDraw(float DeltaTime);
 	virtual void Draw(float DeltaTime);
 public:

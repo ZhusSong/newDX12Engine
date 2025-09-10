@@ -13,6 +13,7 @@
 #include "../Geometry/RenderingData.h"
 #include "../../../../../Core/World.h"
 #include "../../../../../Actor/Core/ActorObject.h"
+#include "../RenderLayer/BufferRenderLayer/NormalBufferRenderLayer.h"
 
 
 #include "RenderLayer/OperationHandleRotPlaneRenderLayer.h"
@@ -33,6 +34,7 @@ FRenderLayerManager::FRenderLayerManager()
 
 	CreateRenderLayer<FOperationHandleRotPlaneRenderLayer>();
 
+	CreateRenderLayer<FNormalBufferRenderLayer>();
 	CreateRenderLayer<FSelectRenderLayer>();
 	CreateRenderLayer<FOpaqueShadowRenderLayer>();
 	CreateRenderLayer<FBackgroundRenderLayer>();

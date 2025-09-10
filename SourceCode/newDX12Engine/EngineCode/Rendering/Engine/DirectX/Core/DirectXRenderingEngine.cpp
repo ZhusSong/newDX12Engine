@@ -1128,12 +1128,15 @@ bool CDirectXRenderingEngine::InitDirect3D()
 	// D3D12_DESCRIPTOR_HEAP_TYPE_RTV			//渲染目标视图资源
 	// D3D12_DESCRIPTOR_HEAP_TYPE_DSV			//深度/模板的视图资源
 	// RTV
+	
+	
 	//************ ！！！每次添加新RTV时需检查此处！！！****************
 	D3D12_DESCRIPTOR_HEAP_DESC RTVDescriptorHeapDesc;
 	RTVDescriptorHeapDesc.NumDescriptors =
 		FEngineRenderConfig::GetRenderConfig()->SwapChainCount + //交换链
 		6 +			//反射CubeMap RTV
-		6;			//点光源阴影cubemap  RTV
+		6+          //点光源阴影cubemap  RTV
+		1;	        //屏幕法线		
 
 	RTVDescriptorHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
 	RTVDescriptorHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
