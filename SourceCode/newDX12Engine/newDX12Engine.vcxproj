@@ -104,6 +104,7 @@
     <ClCompile Include="EngineCode\Mesh\TorusMesh.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\Buffer\ConstructBuffer.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\AmbientOcclusion\ScreenSpace\ScreenSpaceAmbientOcclusion.cpp" />
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\AmbientOcclusion\ScreenSpace\SSAOType.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\ConstantBuffer\ConstantBufferViews.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DescriptorHeap\DirectXDescriptorHeap.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\Core\DynamicCubeMap.cpp" />
@@ -114,6 +115,7 @@
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\Geometry\GeometryMap.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\Geometry\RenderingData.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\PipelineState\DirectXPipelineState.cpp" />
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer\AmbientBuffer.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer\Core\RenderBuffer.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer\NormalBuffer.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderingPipeline.cpp" />
@@ -128,12 +130,15 @@
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\OperationHandleRenderLayer.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\OperationHandleRotPlaneRenderLayer.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\SelectRenderLayer.cpp" />
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\SSAORenderLayer.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\TransparentRenderLayer.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\BufferRenderTarget.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\Core\RenderTarget.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\CubeMapRenderTarget.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\ShadowMapRenderTarget.cpp" />
-    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RootSignature\DirectXRootSignature.cpp" />
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RootSignature\Core\DirectXRootSignature.cpp" />
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RootSignature\DefaultDirectXRootSignature.cpp" />
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RootSignature\SSAODirectXRootSignature.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\StaticSampler\StaticSamplerObject.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\UI\IMGUIPipeline.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\Rendering.cpp" />
@@ -249,6 +254,7 @@
     <ClInclude Include="EngineCode\Mesh\TorusMesh.h" />
     <ClInclude Include="EngineCode\Rendering\Core\Buffer\ConstructBuffer.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\AmbientOcclusion\ScreenSpace\ScreenSpaceAmbientOcclusion.h" />
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\AmbientOcclusion\ScreenSpace\SSAOType.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\ConstantBuffer\ConstantBufferViews.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DescriptorHeap\DirectXDescriptorHeap.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\Core\DynamicCubeMap.h" />
@@ -259,6 +265,7 @@
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\Geometry\GeometryMap.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\Geometry\RenderingData.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\PipelineState\DirectXPipelineState.h" />
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer\AmbientBuffer.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer\Core\RenderBuffer.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer\NormalBuffer.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderingPipeline.h" />
@@ -274,12 +281,15 @@
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\OperationHandleRenderLayer.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\OperationHandleRotPlaneRenderLayer.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\SelectRenderLayer.h" />
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\SSAORenderLayer.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\TransparentRenderLayer.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\BufferRenderTarget.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\Core\RenderTarget.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\CubeMapRenderTarget.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\ShadowMapRenderTarget.h" />
-    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RootSignature\DirectXRootSignature.h" />
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RootSignature\Core\DirectXRootSignature.h" />
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RootSignature\DefaultDirectXRootSignature.h" />
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RootSignature\SSAODirectXRootSignature.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\StaticSampler\StaticSamplerObject.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\UI\IMGUIPipeline.h" />
     <ClInclude Include="EngineCode\Rendering\Core\Rendering.h" />
@@ -316,6 +326,20 @@
     <None Include="..\..\Shaders\ShadowFunctionLibrary.hlsli" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="..\..\Shaders\NormalBuffer.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.1</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.1</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.1</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.1</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">VertexShaderMain</EntryPointName>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">VertexShaderMain</EntryPointName>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VertexShaderMain</EntryPointName>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">VertexShaderMain</EntryPointName>
+    </FxCompile>
     <FxCompile Include="..\..\Shaders\OmnidirectionalShadow.hlsl">
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">VertexShaderMain</EntryPointName>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
@@ -399,6 +423,20 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="..\..\Shaders\SSAO.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.1</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.1</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.1</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.1</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'"> VertexShaderMain</EntryPointName>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'"> VertexShaderMain</EntryPointName>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"> VertexShaderMain</EntryPointName>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'"> VertexShaderMain</EntryPointName>
     </FxCompile>
     <FxCompile Include="..\..\Shaders\VertexShader.hlsl">
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.1</ShaderModel>

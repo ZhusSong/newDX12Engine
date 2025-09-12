@@ -24,7 +24,7 @@ void FNormalBufferRenderLayer::BuildShader()
 	vector<D3D_SHADER_MACRO> D3DShaderMacro;
 	ShaderType::ToD3DShaderMacro(ShaderMacro, D3DShaderMacro);
 
-	std::wstring ShaderPath = BuildShadersPaths(L"VertexShader");
+	std::wstring ShaderPath = BuildShadersPaths(L"NormalBuffer");
 	VertexShader.BuildShaders(ShaderPath, "VertexShaderMain", "vs_5_1", D3DShaderMacro.data());
 	PixelShader.BuildShaders(ShaderPath, "PixelShaderMain", "ps_5_1", D3DShaderMacro.data());
 	DirectXPipelineState->BindShader(VertexShader, PixelShader);

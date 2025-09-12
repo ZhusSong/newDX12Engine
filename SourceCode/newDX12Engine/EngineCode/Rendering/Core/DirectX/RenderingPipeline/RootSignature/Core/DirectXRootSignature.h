@@ -1,6 +1,6 @@
 ﻿#pragma once
-#include "../../../../../Interface/DirectXDeviceInterface.h"
-#include "../StaticSampler/StaticSamplerObject.h"
+#include "../../../../../../Interface/DirectXDeviceInterface.h"
+#include "../../StaticSampler/StaticSamplerObject.h"
 
 struct FDirectXRootSignature :public IDirectXDeviceInterface_Struct
 {
@@ -14,7 +14,7 @@ struct FDirectXRootSignature :public IDirectXDeviceInterface_Struct
 
 	ID3D12RootSignature* GetRootSignature() { return RootSignature.Get(); }
 
-private:
+protected:
 	ComPtr<ID3D12RootSignature> RootSignature;
 	FStaticSamplerObject StaticSamplerObject;
 };

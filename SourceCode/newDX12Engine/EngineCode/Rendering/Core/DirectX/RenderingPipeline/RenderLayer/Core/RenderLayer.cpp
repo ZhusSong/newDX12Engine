@@ -172,6 +172,13 @@ void FRenderLayer::BuildPSO()
 
 	// 构建参数
 	DirectXPipelineState->BuildParam();
+
+	// 绑定代理
+	if (BuildPSODelegate.IsBound())
+	{
+		BuildPSODelegate.Execute(DirectXPipelineState->GetGPSDesc());
+	}
+
 }
 
 void FRenderLayer::UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo)

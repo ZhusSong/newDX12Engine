@@ -1,31 +1,34 @@
-﻿#include "DirectXRootSignature.h"
+﻿#include "DefaultDirectXRootSignature.h"
 
-FDirectXRootSignature::FDirectXRootSignature()
+FDefaultDirectXRootSignature::FDefaultDirectXRootSignature()
 {
 
 }
 
-void FDirectXRootSignature::BuildRootSignature(UINT InTextureNum)
-{
-    // 构建根签名
-    CD3DX12_ROOT_PARAMETER RootParam[9];
-
-    Engine_Log("Texture number is %d", InTextureNum);
+// 构建根签名
+void FDefaultDirectXRootSignature::BuildRootSignature(UINT InTextureNum)
+{   
+    CD3DX12_ROOT_PARAMETER RootParam[10];
 
     // texture描述表(包括cubemap)
     CD3DX12_DESCRIPTOR_RANGE DescriptorRangeTextureSRV;
     DescriptorRangeTextureSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV,
-        InTextureNum, 3);
+        InTextureNum, 4);
+
+    // SSAO
+    CD3DX12_DESCRIPTOR_RANGE DescriptorSSAOMapSRV;
+    DescriptorSSAOMapSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 3);
+
 
     // 静态CubeMap
     CD3DX12_DESCRIPTOR_RANGE DescriptorRangeCubeMapSRV;
     DescriptorRangeCubeMapSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0);
 
-    // ShadowMap
+    //ShadowMap
     CD3DX12_DESCRIPTOR_RANGE DescriptorShadowMapSRV;
     DescriptorShadowMapSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 2);
 
-    // ShadowCubeMap
+    //ShadowCubeMap
     CD3DX12_DESCRIPTOR_RANGE DescriptorShadowCubeMapSRV;
     DescriptorShadowCubeMapSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 1);
 
@@ -34,32 +37,32 @@ void FDirectXRootSignature::BuildRootSignature(UINT InTextureNum)
     RootParam[2].InitAsConstantBufferView(2);//灯光
     RootParam[3].InitAsConstantBufferView(3);//雾
 
-    // t
-    RootParam[4].InitAsShaderResourceView(0, 1);//材质
-
+    // 材质
+    RootParam[4].InitAsShaderResourceView(0, 1);
     // 2D贴图
     RootParam[5].InitAsDescriptorTable(1, &DescriptorRangeTextureSRV, D3D12_SHADER_VISIBILITY_PIXEL);
-
     // CubeMap贴图
     RootParam[6].InitAsDescriptorTable(1, &DescriptorRangeCubeMapSRV, D3D12_SHADER_VISIBILITY_PIXEL);
 
-    // ShadowMap
+    //ShadowMap
     RootParam[7].InitAsDescriptorTable(1, &DescriptorShadowMapSRV, D3D12_SHADER_VISIBILITY_PIXEL);
-    
-    // ShadowCubeMap
+
+    //ShadowMap
     RootParam[8].InitAsDescriptorTable(1, &DescriptorShadowCubeMapSRV, D3D12_SHADER_VISIBILITY_PIXEL);
 
-    //构建静态采样
+    //SSAO
+    RootParam[9].InitAsDescriptorTable(1, &DescriptorSSAOMapSRV, D3D12_SHADER_VISIBILITY_PIXEL);
+    // 构建静态采样
     StaticSamplerObject.BuildStaticSampler();
 
     CD3DX12_ROOT_SIGNATURE_DESC RootSignatureDesc(
-        9,
+        10,
         RootParam,
         StaticSamplerObject.GetSize(),//采样数量
         StaticSamplerObject.GetData(),//采样PTR
         D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 
-    //创建
+    // 序列化
     ComPtr<ID3DBlob> SerializeRootSignature;
     ComPtr<ID3DBlob> ErrorBlob;
     D3D12SerializeRootSignature(
@@ -70,25 +73,26 @@ void FDirectXRootSignature::BuildRootSignature(UINT InTextureNum)
 
     if (ErrorBlob)
     {
-        Engine_Log_Error("%s", (char*)ErrorBlob->GetBufferPointer());
+        char* p = (char*)ErrorBlob->GetBufferPointer();
+        Engine_Log_Error("%s", p);
     }
-
-    //创建
+    // 创建 
     GetD3dDevice()->CreateRootSignature(
         0,
         SerializeRootSignature->GetBufferPointer(),
         SerializeRootSignature->GetBufferSize(),
         IID_PPV_ARGS(&RootSignature));
 }
-void FDirectXRootSignature::PreDraw(float DeltaTime)
+
+void FDefaultDirectXRootSignature::PreDraw(float DeltaTime)
 {
-    GetGraphicsCommandList()->SetGraphicsRootSignature(RootSignature.Get());
+    Super::PreDraw(DeltaTime);
 }
 
-void FDirectXRootSignature::Draw(float DeltaTime)
+void FDefaultDirectXRootSignature::Draw(float DeltaTime)
 {
 }
 
-void FDirectXRootSignature::PostDraw(float DeltaTime)
+void FDefaultDirectXRootSignature::PostDraw(float DeltaTime)
 {
 }

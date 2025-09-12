@@ -10,14 +10,22 @@
 struct FDirectXPipelineState;
 struct FGeometryMap;
 struct FRenderingData;
-struct FViewportInfo;
+struct FViewportInfo; 
+
+// PSO代理
+DEFINITION_SIMPLE_SINGLE_DELEGATE(FBuildPSODelegate, void, D3D12_GRAPHICS_PIPELINE_STATE_DESC&);
+
 
 class FRenderLayer 
 	:public IDirectXDeviceInterface
 	,public std::enable_shared_from_this<FRenderLayer>
 {
 	friend struct FGeometry;
-	friend struct FGeometryMap;
+	friend struct FGeometryMap; 
+
+public:
+		FBuildPSODelegate BuildPSODelegate;
+
 public:
 	FRenderLayer();
 

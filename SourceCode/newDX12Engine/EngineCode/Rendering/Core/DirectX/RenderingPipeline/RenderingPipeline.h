@@ -3,7 +3,7 @@
 #include "Geometry/GeometryMap.h"
 #include "../../../../Shader/Core/Shader.h"
 #include "PipelineState/DirectXPipelineState.h"
-#include "RootSignature/DirectXRootSignature.h"
+#include "RootSignature/DefaultDirectXRootSignature.h"
 #include "../../../../Core/Viewport/ViewportInfo.h"
 
 #include "RenderLayer/RenderLayerManager.h"
@@ -46,7 +46,7 @@ protected:
 	// 渲染流水线状态
 	FDirectXPipelineState DirectXPipelineState;
 	// 根签名
-	FDirectXRootSignature RootSignature;
+	FDefaultDirectXRootSignature RootSignature;
 	// 几何图形
 	FGeometryMap GeometryMap;
 	// 动态cubemap

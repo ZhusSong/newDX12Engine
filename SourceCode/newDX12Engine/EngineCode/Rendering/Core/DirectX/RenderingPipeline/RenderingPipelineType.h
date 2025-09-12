@@ -15,6 +15,7 @@ enum EPipelineState
 	Operation_Handle = 10,    //方向箭头
 	Operation_Handle_Rot_Plane = 11, //旋转面片
 	State_Normal = 20,         // 法线
+	State_SSAO = 21,           // SSAO
 };
 
 // 渲染条件
