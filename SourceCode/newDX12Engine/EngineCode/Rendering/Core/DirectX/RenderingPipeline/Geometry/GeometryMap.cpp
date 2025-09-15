@@ -452,15 +452,17 @@ void FGeometryMap::Build()
 
 void FGeometryMap::BuildDescriptorHeap()
 {
-	// 只构建贴图描述符表
-	//+1摄像机
+	// 构建贴图描述符表
 	DescriptorHeap.Build(
 		GetDrawTexture2DResourcesNumber() + //Texture2D
-		GetDrawCubeMapResourcesNumber() + //静态Cube贴图(天空球)
-		1 + //动态Cube贴图
-		1 + //Shadow   平行光/聚光灯
-		1 +//ShadowCubeMap  //点光源
-		1);//UI
+		GetDrawCubeMapResourcesNumber() + //静态Cube贴图 背景 天空球
+		1 + //动态Cube贴图 反射
+		1 + //Shadow 直射灯 聚光灯 Shadow
+		1 + //ShadowCubeMap 点光源的 Shadow
+		1 + //UI
+		1 + //法线
+		1 + //深度
+		1); //SSAO
 }
 
 void FGeometryMap::BuildMeshConstantBuffer()

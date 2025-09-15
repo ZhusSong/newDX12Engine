@@ -35,7 +35,10 @@ void FNormalBuffer::Draw(float DeltaTime)
 		CD3DX12_RESOURCE_BARRIER ResourceBarrierPresent = CD3DX12_RESOURCE_BARRIER::Transition(
 			InRenderTarget->GetRenderTarget(),
 			D3D12_RESOURCE_STATE_GENERIC_READ, D3D12_RESOURCE_STATE_RENDER_TARGET);
-
+		
+		// 设置渲染目标
+		GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrierPresent);
+		
 		// 获取深度模板
 		auto DepthStencilView = GetDSVHeap()->GetCPUDescriptorHandleForHeapStart();
 
@@ -67,11 +70,37 @@ void FNormalBuffer::Draw(float DeltaTime)
 		CD3DX12_RESOURCE_BARRIER ResourceBarrierPresentRenderTarget = CD3DX12_RESOURCE_BARRIER::Transition(
 			RenderTarget->GetRenderTarget(),
 			D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_GENERIC_READ);
+
+		// 设置渲染目标
+		GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrierPresentRenderTarget);
 	}
 }
 
+// 描述符
 void FNormalBuffer::BuildDescriptors()
 {
+	UINT CBVDescriptorSize = GetDescriptorHandleIncrementSizeByCBV_SRV_UAV();
+
+	auto CPUSRVDesHeapStart = GeometryMap->GetHeap()->GetCPUDescriptorHandleForHeapStart();
+	auto GPUSRVDesHeapStart = GeometryMap->GetHeap()->GetGPUDescriptorHandleForHeapStart();
+
+	int Offset =
+		GeometryMap->GetDrawTexture2DResourcesNumber() + //Texture2D
+		GeometryMap->GetDrawCubeMapResourcesNumber() + //静态Cube贴图 背景 天空球
+		1 + //动态Cube贴图 反射
+		1 + //Shadow 直射灯 聚光灯 Shadow
+		1 + //ShadowCubeMap 点光源的 Shadow
+		1;//UI
+
+	RenderTarget->GetCPUSRVOffset() =
+		CD3DX12_CPU_DESCRIPTOR_HANDLE(CPUSRVDesHeapStart,
+			Offset,
+			CBVDescriptorSize);
+
+	RenderTarget->GetGPUSRVOffset() =
+		CD3DX12_GPU_DESCRIPTOR_HANDLE(GPUSRVDesHeapStart,
+			Offset,
+			CBVDescriptorSize);
 }
 
 // RTV偏移
@@ -95,6 +124,18 @@ void FNormalBuffer::BuildRenderTargetRTV()
 
 void FNormalBuffer::BuildSRVDescriptors()
 {
+	D3D12_SHADER_RESOURCE_VIEW_DESC SRVDesc = {};
+	SRVDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	SRVDesc.Format = Format;
+	SRVDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
+
+	SRVDesc.Texture2D.MostDetailedMip = 0;
+	SRVDesc.Texture2D.MipLevels = 1;
+
+	GetD3dDevice()->CreateShaderResourceView(
+		RenderTarget->GetRenderTarget(),
+		&SRVDesc,
+		RenderTarget->GetCPUSRVOffset());
 }
 
 void FNormalBuffer::BuildRTVDescriptors()

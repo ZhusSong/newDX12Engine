@@ -35,13 +35,13 @@ void FAmbientBuffer::BuildDescriptors()
 
 	int Offset =
 		GeometryMap->GetDrawTexture2DResourcesNumber() + //Texture2D
-		GeometryMap->GetDrawCubeMapResourcesNumber() + //CubeMap
-		1 + //��̬Cube��ͼ ����
-		1 + //Shadow ֱ��� �۹�� Shadow
-		1 + //ShadowCubeMap ���Դ�� Shadow
+		GeometryMap->GetDrawCubeMapResourcesNumber() + //静态Cube贴图 背景 天空球
+		1 + //动态Cube贴图 反射
+		1 + //Shadow 直射灯 聚光灯 Shadow
+		1 + //ShadowCubeMap 点光源的 Shadow
 		1 + //UI
-		1 +//����
-		1; //���
+		1 +//法线
+		1; //深度
 
 	RenderTarget->GetCPUSRVOffset() =
 		CD3DX12_CPU_DESCRIPTOR_HANDLE(CPUSRVDesHeapStart,

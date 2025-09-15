@@ -664,6 +664,9 @@
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\SSAORenderLayer.cpp">
       <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\RednerLayer</Filter>
     </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer\DepthBuffer.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EngineCode\Config\EngineRenderConfig.h">
@@ -1127,6 +1130,9 @@
     </ClInclude>
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\SSAORenderLayer.h">
       <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\RednerLayer</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer\DepthBuffer.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

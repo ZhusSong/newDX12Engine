@@ -24,6 +24,7 @@ bool FRenderingPipeline::FindMeshRenderingDataByHash(const size_t& InHash, std::
 
 void FRenderingPipeline::UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo)
 {
+	SSAO.UpdateCalculations(DeltaTime, ViewportInfo);
 	GeometryMap.DynamicShadowCubeMap.UpdateCalculations(DeltaTime, ViewportInfo);
 
 	DynamicCubeMap.UpdateCalculations(DeltaTime, ViewportInfo);
@@ -133,6 +134,12 @@ void FRenderingPipeline::BuildPipeline()
 	// 构建雾气常量缓冲区
 	GeometryMap.BuildFogConstantBuffer();
 
+	//构建SSAO
+	SSAO.Build();
+
+	//存储一个默认的GPS描述数据
+	DirectXPipelineState.SaveGPSDescAsDefault();
+
 	// 通过层级来构建PSO
 	RenderLayer.BuildPSO();
 }
@@ -151,14 +158,21 @@ void FRenderingPipeline::PreDraw(float DeltaTime)
 	// 渲染灯光材质贴图等
 	GeometryMap.Draw(DeltaTime);
 
+	// 渲染SSAO
+	SSAO.Draw(DeltaTime);
+	RootSignature.PreDraw(DeltaTime);
+	
+	// 存储SSAO到指定的buffer
+	SSAO.SaveToSSAOBuffer();
+
+	//重新绑定贴图
+	GeometryMap.Draw2DTexture(DeltaTime);
+
 	// 渲染shadowCubeMap
 	GeometryMap.DynamicShadowCubeMap.PreDraw(DeltaTime);
 
 	// 渲染阴影
 	GeometryMap.DrawShadow(DeltaTime);
-
-	//渲染SSAO
-	SSAO.Draw(DeltaTime);
 
 	// 动态反射
 	if (DynamicCubeMap.IsExitDynamicReflectionMesh())

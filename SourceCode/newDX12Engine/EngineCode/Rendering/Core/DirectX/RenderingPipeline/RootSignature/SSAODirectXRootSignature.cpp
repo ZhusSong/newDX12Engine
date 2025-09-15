@@ -7,14 +7,18 @@ FSSAODirectXRootSignature::FSSAODirectXRootSignature()
 
 void FSSAODirectXRootSignature::BuildRootSignature(UINT InTextureNum)
 {
+    // 构建根签名
     CD3DX12_ROOT_PARAMETER RootParam[3];
 
+    // texture描述表
     CD3DX12_DESCRIPTOR_RANGE DescriptorNormalTextureSRV;
     DescriptorNormalTextureSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0);
 
+    // 深度描述
     CD3DX12_DESCRIPTOR_RANGE DescriptorDepthTextureSRV;
     DescriptorDepthTextureSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 1);
-
+   
+    // 对象
     RootParam[0].InitAsConstantBufferView(0);
 
     // ShadowMap 法线贴图

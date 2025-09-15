@@ -1,9 +1,11 @@
 ﻿#include "ScreenSpaceAmbientOcclusion.h"
-#include "../../Geometry/GeometryMap.h"
 #include "SSAOType.h"
-#include "../../../../../../Core/Viewport/ViewportInfo.h"
+#include "../../Geometry/GeometryMap.h"
 #include "../../RenderLayer/RenderLayerManager.h"
+#include "../../RenderTarget/BufferRenderTarget.h"
+#include "../../RenderBuffer/DepthBuffer.h"
 #include "../../../../../../Component/Mesh/Core/MeshComponentType.h"
+#include "../../../../../../Core/Viewport/ViewportInfo.h"
 
 FScreenSpaceAmbientOcclusion::FScreenSpaceAmbientOcclusion()
 {
@@ -72,7 +74,63 @@ void FScreenSpaceAmbientOcclusion::Draw(float DeltaTime)
 {
 	NormalBuffer.Draw(DeltaTime);
 	AmbientBuffer.Draw(DeltaTime);
+	
+	// 构建SSAO
+	// 设置根签名
+	DirectXRootSignature.PreDraw(DeltaTime);
+
+	// 主SSAO渲染
+	if (FBufferRenderTarget* InRenderTarget = dynamic_cast<FBufferRenderTarget*>(AmbientBuffer.GetRenderTarget().get()))
+	{
+		auto RenderTargetViewport = InRenderTarget->GetViewport();
+		auto RenderTargetScissorRect = InRenderTarget->GetScissorRect();
+
+		GetGraphicsCommandList()->RSSetViewports(1, &RenderTargetViewport);
+		GetGraphicsCommandList()->RSSetScissorRects(1, &RenderTargetScissorRect);
+
+		
+		CD3DX12_RESOURCE_BARRIER ResourceBarrierPresent = CD3DX12_RESOURCE_BARRIER::Transition(
+			InRenderTarget->GetRenderTarget(),
+			D3D12_RESOURCE_STATE_GENERIC_READ, D3D12_RESOURCE_STATE_RENDER_TARGET);
+		GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrierPresent);
+
+		const float ClearColor[] = { 1.f,1.f,1.f,1.f };
+		GetGraphicsCommandList()->ClearRenderTargetView(
+			InRenderTarget->GetCPURenderTargetView(),
+			ClearColor, 0, nullptr);
+
+		GetGraphicsCommandList()->OMSetRenderTargets(1,
+			&InRenderTarget->GetCPURenderTargetView(),
+			true, nullptr);
+
+		// 绑定SSAO常量缓冲区
+		GetGraphicsCommandList()->SetGraphicsRootConstantBufferView(
+			0,
+			SSAOViewConstantBufferViews.GetBuffer()->GetGPUVirtualAddress());
+
+		// 法线
+		if (std::shared_ptr<FRenderTarget> NormalRenderTarget = NormalBuffer.GetRenderTarget())
+		{
+			GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(
+				1,
+				NormalRenderTarget->GetGPUSRVOffset());
+		}
+
+		// 深度
+		GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(
+			2,
+			DepthBufferRenderTarget->GetGPUSRVOffset());
+
+		// 渲染SSAOPSO
+		RenderLayer->Draw(RENDERLAYER_SSAO, DeltaTime);
+
+		CD3DX12_RESOURCE_BARRIER ResourceBarrierPresentRenderTarget = CD3DX12_RESOURCE_BARRIER::Transition(
+			InRenderTarget->GetRenderTarget(),
+			D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_GENERIC_READ);
+		GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrierPresentRenderTarget);
+	}
 }
+
 
 void FScreenSpaceAmbientOcclusion::UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo)
 {

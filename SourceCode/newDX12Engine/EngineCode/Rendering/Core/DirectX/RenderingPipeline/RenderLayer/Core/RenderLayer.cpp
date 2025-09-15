@@ -168,10 +168,12 @@ void FRenderLayer::FindObjectDraw(float DeltaTime, const CMeshComponent* InKey)
 }
 void FRenderLayer::BuildPSO()
 {
+	// 先构建参数
+	DirectXPipelineState->BuildParam();
+
 	BuildShader();
 
-	// 构建参数
-	DirectXPipelineState->BuildParam();
+
 
 	// 绑定代理
 	if (BuildPSODelegate.IsBound())

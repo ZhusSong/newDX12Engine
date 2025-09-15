@@ -26,6 +26,9 @@ public:
 	template<class T>
 	void CreateRenderTarget();
 
+
+	std::shared_ptr<FRenderTarget> GetRenderTarget() const { return RenderTarget; }
+
 protected:
 	FGeometryMap* GeometryMap;//几何Map
 	FDirectXPipelineState* DirectXPipelineState;//管线对象 用于绑定
@@ -35,7 +38,7 @@ protected:
 	UINT Width;
 	UINT Height;
 
-	std::unique_ptr<FRenderTarget> RenderTarget;//渲染目标
+	std::shared_ptr<FRenderTarget> RenderTarget;//渲染目标
 };
 
 template<class T>

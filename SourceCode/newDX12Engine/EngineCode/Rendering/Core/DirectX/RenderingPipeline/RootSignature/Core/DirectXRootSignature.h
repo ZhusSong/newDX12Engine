@@ -6,11 +6,11 @@ struct FDirectXRootSignature :public IDirectXDeviceInterface_Struct
 {
 	FDirectXRootSignature();
 
-	void BuildRootSignature(UINT InTextureNum = 1);
+	virtual void BuildRootSignature(UINT InTextureNum = 1);
 
-	void PreDraw(float DeltaTime);
-	void Draw(float DeltaTime);
-	void PostDraw(float DeltaTime);
+	virtual void PreDraw(float DeltaTime);
+	virtual void Draw(float DeltaTime);
+	virtual void PostDraw(float DeltaTime);
 
 	ID3D12RootSignature* GetRootSignature() { return RootSignature.Get(); }
 

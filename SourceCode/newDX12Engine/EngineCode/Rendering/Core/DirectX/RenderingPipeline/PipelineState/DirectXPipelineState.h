@@ -49,6 +49,10 @@ public:
 
 	void SetRasterizerState(const CD3DX12_RASTERIZER_DESC& InRasterizerDesc);
 	void SetDepthStencilState(const CD3DX12_DEPTH_STENCIL_DESC& InDepthStencilDesc);
+
+	// 将当前设置作为默认
+	void SaveGPSDescAsDefault();
+
 public:
 	FORCEINLINE D3D12_GRAPHICS_PIPELINE_STATE_DESC& GetGPSDesc() { return GPSDesc; }
 
@@ -60,6 +64,7 @@ private:
 	// 渲染流水线对象
 	unordered_map<int, ComPtr<ID3D12PipelineState>> PSO;
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC GPSDesc;
+	D3D12_GRAPHICS_PIPELINE_STATE_DESC DefaultGPSDesc;
 
 	EPipelineState PipelineState;
 };

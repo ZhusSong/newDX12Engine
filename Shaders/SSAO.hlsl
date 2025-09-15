@@ -48,8 +48,9 @@ MeshVertexOut VertexShaderMain(uint VertexID : SV_VertexID)
 
 float4 PixelShaderMain(MeshVertexOut MVOut) :SV_TARGET
 {
-	float3 N = normalize(SampleNormalMap.SampleLevel(TextureSampler,MVOut.TexCoord,0.0).xyz);
-	float3 D = SampleDepthMap.SampleLevel(DepthSampler, MVOut.TexCoord, 0.0).rrr;
+    float3 N = normalize(SampleNormalMap.SampleLevel(TextureSampler, MVOut.TexCoord, 0.0).xyz);
+    float3 D = SampleDepthMap.SampleLevel(DepthSampler, MVOut.TexCoord, 0.0).rrr;
 
-	return float4(D.rrr,1.f);
+
+    return float4(D.rrr, 1.f);
 }
