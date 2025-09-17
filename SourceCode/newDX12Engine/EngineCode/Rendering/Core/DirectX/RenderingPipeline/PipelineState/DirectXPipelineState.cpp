@@ -65,7 +65,7 @@ void FDirectXPipelineState::Build(int InPSOType)
         PSO.insert(pair<int, ComPtr<ID3D12PipelineState>>(InPSOType, ComPtr<ID3D12PipelineState>()));//Shader
     }
 
-    //线框模型注册
+    // 线框模型注册
     ANALYSIS_HRESULT(GetD3dDevice()->CreateGraphicsPipelineState(&GPSDesc, IID_PPV_ARGS(&PSO[InPSOType])))
 
 }

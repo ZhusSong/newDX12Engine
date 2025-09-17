@@ -24,12 +24,16 @@ SamplerState AnisotropicSampler : register(s1);
 
 SamplerComparisonState ShadowSampler : register(s2);
 
+SamplerState DepthSampler : register(s3);
+
 TextureCube SimpleCubeMap : register(t0); //根签名位置6
 
 TextureCube SimpleShadowCubeMap : register(t1); //点光源 ShadowCubemap 根签名位置8
 Texture2D SimpleShadowMap : register(t2); // 聚光灯和平行光shadowmap 根签名位置7
 
-Texture2D SimpleTexture2DMap[TEXTURE2D_MAP_NUM] : register(t3);
+Texture2D SimpleSSAOMap : register(t3);  //SSAO
+
+Texture2D SimpleTexture2DMap[TEXTURE2D_MAP_NUM] : register(t4);  //贴图
 
 
 
@@ -74,9 +78,9 @@ struct MaterialConstBuffer
     int NormalIndex;
 
     int SpecularIndex;
-    float Param0; //自定义
-    float Param1; //自定义
-    float Param2; //自定义
+    float Param0; //备用
+    float Param1; //备用
+    float Param2; //备用
 
     float4 BaseColor;
 

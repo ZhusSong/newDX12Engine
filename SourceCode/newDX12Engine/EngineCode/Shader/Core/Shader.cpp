@@ -30,10 +30,17 @@ void FShader::BuildShaders(
 	if (ErrorShaderMsg)
 	{
 		char* p = (char*)ErrorShaderMsg->GetBufferPointer();
-		Engine_Log_Error("%s", (char*)ErrorShaderMsg->GetBufferPointer());
+		if (SUCCEEDED(R))
+		{
+			Engine_Log_Warning("%s", p);
+		}
+		else
+		{
+			Engine_Log_Error("%s", p);
+		}
 	}
 
-	//失败就奔溃了
+	// 失败则奔溃
 	ANALYSIS_HRESULT(R);
 }
 //
@@ -69,7 +76,7 @@ void FShader::BuildShaders(
 //		Engine_Log_Error("%s 1", (char*)ErrorShaderMsg->GetBufferPointer());
 //	}
 //	ErrorShaderMsg.Reset();
-//	//失败就奔溃了
+//	// 失败则奔溃
 //	ANALYSIS_HRESULT(R);
 //
 //	

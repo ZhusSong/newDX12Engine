@@ -41,6 +41,50 @@ void FScreenSpaceAmbientOcclusion::Build()
 	BindBuildPSO();
 }
 
+void FScreenSpaceAmbientOcclusion::BuildDescriptors()
+{
+	// 先创建CPU GPU SRV
+	BuildDepthBuffer();
+
+	NormalBuffer.BuildDescriptors();
+	NormalBuffer.BuildRenderTargetRTV();
+	NormalBuffer.BuildSRVDescriptors();
+	NormalBuffer.BuildRTVDescriptors();
+
+	AmbientBuffer.BuildDescriptors();
+	AmbientBuffer.BuildRenderTargetRTV();
+	AmbientBuffer.BuildSRVDescriptors();
+	AmbientBuffer.BuildRTVDescriptors();
+}
+
+
+void FScreenSpaceAmbientOcclusion::BuildDepthBuffer()
+{
+	UINT CBVDescriptorSize = GetDescriptorHandleIncrementSizeByCBV_SRV_UAV();
+
+	auto CPUSRVDesHeapStart = GeometryMap->GetHeap()->GetCPUDescriptorHandleForHeapStart();
+	auto GPUSRVDesHeapStart = GeometryMap->GetHeap()->GetGPUDescriptorHandleForHeapStart();
+
+	int Offset =
+		GeometryMap->GetDrawTexture2DResourcesNumber() + //Texture2D
+		GeometryMap->GetDrawCubeMapResourcesNumber() + //静态Cube贴图 背景 天空球
+		1 + //动态Cube贴图 反射
+		1 + //Shadow 直射灯 聚光灯 Shadow
+		1 + //ShadowCubeMap 点光源的 Shadow
+		1 + //UI
+		1;  //Nor
+
+	DepthBuffer::BuildDepthBufferDescriptors(
+		CPUSRVDesHeapStart,
+		GPUSRVDesHeapStart,
+		CBVDescriptorSize,
+		Offset);
+
+	DepthBuffer::CreateDepthBufferSRV(
+		GetD3dDevice().Get(),
+		GetDepthStencilBuffer());
+}
+
 void FScreenSpaceAmbientOcclusion::BindBuildPSO()
 {
 	if (RenderLayer)
@@ -64,10 +108,20 @@ void FScreenSpaceAmbientOcclusion::BuildSSAOViewConstantBuffer()
 
 void FScreenSpaceAmbientOcclusion::SaveToSSAOBuffer()
 {
-}
+	// 检查Normal
+	//GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(
+	//	9,
+	//	NormalBuffer.GetRenderTarget()->GetGPUSRVOffset());
 
-void FScreenSpaceAmbientOcclusion::BuildDepthBuffer()
-{
+	// 检查深度
+	//GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(
+	//	9,
+	//	DepthBufferRenderTarget->GetGPUSRVOffset());
+
+	// SSAO渲染到buffer
+	GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(
+		9,
+		AmbientBuffer.GetRenderTarget()->GetGPUSRVOffset());
 }
 
 void FScreenSpaceAmbientOcclusion::Draw(float DeltaTime)
@@ -166,19 +220,5 @@ void FScreenSpaceAmbientOcclusion::DrawViewConstantBufferViews(float DeltaTime, 
 	XMStoreFloat4x4(&SSAOViewportTransformation.TexProjectionMatrix, XMMatrixTranspose(TexProjectionMatrixRIX));
 
 	SSAOViewConstantBufferViews.Update(0, &SSAOViewportTransformation);
-}
-
-
-void FScreenSpaceAmbientOcclusion::BuildDescriptors()
-{
-	NormalBuffer.BuildDescriptors();
-	NormalBuffer.BuildRenderTargetRTV();
-	NormalBuffer.BuildSRVDescriptors();
-	NormalBuffer.BuildRTVDescriptors();
-
-	AmbientBuffer.BuildDescriptors();
-	AmbientBuffer.BuildRenderTargetRTV();
-	AmbientBuffer.BuildSRVDescriptors();
-	AmbientBuffer.BuildRTVDescriptors();
 }
 

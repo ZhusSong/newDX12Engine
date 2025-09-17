@@ -46,6 +46,8 @@ public:
 	UINT64 GetCurrentFenceIndex()const;
 	HWND GetMainWindowsHandle()const;
 
+	ID3D12Resource* GetDepthStencilBuffer();
+
 protected:
 	FRenderingPipeline* GetRenderingPipeline() const;
 	FRenderLayerManager* GetRenderLayerManager() const;
@@ -90,6 +92,8 @@ public:
 
 	UINT64 GetCurrentFenceIndex() const;
 	HWND GetMainWindowsHandle() const;
+
+	ID3D12Resource* GetDepthStencilBuffer();
 
 protected:
 	FRenderingPipeline* GetRenderingPipeline() const;

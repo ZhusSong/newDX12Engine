@@ -130,7 +130,7 @@ void FRenderLayer::DrawObject(float DeltaTime, std::weak_ptr<FRenderingData>& In
 				1,//k k+1 ... k+n-1 
 				&VBV);
 
-			// 定义我们要绘制的哪种图元 点 线 面
+			// 定义要绘制的图元
 			D3D_PRIMITIVE_TOPOLOGY DisplayStatus = (*InRenderingData->Mesh->GetMaterials())[0]->GetMaterialDisplayStatus();
 			GetGraphicsCommandList()->IASetPrimitiveTopology((D3D_PRIMITIVE_TOPOLOGY)DisplayStatus);
 
@@ -172,8 +172,6 @@ void FRenderLayer::BuildPSO()
 	DirectXPipelineState->BuildParam();
 
 	BuildShader();
-
-
 
 	// 绑定代理
 	if (BuildPSODelegate.IsBound())

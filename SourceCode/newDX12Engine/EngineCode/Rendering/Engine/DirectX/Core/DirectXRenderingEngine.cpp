@@ -1135,8 +1135,8 @@ bool CDirectXRenderingEngine::InitDirect3D()
 	RTVDescriptorHeapDesc.NumDescriptors =
 		FEngineRenderConfig::GetRenderConfig()->SwapChainCount + //交换链
 		6 +			//反射CubeMap RTV
-		6+          //点光源阴影cubemap  RTV
-		1+	        //屏幕法线		
+		6 +          //点光源阴影cubemap  RTV
+		1 +	        //屏幕法线		
 		1;	        //环境	
 
 

@@ -52,6 +52,7 @@ void FDefaultDirectXRootSignature::BuildRootSignature(UINT InTextureNum)
 
     //SSAO
     RootParam[9].InitAsDescriptorTable(1, &DescriptorSSAOMapSRV, D3D12_SHADER_VISIBILITY_PIXEL);
+  
     // 构建静态采样
     StaticSamplerObject.BuildStaticSampler();
 

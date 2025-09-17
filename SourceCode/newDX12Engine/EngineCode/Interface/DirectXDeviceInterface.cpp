@@ -189,6 +189,19 @@ HWND IDirectXDeviceInterface::GetMainWindowsHandle() const
 	return HWND();
 }
 
+ID3D12Resource* IDirectXDeviceInterface::GetDepthStencilBuffer()
+{
+	if (CWindowsEngine* InEngine = GetEngine())
+	{
+		if (InEngine->GetRenderingEngine())
+		{
+			return InEngine->GetRenderingEngine()->DepthStencilBuffer.Get();
+		}
+	}
+
+	return NULL;
+}
+
 FRenderingPipeline* IDirectXDeviceInterface::GetRenderingPipeline() const
 {
 	if (CMeshManager* MeshManager = GetMeshManager())
@@ -296,6 +309,11 @@ UINT64 IDirectXDeviceInterface_Struct::GetCurrentFenceIndex()const
 HWND IDirectXDeviceInterface_Struct::GetMainWindowsHandle()const
 {
 	return Interface.GetMainWindowsHandle();
+}
+
+ID3D12Resource* IDirectXDeviceInterface_Struct::GetDepthStencilBuffer()
+{
+	return Interface.GetDepthStencilBuffer();
 }
 
 FRenderingPipeline* IDirectXDeviceInterface_Struct::GetRenderingPipeline() const
