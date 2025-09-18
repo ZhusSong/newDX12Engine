@@ -9,4 +9,12 @@ struct FSSAOViewportTransformation
 	XMFLOAT4X4 ProjectionMatrix;
 	XMFLOAT4X4 InversiveProjectionMatrix;
 	XMFLOAT4X4 TexProjectionMatrix;
+
+	// 设置遮蔽属性
+	float OcclusionRadius;
+	float OcclusionStart;
+	float OcclusionEnd;
+	float ObscurationThreshold;
+
+	XMFLOAT4 SampleVolumeBuffer[14];
 };

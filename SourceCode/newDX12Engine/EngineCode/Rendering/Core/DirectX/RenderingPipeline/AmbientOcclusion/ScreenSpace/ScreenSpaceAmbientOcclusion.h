@@ -3,6 +3,8 @@
 #include "../../../../../../Interface/DirectXDeviceInterface.h"
 #include "../../RenderBuffer/NormalBuffer.h"
 #include "../../RenderBuffer/AmbientBuffer.h"
+#include "../../RenderBuffer/SampleVolumeBuffer.h"
+#include "../../RenderBuffer/NoiseBuffer.h"
 #include "../../RootSignature/SSAODirectXRootSignature.h"
 #include "../../ConstantBuffer/ConstantBufferViews.h"
 
@@ -38,6 +40,10 @@ protected:
 	FNormalBuffer NormalBuffer;
 
 	FAmbientBuffer AmbientBuffer;
+
+	FSampleVolumeBuffer SampleVolumeBuffer;
+
+	FNoiseBuffer NoiseBuffer;
 
 	// SSAO常量缓冲区视图
 	FConstantBufferViews SSAOViewConstantBufferViews;

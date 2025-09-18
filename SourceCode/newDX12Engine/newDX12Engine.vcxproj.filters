@@ -242,6 +242,9 @@
     <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RootSignature\Core">
       <UniqueIdentifier>{6604a4ac-9161-444c-a611-a564f21147ab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders\SSAO">
+      <UniqueIdentifier>{c9b27ca1-0db8-4abb-9cb9-196d09ffd2b6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EngineCode\Config\EngineRenderConfig.cpp">
@@ -665,6 +668,12 @@
       <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\RednerLayer</Filter>
     </ClCompile>
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer\DepthBuffer.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer\SampleVolumeBuffer.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer\NoiseBuffer.cpp">
       <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1134,6 +1143,12 @@
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer\DepthBuffer.h">
       <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer</Filter>
     </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer\SampleVolumeBuffer.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer\NoiseBuffer.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Shaders\Fog.hlsli">
@@ -1156,6 +1171,12 @@
     </None>
     <None Include="..\..\Shaders\ShadowFunctionLibrary.hlsli">
       <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\..\Shaders\SSAO\AOCommon.hlsli">
+      <Filter>Shaders\SSAO</Filter>
+    </None>
+    <None Include="..\..\Shaders\SSAO\AOFunctionLibrary.hlsli">
+      <Filter>Shaders\SSAO</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -1183,8 +1204,8 @@
     <FxCompile Include="..\..\Shaders\NormalBuffer.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="..\..\Shaders\SSAO.hlsl">
-      <Filter>Shaders</Filter>
+    <FxCompile Include="..\..\Shaders\SSAO\SSAO.hlsl">
+      <Filter>Shaders\SSAO</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

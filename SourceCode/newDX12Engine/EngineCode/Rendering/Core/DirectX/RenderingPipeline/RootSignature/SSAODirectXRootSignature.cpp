@@ -8,7 +8,7 @@ FSSAODirectXRootSignature::FSSAODirectXRootSignature()
 void FSSAODirectXRootSignature::BuildRootSignature(UINT InTextureNum)
 {
     // 构建根签名
-    CD3DX12_ROOT_PARAMETER RootParam[3];
+    CD3DX12_ROOT_PARAMETER RootParam[4];
 
     // texture描述表
     CD3DX12_DESCRIPTOR_RANGE DescriptorNormalTextureSRV;
@@ -17,6 +17,11 @@ void FSSAODirectXRootSignature::BuildRootSignature(UINT InTextureNum)
     // 深度描述
     CD3DX12_DESCRIPTOR_RANGE DescriptorDepthTextureSRV;
     DescriptorDepthTextureSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 1);
+
+    //Noise
+    CD3DX12_DESCRIPTOR_RANGE DescriptorNoiseTextureSRV;
+    DescriptorNoiseTextureSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 2);
+
    
     // 对象
     RootParam[0].InitAsConstantBufferView(0);
@@ -26,11 +31,14 @@ void FSSAODirectXRootSignature::BuildRootSignature(UINT InTextureNum)
 
     // ShadowMap 深度贴图
     RootParam[2].InitAsDescriptorTable(1, &DescriptorDepthTextureSRV, D3D12_SHADER_VISIBILITY_PIXEL);
+   
+    //Noise
+    RootParam[3].InitAsDescriptorTable(1, &DescriptorNoiseTextureSRV, D3D12_SHADER_VISIBILITY_PIXEL);
 
     StaticSamplerObject.BuildStaticSampler();
 
     CD3DX12_ROOT_SIGNATURE_DESC RootSignatureDesc(
-        3,
+        4,
         RootParam,
         StaticSamplerObject.GetSize(),//采样数量
         StaticSamplerObject.GetData(),//采样PTR

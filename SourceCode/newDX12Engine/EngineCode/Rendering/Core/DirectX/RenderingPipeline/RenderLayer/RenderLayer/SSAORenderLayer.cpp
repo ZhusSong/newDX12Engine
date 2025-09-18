@@ -11,7 +11,7 @@ void FSSAORenderLayer::BuildShader()
 {
 	
 	//HLSL
-	std::wstring ShaderPath = BuildShadersPaths(L"SSAO");
+	std::wstring ShaderPath = BuildShadersPaths(L"SSAO/SSAO");
 	VertexShader.BuildShaders(ShaderPath, "VertexShaderMain", "vs_5_1", NULL);
 	PixelShader.BuildShaders(ShaderPath, "PixelShaderMain", "ps_5_1", NULL);
 	DirectXPipelineState->BindShader(VertexShader, PixelShader);

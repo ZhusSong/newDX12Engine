@@ -41,7 +41,8 @@ void FAmbientBuffer::BuildDescriptors()
 		1 + //ShadowCubeMap 点光源的 Shadow
 		1 + //UI
 		1 +//法线
-		1; //深度
+		1 +  //深度
+		1;  //Noise 噪声图
 
 	RenderTarget->GetCPUSRVOffset() =
 		CD3DX12_CPU_DESCRIPTOR_HANDLE(CPUSRVDesHeapStart,

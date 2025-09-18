@@ -152,9 +152,6 @@ void FRenderingPipeline::PreDraw(float DeltaTime)
 	GeometryMap.PreDraw(DeltaTime);
 	RootSignature.PreDraw(DeltaTime);
 
-	// 主视口清除画布
-	ClearMainSwapChainCanvas();
-
 	// 渲染灯光材质贴图等
 	GeometryMap.Draw(DeltaTime);
 
@@ -164,6 +161,9 @@ void FRenderingPipeline::PreDraw(float DeltaTime)
 	
 	// 存储SSAO到指定的buffer
 	SSAO.SaveToSSAOBuffer();
+
+	// 主视口清除画布
+	ClearMainSwapChainCanvas();
 
 	//重新绑定贴图
 	GeometryMap.Draw2DTexture(DeltaTime);

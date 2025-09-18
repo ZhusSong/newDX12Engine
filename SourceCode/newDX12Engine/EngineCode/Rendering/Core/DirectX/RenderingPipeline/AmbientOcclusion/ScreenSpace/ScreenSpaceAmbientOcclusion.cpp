@@ -19,6 +19,7 @@ void FScreenSpaceAmbientOcclusion::Init(
 {
 	NormalBuffer.Init(InGeometryMap, InDirectXPipelineState, InRenderLayer);
 	AmbientBuffer.Init(InGeometryMap, InDirectXPipelineState, InRenderLayer);
+	NoiseBuffer.Init(InGeometryMap, InDirectXPipelineState, InRenderLayer);
 
 	RenderLayer = InRenderLayer;
 	GeometryMap = InGeometryMap;
@@ -28,6 +29,7 @@ void FScreenSpaceAmbientOcclusion::Init(int InWidth, int InHeight)
 {
 	NormalBuffer.Init(InWidth, InHeight); 
 	AmbientBuffer.Init(InWidth, InHeight);
+	NoiseBuffer.Init(InWidth, InHeight);
 }
 void FScreenSpaceAmbientOcclusion::Build()
 {
@@ -55,6 +57,11 @@ void FScreenSpaceAmbientOcclusion::BuildDescriptors()
 	AmbientBuffer.BuildRenderTargetRTV();
 	AmbientBuffer.BuildSRVDescriptors();
 	AmbientBuffer.BuildRTVDescriptors();
+
+	NoiseBuffer.BuildDescriptors();
+	NoiseBuffer.BuildRenderTargetRTV();
+	NoiseBuffer.BuildSRVDescriptors();
+	NoiseBuffer.BuildRTVDescriptors();
 }
 
 
@@ -128,6 +135,7 @@ void FScreenSpaceAmbientOcclusion::Draw(float DeltaTime)
 {
 	NormalBuffer.Draw(DeltaTime);
 	AmbientBuffer.Draw(DeltaTime);
+	NoiseBuffer.Draw(DeltaTime);
 	
 	// 构建SSAO
 	// 设置根签名
@@ -175,6 +183,14 @@ void FScreenSpaceAmbientOcclusion::Draw(float DeltaTime)
 			2,
 			DepthBufferRenderTarget->GetGPUSRVOffset());
 
+		//Noise 噪声
+		if (std::shared_ptr<FRenderTarget> NoiseRenderTarget = NoiseBuffer.GetRenderTarget())
+		{
+			GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(
+				3,
+				NoiseRenderTarget->GetGPUSRVOffset());
+		}
+
 		// 渲染SSAOPSO
 		RenderLayer->Draw(RENDERLAYER_SSAO, DeltaTime);
 
@@ -190,6 +206,8 @@ void FScreenSpaceAmbientOcclusion::UpdateCalculations(float DeltaTime, const FVi
 {
 	NormalBuffer.UpdateCalculations(DeltaTime, ViewportInfo);
 	AmbientBuffer.UpdateCalculations(DeltaTime, ViewportInfo);
+	NoiseBuffer.UpdateCalculations(DeltaTime, ViewportInfo);
+
 
 	DrawViewConstantBufferViews(DeltaTime, ViewportInfo);
 
@@ -200,7 +218,7 @@ void FScreenSpaceAmbientOcclusion::DrawViewConstantBufferViews(float DeltaTime, 
 	FSSAOViewportTransformation SSAOViewportTransformation;
 
 	// 投影矩阵
-	SSAOViewportTransformation.ProjectionMatrix = ViewportInfo.ProjectMatrix;
+	//SSAOViewportTransformation.ProjectionMatrix = ViewportInfo.ProjectMatrix;
 
 	// 逆矩阵
 	XMMATRIX ProjectMatrixRIX = XMLoadFloat4x4(&ViewportInfo.ProjectMatrix);
@@ -208,6 +226,7 @@ void FScreenSpaceAmbientOcclusion::DrawViewConstantBufferViews(float DeltaTime, 
 	XMVECTOR ProjectDeterminant = XMMatrixDeterminant(ProjectMatrixRIX);
 	XMMATRIX InversiveProjectionMatrixRIX = XMMatrixInverse(&ProjectDeterminant, ProjectMatrixRIX);
 	XMStoreFloat4x4(&SSAOViewportTransformation.InversiveProjectionMatrix, XMMatrixTranspose(InversiveProjectionMatrixRIX));
+	XMStoreFloat4x4(&SSAOViewportTransformation.ProjectionMatrix, XMMatrixTranspose(ProjectMatrixRIX));
 
 	//[-1.1] =>[0,1] 贴图空间
 	XMMATRIX HalLambertMatrix(
@@ -218,7 +237,16 @@ void FScreenSpaceAmbientOcclusion::DrawViewConstantBufferViews(float DeltaTime, 
 
 	XMMATRIX TexProjectionMatrixRIX = XMMatrixMultiply(ProjectMatrixRIX, HalLambertMatrix);
 	XMStoreFloat4x4(&SSAOViewportTransformation.TexProjectionMatrix, XMMatrixTranspose(TexProjectionMatrixRIX));
+	
+	SSAOViewportTransformation.OcclusionRadius = 0.5f;
+	SSAOViewportTransformation.OcclusionStart = 0.2f;
+	SSAOViewportTransformation.OcclusionEnd = 1.0f;
+	SSAOViewportTransformation.ObscurationThreshold = 0.05f;
 
+	// 存储随机向量
+	SampleVolumeBuffer.Update(SSAOViewportTransformation.SampleVolumeBuffer);
+
+	// 上传
 	SSAOViewConstantBufferViews.Update(0, &SSAOViewportTransformation);
 }
 
