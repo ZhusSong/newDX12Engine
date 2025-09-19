@@ -21,8 +21,6 @@ void FSSAODirectXRootSignature::BuildRootSignature(UINT InTextureNum)
     //Noise
     CD3DX12_DESCRIPTOR_RANGE DescriptorNoiseTextureSRV;
     DescriptorNoiseTextureSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 2);
-
-   
     // 对象
     RootParam[0].InitAsConstantBufferView(0);
 
@@ -31,7 +29,7 @@ void FSSAODirectXRootSignature::BuildRootSignature(UINT InTextureNum)
 
     // ShadowMap 深度贴图
     RootParam[2].InitAsDescriptorTable(1, &DescriptorDepthTextureSRV, D3D12_SHADER_VISIBILITY_PIXEL);
-   
+
     //Noise
     RootParam[3].InitAsDescriptorTable(1, &DescriptorNoiseTextureSRV, D3D12_SHADER_VISIBILITY_PIXEL);
 

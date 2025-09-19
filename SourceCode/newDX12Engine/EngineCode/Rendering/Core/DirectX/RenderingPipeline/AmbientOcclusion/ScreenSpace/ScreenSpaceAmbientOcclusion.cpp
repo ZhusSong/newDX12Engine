@@ -20,6 +20,7 @@ void FScreenSpaceAmbientOcclusion::Init(
 	NormalBuffer.Init(InGeometryMap, InDirectXPipelineState, InRenderLayer);
 	AmbientBuffer.Init(InGeometryMap, InDirectXPipelineState, InRenderLayer);
 	NoiseBuffer.Init(InGeometryMap, InDirectXPipelineState, InRenderLayer);
+	BilateralBlur.Init(InGeometryMap, InDirectXPipelineState, InRenderLayer);
 
 	RenderLayer = InRenderLayer;
 	GeometryMap = InGeometryMap;
@@ -29,6 +30,7 @@ void FScreenSpaceAmbientOcclusion::Init(int InWidth, int InHeight)
 {
 	NormalBuffer.Init(InWidth, InHeight); 
 	AmbientBuffer.Init(InWidth / 2.f, InHeight / 2.f);
+	BilateralBlur.Init(InWidth / 2.f, InHeight / 2.f);
 	NoiseBuffer.Init(InWidth, InHeight);
 }
 void FScreenSpaceAmbientOcclusion::Build()
@@ -239,7 +241,7 @@ void FScreenSpaceAmbientOcclusion::DrawViewConstantBufferViews(float DeltaTime, 
 
 	XMMATRIX TexProjectionMatrixRIX = XMMatrixMultiply(ProjectMatrixRIX, HalLambertMatrix);
 	XMStoreFloat4x4(&SSAOViewportTransformation.TexProjectionMatrix, XMMatrixTranspose(TexProjectionMatrixRIX));
-	
+
 	SSAOViewportTransformation.OcclusionRadius = 0.5f;
 	SSAOViewportTransformation.OcclusionStart = 0.2f;
 	SSAOViewportTransformation.OcclusionEnd = 1.0f;
@@ -251,4 +253,3 @@ void FScreenSpaceAmbientOcclusion::DrawViewConstantBufferViews(float DeltaTime, 
 	// 上传
 	SSAOViewConstantBufferViews.Update(0, &SSAOViewportTransformation);
 }
-

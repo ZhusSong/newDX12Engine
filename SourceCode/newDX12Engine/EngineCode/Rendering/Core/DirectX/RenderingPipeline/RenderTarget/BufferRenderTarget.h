@@ -12,7 +12,7 @@ public:
 
 	virtual void Init(UINT InWidth, UINT InHeight, DXGI_FORMAT InFormat);
 
-	CD3DX12_CPU_DESCRIPTOR_HANDLE& GetCPURenderTargetView() { return RenderTargetViewCPU; }
+	//CD3DX12_CPU_DESCRIPTOR_HANDLE& GetCPURenderTargetView() { return RenderTargetViewCPU; }
 
 public:
 	FBufferRenderTarget();
@@ -22,7 +22,5 @@ protected:
 	virtual void BuildSRVDescriptors();
 	virtual void BuildRTVDescriptors();
 
-protected:
-	CD3DX12_CPU_DESCRIPTOR_HANDLE RenderTargetViewCPU;
 
 };

@@ -29,6 +29,8 @@ public:
 
 	CD3DX12_GPU_DESCRIPTOR_HANDLE& GetGPUSRVOffset() { return GPUShaderResourceView; }
 	CD3DX12_CPU_DESCRIPTOR_HANDLE& GetCPUSRVOffset() { return CPUShaderResourceView; }
+	
+	CD3DX12_CPU_DESCRIPTOR_HANDLE& GetCPURenderTargetView() { return RenderTargetViewCPU; }
 protected:
 	UINT Width;
 	UINT Height;
@@ -43,4 +45,7 @@ protected:
 	// SRV
 	CD3DX12_CPU_DESCRIPTOR_HANDLE CPUShaderResourceView;
 	CD3DX12_GPU_DESCRIPTOR_HANDLE GPUShaderResourceView;
+
+	//RTV
+	CD3DX12_CPU_DESCRIPTOR_HANDLE RenderTargetViewCPU;
 };
