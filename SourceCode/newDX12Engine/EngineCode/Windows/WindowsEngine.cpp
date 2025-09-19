@@ -202,7 +202,7 @@ bool CWindowsEngine::InitWindows(FWinMainCommandParameters InParameters)
 		MessageBox(NULL, L"Register windows class fail.", L"Error", MB_OK);
 	}
 
-	RECT Rect = { 0,0,FEngineRenderConfig::GetRenderConfig()->ScrrenWidth,FEngineRenderConfig::GetRenderConfig()->ScrrenHight };
+	RECT Rect = { 0,0,FEngineRenderConfig::GetRenderConfig()->ScreenWidth,FEngineRenderConfig::GetRenderConfig()->ScreenHight };
 
 	//@rect 适口
 	//WS_OVERLAPPEDWINDOW 适口风格

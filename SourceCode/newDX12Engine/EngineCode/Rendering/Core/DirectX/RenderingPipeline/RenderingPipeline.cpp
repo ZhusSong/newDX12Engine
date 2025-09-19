@@ -1,5 +1,7 @@
 ﻿#include "RenderingPipeline.h"
 #include "../../../../Component/Mesh/Core/MeshComponentType.h"
+#include "../../../../Config/EngineRenderConfig.h"
+
 
 FRenderingPipeline::FRenderingPipeline()
 {
@@ -62,7 +64,9 @@ void FRenderingPipeline::BuildPipeline()
 		&DirectXPipelineState,
 		&RenderLayer);
 
-	SSAO.Init(256, 256);
+	SSAO.Init(FEngineRenderConfig::GetRenderConfig()->ScreenWidth,
+			FEngineRenderConfig::GetRenderConfig()->ScreenHight);
+
 
 	// 构建普通阴影map
 	GeometryMap.DynamicShadowMap.Init(
@@ -152,13 +156,15 @@ void FRenderingPipeline::PreDraw(float DeltaTime)
 	GeometryMap.PreDraw(DeltaTime);
 	RootSignature.PreDraw(DeltaTime);
 
+	
 	// 渲染灯光材质贴图等
 	GeometryMap.Draw(DeltaTime);
 
 	// 渲染SSAO
 	SSAO.Draw(DeltaTime);
 	RootSignature.PreDraw(DeltaTime);
-	
+
+
 	// 存储SSAO到指定的buffer
 	SSAO.SaveToSSAOBuffer();
 

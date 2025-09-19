@@ -91,8 +91,18 @@ void FGeometryMap::UpdateCalculationsViewport(float DeltaTime, const FViewportIn
 	XMMATRIX ProjectMatrix = XMLoadFloat4x4(&ViewportInfo.ProjectMatrix);
 	XMMATRIX ViewProject = XMMatrixMultiply(ViewMatrix, ProjectMatrix);
 
+
+	XMMATRIX HalfLambert(
+		0.5f, 0.0f, 0.0f, 0.0f,
+		0.0f, -0.5f, 0.0f, 0.0f,
+		0.0f, 0.0f, 1.0f, 0.0f,
+		0.5f, 0.5f, 0.0f, 1.0f);
+
+	XMMATRIX TexViewProjectionMatrix = XMMatrixMultiply(ViewProject, HalfLambert);
+
 	FViewportTransformation ViewportTransformation;
 	XMStoreFloat4x4(&ViewportTransformation.ViewProjectionMatrix, XMMatrixTranspose(ViewProject));
+	XMStoreFloat4x4(&ViewportTransformation.TexViewProjectionMatrix, XMMatrixTranspose(TexViewProjectionMatrix));
 
 	//拿到视口位置
 	ViewportTransformation.ViewportPosition = ViewportInfo.ViewPosition;
@@ -177,11 +187,11 @@ void FGeometryMap::UpdateMaterialShaderResourceView(float DeltaTime, const FView
 
 				InMaterial->SetDirty(false);
 
-				// 自定义项
-				// float
-				MaterialConstantBuffer.Param0 = InMaterial->GetFloatParam(0);
-				MaterialConstantBuffer.Param1 = InMaterial->GetFloatParam(1);
-				MaterialConstantBuffer.Param2 = InMaterial->GetFloatParam(2);
+				//// 自定义项
+				//// float
+				//MaterialConstantBuffer.Param0 = InMaterial->GetFloatParam(0);
+				//MaterialConstantBuffer.Param1 = InMaterial->GetFloatParam(1);
+				//MaterialConstantBuffer.Param2 = InMaterial->GetFloatParam(2);
 
 				MaterialConstantBufferViews.Update(InMaterial->GetMaterialIndex(), &MaterialConstantBuffer);
 			}
@@ -279,8 +289,8 @@ void FGeometryMap::UpdateLight(float DeltaTime, const FViewportInfo& ViewportInf
 					XMMATRIX ShadowViewMatrixRTX = XMLoadFloat4x4(&ShadowViewMatrix);
 					XMMATRIX ShadowProjectMatrixRTX = XMLoadFloat4x4(&ShadowProjectMatrix);
 
-					//NDC [-1,1]; = >[0,1]
-					//半兰伯特思想
+					// NDC [-1,1]; = >[0,1]
+					// 半兰伯特
 					XMMATRIX Transform =
 					{
 						0.5f, 0.0f, 0.0f, 0.0f,
@@ -292,7 +302,7 @@ void FGeometryMap::UpdateLight(float DeltaTime, const FViewportInfo& ViewportInf
 					XMMATRIX ShadowViewProjectMatrixRTX =
 						ShadowViewMatrixRTX * ShadowProjectMatrixRTX * Transform;
 
-					//存储Shadow变换信息
+					// 存储Shadow变换信息
 					XMStoreFloat4x4(&LightConstantBuffer.SceneLights[i].ShadowTransform, XMMatrixTranspose(ShadowViewProjectMatrixRTX));
 
 					break;
@@ -483,16 +493,22 @@ void FGeometryMap::BuildMaterialShaderResourceView()
 {
 	// 收集材质
 	// 更新Shader-Index
-	for (auto& InData : FGeometry::RenderingDatas)
+	for (auto& Tmp : FRenderLayerManager::RenderLayers)
 	{
-		if (auto InMaterials = InData->Mesh->GetMaterials())
+		for (auto& InData : Tmp->RenderDatas)
 		{
-			for (size_t j = 0; j < InMaterials->size(); j++)
+			if (!InData.expired())
 			{
-				//做ShaderIndex所有
-				(*InMaterials)[j]->SetMaterialIndex(Materials.size());
+				if (auto InMaterials = InData.lock()->Mesh->GetMaterials())
+				{
+					for (size_t j = 0; j < InMaterials->size(); j++)
+					{
+						//做ShaderIndex所有
+						(*InMaterials)[j]->SetMaterialIndex(Materials.size());
 
-				Materials.push_back((*InMaterials)[j]);
+						Materials.push_back((*InMaterials)[j]);
+					}
+				}
 			}
 		}
 	}

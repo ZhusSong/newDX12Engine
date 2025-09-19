@@ -16,6 +16,7 @@ struct MeshVertexIn
 struct MeshVertexOut
 {
 	float4 WorldPosition : POSITION;
+	float4 TexPositionHome : POSITION1;
 	float4 Position : SV_POSITION;
 	float4 Color : COLOR;
 	float3 Normal : NORMAL;
@@ -35,6 +36,8 @@ MeshVertexOut VertexShaderMain(MeshVertexIn MV)
     
 	// 世界坐标
     MOut.WorldPosition = mul(float4(MV.Position, 1.f), WorldMatrix);
+
+   	MOut.TexPositionHome = mul(MOut.WorldPosition, TexViewProjectionMatrix);
 
 	// 变换到齐次剪辑空间
     MOut.Position = mul(MOut.WorldPosition, ViewProjectionMatrix);
@@ -62,11 +65,14 @@ MeshVertexOut VertexShaderMain(MeshVertexIn MV)
 float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
 {
     MaterialConstBuffer MatConstBuffer = Materials[MaterialIndex];
-    
+
+    MVOut.TexPositionHome /= MVOut.TexPositionHome.w;
+    float AmbientAccessibility = SimpleSSAOMap.Sample(TextureSampler, MVOut.TexPositionHome.xy, 0.0f).r;
+	
     // 返回阴影贴图采样
     if (MatConstBuffer.MaterialType == 101)
     {
-        return float4(SimpleShadowMap.Sample(TextureSampler, MVOut.TexCoord).rrr, 1.f);
+      return float4(AmbientAccessibility, AmbientAccessibility, AmbientAccessibility, 1.f);
     }
     FMaterial Material;
 
@@ -367,10 +373,11 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
             FinalColor += ShadowFactor * (saturate((Diffuse + Specular) * LightStrength * DotValue));
         }
     }
+    float4 AmbientColor = AmbientAccessibility * AmbientLight * Material.BaseColor;
 
     // 最终颜色贡献
-    MVOut.Color = FinalColor +               // 物体最终颜色
-		AmbientLight * Material.BaseColor;   // 环境光
+    MVOut.Color = FinalColor +  AmbientColor;              // 物体最终颜色
+	
     
     switch (MatConstBuffer.MaterialType)
     {

@@ -242,8 +242,8 @@
     <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RootSignature\Core">
       <UniqueIdentifier>{6604a4ac-9161-444c-a611-a564f21147ab}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Shaders\SSAO">
-      <UniqueIdentifier>{c9b27ca1-0db8-4abb-9cb9-196d09ffd2b6}</UniqueIdentifier>
+    <Filter Include="Shaders\AO">
+      <UniqueIdentifier>{4f2d51ec-9b4c-4ec9-9e04-6ea0a8444959}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1172,11 +1172,11 @@
     <None Include="..\..\Shaders\ShadowFunctionLibrary.hlsli">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="..\..\Shaders\SSAO\AOCommon.hlsli">
-      <Filter>Shaders\SSAO</Filter>
+    <None Include="..\..\Shaders\AO\AOCommon.hlsli">
+      <Filter>Shaders\AO</Filter>
     </None>
-    <None Include="..\..\Shaders\SSAO\AOFunctionLibrary.hlsli">
-      <Filter>Shaders\SSAO</Filter>
+    <None Include="..\..\Shaders\AO\AOFunctionLibrary.hlsli">
+      <Filter>Shaders\AO</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -1204,8 +1204,8 @@
     <FxCompile Include="..\..\Shaders\NormalBuffer.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="..\..\Shaders\SSAO\SSAO.hlsl">
-      <Filter>Shaders\SSAO</Filter>
+    <FxCompile Include="..\..\Shaders\AO\SSAO.hlsl">
+      <Filter>Shaders\AO</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

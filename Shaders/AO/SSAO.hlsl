@@ -14,7 +14,7 @@ MeshVertexOut VertexShaderMain(uint VertexID : SV_VertexID)
 	Out.TexCoord = TextureCoordinates[VertexID];
 
 	// 映射到NDC空间
-    Out.Position = float4(2.f * Out.TexCoord.x - 1.f, 1.f - 2.f * Out.TexCoord.y, 0.f, 1.f);
+	Out.Position = float4(2.f * Out.TexCoord.x - 1.f, 1.f - 2.f * Out.TexCoord.y, 0.f, 1.f);
 	
 	float4 PositionH = mul(Out.Position,InversiveProjectionMatrix);//视口空间
 	Out.ViewPosition.xyz = PositionH.xyz / PositionH.w;//近剪裁面
@@ -24,40 +24,56 @@ MeshVertexOut VertexShaderMain(uint VertexID : SV_VertexID)
 
 float4 PixelShaderMain(MeshVertexOut MVOut) :SV_TARGET
 {
-	float3 N = normalize(SampleNormalMap.SampleLevel(TextureSampler,MVOut.TexCoord,0.0).xyz);
+	// 获取当前像素的法线
+	float3 N = normalize(SampleNormalMap.SampleLevel(TextureSampler,MVOut.TexCoord,0.0).xyz);	// 获取当前像素的深度
 	float3 DepthNDC = SampleDepthMap.SampleLevel(DepthSampler, MVOut.TexCoord, 0.0).rrr;
+	// 把深度从NDC空间转换到视口空间深度
 	float AViewSpaceDepth = DepthNdcSpaceToViewSpace(DepthNDC);
 
+
+	// 视口空间下当前像素的位置
 	float3 AViewSpacePosition = (AViewSpaceDepth / MVOut.ViewPosition.z)* MVOut.ViewPosition;
-	
+
+	// 环境光方向
 	float3 AmbientLightDirection = SampleNoiseMap.SampleLevel(TextureSampler, MVOut.TexCoord, 0.0f);
-	
+	AmbientLightDirection = AmbientLightDirection.rgb * 2.f - 1.f;
+
 	float OcclusionValue = 0.f;
+	// 遍历采样体积中的多个方向
 	for (int i = 0; i < SAMPLE_VOLUME_NUM; i++)
 	{
+		// 环境光反射
 		float3 AmbientLightReflect = reflect(SampleVolumeBuffer[i].xyz, AmbientLightDirection);
 
+		// 当前采样点在发现的哪一侧
 		float SignValue = sign(dot(AmbientLightReflect, N));
 
+		// 沿着方向在OcclusionRadius半径内找到一个采样点
 		float3 BViewSpacePosition = AViewSpacePosition + SignValue * AmbientLightReflect * OcclusionRadius;
 		
+		// 将找到的采样点转到投影空间，并计算出NDC坐标
 		float4 CTexProjectionSpace = mul(float4(BViewSpacePosition, 1.0f), TexProjectionMatrix);
 		CTexProjectionSpace /= CTexProjectionSpace.w;
 
 		float CDepthNDC = SampleDepthMap.SampleLevel(DepthSampler, CTexProjectionSpace.xy, 0.0).r;
 	
+		// 转为视口空间深度
 		float CViewDepth = DepthNdcSpaceToViewSpace(CDepthNDC);
 
+		// 得到遮挡物在视口空间中的位置
 		float3 CViewSpacePosition = (CViewDepth / BViewSpacePosition.z) * BViewSpacePosition;
 
+		// 点和遮挡物的距离
 		float DepthDistance = AViewSpacePosition.z - CViewSpacePosition.z;
 
-		//
+		
 		float NoAC = max(dot(N, normalize(CViewSpacePosition - AViewSpacePosition)), 0.f);
 
+		// 根据深度差计算遮蔽强度
 		OcclusionValue += NoAC * OcclusionFunction(DepthDistance);
 	}
 
+	// 最终可见性计算
 	float Accessibility = 1.f - OcclusionValue;
 
 	return saturate(pow(Accessibility, 6.0f));

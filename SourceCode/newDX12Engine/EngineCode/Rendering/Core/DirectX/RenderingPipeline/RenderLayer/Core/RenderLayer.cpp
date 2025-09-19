@@ -199,17 +199,19 @@ void FRenderLayer::UpdateCalculations(float DeltaTime, const FViewportInfo& View
 					XMFLOAT3 UPVector = InRenderingData->Mesh->GetUPVector();
 					XMFLOAT3 ForwardVector = InRenderingData->Mesh->GetForwardVector();
 
-					InRenderingData->WorldMatrix = {
-						RightVector.x* Scale.x,		UPVector.x* Scale.y,	ForwardVector.x* Scale.z,	0.f,
-						RightVector.y* Scale.x,		UPVector.y* Scale.y,	ForwardVector.y* Scale.z,	0.f,
-						RightVector.z* Scale.x,		UPVector.z* Scale.y,	ForwardVector.z* Scale.z,	0.f,
-						Position.x,						Position.y,				Position.z,					1.f };
+					EngineMath::BuildMatrix(
+						InRenderingData->WorldMatrix,
+						Position,
+						Scale,
+						RightVector,
+						UPVector,
+						ForwardVector);
 				}
 
 				//更新模型位置
 				XMMATRIX ATRIXWorld = XMLoadFloat4x4(&InRenderingData->WorldMatrix);
 				XMMATRIX ATRIXTextureTransform = XMLoadFloat4x4(&InRenderingData->TextureTransform);
-				
+
 				//法线矩阵
 				XMVECTOR AATRIXWorldDeterminant = XMMatrixDeterminant(ATRIXWorld);
 				XMMATRIX NormalInverseMatrix = XMMatrixInverse(&AATRIXWorldDeterminant, ATRIXWorld);
@@ -230,6 +232,7 @@ void FRenderLayer::UpdateCalculations(float DeltaTime, const FViewportInfo& View
 		}
 	}
 }
+
 void FRenderLayer::ResetPSO()
 {
 

@@ -52,6 +52,8 @@ cbuffer ViewportConstBuffer : register(b1)
 {
     float4 ViewportPosition;
     float4x4 ViewProjectionMatrix;
+    
+    float4x4 TexViewProjectionMatrix;
 };
 
 cbuffer LightConstBuffer : register(b2) 

@@ -28,7 +28,7 @@ void FScreenSpaceAmbientOcclusion::Init(
 void FScreenSpaceAmbientOcclusion::Init(int InWidth, int InHeight)
 {
 	NormalBuffer.Init(InWidth, InHeight); 
-	AmbientBuffer.Init(InWidth, InHeight);
+	AmbientBuffer.Init(InWidth / 2.f, InHeight / 2.f);
 	NoiseBuffer.Init(InWidth, InHeight);
 }
 void FScreenSpaceAmbientOcclusion::Build()
@@ -53,15 +53,17 @@ void FScreenSpaceAmbientOcclusion::BuildDescriptors()
 	NormalBuffer.BuildSRVDescriptors();
 	NormalBuffer.BuildRTVDescriptors();
 
+	NoiseBuffer.BuildDescriptors();
+	NoiseBuffer.BuildRenderTargetRTV();
+	NoiseBuffer.BuildSRVDescriptors();
+	NoiseBuffer.BuildRTVDescriptors();
+
 	AmbientBuffer.BuildDescriptors();
 	AmbientBuffer.BuildRenderTargetRTV();
 	AmbientBuffer.BuildSRVDescriptors();
 	AmbientBuffer.BuildRTVDescriptors();
 
-	NoiseBuffer.BuildDescriptors();
-	NoiseBuffer.BuildRenderTargetRTV();
-	NoiseBuffer.BuildSRVDescriptors();
-	NoiseBuffer.BuildRTVDescriptors();
+
 }
 
 

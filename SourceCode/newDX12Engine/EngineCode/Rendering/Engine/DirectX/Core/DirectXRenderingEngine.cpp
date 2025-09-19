@@ -1093,8 +1093,8 @@ bool CDirectXRenderingEngine::InitDirect3D()
 ////////////////////////////////////////////////////////////////////
 	SwapChain.Reset();
 	DXGI_SWAP_CHAIN_DESC SwapChainDesc;
-	SwapChainDesc.BufferDesc.Width = FEngineRenderConfig::GetRenderConfig()->ScrrenWidth;
-	SwapChainDesc.BufferDesc.Height = FEngineRenderConfig::GetRenderConfig()->ScrrenHight;
+	SwapChainDesc.BufferDesc.Width = FEngineRenderConfig::GetRenderConfig()->ScreenWidth;
+	SwapChainDesc.BufferDesc.Height = FEngineRenderConfig::GetRenderConfig()->ScreenHight;
 	SwapChainDesc.BufferDesc.RefreshRate.Numerator = FEngineRenderConfig::GetRenderConfig()->RefreshRate;
 	SwapChainDesc.BufferDesc.RefreshRate.Denominator = 1;
 	SwapChainDesc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER::DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
@@ -1182,8 +1182,8 @@ void CDirectXRenderingEngine::PostInitDirect3D()
 	// 自适应屏幕变大
 	SwapChain->ResizeBuffers(
 		FEngineRenderConfig::GetRenderConfig()->SwapChainCount,
-		FEngineRenderConfig::GetRenderConfig()->ScrrenWidth,
-		FEngineRenderConfig::GetRenderConfig()->ScrrenHight,
+		FEngineRenderConfig::GetRenderConfig()->ScreenWidth,
+		FEngineRenderConfig::GetRenderConfig()->ScreenHight,
 		BackBufferFormat, DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH);
 
 	// 拿到描述size
@@ -1198,8 +1198,8 @@ void CDirectXRenderingEngine::PostInitDirect3D()
 	}
 
 	D3D12_RESOURCE_DESC ResourceDesc;
-	ResourceDesc.Width = FEngineRenderConfig::GetRenderConfig()->ScrrenWidth;
-	ResourceDesc.Height = FEngineRenderConfig::GetRenderConfig()->ScrrenHight;
+	ResourceDesc.Width = FEngineRenderConfig::GetRenderConfig()->ScreenWidth;
+	ResourceDesc.Height = FEngineRenderConfig::GetRenderConfig()->ScreenHight;
 	ResourceDesc.Alignment = 0;
 	ResourceDesc.MipLevels = 1;
 	ResourceDesc.DepthOrArraySize = 1;

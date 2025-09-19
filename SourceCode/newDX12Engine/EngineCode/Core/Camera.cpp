@@ -38,7 +38,7 @@ void GCamera::BeginInit()
 	// 初始化投影矩阵
 	//ViewportInit();
 	//初始化我们的投影矩阵
-	float AspectRatio = (float)FEngineRenderConfig::GetRenderConfig()->ScrrenWidth / (float)FEngineRenderConfig::GetRenderConfig()->ScrrenHight;
+	float AspectRatio = (float)FEngineRenderConfig::GetRenderConfig()->ScreenWidth / (float)FEngineRenderConfig::GetRenderConfig()->ScreenHight;
 	////(1,1,0) (-1,1,0) (-1,-1,0) (1,-1,0) (1,1,1) (-1,1,1) (-1,-1,1) (1,-1,1)
 	////基于视野构建左手透视投影矩阵
 	SetFrustum(

@@ -14,8 +14,8 @@ bool FRaycastSystemLibrary::GetRaycastByScreenParam(
 {
 	if (GCamera* InCamera = InWorld->GetCamera())
 	{
-		int H = FEngineRenderConfig::GetRenderConfig()->ScrrenHight;
-		int W = FEngineRenderConfig::GetRenderConfig()->ScrrenWidth;
+		int H = FEngineRenderConfig::GetRenderConfig()->ScreenHight;
+		int W = FEngineRenderConfig::GetRenderConfig()->ScreenWidth;
 
 		// 将像素坐标转换到[-1,1]的标准设备坐标系(NDC)
 		fvector_2d View;

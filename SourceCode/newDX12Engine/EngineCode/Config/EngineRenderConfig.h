@@ -4,8 +4,8 @@ struct FEngineRenderConfig
 {
 	FEngineRenderConfig();
 
-	int ScrrenWidth;
-	int ScrrenHight;
+	int ScreenWidth;
+	int ScreenHight;
 	int RefreshRate;
 	int SwapChainCount;
 

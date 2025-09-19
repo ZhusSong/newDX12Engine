@@ -8,12 +8,12 @@ FViewport::FViewport()
     , ProjectMatrix(EngineMath::IdentityMatrix4x4())
 {
     ResetViewport(
-        FEngineRenderConfig::GetRenderConfig()->ScrrenWidth,
-        FEngineRenderConfig::GetRenderConfig()->ScrrenHight);
+        FEngineRenderConfig::GetRenderConfig()->ScreenWidth,
+        FEngineRenderConfig::GetRenderConfig()->ScreenHight);
 
     ResetScissorRect(
-        FEngineRenderConfig::GetRenderConfig()->ScrrenWidth,
-        FEngineRenderConfig::GetRenderConfig()->ScrrenHight);
+        FEngineRenderConfig::GetRenderConfig()->ScreenWidth,
+        FEngineRenderConfig::GetRenderConfig()->ScreenHight);
 }
 
 
