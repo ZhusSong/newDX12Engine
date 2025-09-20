@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include "Core/RenderBuffer.h"
 
-// 创建环境缓冲区
 class FAmbientBuffer :public FRenderBuffer
 {
 	typedef FRenderBuffer Super;

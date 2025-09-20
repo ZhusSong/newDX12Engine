@@ -7,6 +7,7 @@ public:
 	FViewport();
 
 
+	void ViewportInit();
 
 public:
 	void ResetViewport(UINT InWidth, UINT InHeight);

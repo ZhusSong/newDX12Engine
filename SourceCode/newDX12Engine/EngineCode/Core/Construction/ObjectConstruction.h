@@ -1,6 +1,7 @@
 ﻿#pragma once
 //25.6.11 李
 class CCoreMinimalObject;
+class CComponent;
 #include "../../Core/CoreObject/CoreMinimalObject.h"
 #include "ConstructionComponents.h"
 

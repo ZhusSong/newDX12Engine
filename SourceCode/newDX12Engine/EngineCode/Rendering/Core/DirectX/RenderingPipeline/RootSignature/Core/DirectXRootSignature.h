@@ -2,6 +2,7 @@
 #include "../../../../../../Interface/DirectXDeviceInterface.h"
 #include "../../StaticSampler/StaticSamplerObject.h"
 
+//提供渲染内容的接口
 struct FDirectXRootSignature :public IDirectXDeviceInterface_Struct
 {
 	FDirectXRootSignature();

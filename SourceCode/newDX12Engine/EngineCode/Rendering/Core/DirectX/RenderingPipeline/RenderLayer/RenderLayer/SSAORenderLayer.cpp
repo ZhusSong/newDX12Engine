@@ -9,14 +9,14 @@ FSSAORenderLayer::FSSAORenderLayer()
 
 void FSSAORenderLayer::BuildShader()
 {
-	
+	//构建Shader
 	//HLSL
 	std::wstring ShaderPath = BuildShadersPaths(L"SSAO");
 	VertexShader.BuildShaders(ShaderPath, "VertexShaderMain", "vs_5_1", NULL);
 	PixelShader.BuildShaders(ShaderPath, "PixelShaderMain", "ps_5_1", NULL);
 	DirectXPipelineState->BindShader(VertexShader, PixelShader);
 
-	// 输入布局
+	//输入布局
 	InputElementDesc.clear();
 	DirectXPipelineState->BindInputLayout(InputElementDesc.data(), InputElementDesc.size());
 }

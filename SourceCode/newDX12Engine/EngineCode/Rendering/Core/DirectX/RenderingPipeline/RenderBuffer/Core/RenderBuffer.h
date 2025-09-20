@@ -1,5 +1,4 @@
-﻿// 后处理渲染缓冲区基类
-#pragma once
+﻿#pragma once
 #include "../../DynamicMap/Core/DynamicMap.h"
 #include "../../RenderTarget/Core/RenderTarget.h"
 

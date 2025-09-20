@@ -1,5 +1,4 @@
-﻿//25.6.25 李
-#pragma once
+﻿#pragma once
 #include "../../../../../../Interface/DirectXDeviceInterface.h"
 
 class FRenderTarget
@@ -22,6 +21,7 @@ protected:
 public:
 	void ResetViewport(UINT InWidth, UINT InHeight);
 	void ResetScissorRect(UINT InWidth, UINT InHeight);
+
 public:
 	FORCEINLINE ID3D12Resource* GetRenderTarget() const { return RenderTargetMap.Get(); }
 	FORCEINLINE D3D12_VIEWPORT GetViewport() const { return Viewport; }
@@ -29,6 +29,8 @@ public:
 
 	CD3DX12_GPU_DESCRIPTOR_HANDLE& GetGPUSRVOffset() { return GPUShaderResourceView; }
 	CD3DX12_CPU_DESCRIPTOR_HANDLE& GetCPUSRVOffset() { return CPUShaderResourceView; }
+
+	CD3DX12_CPU_DESCRIPTOR_HANDLE& GetCPURenderTargetView() { return RenderTargetViewCPU; }
 protected:
 	UINT Width;
 	UINT Height;
@@ -37,10 +39,13 @@ protected:
 	D3D12_VIEWPORT Viewport;
 	D3D12_RECT ScissorRect;
 
-	// 放数据的地方
+	//放数据的地方
 	ComPtr<ID3D12Resource> RenderTargetMap;
 
-	// SRV
+	//SRV
 	CD3DX12_CPU_DESCRIPTOR_HANDLE CPUShaderResourceView;
 	CD3DX12_GPU_DESCRIPTOR_HANDLE GPUShaderResourceView;
+
+	//RTV
+	CD3DX12_CPU_DESCRIPTOR_HANDLE RenderTargetViewCPU;
 };

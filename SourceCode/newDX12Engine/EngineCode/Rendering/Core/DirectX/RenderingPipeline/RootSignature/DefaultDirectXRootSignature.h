@@ -2,7 +2,7 @@
 #include "Core/DirectXRootSignature.h"
 #include "../StaticSampler/StaticSamplerObject.h"
 
-// 默认根签名
+//提供渲染内容的接口
 struct FDefaultDirectXRootSignature :public FDirectXRootSignature
 {
 private:

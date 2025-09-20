@@ -3,71 +3,75 @@
 #include "Fog.hlsli"
 #include "ShadowFunction.hlsli"
 
-
 struct MeshVertexIn
 {
-	float3 Position : POSITION;
-	float4 Color : COLOR;
-	float3 Normal : NORMAL;
-	float3 UTangent: TANGENT;
-	float2 TexCoord: TEXCOORD;
+    float3 Position : POSITION;
+    float4 Color : COLOR;
+    float3 Normal : NORMAL;
+    float3 UTangent : TANGENT;
+    float2 TexCoord : TEXCOORD;
 };
 
 struct MeshVertexOut
 {
-	float4 WorldPosition : POSITION;
-	float4 Position : SV_POSITION;
-	float4 Color : COLOR;
-	float3 Normal : NORMAL;
-	float3 UTangent : TANGENT;
-	float2 TexCoord: TEXCOORD;
+    float4 WorldPosition : POSITION0;
+    float4 TexPositionHome : POSITION1;
+    float4 Position : SV_POSITION;
+    float4 Color : COLOR;
+    float3 Normal : NORMAL;
+    float3 UTangent : TANGENT;
+    float2 TexCoord : TEXCOORD;
 };
 
 MeshVertexOut VertexShaderMain(MeshVertexIn MV)
 {
     MaterialConstBuffer MatConstBuffer = Materials[MaterialIndex];
-    
-	
-    MeshVertexOut MOut;
-    
-	// 颜色
-    MOut.Color = MV.Color;
-    
-	// 世界坐标
-    MOut.WorldPosition = mul(float4(MV.Position, 1.f), WorldMatrix);
 
-	// 变换到齐次剪辑空间
-    MOut.Position = mul(MOut.WorldPosition, ViewProjectionMatrix);
+    MeshVertexOut Out;
+
+	//颜色
+    Out.Color = MV.Color;
+
+	//世界坐标
+    Out.WorldPosition = mul(float4(MV.Position, 1.f), WorldMatrix);
+
+    Out.TexPositionHome = mul(Out.WorldPosition, TexViewProjectionMatrix);
+
+	//变换到齐次剪辑空间
+    Out.Position = mul(Out.WorldPosition, ViewProjectionMatrix);
 
     if (MatConstBuffer.MaterialType == 13)
     {
-        MOut.Normal = MV.Normal;
+        Out.Normal = MV.Normal;
     }
     else
     {
-		// 转法线
-       	MOut.Normal = mul(MV.Normal, (float3x3)NormalTransformation);
+		//转法线
+        Out.Normal = mul(MV.Normal, (float3x3) NormalTransformation);
     }
-	
-	// 切线
-    MOut.UTangent = mul(MV.UTangent, (float3x3)NormalTransformation);
 
-	// ui坐标
+	//切线
+    Out.UTangent = mul(MV.UTangent, (float3x3) NormalTransformation);
+
+	//ui坐标
     float4 MyTexCoord = mul(float4(MV.TexCoord, 0.0f, 1.f), ObjectTextureTransform);
-    MOut.TexCoord = mul(MyTexCoord, MatConstBuffer.TransformInformation).xy;
+    Out.TexCoord = mul(MyTexCoord, MatConstBuffer.TransformInformation).xy;
 
-    return MOut;
+    return Out;
 }
-
 float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
 {
     MaterialConstBuffer MatConstBuffer = Materials[MaterialIndex];
-    
-    // 返回阴影贴图采样
+
+    MVOut.TexPositionHome /= MVOut.TexPositionHome.w;
+    float AmbientAccessibility = SimpleSSAOMap.Sample(TextureSampler, MVOut.TexPositionHome.xy, 0.0f).r;
+	
     if (MatConstBuffer.MaterialType == 101)
     {
-        return float4(SimpleShadowMap.Sample(TextureSampler, MVOut.TexCoord).rrr, 1.f);
+        return float4(AmbientAccessibility, AmbientAccessibility, AmbientAccessibility, 1.f);
+		//return float4(SimpleShadowMap.Sample(TextureSampler, MVOut.TexCoord).rrr, 1.f);
     }
+	
     FMaterial Material;
 
 	//获取BaseColor
@@ -368,9 +372,12 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
         }
     }
 
-    // 最终颜色贡献
-    MVOut.Color = FinalColor +               // 物体最终颜色
-		AmbientLight * Material.BaseColor;   // 环境光
+	//通过渲染方程推出来的
+    float4 Ambient = (AmbientAccessibility + 0.1f) * AmbientLight * Material.BaseColor;
+
+	//最终颜色贡献
+    MVOut.Color = FinalColor + //最终颜色
+		Ambient; //间接光
     
     switch (MatConstBuffer.MaterialType)
     {

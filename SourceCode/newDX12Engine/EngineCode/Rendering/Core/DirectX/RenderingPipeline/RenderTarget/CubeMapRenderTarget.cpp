@@ -35,15 +35,6 @@ void FCubeMapRenderTarget::BuildRenderTargetMap()
 	ResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
 	ResourceDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET;
 
-
-	// 定义清除颜色值，防止出现 EXECUTION WARNING #820: CLEARRENDERTARGETVIEW_MISMATCHINGCLEARVA 警告
-	D3D12_CLEAR_VALUE ClearValue = {};
-	ClearValue.Format = Format;
-	ClearValue.Color[0] = 0.0f;
-	ClearValue.Color[1] = 0.0f;
-	ClearValue.Color[2] = 0.0f;
-	ClearValue.Color[3] = 1.0f;
-
 	CD3DX12_HEAP_PROPERTIES BufferProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
 
 	ANALYSIS_HRESULT(GetD3dDevice()->CreateCommittedResource(
@@ -51,8 +42,7 @@ void FCubeMapRenderTarget::BuildRenderTargetMap()
 		D3D12_HEAP_FLAG_NONE,
 		&ResourceDesc,
 		D3D12_RESOURCE_STATE_COMMON,
-		&ClearValue,
-		IID_PPV_ARGS(RenderTargetMap.GetAddressOf())));
+		NULL, IID_PPV_ARGS(RenderTargetMap.GetAddressOf())));
 }
 
 void FCubeMapRenderTarget::BuildRTVDescriptors()

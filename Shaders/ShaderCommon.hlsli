@@ -19,55 +19,50 @@
 //#endif
 
 SamplerState TextureSampler : register(s0);
-
 SamplerState AnisotropicSampler : register(s1);
-
 SamplerComparisonState ShadowSampler : register(s2);
-
 SamplerState DepthSampler : register(s3);
 
-TextureCube SimpleCubeMap : register(t0); //根签名位置6
-
-TextureCube SimpleShadowCubeMap : register(t1); //点光源 ShadowCubemap 根签名位置8
-Texture2D SimpleShadowMap : register(t2); // 聚光灯和平行光shadowmap 根签名位置7
-
-Texture2D SimpleSSAOMap : register(t3);  //SSAO
-
-Texture2D SimpleTexture2DMap[TEXTURE2D_MAP_NUM] : register(t4);  //贴图
+Texture2D SimpleShadowMap : register(t2);
+Texture2D SimpleSSAOMap : register(t3);
+Texture2D SimpleTexture2DMap[TEXTURE2D_MAP_NUM] : register(t4);
+TextureCube SimpleCubeMap : register(t0); //6
+TextureCube SimpleShadowCubeMap : register(t1); //点光源 四面八方的照射 8
 
 
-
-cbuffer ObjectConstBuffer : register(b0) 
+cbuffer ObjectConstBuffer : register(b0) //b0->b14
 {
-    float4x4 WorldMatrix;          //世界矩阵 处理法线不等比缩放 
+    float4x4 WorldMatrix; //世界矩阵
     float4x4 ObjectTextureTransform;
-    float4x4 NormalTransformation;  //法线矩阵 处理法线不等比缩放
+    float4x4 NormalTransformation; //法线矩阵 处理不等比缩放
     uint MaterialIndex;
     uint RR1;
     uint RR2;
     uint RR3;
 };
 
-cbuffer ViewportConstBuffer : register(b1) 
+cbuffer ViewportConstBuffer : register(b1) //b0->b14
 {
     float4 ViewportPosition;
     float4x4 ViewProjectionMatrix;
+
+    float4x4 TexViewProjectionMatrix;
 };
 
-cbuffer LightConstBuffer : register(b2) 
+cbuffer LightConstBuffer : register(b2) //b0->b14
 {
     Light SceneLights[16];
 };
 
-cbuffer FogConstBuffer : register(b3)
+cbuffer FogConstBuffer : register(b3) //b0->b14
 {
-	float3 FogColor;
-	float FogStart;
+    float3 FogColor;
+    float FogStart;
 
-	float FogRange;
-	float FogHeight;
-	float FogTransparentCoefficient;
-	float xxx2;
+    float FogRange;
+    float FogHeight;
+    float FogTransparentCoefficient;
+    float xxx2;
 };
 
 struct MaterialConstBuffer
@@ -78,9 +73,9 @@ struct MaterialConstBuffer
     int NormalIndex;
 
     int SpecularIndex;
-    float Param0; //备用
-    float Param1; //备用
-    float Param2; //备用
+    float Param0; //自定义
+    float Param1; //自定义
+    float Param2; //自定义
 
     float4 BaseColor;
 
@@ -93,7 +88,6 @@ struct MaterialConstBuffer
 
     float3 Metallicity;
     float XXX5;
-    
 };
 
 StructuredBuffer<MaterialConstBuffer> Materials : register(t0, Space1);

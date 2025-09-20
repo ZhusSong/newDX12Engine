@@ -1,5 +1,6 @@
-﻿// 法线缓冲区
+﻿#pragma once
 #include "Core/RenderBuffer.h"
+
 class FNormalBuffer :public FRenderBuffer
 {
 	typedef FRenderBuffer Super;

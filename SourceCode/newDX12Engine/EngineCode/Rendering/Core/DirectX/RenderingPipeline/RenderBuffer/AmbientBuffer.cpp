@@ -25,53 +25,15 @@ void FAmbientBuffer::Draw(float DeltaTime)
 
 }
 
-// 创建描述符
 void FAmbientBuffer::BuildDescriptors()
 {
-	UINT CBVDescriptorSize = GetDescriptorHandleIncrementSizeByCBV_SRV_UAV();
-
-	auto CPUSRVDesHeapStart = GeometryMap->GetHeap()->GetCPUDescriptorHandleForHeapStart();
-	auto GPUSRVDesHeapStart = GeometryMap->GetHeap()->GetGPUDescriptorHandleForHeapStart();
-
-	int Offset =
-		GeometryMap->GetDrawTexture2DResourcesNumber() + //Texture2D
-		GeometryMap->GetDrawCubeMapResourcesNumber() + //静态Cube贴图 背景 天空球
-		1 + //动态Cube贴图 反射
-		1 + //Shadow 直射灯 聚光灯 Shadow
-		1 + //ShadowCubeMap 点光源的 Shadow
-		1 + //UI
-		1 +//法线
-		1; //深度
-
-	RenderTarget->GetCPUSRVOffset() =
-		CD3DX12_CPU_DESCRIPTOR_HANDLE(CPUSRVDesHeapStart,
-			Offset,
-			CBVDescriptorSize);
-
-	RenderTarget->GetGPUSRVOffset() =
-		CD3DX12_GPU_DESCRIPTOR_HANDLE(GPUSRVDesHeapStart,
-			Offset,
-			CBVDescriptorSize);
+	BuildSRVOffset();
 }
 
-// 构建RTV
+//偏移
 void FAmbientBuffer::BuildRenderTargetRTV()
 {
-	UINT RTVDescriptorSize = GetDescriptorHandleIncrementSizeByRTV();
-
-	auto RTVDesHeapStart = GetRTVHeap()->GetCPUDescriptorHandleForHeapStart();
-
-	int Offset =
-		FEngineRenderConfig::GetRenderConfig()->SwapChainCount +//交换链
-		6 +//反射的CubeMap RTV
-		6 +//ShadowCubeMap RTV Point Light
-		1; //Normal
-
-	if (FBufferRenderTarget* InRenderTarget = dynamic_cast<FBufferRenderTarget*>(RenderTarget.get()))
-	{
-		InRenderTarget->GetCPURenderTargetView() =
-			CD3DX12_CPU_DESCRIPTOR_HANDLE(RTVDesHeapStart, Offset, RTVDescriptorSize);
-	}
+	BuildRTVOffset();
 }
 
 void FAmbientBuffer::BuildSRVDescriptors()
@@ -90,7 +52,7 @@ void FAmbientBuffer::BuildSRVDescriptors()
 		RenderTarget->GetCPUSRVOffset());
 }
 
-
+//OK
 void FAmbientBuffer::BuildRTVDescriptors()
 {
 	if (FBufferRenderTarget* InRenderTarget = dynamic_cast<FBufferRenderTarget*>(RenderTarget.get()))
@@ -108,7 +70,7 @@ void FAmbientBuffer::BuildRTVDescriptors()
 	}
 }
 
-
+//ok
 void FAmbientBuffer::BuildRenderTargetBuffer(ComPtr<ID3D12Resource>& OutResource)
 {
 	D3D12_RESOURCE_DESC ResourceDesc;

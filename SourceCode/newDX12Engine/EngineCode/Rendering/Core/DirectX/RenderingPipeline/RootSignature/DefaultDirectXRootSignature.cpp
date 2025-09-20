@@ -5,22 +5,21 @@ FDefaultDirectXRootSignature::FDefaultDirectXRootSignature()
 
 }
 
-// 构建根签名
 void FDefaultDirectXRootSignature::BuildRootSignature(UINT InTextureNum)
-{   
+{
+    //构建根签名
     CD3DX12_ROOT_PARAMETER RootParam[10];
 
-    // texture描述表(包括cubemap)
+    //texture描述表
     CD3DX12_DESCRIPTOR_RANGE DescriptorRangeTextureSRV;
     DescriptorRangeTextureSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV,
         InTextureNum, 4);
 
-    // SSAO
+    //SSAO
     CD3DX12_DESCRIPTOR_RANGE DescriptorSSAOMapSRV;
     DescriptorSSAOMapSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 3);
 
-
-    // 静态CubeMap
+    //静态CubeMap
     CD3DX12_DESCRIPTOR_RANGE DescriptorRangeCubeMapSRV;
     DescriptorRangeCubeMapSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0);
 
@@ -37,11 +36,13 @@ void FDefaultDirectXRootSignature::BuildRootSignature(UINT InTextureNum)
     RootParam[2].InitAsConstantBufferView(2);//灯光
     RootParam[3].InitAsConstantBufferView(3);//雾
 
-    // 材质
-    RootParam[4].InitAsShaderResourceView(0, 1);
-    // 2D贴图
+    //t
+    RootParam[4].InitAsShaderResourceView(0, 1);//材质
+
+    //2D贴图
     RootParam[5].InitAsDescriptorTable(1, &DescriptorRangeTextureSRV, D3D12_SHADER_VISIBILITY_PIXEL);
-    // CubeMap贴图
+
+    //CubeMap贴图
     RootParam[6].InitAsDescriptorTable(1, &DescriptorRangeCubeMapSRV, D3D12_SHADER_VISIBILITY_PIXEL);
 
     //ShadowMap
@@ -52,8 +53,8 @@ void FDefaultDirectXRootSignature::BuildRootSignature(UINT InTextureNum)
 
     //SSAO
     RootParam[9].InitAsDescriptorTable(1, &DescriptorSSAOMapSRV, D3D12_SHADER_VISIBILITY_PIXEL);
-  
-    // 构建静态采样
+
+    //构建静态采样
     StaticSamplerObject.BuildStaticSampler();
 
     CD3DX12_ROOT_SIGNATURE_DESC RootSignatureDesc(
@@ -63,7 +64,7 @@ void FDefaultDirectXRootSignature::BuildRootSignature(UINT InTextureNum)
         StaticSamplerObject.GetData(),//采样PTR
         D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 
-    // 序列化
+    //创建
     ComPtr<ID3DBlob> SerializeRootSignature;
     ComPtr<ID3DBlob> ErrorBlob;
     D3D12SerializeRootSignature(
@@ -77,7 +78,8 @@ void FDefaultDirectXRootSignature::BuildRootSignature(UINT InTextureNum)
         char* p = (char*)ErrorBlob->GetBufferPointer();
         Engine_Log_Error("%s", p);
     }
-    // 创建 
+
+    //创建
     GetD3dDevice()->CreateRootSignature(
         0,
         SerializeRootSignature->GetBufferPointer(),

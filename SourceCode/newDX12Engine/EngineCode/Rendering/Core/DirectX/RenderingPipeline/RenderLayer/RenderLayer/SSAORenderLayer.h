@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include "../Core/RenderLayer.h"
 
-// SSAO渲染层
 class FSSAORenderLayer :public FRenderLayer
 {
 	typedef FRenderLayer Super;

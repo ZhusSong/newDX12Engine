@@ -118,7 +118,9 @@
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer\AmbientBuffer.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer\Core\RenderBuffer.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer\DepthBuffer.cpp" />
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer\NoiseBuffer.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer\NormalBuffer.cpp" />
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer\SampleVolumeBuffer.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderingPipeline.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\BufferRenderLayer\NormalBufferRenderLayer.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\Core\RenderLayer.cpp" />
@@ -131,6 +133,7 @@
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\OperationHandleRenderLayer.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\OperationHandleRotPlaneRenderLayer.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\SelectRenderLayer.cpp" />
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\SSAOBilateralRenderLayer.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\SSAORenderLayer.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\TransparentRenderLayer.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\BufferRenderTarget.cpp" />
@@ -269,7 +272,9 @@
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer\AmbientBuffer.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer\Core\RenderBuffer.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer\DepthBuffer.h" />
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer\NoiseBuffer.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer\NormalBuffer.h" />
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer\SampleVolumeBuffer.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderingPipeline.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderingPipelineType.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\BufferRenderLayer\NormalBufferRenderLayer.h" />
@@ -283,6 +288,7 @@
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\OperationHandleRenderLayer.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\OperationHandleRotPlaneRenderLayer.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\SelectRenderLayer.h" />
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\SSAOBilateralRenderLayer.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\SSAORenderLayer.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\TransparentRenderLayer.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\BufferRenderTarget.h" />
@@ -328,6 +334,12 @@
     <None Include="..\..\Shaders\ShadowFunctionLibrary.hlsli" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\Shaders\AOCommon.hlsli">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="..\..\Shaders\AOFunctionLibrary.hlsli">
+      <FileType>Document</FileType>
+    </None>
     <FxCompile Include="..\..\Shaders\NormalBuffer.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.1</ShaderModel>
@@ -439,6 +451,11 @@
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'"> VertexShaderMain</EntryPointName>
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"> VertexShaderMain</EntryPointName>
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'"> VertexShaderMain</EntryPointName>
+    </FxCompile>
+    <FxCompile Include="..\..\Shaders\SSAOBilateralBlur.hlsl">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VertexShaderMain</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.1</ShaderModel>
     </FxCompile>
     <FxCompile Include="..\..\Shaders\VertexShader.hlsl">
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.1</ShaderModel>

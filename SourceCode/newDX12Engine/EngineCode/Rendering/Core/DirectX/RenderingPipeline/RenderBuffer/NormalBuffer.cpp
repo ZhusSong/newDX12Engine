@@ -5,7 +5,6 @@
 #include "../../../../../Component/Mesh/Core/MeshComponentType.h"
 #include "../../../../../Config/EngineRenderConfig.h"
 
-
 FNormalBuffer::FNormalBuffer()
 {
 	Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
@@ -31,19 +30,16 @@ void FNormalBuffer::Draw(float DeltaTime)
 		GetGraphicsCommandList()->RSSetViewports(1, &RenderTargetViewport);
 		GetGraphicsCommandList()->RSSetScissorRects(1, &RenderTargetScissorRect);
 
-		// 指向哪个资源 转换其状态
+		//指向哪个资源 转换其状态
 		CD3DX12_RESOURCE_BARRIER ResourceBarrierPresent = CD3DX12_RESOURCE_BARRIER::Transition(
 			InRenderTarget->GetRenderTarget(),
 			D3D12_RESOURCE_STATE_GENERIC_READ, D3D12_RESOURCE_STATE_RENDER_TARGET);
-		
-		// 设置渲染目标
+
 		GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrierPresent);
-		
-		// 获取深度模板
+
 		auto DepthStencilView = GetDSVHeap()->GetCPUDescriptorHandleForHeapStart();
 
 		const float NormalColor[] = { 0.f,0.f,1.f,0.f };
-
 		GetGraphicsCommandList()->ClearRenderTargetView(
 			InRenderTarget->GetCPURenderTargetView(),
 			NormalColor, 0, nullptr);
@@ -57,10 +53,10 @@ void FNormalBuffer::Draw(float DeltaTime)
 			&InRenderTarget->GetCPURenderTargetView(),
 			true, &DepthStencilView);
 
-		// 从主视口渲染
+		//从主视口渲染
 		GeometryMap->DrawViewport(DeltaTime);
 
-		// 设置NormalPSO
+		//设置NorPSO
 		RenderLayer->ResetPSO(EMeshRenderLayerType::RENDERLAYER_NORMAL);
 
 		RenderLayer->DrawMesh(DeltaTime, RENDERLAYER_OPAQUE, ERenderingConditions::RC_Shadow);
@@ -71,55 +67,19 @@ void FNormalBuffer::Draw(float DeltaTime)
 			RenderTarget->GetRenderTarget(),
 			D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_GENERIC_READ);
 
-		// 设置渲染目标
 		GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrierPresentRenderTarget);
 	}
 }
 
-// 描述符
 void FNormalBuffer::BuildDescriptors()
 {
-	UINT CBVDescriptorSize = GetDescriptorHandleIncrementSizeByCBV_SRV_UAV();
-
-	auto CPUSRVDesHeapStart = GeometryMap->GetHeap()->GetCPUDescriptorHandleForHeapStart();
-	auto GPUSRVDesHeapStart = GeometryMap->GetHeap()->GetGPUDescriptorHandleForHeapStart();
-
-	int Offset =
-		GeometryMap->GetDrawTexture2DResourcesNumber() + //Texture2D
-		GeometryMap->GetDrawCubeMapResourcesNumber() + //静态Cube贴图 背景 天空球
-		1 + //动态Cube贴图 反射
-		1 + //Shadow 直射灯 聚光灯 Shadow
-		1 + //ShadowCubeMap 点光源的 Shadow
-		1;//UI
-
-	RenderTarget->GetCPUSRVOffset() =
-		CD3DX12_CPU_DESCRIPTOR_HANDLE(CPUSRVDesHeapStart,
-			Offset,
-			CBVDescriptorSize);
-
-	RenderTarget->GetGPUSRVOffset() =
-		CD3DX12_GPU_DESCRIPTOR_HANDLE(GPUSRVDesHeapStart,
-			Offset,
-			CBVDescriptorSize);
+	BuildSRVOffset();
 }
 
-// RTV偏移
+//偏移
 void FNormalBuffer::BuildRenderTargetRTV()
 {
-	UINT RTVDescriptorSize = GetDescriptorHandleIncrementSizeByRTV();
-
-	auto RTVDesHeapStart = GetRTVHeap()->GetCPUDescriptorHandleForHeapStart();
-
-	int Offset =
-		FEngineRenderConfig::GetRenderConfig()->SwapChainCount +//交换链
-		6 +//反射的CubeMap RTV
-		6; //ShadowCubeMap RTV Point Light
-
-	if (FBufferRenderTarget* InRenderTarget = dynamic_cast<FBufferRenderTarget*>(RenderTarget.get()))
-	{
-		InRenderTarget->GetCPURenderTargetView() =
-			CD3DX12_CPU_DESCRIPTOR_HANDLE(RTVDesHeapStart, Offset, RTVDescriptorSize);
-	}
+	BuildRTVOffset();
 }
 
 void FNormalBuffer::BuildSRVDescriptors()
@@ -145,8 +105,8 @@ void FNormalBuffer::BuildRTVDescriptors()
 		D3D12_RENDER_TARGET_VIEW_DESC RTVDesc = { };
 		RTVDesc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
 		RTVDesc.Format = Format;
-		RTVDesc.Texture2DArray.MipSlice = 0;
-		RTVDesc.Texture2DArray.PlaneSlice = 0;
+		RTVDesc.Texture2D.MipSlice = 0;
+		RTVDesc.Texture2D.PlaneSlice = 0;
 
 		GetD3dDevice()->CreateRenderTargetView(
 			InRenderTarget->GetRenderTarget(),
@@ -154,7 +114,6 @@ void FNormalBuffer::BuildRTVDescriptors()
 			InRenderTarget->GetCPURenderTargetView());
 	}
 }
-
 
 void FNormalBuffer::BuildRenderTargetBuffer(ComPtr<ID3D12Resource>& OutResource)
 {

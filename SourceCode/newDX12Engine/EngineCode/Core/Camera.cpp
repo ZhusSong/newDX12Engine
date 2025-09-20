@@ -27,28 +27,16 @@ GCamera::GCamera()
 	CmeraType = ECmeraType::CameraRoaming;
 
 	Radius = 10.f;
-	A = XM_PI;
+	A = XM_PI;//
 	B = XM_PI;
 
-	bRightMouseDown = false;	
-	bFPress = false;
+	bRightMouseDown = false;
 }
 void GCamera::BeginInit()
 {
-	// 初始化投影矩阵
-	//ViewportInit();
 	//初始化我们的投影矩阵
-	float AspectRatio = (float)FEngineRenderConfig::GetRenderConfig()->ScrrenWidth / (float)FEngineRenderConfig::GetRenderConfig()->ScrrenHight;
-	////(1,1,0) (-1,1,0) (-1,-1,0) (1,-1,0) (1,1,1) (-1,1,1) (-1,-1,1) (1,-1,1)
-	////基于视野构建左手透视投影矩阵
-	SetFrustum(
-		0.25f * XM_PI,//以弧度为单位的自上而下的视场角。
-		AspectRatio,//视图空间 X:Y 的纵横比。
-		1.0f,//到近剪裁平面的距离。必须大于零。
-		10000.f);//到远剪裁平面的距离。必须大于零。
+	ViewportInit();
 
-
-	// 绑定代理
 	InputComponent->CaptureKeyboardInforDelegate.Bind(this, &GCamera::ExecuteKeyboard);
 
 	InputComponent->OnLMouseButtonUpDelegate.Bind(this, &GCamera::OnLeftMouseButtoUP);

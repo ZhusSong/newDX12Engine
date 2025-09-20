@@ -17,6 +17,7 @@
 
 #include "RenderLayer/OperationHandleRotPlaneRenderLayer.h"
 #include "RenderLayer/SSAORenderLayer.h"
+#include "RenderLayer/SSAOBilateralRenderLayer.h"
 
 #if EDITOR_ENGINE
 #include "RenderLayer/OperationHandleRenderLayer.h"
@@ -35,6 +36,7 @@ FRenderLayerManager::FRenderLayerManager()
 	CreateRenderLayer<FOperationHandleRotPlaneRenderLayer>();
 
 	CreateRenderLayer<FSSAORenderLayer>();
+	CreateRenderLayer<FSSAOBilateralRenderLayer>();
 	CreateRenderLayer<FNormalBufferRenderLayer>();
 	CreateRenderLayer<FSelectRenderLayer>();
 	CreateRenderLayer<FOpaqueShadowRenderLayer>();

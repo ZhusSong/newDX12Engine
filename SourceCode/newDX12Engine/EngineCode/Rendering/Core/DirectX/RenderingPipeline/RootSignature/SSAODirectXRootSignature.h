@@ -2,7 +2,7 @@
 #include "Core/DirectXRootSignature.h"
 #include "../StaticSampler/StaticSamplerObject.h"
 
-// SSAO根签名
+//提供渲染内容的接口
 struct FSSAODirectXRootSignature :public FDirectXRootSignature
 {
 private:

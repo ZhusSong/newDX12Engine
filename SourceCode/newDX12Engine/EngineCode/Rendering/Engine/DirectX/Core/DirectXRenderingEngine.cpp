@@ -841,6 +841,8 @@ void CDirectXRenderingEngine::Tick(float DeltaTime)
 
 int CDirectXRenderingEngine::PreExit()
 {
+
+
 	Engine_Log("Engine post exit complete.");
 	return 0;
 }
@@ -856,32 +858,24 @@ int CDirectXRenderingEngine::PostExit()
 {
 	FEngineRenderConfig::Destroy();
 
-
-	// 退出前检查是否有未释放的资源
-	ComPtr<ID3D12DebugDevice> debugDevice;
-	if (SUCCEEDED(D3dDevice->QueryInterface(IID_PPV_ARGS(&debugDevice))))
-	{
-		debugDevice->ReportLiveDeviceObjects(D3D12_RLDO_DETAIL);
-	}
-
 	Engine_Log("Engine post exit complete.");
 	return 0;
 }
 
 void CDirectXRenderingEngine::StartSetMainViewportRenderTarget()
 {
-	// 转换资源状态
+	//指向哪个资源 转换其状态
 	CD3DX12_RESOURCE_BARRIER ResourceBarrierPresent = CD3DX12_RESOURCE_BARRIER::Transition(GetCurrentSwapBuff(),
 		D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
 
 	GraphicsCommandList->ResourceBarrier(1, &ResourceBarrierPresent);
 
-	// 需要每帧执行
-	// 绑定矩形框
+	//需要每帧执行
+	//绑定矩形框
 	GraphicsCommandList->RSSetViewports(1, &World->GetCamera()->ViewprotInfo);
 	GraphicsCommandList->RSSetScissorRects(1, &World->GetCamera()->ViewprotRect);
 
-	// 输出的合并阶段
+	//输出的合并阶段
 	D3D12_CPU_DESCRIPTOR_HANDLE SwapBufferView = GetCurrentSwapBufferView();
 	D3D12_CPU_DESCRIPTOR_HANDLE DepthStencilView = GetCurrentDepthStencilView();
 	GraphicsCommandList->OMSetRenderTargets(1, &SwapBufferView,
@@ -907,6 +901,7 @@ void CDirectXRenderingEngine::ClearMainSwapChainCanvas()
 		D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL,
 		1.f, 0, 0, NULL);
 }
+
 ID3D12Resource* CDirectXRenderingEngine::GetCurrentSwapBuff() const
 {
 	return SwapChainBuffer[CurrentSwapBuffIndex].Get();
@@ -924,39 +919,6 @@ D3D12_CPU_DESCRIPTOR_HANDLE CDirectXRenderingEngine::GetCurrentDepthStencilView(
 	return DSVHeap->GetCPUDescriptorHandleForHeapStart();
 }
 
-CurrentGPU CDirectXRenderingEngine::GetCurrentGPU()
-{
-	IDXGIAdapter* pAdapter = nullptr;
-	for (UINT i = 0;  DXGIFactory->EnumAdapters(i, &pAdapter) != DXGI_ERROR_NOT_FOUND; ++i) {
-		DXGI_ADAPTER_DESC desc;
-		if (SUCCEEDED(pAdapter->GetDesc(&desc))) {
-			//std::wcout << L"GPU #" << i << ": " << desc.Description << std::endl;
-
-			// 检查厂商 ID
-			switch (desc.VendorId) {
-			case 0x10DE: // NVIDIA
-				Engine_Log("Vendor: NVIDIA");
-				return NVIDIA;
-				break;
-			case 0x1002: // AMD
-				Engine_Log("Vendor: AMD");
-				return AMD;
-				break;
-			case 0x8086: // Intel
-				Engine_Log("Vendor: INTEL");
-				return INTEL;
-				break;
-			default:
-				Engine_Log("Vendor: UNKNOWN");
-				return UNKNOWN;
-			}
-		}
-		pAdapter->Release();
-	}
-
-	return UNKNOWN;
-}
-
 UINT CDirectXRenderingEngine::GetDXGISampleCount() const
 {
 	return bMSAA4XEnabled ? 4 : 1;;
@@ -967,7 +929,6 @@ UINT CDirectXRenderingEngine::GetDXGISampleQuality() const
 	return bMSAA4XEnabled ? (M4XQualityLevels - 1) : 0;
 }
 
-// 等待GPU处理完成
 void CDirectXRenderingEngine::WaitGPUCommandQueueComplete()
 {
 	CurrentFenceIndex++;
@@ -1089,7 +1050,7 @@ bool CDirectXRenderingEngine::InitDirect3D()
 
 	M4XQualityLevels = QualityLevels.NumQualityLevels;
 
-	// 交换链
+	//交换链
 ////////////////////////////////////////////////////////////////////
 	SwapChain.Reset();
 	DXGI_SWAP_CHAIN_DESC SwapChainDesc;
@@ -1100,12 +1061,11 @@ bool CDirectXRenderingEngine::InitDirect3D()
 	SwapChainDesc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER::DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
 	SwapChainDesc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
 	SwapChainDesc.BufferCount = FEngineRenderConfig::GetRenderConfig()->SwapChainCount;
-
-	// DXGI_USAGE_BACK_BUFFER //
-	// DXGI_USAGE_READ_ONLY 
-	// DXGI_USAGE_SHADER_INPUT
-	// DXGI_USAGE_SHARED
-	// DXGI_USAGE_UNORDERED_ACCESS
+	//DXGI_USAGE_BACK_BUFFER //
+	//DXGI_USAGE_READ_ONLY 
+	//DXGI_USAGE_SHADER_INPUT
+	//DXGI_USAGE_SHARED
+	//DXGI_USAGE_UNORDERED_ACCESS
 	SwapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;//使用表面或资源作为输出渲染目标。
 	SwapChainDesc.OutputWindow = MainWindowsHandle;//指定windows句柄
 	SwapChainDesc.Windowed = true;//以窗口运行
@@ -1113,7 +1073,7 @@ bool CDirectXRenderingEngine::InitDirect3D()
 	SwapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG::DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;//IDXGISwapChain::ResizeTarget
 	SwapChainDesc.BufferDesc.Format = BackBufferFormat;//纹理格式
 
-	// 多重采样设置
+	//多重采样设置
 	SwapChainDesc.SampleDesc.Count = GetDXGISampleCount();
 	SwapChainDesc.SampleDesc.Quality = GetDXGISampleQuality();
 
@@ -1121,24 +1081,21 @@ bool CDirectXRenderingEngine::InitDirect3D()
 		CommandQueue.Get(),
 		&SwapChainDesc, SwapChain.GetAddressOf()));
 
-	// 资源描述符
+	//资源描述符
 	////////////////////////////////////////////////////////////////////
-	// D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV	//CBV常量缓冲区视图 SRV着色器资源视图 UAV无序访问视图
-	// D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER		//采样器视图
-	// D3D12_DESCRIPTOR_HEAP_TYPE_RTV			//渲染目标视图资源
-	// D3D12_DESCRIPTOR_HEAP_TYPE_DSV			//深度/模板的视图资源
-	// RTV
-	
-	
-	//************ ！！！每次添加新RTV时需检查此处！！！****************
+	//D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV	//CBV常量缓冲区视图 SRV着色器资源视图 UAV无序访问视图
+	//D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER		//采样器视图
+	//D3D12_DESCRIPTOR_HEAP_TYPE_RTV			//渲染目标的视图资源
+	//D3D12_DESCRIPTOR_HEAP_TYPE_DSV			//深度/模板的视图资源
+	//RTV
 	D3D12_DESCRIPTOR_HEAP_DESC RTVDescriptorHeapDesc;
 	RTVDescriptorHeapDesc.NumDescriptors =
 		FEngineRenderConfig::GetRenderConfig()->SwapChainCount + //交换链
-		6 +			//反射CubeMap RTV
-		6 +          //点光源阴影cubemap  RTV
-		1 +	        //屏幕法线		
-		1;	        //环境	
-
+		6 + //反射的CubeMap RTV
+		6 + //ShadowCubeMap RTV Point Light
+		1 + //屏幕法线
+		1 + //SSAO
+		1;  //双边模糊
 
 	RTVDescriptorHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
 	RTVDescriptorHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
@@ -1147,14 +1104,13 @@ bool CDirectXRenderingEngine::InitDirect3D()
 		&RTVDescriptorHeapDesc,
 		IID_PPV_ARGS(RTVHeap.GetAddressOf())));
 
-	//************ !!!!! 每次添加新DSV时需检查此处 !!!!! ****************
-	// 创建DSV
+	//DSV
 	D3D12_DESCRIPTOR_HEAP_DESC DSVDescriptorHeapDesc;
 	DSVDescriptorHeapDesc.NumDescriptors =
-		1	+			//main视口深度
-		1	+			//CubeMap深度 反射
-		1	+			//平行光 聚光灯 阴影深度
-		1;				//点光源 CubeMapShadow深度
+		1 + //本身深度 Main视口
+		1 + //CubeMap深度 反射
+		1 + //Shadow 平行光 聚光灯
+		1;  //CubeMapShadow 点光源
 
 	DSVDescriptorHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
 	DSVDescriptorHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
@@ -1168,7 +1124,7 @@ bool CDirectXRenderingEngine::InitDirect3D()
 
 void CDirectXRenderingEngine::PostInitDirect3D()
 {
-	// 同步
+	//同步
 	WaitGPUCommandQueueComplete();
 
 	ANALYSIS_HRESULT(GraphicsCommandList->Reset(CommandAllocator.Get(), NULL));
@@ -1179,14 +1135,14 @@ void CDirectXRenderingEngine::PostInitDirect3D()
 	}
 	DepthStencilBuffer.Reset();
 
-	// 自适应屏幕变大
+	//自适应屏幕变大
 	SwapChain->ResizeBuffers(
 		FEngineRenderConfig::GetRenderConfig()->SwapChainCount,
 		FEngineRenderConfig::GetRenderConfig()->ScrrenWidth,
 		FEngineRenderConfig::GetRenderConfig()->ScrrenHight,
 		BackBufferFormat, DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH);
 
-	// 拿到描述size
+	//拿到描述size
 	RTVDescriptorSize = D3dDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 
 	CD3DX12_CPU_DESCRIPTOR_HANDLE HeapHandle(RTVHeap->GetCPUDescriptorHandleForHeapStart());
@@ -1210,7 +1166,6 @@ void CDirectXRenderingEngine::PostInitDirect3D()
 	ResourceDesc.Format = DXGI_FORMAT_R24G8_TYPELESS;
 	ResourceDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;
 	ResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
-
 
 	D3D12_CLEAR_VALUE ClearValue;
 	ClearValue.DepthStencil.Depth = 1.f;
@@ -1241,7 +1196,6 @@ void CDirectXRenderingEngine::PostInitDirect3D()
 
 	ID3D12CommandList* CommandList[] = { GraphicsCommandList.Get() };
 	CommandQueue->ExecuteCommandLists(_countof(CommandList), CommandList);
-
 
 	WaitGPUCommandQueueComplete();
 }

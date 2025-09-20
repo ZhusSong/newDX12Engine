@@ -68,7 +68,7 @@ void FRenderLayer::Draw(float DeltaTime)
 
 void FRenderLayer::PostDraw(float DeltaTime)
 {
-	// 删除已被释放的RenderData弱指针
+	//删除RenderData弱指针的过程
 	vector<vector<std::weak_ptr<FRenderingData>>::const_iterator> RemoveRenderingData;
 	for (vector<std::weak_ptr<FRenderingData>>::const_iterator Iter = RenderDatas.begin();
 		Iter != RenderDatas.end();
@@ -88,7 +88,7 @@ void FRenderLayer::PostDraw(float DeltaTime)
 
 void FRenderLayer::DrawObject(float DeltaTime, std::weak_ptr<FRenderingData>& InWeakRenderingData, ERenderingConditions RC)
 {
-	if (InWeakRenderingData.expired()) //弱指针是不是被释放了
+	if (InWeakRenderingData.expired())//弱指针是不是被释放了
 	{
 		return;
 	}
@@ -97,19 +97,19 @@ void FRenderLayer::DrawObject(float DeltaTime, std::weak_ptr<FRenderingData>& In
 	{
 		auto GetRenderingConditions = [&]() -> bool
 			{
-				// 设置移动箭头是否可显示
 				if (InRenderingData->Mesh->IsVisible())
 				{
 					switch (RC)
 					{
-						case RC_Shadow:
-						{
-							return InRenderingData->Mesh->IsCastShadow();
-						}
+					case RC_Shadow:
+					{
+						return InRenderingData->Mesh->IsCastShadow();
+					}
 					}
 
 					return true;
 				}
+
 				return false;
 			};
 
@@ -121,26 +121,32 @@ void FRenderLayer::DrawObject(float DeltaTime, std::weak_ptr<FRenderingData>& In
 			D3D12_INDEX_BUFFER_VIEW IBV = GeometryMap->Geometrys[InRenderingData->GeometryKey].GetIndexBufferView();
 
 			D3D12_GPU_VIRTUAL_ADDRESS FirstVirtualMeshAddress = GeometryMap->MeshConstantBufferViews.GetBuffer()->GetGPUVirtualAddress();
-		
+			//auto DesMeshHandle = CD3DX12_GPU_DESCRIPTOR_HANDLE(GeometryMap->GetHeap()->GetGPUDescriptorHandleForHeapStart());
+
 			GetGraphicsCommandList()->IASetIndexBuffer(&IBV);
 			//	GetGraphicsCommandList()->OMSetBlendFactor();
-			// 绑定渲染流水线上的输入槽，可以在输入装配器阶段传入顶点数据
+				//绑定渲染流水线上的输入槽，可以在输入装配器阶段传入顶点数据
 			GetGraphicsCommandList()->IASetVertexBuffers(
 				0,//起始输入槽 0-15 
 				1,//k k+1 ... k+n-1 
 				&VBV);
-
+			
 			// 定义要绘制的图元
 			D3D_PRIMITIVE_TOPOLOGY DisplayStatus = (*InRenderingData->Mesh->GetMaterials())[0]->GetMaterialDisplayStatus();
-			GetGraphicsCommandList()->IASetPrimitiveTopology((D3D_PRIMITIVE_TOPOLOGY)DisplayStatus);
+			//定义我们要绘制的哪种图元 点 线 面
+			GetGraphicsCommandList()->IASetPrimitiveTopology(DisplayStatus);
 
-			// 每个对象相对首地址的偏移
+			//模型起始地址偏移
+			//DesMeshHandle.Offset(InRenderingData.MeshObjectIndex, DescriptorOffset);
+			//GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(0, DesMeshHandle);
+
+			//每个对象相对首地址的偏移
 			D3D12_GPU_VIRTUAL_ADDRESS VAddress =
 				FirstVirtualMeshAddress + InRenderingData->MeshObjectIndex * MeshOffset;
 
 			GetGraphicsCommandList()->SetGraphicsRootConstantBufferView(0, VAddress);
 
-			// 绘制
+			//真正的绘制
 			GetGraphicsCommandList()->DrawIndexedInstanced(
 				InRenderingData->IndexSize,//顶点数量
 				1,//绘制实例数量
@@ -155,7 +161,6 @@ void FRenderLayer::FindObjectDraw(float DeltaTime, const CMeshComponent* InKey)
 {
 	for (auto& InRenderingData : RenderDatas)
 	{
-		// 判断指针是否被释放
 		if (!InRenderingData.expired())
 		{
 			if (InRenderingData.lock()->Mesh == InKey)
@@ -166,26 +171,24 @@ void FRenderLayer::FindObjectDraw(float DeltaTime, const CMeshComponent* InKey)
 		}
 	}
 }
+
 void FRenderLayer::BuildPSO()
 {
-	// 先构建参数
 	DirectXPipelineState->BuildParam();
 
 	BuildShader();
 
-	// 绑定代理
+	//需要额外定制，走代理
 	if (BuildPSODelegate.IsBound())
 	{
 		BuildPSODelegate.Execute(DirectXPipelineState->GetGPSDesc());
 	}
-
 }
 
 void FRenderLayer::UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo)
 {
-	for (auto& InWeakRenderingData : RenderDatas)
+	for (auto& InWeakRenderingData : RenderDatas)//暂时先这么写
 	{
-		// 判断指针是否被释放
 		if (!InWeakRenderingData.expired())
 		{
 			if (std::shared_ptr<FRenderingData> InRenderingData = InWeakRenderingData.lock())
@@ -199,17 +202,19 @@ void FRenderLayer::UpdateCalculations(float DeltaTime, const FViewportInfo& View
 					XMFLOAT3 UPVector = InRenderingData->Mesh->GetUPVector();
 					XMFLOAT3 ForwardVector = InRenderingData->Mesh->GetForwardVector();
 
-					InRenderingData->WorldMatrix = {
-						RightVector.x* Scale.x,		UPVector.x* Scale.y,	ForwardVector.x* Scale.z,	0.f,
-						RightVector.y* Scale.x,		UPVector.y* Scale.y,	ForwardVector.y* Scale.z,	0.f,
-						RightVector.z* Scale.x,		UPVector.z* Scale.y,	ForwardVector.z* Scale.z,	0.f,
-						Position.x,						Position.y,				Position.z,					1.f };
+					EngineMath::BuildMatrix(
+						InRenderingData->WorldMatrix,
+						Position,
+						Scale,
+						RightVector,
+						UPVector,
+						ForwardVector);
 				}
 
 				//更新模型位置
 				XMMATRIX ATRIXWorld = XMLoadFloat4x4(&InRenderingData->WorldMatrix);
 				XMMATRIX ATRIXTextureTransform = XMLoadFloat4x4(&InRenderingData->TextureTransform);
-				
+
 				//法线矩阵
 				XMVECTOR AATRIXWorldDeterminant = XMMatrixDeterminant(ATRIXWorld);
 				XMMATRIX NormalInverseMatrix = XMMatrixInverse(&AATRIXWorldDeterminant, ATRIXWorld);
@@ -230,12 +235,15 @@ void FRenderLayer::UpdateCalculations(float DeltaTime, const FViewportInfo& View
 		}
 	}
 }
+
 void FRenderLayer::ResetPSO()
 {
 
 }
+
 void FRenderLayer::ResetPSO(EPipelineState InPipelineState)
 {
+
 }
 
 void FRenderLayer::DrawMesh(float DeltaTime, ERenderingConditions RC)
@@ -245,8 +253,6 @@ void FRenderLayer::DrawMesh(float DeltaTime, ERenderingConditions RC)
 		DrawObject(DeltaTime, InRenderingData, RC);
 	}
 }
-
-
 
 std::wstring FRenderLayer::BuildShadersPaths(const std::wstring& InShadersHLSLName)
 {
