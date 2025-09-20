@@ -65,9 +65,12 @@ void FDirectXPipelineState::Build(int InPSOType)
         PSO.insert(pair<int, ComPtr<ID3D12PipelineState>>(InPSOType, ComPtr<ID3D12PipelineState>()));//Shader
     }
 
-    // 线框模型注册
+    //线框模型注册
     ANALYSIS_HRESULT(GetD3dDevice()->CreateGraphicsPipelineState(&GPSDesc, IID_PPV_ARGS(&PSO[InPSOType])))
 
+        ////实体模型注册
+        //GPSDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;//以实体方式显示
+        //ANALYSIS_HRESULT(GetD3dDevice()->CreateGraphicsPipelineState(&GPSDesc, IID_PPV_ARGS(&PSO[(int)GrayModel])))
 }
 
 void FDirectXPipelineState::ResetPSO(int InPSOType)
@@ -77,13 +80,6 @@ void FDirectXPipelineState::ResetPSO(int InPSOType)
 
 void FDirectXPipelineState::ResetPSO()
 {
-
-    ResetPSO(PipelineState);
-}
-
-void FDirectXPipelineState::ResetPSO(bool bWireframe)
-{
-    PipelineState = bWireframe ?  EPipelineState::Wireframe: EPipelineState::GrayModel;
     ResetPSO(PipelineState);
 }
 
@@ -92,12 +88,10 @@ void FDirectXPipelineState::SetFillMode(bool bWireframe)
     GPSDesc.RasterizerState.FillMode = bWireframe ? D3D12_FILL_MODE_WIREFRAME : D3D12_FILL_MODE_SOLID;
 }
 
-
 void FDirectXPipelineState::SetRenderTarget(int Index, const D3D12_RENDER_TARGET_BLEND_DESC& InRenderTargetBlend)
 {
     GPSDesc.BlendState.RenderTarget[Index] = InRenderTargetBlend;
 }
-
 
 void FDirectXPipelineState::SetRasterizerState(const CD3DX12_RASTERIZER_DESC& InRasterizerDesc)
 {
@@ -110,11 +104,12 @@ void FDirectXPipelineState::SetDepthStencilState(const CD3DX12_DEPTH_STENCIL_DES
 }
 
 void FDirectXPipelineState::SaveGPSDescAsDefault()
-{  
-    // 配置光栅化状态
+{
+    //配置光栅化状态
     GPSDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
     GPSDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;//以固体方式显示
 
+    //0000..0000
     GPSDesc.SampleMask = UINT_MAX;
 
     GPSDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
@@ -126,13 +121,12 @@ void FDirectXPipelineState::SaveGPSDescAsDefault()
     GPSDesc.SampleDesc.Count = GetEngine()->GetRenderingEngine()->GetDXGISampleCount();
     GPSDesc.SampleDesc.Quality = GetEngine()->GetRenderingEngine()->GetDXGISampleQuality();
 
-    // RTV 和 DSV格式
+    //RTV 和 DSV格式
     GPSDesc.RTVFormats[0] = GetEngine()->GetRenderingEngine()->GetBackBufferFormat();
     GPSDesc.DSVFormat = GetEngine()->GetRenderingEngine()->GetDepthStencilFormat();
 
     DefaultGPSDesc = GPSDesc;
 }
-
 
 void FDirectXPipelineState::CaptureKeyboardKeys()
 {

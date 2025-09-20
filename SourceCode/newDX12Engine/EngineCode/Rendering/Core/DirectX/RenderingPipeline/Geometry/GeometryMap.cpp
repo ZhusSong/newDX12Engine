@@ -473,7 +473,8 @@ void FGeometryMap::BuildDescriptorHeap()
 		1 + //法线
 		1 + //深度
 		1 + //Noise 噪声图
-		1); //SSAO
+		1 + //SSAO
+		1); //双边模糊
 }
 
 void FGeometryMap::BuildMeshConstantBuffer()

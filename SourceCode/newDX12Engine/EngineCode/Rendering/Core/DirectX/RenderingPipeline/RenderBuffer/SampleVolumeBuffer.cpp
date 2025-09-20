@@ -9,7 +9,7 @@ void FSampleVolumeBuffer::BuildVolumeBuffer()
 {
 	VolumeBuffer.clear();
 
-	// 构造采样需要的八个顶点
+	// 构造八个角
 	VolumeBuffer.push_back(fvector_4d(+1.0f, +1.0f, +1.0f, 0.0f));
 	VolumeBuffer.push_back(fvector_4d(-1.0f, -1.0f, -1.0f, 0.0f));
 
@@ -22,7 +22,7 @@ void FSampleVolumeBuffer::BuildVolumeBuffer()
 	VolumeBuffer.push_back(fvector_4d(-1.0f, +1.0f, -1.0f, 0.0f));
 	VolumeBuffer.push_back(fvector_4d(+1.0f, -1.0f, +1.0f, 0.0f));
 
-	// 
+	// 构建中心点
 	VolumeBuffer.push_back(fvector_4d(-1.0f, 0.0f, 0.0f, 0.0f));
 	VolumeBuffer.push_back(fvector_4d(+1.0f, 0.0f, 0.0f, 0.0f));
 
@@ -33,7 +33,6 @@ void FSampleVolumeBuffer::BuildVolumeBuffer()
 	VolumeBuffer.push_back(fvector_4d(0.0f, 0.0f, +1.0f, 0.0f));
 }
 
-// 创建噪声缓冲区
 void FSampleVolumeBuffer::BuildRandomVolumeBuffer()
 {
 	if (VolumeBuffer.size() == 0)
@@ -45,7 +44,6 @@ void FSampleVolumeBuffer::BuildRandomVolumeBuffer()
 	{
 		Tmp.normalize();
 
-		// 获取随机数
 		Tmp *= get_float_random_in_range(0.24f, 1.f);
 	}
 }

@@ -1,5 +1,4 @@
-﻿// 2025.4.李
-#include "ConstructBuffer.h"
+﻿#include "ConstructBuffer.h"
 #include "../../../Debug/EngineDebug.h"
 
 namespace ConstructBuffer
@@ -37,7 +36,7 @@ namespace ConstructBuffer
 
 		GetGraphicsCommandList()->ResourceBarrier(1, &CopyDestBarrier);
 
-		// 更新子资源，填充所有子资源数组
+		// 更新子资源，应该填充所有子资源数组
 		UpdateSubresources<1>(
 			GetGraphicsCommandList().Get(),
 			Buffer.Get(),
@@ -51,7 +50,6 @@ namespace ConstructBuffer
 			D3D12_RESOURCE_STATE_COPY_DEST,
 			D3D12_RESOURCE_STATE_GENERIC_READ);
 
-		//GetGraphicsCommandList()->ResourceBarrier(1, &ReadDestBarrier);
 		return Buffer;
 	}
 }

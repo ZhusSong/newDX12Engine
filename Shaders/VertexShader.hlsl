@@ -96,7 +96,7 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
         return float4(MVOut.Normal, 1.f);
     }
 
-    float4 AmbientLight = { 0.15f, 0.15f, 0.25f, 1.0f };
+    float4 AmbientLight = { 0.15f, 0.15f, 0.15f, 1.0f };
     float3 ModelNormal = normalize(MVOut.Normal);
 
 	//获取法线 如果设置了法线贴图就获取法线贴图
@@ -373,10 +373,10 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
             FinalColor += ShadowFactor * (saturate((Diffuse + Specular) * LightStrength * DotValue));
         }
     }
-    float4 AmbientColor = AmbientAccessibility * AmbientLight * Material.BaseColor;
+    float4 Ambient = (AmbientAccessibility + 0.1f) * AmbientLight * Material.BaseColor;
 
     // 最终颜色贡献
-    MVOut.Color = FinalColor +  AmbientColor;              // 物体最终颜色
+    MVOut.Color = FinalColor + Ambient; // 物体最终颜色
 	
     
     switch (MatConstBuffer.MaterialType)

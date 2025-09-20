@@ -11,4 +11,9 @@ FSSAOViewportTransformation::FSSAOViewportTransformation()
 	OcclusionEnd = 1.f;
 	ObscurationThreshold = 0.05f;
 }
+FSSAOBlurParam::FSSAOBlurParam()
+{
+	BlurRadius = 5.f;
+}
+
 

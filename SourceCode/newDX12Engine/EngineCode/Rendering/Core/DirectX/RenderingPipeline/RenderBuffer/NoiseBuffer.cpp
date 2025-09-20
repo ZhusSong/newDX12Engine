@@ -27,34 +27,10 @@ void FNoiseBuffer::Draw(float DeltaTime)
 
 void FNoiseBuffer::BuildDescriptors()
 {
-	UINT CBVDescriptorSize = GetDescriptorHandleIncrementSizeByCBV_SRV_UAV();
-
-	auto CPUSRVDesHeapStart = GeometryMap->GetHeap()->GetCPUDescriptorHandleForHeapStart();
-	auto GPUSRVDesHeapStart = GeometryMap->GetHeap()->GetGPUDescriptorHandleForHeapStart();
-
-	int Offset =
-		GeometryMap->GetDrawTexture2DResourcesNumber() + //Texture2D
-		GeometryMap->GetDrawCubeMapResourcesNumber() + //静态Cube贴图 背景 天空球
-		1 + //动态Cube贴图 反射
-		1 + //Shadow 直射灯 聚光灯 Shadow
-		1 + //ShadowCubeMap 点光源的 Shadow
-		1 + //UI
-		1 +//法线
-		1;
-
-
-	RenderTarget->GetCPUSRVOffset() =
-		CD3DX12_CPU_DESCRIPTOR_HANDLE(CPUSRVDesHeapStart,
-			Offset,
-			CBVDescriptorSize);
-
-	RenderTarget->GetGPUSRVOffset() =
-		CD3DX12_GPU_DESCRIPTOR_HANDLE(GPUSRVDesHeapStart,
-			Offset,
-			CBVDescriptorSize);
+	BuildSRVOffset();
 }
 
-//
+// 偏移
 void FNoiseBuffer::BuildRenderTargetRTV()
 {
 
@@ -87,7 +63,7 @@ void FNoiseBuffer::BuildUploadBuffer(
 {
 	CD3DX12_HEAP_PROPERTIES HeapPropertie = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
 
-	//256 x 256 x 4 Color R G B A
+	// 256 x 256 x 4 Color R G B A
 	UINT SubNum = InResourceDesc.MipLevels * InResourceDesc.DepthOrArraySize;
 	UINT UploadBufferSize = GetRequiredIntermediateSize(InResource.Get(), 0, SubNum);
 
@@ -177,6 +153,6 @@ void FNoiseBuffer::BuildRenderTargetBuffer(ComPtr<ID3D12Resource>& OutResource)
 		NULL,
 		IID_PPV_ARGS(OutResource.GetAddressOf())));
 
-	// 构建上传堆
+	// 构建上传buffer
 	BuildUploadBuffer(ResourceDesc, OutResource);
 }

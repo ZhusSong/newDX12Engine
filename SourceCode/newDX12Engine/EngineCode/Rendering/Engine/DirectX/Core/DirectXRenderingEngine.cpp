@@ -1134,10 +1134,11 @@ bool CDirectXRenderingEngine::InitDirect3D()
 	D3D12_DESCRIPTOR_HEAP_DESC RTVDescriptorHeapDesc;
 	RTVDescriptorHeapDesc.NumDescriptors =
 		FEngineRenderConfig::GetRenderConfig()->SwapChainCount + //交换链
-		6 +			//反射CubeMap RTV
-		6 +          //点光源阴影cubemap  RTV
-		1 +	        //屏幕法线		
-		1;	        //环境	
+		6 + //反射的CubeMap RTV
+		6 + //ShadowCubeMap RTV Point Light
+		1 + //屏幕法线
+		1 + //SSAO
+		1;  //双边模糊
 
 
 	RTVDescriptorHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;

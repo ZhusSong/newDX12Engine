@@ -3,7 +3,6 @@
 
 std::shared_ptr<FBufferRenderTarget> DepthBufferRenderTarget = std::make_shared<FBufferRenderTarget>();
 
-
 namespace DepthBuffer
 {
 	void BuildDepthBufferDescriptors(
@@ -21,7 +20,6 @@ namespace DepthBuffer
 				InOffset,
 				InCBVDescriptorSize);
 	}
-
 
 	void CreateDepthBufferSRV(
 		ID3D12Device* InD3dDevice,

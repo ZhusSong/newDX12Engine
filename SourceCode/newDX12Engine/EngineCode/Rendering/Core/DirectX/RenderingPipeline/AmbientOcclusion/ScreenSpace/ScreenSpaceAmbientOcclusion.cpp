@@ -1,19 +1,21 @@
 ﻿#include "ScreenSpaceAmbientOcclusion.h"
 #include "SSAOType.h"
-#include "../../Geometry/GeometryMap.h"
+#include "../../../../../../Core/Viewport/ViewportInfo.h"
 #include "../../RenderLayer/RenderLayerManager.h"
+#include "../../../../../../Component/Mesh/Core/MeshComponentType.h"
 #include "../../RenderTarget/BufferRenderTarget.h"
 #include "../../RenderBuffer/DepthBuffer.h"
-#include "../../../../../../Component/Mesh/Core/MeshComponentType.h"
-#include "../../../../../../Core/Viewport/ViewportInfo.h"
+#include "../../Geometry/GeometryMap.h"
+#include "../../../../../../Config/EngineRenderConfig.h"
 
 FScreenSpaceAmbientOcclusion::FScreenSpaceAmbientOcclusion()
 {
 	RenderLayer = NULL;
+	BlurRadius = 5.f;
 }
 
 void FScreenSpaceAmbientOcclusion::Init(
-	FGeometryMap* InGeometryMap, 
+	FGeometryMap* InGeometryMap,
 	FDirectXPipelineState* InDirectXPipelineState,
 	FRenderLayerManager* InRenderLayer)
 {
@@ -28,72 +30,290 @@ void FScreenSpaceAmbientOcclusion::Init(
 
 void FScreenSpaceAmbientOcclusion::Init(int InWidth, int InHeight)
 {
-	NormalBuffer.Init(InWidth, InHeight); 
+	NormalBuffer.Init(InWidth, InHeight);
 	AmbientBuffer.Init(InWidth / 2.f, InHeight / 2.f);
 	BilateralBlur.Init(InWidth / 2.f, InHeight / 2.f);
 	NoiseBuffer.Init(InWidth, InHeight);
 }
-void FScreenSpaceAmbientOcclusion::Build()
+
+void FScreenSpaceAmbientOcclusion::Draw(float DeltaTime)
 {
-	// 构建根签名
-	DirectXRootSignature.BuildRootSignature();
+	NormalBuffer.Draw(DeltaTime);
+	AmbientBuffer.Draw(DeltaTime);
+	NoiseBuffer.Draw(DeltaTime);
+	BilateralBlur.Draw(DeltaTime);
 
-	// 构建视口常量缓冲区
-	BuildSSAOViewConstantBuffer();
+	// 构建SSAO
+	// 设置根签名
+	DirectXRootSignature.PreDraw(DeltaTime);
 
-	// 构建PSO
-	BindBuildPSO();
+	// 渲染资源
+	DrawResources(DeltaTime);
+
+	// 渲染SSAO
+	DrawSSAO(DeltaTime);
+
+	// 渲染模糊
+	DrawBilateralBlur(DeltaTime);
+}
+
+void FScreenSpaceAmbientOcclusion::DrawSSAO(float DeltaTime)
+{
+	// 主SSAO渲染
+	if (FBufferRenderTarget* InRenderTarget = dynamic_cast<FBufferRenderTarget*>(AmbientBuffer.GetRenderTarget().get()))
+	{
+		auto RenderTargetViewport = InRenderTarget->GetViewport();
+		auto RenderTargetScissorRect = InRenderTarget->GetScissorRect();
+
+		GetGraphicsCommandList()->RSSetViewports(1, &RenderTargetViewport);
+		GetGraphicsCommandList()->RSSetScissorRects(1, &RenderTargetScissorRect);
+
+		// 指向哪个资源 转换其状态
+		CD3DX12_RESOURCE_BARRIER ResourceBarrierPresent = CD3DX12_RESOURCE_BARRIER::Transition(
+			InRenderTarget->GetRenderTarget(),
+			D3D12_RESOURCE_STATE_GENERIC_READ, D3D12_RESOURCE_STATE_RENDER_TARGET);
+		GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrierPresent);
+
+		const float ClearColor[] = { 1.f,1.f,1.f,1.f };
+		GetGraphicsCommandList()->ClearRenderTargetView(
+			InRenderTarget->GetCPURenderTargetView(),
+			ClearColor, 0, nullptr);
+
+		GetGraphicsCommandList()->OMSetRenderTargets(1,
+			&InRenderTarget->GetCPURenderTargetView(),
+			true, nullptr);
+
+		// 渲染SSAOPSO
+		RenderLayer->Draw(RENDERLAYER_SSAO, DeltaTime);
+
+		CD3DX12_RESOURCE_BARRIER ResourceBarrierPresentRenderTarget = CD3DX12_RESOURCE_BARRIER::Transition(
+			InRenderTarget->GetRenderTarget(),
+			D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_GENERIC_READ);
+		GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrierPresentRenderTarget);
+	}
+}
+
+void FScreenSpaceAmbientOcclusion::DrawBilateralBlur(float DeltaTime, UINT InDrawNum)
+{
+	for (size_t i = 0; i < InDrawNum; i++)
+	{
+		DrawBlurHorizontal(DeltaTime);
+		DrawBlurVertical(DeltaTime);
+	}
+}
+
+void FScreenSpaceAmbientOcclusion::DrawBlurHorizontal(float DeltaTime)
+{
+	DrawBlur(DeltaTime, true);
+}
+
+void FScreenSpaceAmbientOcclusion::DrawBlurVertical(float DeltaTime)
+{
+	DrawBlur(DeltaTime, false);
+}
+
+ID3D12Resource* FScreenSpaceAmbientOcclusion::GetDrawResources(bool bHorizontal)
+{
+	return bHorizontal ?
+		BilateralBlur.GetRenderTarget()->GetRenderTarget() :
+		AmbientBuffer.GetRenderTarget()->GetRenderTarget();
+}
+
+CD3DX12_GPU_DESCRIPTOR_HANDLE* FScreenSpaceAmbientOcclusion::GetDrawSRVResources(bool bHorizontal)
+{
+	return bHorizontal ?
+		&AmbientBuffer.GetRenderTarget()->GetGPUSRVOffset() :
+		&BilateralBlur.GetRenderTarget()->GetGPUSRVOffset();
+}
+
+CD3DX12_CPU_DESCRIPTOR_HANDLE* FScreenSpaceAmbientOcclusion::GetDrawRTVResources(bool bHorizontal)
+{
+	return bHorizontal ?
+		&BilateralBlur.GetRenderTarget()->GetCPURenderTargetView() :
+		&AmbientBuffer.GetRenderTarget()->GetCPURenderTargetView();
+}
+
+void FScreenSpaceAmbientOcclusion::SetRoot32BitConstant(bool bHorizontal)
+{
+	GetGraphicsCommandList()->SetGraphicsRoot32BitConstant(1, (UINT)bHorizontal, 0);
+}
+
+void FScreenSpaceAmbientOcclusion::DrawResources(float DeltaTime)
+{
+	// 绑定SSAO常量缓冲区
+	GetGraphicsCommandList()->SetGraphicsRootConstantBufferView(
+		0,
+		SSAOViewConstantBufferViews.GetBuffer()->GetGPUVirtualAddress());
+
+	GetGraphicsCommandList()->SetGraphicsRoot32BitConstant(1, 0, 0);
+
+	GetGraphicsCommandList()->SetGraphicsRootConstantBufferView(
+		2,
+		SSAOBlurConstantBufferParam.GetBuffer()->GetGPUVirtualAddress());
+
+	// Nor
+	if (std::shared_ptr<FRenderTarget> NormalRenderTarget = NormalBuffer.GetRenderTarget())
+	{
+		GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(
+			3,
+			NormalRenderTarget->GetGPUSRVOffset());
+	}
+
+	// 深度
+	GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(
+		4,
+		DepthBufferRenderTarget->GetGPUSRVOffset());
+
+	// Noise
+	if (std::shared_ptr<FRenderTarget> NoiseRenderTarget = NoiseBuffer.GetRenderTarget())
+	{
+		GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(
+			5,
+			NoiseRenderTarget->GetGPUSRVOffset());
+	}
+}
+
+
+void FScreenSpaceAmbientOcclusion::UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo)
+{
+	NormalBuffer.UpdateCalculations(DeltaTime, ViewportInfo);
+	AmbientBuffer.UpdateCalculations(DeltaTime, ViewportInfo);
+	NoiseBuffer.UpdateCalculations(DeltaTime, ViewportInfo);
+	BilateralBlur.UpdateCalculations(DeltaTime, ViewportInfo);
+
+	DrawViewConstantBufferViews(DeltaTime, ViewportInfo);
+	DrawBlurConstantBufferViews(DeltaTime, ViewportInfo);
+}
+
+void FScreenSpaceAmbientOcclusion::BuildBlurWeights(float InSigma, bool bReBuildBlurWeights)
+{
+	if (bReBuildBlurWeights)
+	{
+		BlurWeights.clear();
+	}
+
+	if (BlurWeights.size() == 0)
+	{
+		BlurRadius = ceil(InSigma * 2.f);
+
+		BlurWeights.resize(2.f * BlurRadius + 1);
+
+		float Len = 2.f * pow(InSigma, 2);
+		float Weights = 0.f;
+		for (int i = -BlurRadius; i <= BlurRadius; ++i)
+		{
+			float Value = (float)i;
+			BlurWeights[i + BlurRadius] = expf(-pow(Value, 2) / Len);
+			Weights += BlurWeights[i + BlurRadius];
+		}
+
+		// 将权重值 映射到 0 - 1
+		for (int i = 0; i < BlurWeights.size(); i++)
+		{
+			BlurWeights[i] /= Weights;
+		}
+	}
+}
+
+void FScreenSpaceAmbientOcclusion::DrawViewConstantBufferViews(float DeltaTime, const FViewportInfo& ViewportInfo)
+{
+	FSSAOViewportTransformation SSAOViewportTransformation;
+
+	// 逆矩阵
+	XMMATRIX ProjectMatrixRIX = XMLoadFloat4x4(&ViewportInfo.ProjectMatrix);
+
+	XMVECTOR ProjectDeterminant = XMMatrixDeterminant(ProjectMatrixRIX);
+	XMMATRIX InversiveProjectionMatrixRIX = XMMatrixInverse(&ProjectDeterminant, ProjectMatrixRIX);
+	XMStoreFloat4x4(&SSAOViewportTransformation.InversiveProjectionMatrix, XMMatrixTranspose(InversiveProjectionMatrixRIX));
+	XMStoreFloat4x4(&SSAOViewportTransformation.ProjectionMatrix, XMMatrixTranspose(ProjectMatrixRIX));
+
+	// 纹理空间
+	// [-1.1] =>[0,1] 
+	XMMATRIX HalLambertMatrix(
+		0.5f, 0.0f, 0.0f, 0.0f,
+		0.0f, -0.5f, 0.0f, 0.0f,
+		0.0f, 0.0f, 1.0f, 0.0f,
+		0.5f, 0.5f, 0.0f, 1.0f);
+
+	XMMATRIX TexProjectionMatrixRIX = XMMatrixMultiply(ProjectMatrixRIX, HalLambertMatrix);
+	XMStoreFloat4x4(&SSAOViewportTransformation.TexProjectionMatrix, XMMatrixTranspose(TexProjectionMatrixRIX));
+
+	SSAOViewportTransformation.OcclusionRadius = 0.5f;
+	SSAOViewportTransformation.OcclusionStart = 0.2f;
+	SSAOViewportTransformation.OcclusionEnd = 2.0f;
+	SSAOViewportTransformation.ObscurationThreshold = 0.05f;
+
+	// 存储随机向量
+	SampleVolumeBuffer.Update(SSAOViewportTransformation.SampleVolumeBuffer);
+
+	// 上传
+	SSAOViewConstantBufferViews.Update(0, &SSAOViewportTransformation);
+}
+
+void FScreenSpaceAmbientOcclusion::DrawBlurConstantBufferViews(float DeltaTime, const FViewportInfo& ViewportInfo)
+{
+	FSSAOBlurParam SSAOBlurParam;
+	//memcpy(SSAOBlurParam.BlurWeights,BlurWeights.data(), BlurWeights.size() * sizeof(float));
+	SSAOBlurParam.BlurWeights[0] = XMFLOAT4(&BlurWeights[0]);
+	SSAOBlurParam.BlurWeights[1] = XMFLOAT4(&BlurWeights[4]);
+	SSAOBlurParam.BlurWeights[2] = XMFLOAT4(&BlurWeights[8]);
+
+	SSAOBlurParam.InversionSize = XMFLOAT2(1.f / BilateralBlur.GetWidth(), 1.f / BilateralBlur.GetHeight());
+	SSAOBlurParam.BlurRadius = BlurRadius;
+
+	SSAOBlurConstantBufferParam.Update(0, &SSAOBlurParam);
 }
 
 void FScreenSpaceAmbientOcclusion::BuildDescriptors()
 {
-	// 先创建CPU GPU SRV
+	// 保证CPU GPU SRV
 	BuildDepthBuffer();
 
+	NormalBuffer.SetSRVOffset(GetNormalBufferSRVOffset());
+	NormalBuffer.SetRTVOffset(GetNormalBufferRTVOffset());
 	NormalBuffer.BuildDescriptors();
 	NormalBuffer.BuildRenderTargetRTV();
 	NormalBuffer.BuildSRVDescriptors();
 	NormalBuffer.BuildRTVDescriptors();
 
+	NoiseBuffer.SetSRVOffset(GetNoiseBufferSRVOffset());
 	NoiseBuffer.BuildDescriptors();
 	NoiseBuffer.BuildRenderTargetRTV();
 	NoiseBuffer.BuildSRVDescriptors();
 	NoiseBuffer.BuildRTVDescriptors();
 
+	AmbientBuffer.SetSRVOffset(GetAmbientBufferSRVOffset());
+	AmbientBuffer.SetRTVOffset(GetAmbientBufferRTVOffset());
 	AmbientBuffer.BuildDescriptors();
 	AmbientBuffer.BuildRenderTargetRTV();
 	AmbientBuffer.BuildSRVDescriptors();
 	AmbientBuffer.BuildRTVDescriptors();
 
-
+	// 初始化双边模糊
+	BilateralBlur.SetSRVOffset(GetBilateralBlurSRVOffset());
+	BilateralBlur.SetRTVOffset(GetBilateralBlurRTVOffset());
+	BilateralBlur.BuildDescriptors();
+	BilateralBlur.BuildRenderTargetRTV();
+	BilateralBlur.BuildSRVDescriptors();
+	BilateralBlur.BuildRTVDescriptors();
 }
 
-
-void FScreenSpaceAmbientOcclusion::BuildDepthBuffer()
+void FScreenSpaceAmbientOcclusion::Build()
 {
-	UINT CBVDescriptorSize = GetDescriptorHandleIncrementSizeByCBV_SRV_UAV();
+	// 构建根签名
+	DirectXRootSignature.BuildRootSignature();
 
-	auto CPUSRVDesHeapStart = GeometryMap->GetHeap()->GetCPUDescriptorHandleForHeapStart();
-	auto GPUSRVDesHeapStart = GeometryMap->GetHeap()->GetGPUDescriptorHandleForHeapStart();
+	// 构建SSAOView常量缓冲区
+	BuildSSAOViewConstantBuffer();
 
-	int Offset =
-		GeometryMap->GetDrawTexture2DResourcesNumber() + //Texture2D
-		GeometryMap->GetDrawCubeMapResourcesNumber() + //静态Cube贴图 背景 天空球
-		1 + //动态Cube贴图 反射
-		1 + //Shadow 直射灯 聚光灯 Shadow
-		1 + //ShadowCubeMap 点光源的 Shadow
-		1 + //UI
-		1;  //Nor
+	// 构建模糊常量缓冲区
+	BuildSSAOBlurParamConstantBuffer();
 
-	DepthBuffer::BuildDepthBufferDescriptors(
-		CPUSRVDesHeapStart,
-		GPUSRVDesHeapStart,
-		CBVDescriptorSize,
-		Offset);
+	// 绑定BuildPSO
+	BindBuildPSO();
 
-	DepthBuffer::CreateDepthBufferSRV(
-		GetD3dDevice().Get(),
-		GetDepthStencilBuffer());
+	// 构建模糊权重
+	BuildBlurWeights(2.5f);
 }
 
 void FScreenSpaceAmbientOcclusion::BindBuildPSO()
@@ -101,6 +321,11 @@ void FScreenSpaceAmbientOcclusion::BindBuildPSO()
 	if (RenderLayer)
 	{
 		if (std::shared_ptr<FRenderLayer> SSAOLayer = RenderLayer->FindByRenderLayer(EMeshRenderLayerType::RENDERLAYER_SSAO))
+		{
+			SSAOLayer->BuildPSODelegate.Bind(this, &FScreenSpaceAmbientOcclusion::BuildPSO);
+		}
+
+		if (std::shared_ptr<FRenderLayer> SSAOLayer = RenderLayer->FindByRenderLayer(EMeshRenderLayerType::RENDERLAYER_SSAO_BILATERAL_BLUR))
 		{
 			SSAOLayer->BuildPSODelegate.Bind(this, &FScreenSpaceAmbientOcclusion::BuildPSO);
 		}
@@ -114,7 +339,14 @@ void FScreenSpaceAmbientOcclusion::BuildPSO(D3D12_GRAPHICS_PIPELINE_STATE_DESC& 
 
 void FScreenSpaceAmbientOcclusion::BuildSSAOViewConstantBuffer()
 {
+	// FSSAOViewportTransformation
+	// 创建常量缓冲区
 	SSAOViewConstantBufferViews.CreateConstant(sizeof(FSSAOViewportTransformation), 1);
+}
+
+void FScreenSpaceAmbientOcclusion::BuildSSAOBlurParamConstantBuffer()
+{
+	SSAOBlurConstantBufferParam.CreateConstant(sizeof(FSSAOBlurParam), 1);
 }
 
 void FScreenSpaceAmbientOcclusion::SaveToSSAOBuffer()
@@ -135,121 +367,140 @@ void FScreenSpaceAmbientOcclusion::SaveToSSAOBuffer()
 		AmbientBuffer.GetRenderTarget()->GetGPUSRVOffset());
 }
 
-void FScreenSpaceAmbientOcclusion::Draw(float DeltaTime)
+void FScreenSpaceAmbientOcclusion::BuildDepthBuffer()
 {
-	NormalBuffer.Draw(DeltaTime);
-	AmbientBuffer.Draw(DeltaTime);
-	NoiseBuffer.Draw(DeltaTime);
-	
-	// 构建SSAO
-	// 设置根签名
-	DirectXRootSignature.PreDraw(DeltaTime);
+	DepthBuffer::BuildDepthBufferDescriptors(
+		GeometryMap->GetHeap()->GetCPUDescriptorHandleForHeapStart(),
+		GeometryMap->GetHeap()->GetGPUDescriptorHandleForHeapStart(),
+		GetDescriptorHandleIncrementSizeByCBV_SRV_UAV(),
+		GetDepthBufferSRVOffset());
 
-	// 主SSAO渲染
-	if (FBufferRenderTarget* InRenderTarget = dynamic_cast<FBufferRenderTarget*>(AmbientBuffer.GetRenderTarget().get()))
-	{
-		auto RenderTargetViewport = InRenderTarget->GetViewport();
-		auto RenderTargetScissorRect = InRenderTarget->GetScissorRect();
-
-		GetGraphicsCommandList()->RSSetViewports(1, &RenderTargetViewport);
-		GetGraphicsCommandList()->RSSetScissorRects(1, &RenderTargetScissorRect);
-
-		
-		CD3DX12_RESOURCE_BARRIER ResourceBarrierPresent = CD3DX12_RESOURCE_BARRIER::Transition(
-			InRenderTarget->GetRenderTarget(),
-			D3D12_RESOURCE_STATE_GENERIC_READ, D3D12_RESOURCE_STATE_RENDER_TARGET);
-		GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrierPresent);
-
-		const float ClearColor[] = { 1.f,1.f,1.f,1.f };
-		GetGraphicsCommandList()->ClearRenderTargetView(
-			InRenderTarget->GetCPURenderTargetView(),
-			ClearColor, 0, nullptr);
-
-		GetGraphicsCommandList()->OMSetRenderTargets(1,
-			&InRenderTarget->GetCPURenderTargetView(),
-			true, nullptr);
-
-		// 绑定SSAO常量缓冲区
-		GetGraphicsCommandList()->SetGraphicsRootConstantBufferView(
-			0,
-			SSAOViewConstantBufferViews.GetBuffer()->GetGPUVirtualAddress());
-
-		// 法线
-		if (std::shared_ptr<FRenderTarget> NormalRenderTarget = NormalBuffer.GetRenderTarget())
-		{
-			GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(
-				1,
-				NormalRenderTarget->GetGPUSRVOffset());
-		}
-
-		// 深度
-		GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(
-			2,
-			DepthBufferRenderTarget->GetGPUSRVOffset());
-
-		//Noise 噪声
-		if (std::shared_ptr<FRenderTarget> NoiseRenderTarget = NoiseBuffer.GetRenderTarget())
-		{
-			GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(
-				3,
-				NoiseRenderTarget->GetGPUSRVOffset());
-		}
-
-		// 渲染SSAOPSO
-		RenderLayer->Draw(RENDERLAYER_SSAO, DeltaTime);
-
-		CD3DX12_RESOURCE_BARRIER ResourceBarrierPresentRenderTarget = CD3DX12_RESOURCE_BARRIER::Transition(
-			InRenderTarget->GetRenderTarget(),
-			D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_GENERIC_READ);
-		GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrierPresentRenderTarget);
-	}
+	DepthBuffer::CreateDepthBufferSRV(
+		GetD3dDevice().Get(),
+		GetDepthStencilBuffer());
 }
 
-
-void FScreenSpaceAmbientOcclusion::UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo)
+void FScreenSpaceAmbientOcclusion::DrawBlur(float DeltaTime, bool bHorizontal)
 {
-	NormalBuffer.UpdateCalculations(DeltaTime, ViewportInfo);
-	AmbientBuffer.UpdateCalculations(DeltaTime, ViewportInfo);
-	NoiseBuffer.UpdateCalculations(DeltaTime, ViewportInfo);
+	// 1.资源
+	// 2.SRV
+	// 3.RTV
 
+	// 通知Shader
+	SetRoot32BitConstant(bHorizontal);
 
-	DrawViewConstantBufferViews(DeltaTime, ViewportInfo);
+	ID3D12Resource* InDrawResources = GetDrawResources(bHorizontal);
+	CD3DX12_CPU_DESCRIPTOR_HANDLE* InDrawResourcesRTV = GetDrawRTVResources(bHorizontal);
 
+	// 指向哪个资源 转换其状态
+	CD3DX12_RESOURCE_BARRIER ResourceBarrierPresent = CD3DX12_RESOURCE_BARRIER::Transition(
+		InDrawResources,
+		D3D12_RESOURCE_STATE_GENERIC_READ, D3D12_RESOURCE_STATE_RENDER_TARGET);
+	GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrierPresent);
+
+	const float ClearColor[] = { 1.f,1.f,1.f,1.f };
+	GetGraphicsCommandList()->ClearRenderTargetView(
+		*InDrawResourcesRTV,
+		ClearColor, 0, nullptr);
+
+	GetGraphicsCommandList()->OMSetRenderTargets(1,
+		InDrawResourcesRTV,
+		true, nullptr);
+
+	// 绑定接受的缓冲区
+	GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(
+		6,
+		*GetDrawSRVResources(bHorizontal));
+
+	// 渲染SSAOPSO
+	RenderLayer->Draw(RENDERLAYER_SSAO_BILATERAL_BLUR, DeltaTime);
+
+	CD3DX12_RESOURCE_BARRIER ResourceBarrierPresentRenderTarget = CD3DX12_RESOURCE_BARRIER::Transition(
+		InDrawResources,
+		D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_GENERIC_READ);
+	GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrierPresentRenderTarget);
 }
 
-void FScreenSpaceAmbientOcclusion::DrawViewConstantBufferViews(float DeltaTime, const FViewportInfo& ViewportInfo)
+UINT FScreenSpaceAmbientOcclusion::GetDepthBufferSRVOffset() const
 {
-	FSSAOViewportTransformation SSAOViewportTransformation;
+	return	GeometryMap->GetDrawTexture2DResourcesNumber() + //Texture2D
+		GeometryMap->GetDrawCubeMapResourcesNumber() + //静态Cube贴图 背景 天空球
+		1 + //动态Cube贴图 反射
+		1 + //Shadow 直射灯 聚光灯 Shadow
+		1 + //ShadowCubeMap 点光源的 Shadow
+		1 + //UI
+		1;  //Nor
+}
 
-	// 投影矩阵
-	//SSAOViewportTransformation.ProjectionMatrix = ViewportInfo.ProjectMatrix;
+UINT FScreenSpaceAmbientOcclusion::GetNormalBufferSRVOffset() const
+{
+	return  GeometryMap->GetDrawTexture2DResourcesNumber() + //Texture2D
+		GeometryMap->GetDrawCubeMapResourcesNumber() + //静态Cube贴图 背景 天空球
+		1 + //动态Cube贴图 反射
+		1 + //Shadow 直射灯 聚光灯 Shadow
+		1 + //ShadowCubeMap 点光源的 Shadow
+		1;//UI
+}
 
-	// 逆矩阵
-	XMMATRIX ProjectMatrixRIX = XMLoadFloat4x4(&ViewportInfo.ProjectMatrix);
+UINT FScreenSpaceAmbientOcclusion::GetNormalBufferRTVOffset() const
+{
+	return	FEngineRenderConfig::GetRenderConfig()->SwapChainCount +//交换链
+		6 +//反射的CubeMap RTV
+		6; //ShadowCubeMap RTV Point Light
+}
 
-	XMVECTOR ProjectDeterminant = XMMatrixDeterminant(ProjectMatrixRIX);
-	XMMATRIX InversiveProjectionMatrixRIX = XMMatrixInverse(&ProjectDeterminant, ProjectMatrixRIX);
-	XMStoreFloat4x4(&SSAOViewportTransformation.InversiveProjectionMatrix, XMMatrixTranspose(InversiveProjectionMatrixRIX));
-	XMStoreFloat4x4(&SSAOViewportTransformation.ProjectionMatrix, XMMatrixTranspose(ProjectMatrixRIX));
+UINT FScreenSpaceAmbientOcclusion::GetNoiseBufferSRVOffset() const
+{
+	return  GeometryMap->GetDrawTexture2DResourcesNumber() + //Texture2D
+		GeometryMap->GetDrawCubeMapResourcesNumber() + //静态Cube贴图 背景 天空球
+		1 + //动态Cube贴图 反射
+		1 + //Shadow 直射灯 聚光灯 Shadow
+		1 + //ShadowCubeMap 点光源的 Shadow
+		1 + //UI
+		1 + //法线
+		1; //深度 
+}
 
-	//[-1.1] =>[0,1] 贴图空间
-	XMMATRIX HalLambertMatrix(
-		0.5f, 0.0f, 0.0f, 0.0f,
-		0.0f, -0.5f, 0.0f, 0.0f,
-		0.0f, 0.0f, 1.0f, 0.0f,
-		0.5f, 0.5f, 0.0f, 1.0f);
+UINT FScreenSpaceAmbientOcclusion::GetAmbientBufferSRVOffset() const
+{
+	return	GeometryMap->GetDrawTexture2DResourcesNumber() + //Texture2D
+		GeometryMap->GetDrawCubeMapResourcesNumber() + //静态Cube贴图 背景 天空球
+		1 + //动态Cube贴图 反射
+		1 + //Shadow 直射灯 聚光灯 Shadow
+		1 + //ShadowCubeMap 点光源的 Shadow
+		1 + //UI
+		1 + //法线
+		1 + //深度 
+		1;  //Noise图
+}
 
-	XMMATRIX TexProjectionMatrixRIX = XMMatrixMultiply(ProjectMatrixRIX, HalLambertMatrix);
-	XMStoreFloat4x4(&SSAOViewportTransformation.TexProjectionMatrix, XMMatrixTranspose(TexProjectionMatrixRIX));
+UINT FScreenSpaceAmbientOcclusion::GetAmbientBufferRTVOffset() const
+{
+	return  FEngineRenderConfig::GetRenderConfig()->SwapChainCount +//交换链
+		6 +//反射的CubeMap RTV
+		6 +//ShadowCubeMap RTV Point Light
+		1; //法线
+}
 
-	SSAOViewportTransformation.OcclusionRadius = 0.5f;
-	SSAOViewportTransformation.OcclusionStart = 0.2f;
-	SSAOViewportTransformation.OcclusionEnd = 1.0f;
-	SSAOViewportTransformation.ObscurationThreshold = 0.05f;
+UINT FScreenSpaceAmbientOcclusion::GetBilateralBlurSRVOffset() const
+{
+	return	GeometryMap->GetDrawTexture2DResourcesNumber() + //Texture2D
+		GeometryMap->GetDrawCubeMapResourcesNumber() + //静态Cube贴图 背景 天空球
+		1 + //动态Cube贴图 反射
+		1 + //Shadow 直射灯 聚光灯 Shadow
+		1 + //ShadowCubeMap 点光源的 Shadow
+		1 + //UI
+		1 + //法线
+		1 + //深度 
+		1 + //Noise图
+		1;  //SSAO
+}
 
-	// 存储随机向量
-	SampleVolumeBuffer.Update(SSAOViewportTransformation.SampleVolumeBuffer);
-
-	// 上传
-	SSAOViewConstantBufferViews.Update(0, &SSAOViewportTransformation);
+UINT FScreenSpaceAmbientOcclusion::GetBilateralBlurRTVOffset() const
+{
+	return  FEngineRenderConfig::GetRenderConfig()->SwapChainCount +//交换链
+		6 +//反射的CubeMap RTV
+		6 +//ShadowCubeMap RTV Point Light
+		1 +//法线
+		1; //SSAO
 }

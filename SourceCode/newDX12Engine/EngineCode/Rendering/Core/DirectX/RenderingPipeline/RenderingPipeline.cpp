@@ -164,7 +164,6 @@ void FRenderingPipeline::PreDraw(float DeltaTime)
 	SSAO.Draw(DeltaTime);
 	RootSignature.PreDraw(DeltaTime);
 
-
 	// 存储SSAO到指定的buffer
 	SSAO.SaveToSSAOBuffer();
 

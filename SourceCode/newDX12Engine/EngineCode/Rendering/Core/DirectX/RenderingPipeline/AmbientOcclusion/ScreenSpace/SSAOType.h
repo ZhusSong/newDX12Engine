@@ -18,3 +18,12 @@ struct FSSAOViewportTransformation
 
 	XMFLOAT4 SampleVolumeBuffer[14];
 };
+
+struct FSSAOBlurParam
+{
+	FSSAOBlurParam();
+
+	XMFLOAT4 BlurWeights[3];
+	XMFLOAT2 InversionSize;
+	float BlurRadius;
+};

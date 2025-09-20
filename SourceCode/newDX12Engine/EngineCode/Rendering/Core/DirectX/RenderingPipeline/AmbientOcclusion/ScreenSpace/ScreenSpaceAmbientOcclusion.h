@@ -20,7 +20,6 @@ public:
 	virtual void DrawSSAO(float DeltaTime);
 	virtual void DrawBilateralBlur(float DeltaTime, UINT InDrawNum = 1);
 	virtual void DrawResources(float DeltaTime);
-
 	virtual void UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo);
 
 public:
@@ -40,7 +39,8 @@ public:
 	void BuildDepthBuffer();
 	void BuildBlurWeights(float InSigma, bool bReBuildBlurWeights = false);
 
-protected:
+protected:	
+	//渲染双边模糊
 	virtual void DrawBlur(float DeltaTime, bool bHorizontal);
 	virtual void DrawBlurHorizontal(float DeltaTime);
 	virtual void DrawBlurVertical(float DeltaTime);

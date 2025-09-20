@@ -1,11 +1,4 @@
 ﻿#include "RenderLayerManager.h"
-#include "RenderLayer/AlphaTestRenderLayer.h"
-#include "RenderLayer/OpaqueRenderLayer.h"
-#include "RenderLayer/TransparentRenderLayer.h"
-#include "RenderLayer/BackgroundRenderLayer.h"
-#include "RenderLayer/OpaqueReflectorRenderLayer.h"
-#include "RenderLayer/OpaqueShadowRenderLayer.h"
-#include "RenderLayer/SelectRenderLayer.h"
 
 #include "../../../../../Component/Mesh/Core/MeshComponentType.h"
 #include "../../../../../Component/Mesh/Core/MeshComponent.h"
@@ -15,8 +8,16 @@
 #include "../../../../../Actor/Core/ActorObject.h"
 #include "../RenderLayer/BufferRenderLayer/NormalBufferRenderLayer.h"
 
+#include "RenderLayer/AlphaTestRenderLayer.h"
+#include "RenderLayer/OpaqueRenderLayer.h"
+#include "RenderLayer/TransparentRenderLayer.h"
+#include "RenderLayer/BackgroundRenderLayer.h"
+#include "RenderLayer/OpaqueReflectorRenderLayer.h"
+#include "RenderLayer/OpaqueShadowRenderLayer.h"
+#include "RenderLayer/SelectRenderLayer.h"
 #include "RenderLayer/OperationHandleRotPlaneRenderLayer.h"
 #include "RenderLayer/SSAORenderLayer.h"
+#include "RenderLayer/SSAOBilateralRenderLayer.h"
 
 #if EDITOR_ENGINE
 #include "RenderLayer/OperationHandleRenderLayer.h"
@@ -34,6 +35,7 @@ FRenderLayerManager::FRenderLayerManager()
 
 	CreateRenderLayer<FOperationHandleRotPlaneRenderLayer>();
 
+	CreateRenderLayer<FSSAOBilateralRenderLayer>();
 	CreateRenderLayer<FSSAORenderLayer>();
 	CreateRenderLayer<FNormalBufferRenderLayer>();
 	CreateRenderLayer<FSelectRenderLayer>();

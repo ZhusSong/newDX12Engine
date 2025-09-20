@@ -29,54 +29,13 @@ void FAmbientBuffer::Draw(float DeltaTime)
 void FAmbientBuffer::BuildDescriptors()
 {
 	BuildSRVOffset();
-
-
-	//UINT CBVDescriptorSize = GetDescriptorHandleIncrementSizeByCBV_SRV_UAV();
-
-	//auto CPUSRVDesHeapStart = GeometryMap->GetHeap()->GetCPUDescriptorHandleForHeapStart();
-	//auto GPUSRVDesHeapStart = GeometryMap->GetHeap()->GetGPUDescriptorHandleForHeapStart();
-
-	//int Offset =
-	//	GeometryMap->GetDrawTexture2DResourcesNumber() +  //Texture2D
-	//	GeometryMap->GetDrawCubeMapResourcesNumber() + //静态Cube贴图 背景 天空球
-	//	1 +		//动态Cube贴图 反射
-	//	1 +		//Shadow 直射灯 聚光灯 Shadow
-	//	1 +		//ShadowCubeMap 点光源的 Shadow
-	//	1 +		//UI
-	//	1 +		//法线
-	//	1 +		//深度
-	//	1;		//Noise 噪声图
-
-	//RenderTarget->GetCPUSRVOffset() =
-	//	CD3DX12_CPU_DESCRIPTOR_HANDLE(CPUSRVDesHeapStart,
-	//		Offset,
-	//		CBVDescriptorSize);
-
-	//RenderTarget->GetGPUSRVOffset() =
-	//	CD3DX12_GPU_DESCRIPTOR_HANDLE(GPUSRVDesHeapStart,
-	//		Offset,
-	//		CBVDescriptorSize);
 }
 
 // 构建RTV
 void FAmbientBuffer::BuildRenderTargetRTV()
 {
 	BuildRTVOffset();
-	//UINT RTVDescriptorSize = GetDescriptorHandleIncrementSizeByRTV();
-
-	//auto RTVDesHeapStart = GetRTVHeap()->GetCPUDescriptorHandleForHeapStart();
-
-	//int Offset =
-	//	FEngineRenderConfig::GetRenderConfig()->SwapChainCount +//交换链
-	//	6 +	//反射的CubeMap RTV
-	//	6 +	//ShadowCubeMap RTV Point Light
-	//	1;	//Normal
-
-	//if (FBufferRenderTarget* InRenderTarget = dynamic_cast<FBufferRenderTarget*>(RenderTarget.get()))
-	//{
-	//	InRenderTarget->GetCPURenderTargetView() =
-	//		CD3DX12_CPU_DESCRIPTOR_HANDLE(RTVDesHeapStart, Offset, RTVDescriptorSize);
-	//}
+	
 }
 
 void FAmbientBuffer::BuildSRVDescriptors()
