@@ -21,6 +21,23 @@ void FDynamicMap::UpdateCalculations(float DeltaTime, const FViewportInfo& Viewp
 
 }
 
+void FDynamicMap::Init(FGeometryMap* InGeometryMap, FDirectXPipelineState* InDirectXPipelineState, FRenderLayerManager* InRenderLayer)
+{
+	GeometryMap = InGeometryMap;
+	DirectXPipelineState = InDirectXPipelineState;
+	RenderLayer = InRenderLayer;
+}
+
+void FDynamicMap::PreDraw(float DeltaTime)
+{
+
+}
+
+void FDynamicMap::Draw(float DeltaTime)
+{
+
+}
+
 void FDynamicMap::BuildSRVOffset()
 {
 	UINT CBVDescriptorSize = GetDescriptorHandleIncrementSizeByCBV_SRV_UAV();
@@ -49,25 +66,9 @@ void FDynamicMap::BuildRTVOffset()
 			GetRTVOffset(),
 			GetDescriptorHandleIncrementSizeByRTV());
 }
-void FDynamicMap::Init(FGeometryMap* InGeometryMap, FDirectXPipelineState* InDirectXPipelineState, FRenderLayerManager* InRenderLayer)
-{
-	GeometryMap = InGeometryMap;
-	DirectXPipelineState = InDirectXPipelineState;
-	RenderLayer = InRenderLayer;
-}
 
 void FDynamicMap::Init(int InWidth, int InHeight)
 {
 	Width = InWidth;
 	Height = InHeight;
-}
-
-void FDynamicMap::PreDraw(float DeltaTime)
-{
-
-}
-
-void FDynamicMap::Draw(float DeltaTime)
-{
-
 }

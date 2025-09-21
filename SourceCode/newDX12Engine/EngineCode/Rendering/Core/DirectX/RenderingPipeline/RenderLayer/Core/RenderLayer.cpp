@@ -185,7 +185,6 @@ void FRenderLayer::UpdateCalculations(float DeltaTime, const FViewportInfo& View
 {
 	for (auto& InWeakRenderingData : RenderDatas)
 	{
-		// 判断指针是否被释放
 		if (!InWeakRenderingData.expired())
 		{
 			if (std::shared_ptr<FRenderingData> InRenderingData = InWeakRenderingData.lock())

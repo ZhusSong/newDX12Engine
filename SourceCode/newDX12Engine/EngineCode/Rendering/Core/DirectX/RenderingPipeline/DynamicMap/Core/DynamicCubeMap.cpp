@@ -20,7 +20,7 @@ void FDynamicCubeMap::Init(FGeometryMap* InGeometryMap, FDirectXPipelineState* I
 
 void FDynamicCubeMap::SetViewportPosition(const fvector_3d& InCenterPoint)
 {
-	// 捕获摄像机四个面
+	//捕获摄像机四个面
 	FTmpViewportCapture Capture(InCenterPoint);
 
 	for (size_t i = 0; i < 6; i++)
@@ -90,13 +90,13 @@ void FDynamicCubeMap::BuildDepthStencil()
 
 void FDynamicCubeMap::BuildRenderTargetDescriptor()
 {
-	// 视口
+	//视图
 	BuildRenderTargetRTV();
 
-	// Shader
+	//给Shader
 	BuildRenderTargetSRV();
 
-	// 初始化Target
+	//初始化Target
 	RenderTarget->Init(Width, Height, DXGI_FORMAT_R8G8B8A8_UNORM);
 }
 
