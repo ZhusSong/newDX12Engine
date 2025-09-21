@@ -122,7 +122,7 @@ ID3D12Resource* FScreenSpaceAmbientOcclusion::GetDrawResources(bool bHorizontal)
 CD3DX12_GPU_DESCRIPTOR_HANDLE* FScreenSpaceAmbientOcclusion::GetDrawSRVResources(bool bHorizontal)
 {
 	return bHorizontal ?
-		&AmbientBuffer.GetRenderTarget()->GetGPUSRVOffset() :
+		&AmbientBuffer.GetRenderTarget()->GetGPUSRVOffset():
 		&BilateralBlur.GetRenderTarget()->GetGPUSRVOffset();
 }
 
@@ -362,9 +362,9 @@ void FScreenSpaceAmbientOcclusion::SaveToSSAOBuffer()
 	//	DepthBufferRenderTarget->GetGPUSRVOffset());
 
 	// SSAO渲染到buffer
-	GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(
-		9,
-		AmbientBuffer.GetRenderTarget()->GetGPUSRVOffset());
+	//GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(
+	//	9,
+	//	AmbientBuffer.GetRenderTarget()->GetGPUSRVOffset());
 }
 
 void FScreenSpaceAmbientOcclusion::BuildDepthBuffer()

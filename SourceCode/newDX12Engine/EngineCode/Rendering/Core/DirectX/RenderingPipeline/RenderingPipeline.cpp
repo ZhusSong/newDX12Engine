@@ -26,7 +26,7 @@ bool FRenderingPipeline::FindMeshRenderingDataByHash(const size_t& InHash, std::
 
 void FRenderingPipeline::UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo)
 {
-	SSAO.UpdateCalculations(DeltaTime, ViewportInfo);
+	//SSAO.UpdateCalculations(DeltaTime, ViewportInfo);
 	GeometryMap.DynamicShadowCubeMap.UpdateCalculations(DeltaTime, ViewportInfo);
 
 	DynamicCubeMap.UpdateCalculations(DeltaTime, ViewportInfo);
@@ -58,14 +58,14 @@ void FRenderingPipeline::BuildPipeline()
 		&DirectXPipelineState,
 		&RenderLayer);
 
-	// 构建SSAO
-	SSAO.Init(
-		&GeometryMap,
-		&DirectXPipelineState,
-		&RenderLayer);
+	//// 构建SSAO
+	//SSAO.Init(
+	//	&GeometryMap,
+	//	&DirectXPipelineState,
+	//	&RenderLayer);
 
-	SSAO.Init(FEngineRenderConfig::GetRenderConfig()->ScreenWidth,
-			FEngineRenderConfig::GetRenderConfig()->ScreenHight);
+	//SSAO.Init(FEngineRenderConfig::GetRenderConfig()->ScreenWidth,
+	//		FEngineRenderConfig::GetRenderConfig()->ScreenHight);
 
 
 	// 构建普通阴影map
@@ -94,7 +94,7 @@ void FRenderingPipeline::BuildPipeline()
 	GeometryMap.BuildDescriptorHeap();
 
 	// 构建SSAO描述堆
-	SSAO.BuildDescriptors();
+	//SSAO.BuildDescriptors();
 
 	// 初始化UI管线
 	UIPipeline.Init(
@@ -139,7 +139,7 @@ void FRenderingPipeline::BuildPipeline()
 	GeometryMap.BuildFogConstantBuffer();
 
 	//构建SSAO
-	SSAO.Build();
+	//SSAO.Build();
 
 	//存储一个默认的GPS描述数据
 	DirectXPipelineState.SaveGPSDescAsDefault();
@@ -161,7 +161,7 @@ void FRenderingPipeline::PreDraw(float DeltaTime)
 	GeometryMap.Draw(DeltaTime);
 
 	// 渲染SSAO
-	SSAO.Draw(DeltaTime);
+	//SSAO.Draw(DeltaTime);
 	RootSignature.PreDraw(DeltaTime);
 
 	// 存储SSAO到指定的buffer
