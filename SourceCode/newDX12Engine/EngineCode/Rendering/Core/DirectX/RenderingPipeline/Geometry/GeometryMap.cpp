@@ -72,15 +72,15 @@ void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& View
 {
 	UpdateMaterialShaderResourceView(DeltaTime, ViewportInfo);
 
-	//更新灯
+	// 更新灯
 	UpdateLight(DeltaTime, ViewportInfo);
 
-	//更新视口
+	// 更新视口
 	UpdateCalculationsViewport(DeltaTime, ViewportInfo, 0);
 
 	UpdateFog(DeltaTime, ViewportInfo);
 
-	//更新视口
+	// 更新视口
 	DynamicShadowMap.UpdateCalculations(DeltaTime, ViewportInfo);
 
 }
@@ -104,11 +104,12 @@ void FGeometryMap::UpdateCalculationsViewport(float DeltaTime, const FViewportIn
 	XMStoreFloat4x4(&ViewportTransformation.ViewProjectionMatrix, XMMatrixTranspose(ViewProject));
 	XMStoreFloat4x4(&ViewportTransformation.TexViewProjectionMatrix, XMMatrixTranspose(TexViewProjectionMatrix));
 
-	//拿到视口位置
+	// 拿到视口位置
 	ViewportTransformation.ViewportPosition = ViewportInfo.ViewPosition;
 
 	ViewportConstantBufferViews.Update(InConstantBufferOffset, &ViewportTransformation);
 }
+
 
 
 void FGeometryMap::UpdateMaterialShaderResourceView(float DeltaTime, const FViewportInfo& ViewportInfo)
@@ -148,7 +149,7 @@ void FGeometryMap::UpdateMaterialShaderResourceView(float DeltaTime, const FView
 
 				// 外部资源导入
 				{
-					// BaseColor
+					// 这个是BaseColor
 					if (auto BaseColorTextureResourcesPtr = FindRenderingTexture(InMaterial->GetBaseColorIndexKey()))
 					{
 						MaterialConstantBuffer.BaseColorIndex = (*BaseColorTextureResourcesPtr)->RenderingTextureID;
@@ -157,7 +158,6 @@ void FGeometryMap::UpdateMaterialShaderResourceView(float DeltaTime, const FView
 					{
 						MaterialConstantBuffer.BaseColorIndex = -1;
 					}
-
 
 					// 法线
 					if (auto NormalTextureResourcesPtr = FindRenderingTexture(InMaterial->GetNormalIndexKey()))
@@ -168,6 +168,7 @@ void FGeometryMap::UpdateMaterialShaderResourceView(float DeltaTime, const FView
 					{
 						MaterialConstantBuffer.NormalIndex = -1;
 					}
+
 
 					// 高光
 					if (auto SpecularTextureResourcesPtr = FindRenderingTexture(InMaterial->GetSpecularKey()))
@@ -180,18 +181,18 @@ void FGeometryMap::UpdateMaterialShaderResourceView(float DeltaTime, const FView
 					}
 				}
 
-				//材质矩阵
+				// 材质矩阵
 				XMMATRIX MaterialTransform = XMLoadFloat4x4(&InMaterial->GetMaterialTransform());
 				XMStoreFloat4x4(&MaterialConstantBuffer.TransformInformation,
 					XMMatrixTranspose(MaterialTransform));
 
 				InMaterial->SetDirty(false);
 
-				//// 自定义项
-				//// float
-				//MaterialConstantBuffer.Param0 = InMaterial->GetFloatParam(0);
-				//MaterialConstantBuffer.Param1 = InMaterial->GetFloatParam(1);
-				//MaterialConstantBuffer.Param2 = InMaterial->GetFloatParam(2);
+				// 自定义项
+				// float
+				MaterialConstantBuffer.Param0 = InMaterial->GetFloatParam(0);
+				MaterialConstantBuffer.Param1 = InMaterial->GetFloatParam(1);
+				MaterialConstantBuffer.Param2 = InMaterial->GetFloatParam(2);
 
 				MaterialConstantBufferViews.Update(InMaterial->GetMaterialIndex(), &MaterialConstantBuffer);
 			}
@@ -315,7 +316,7 @@ void FGeometryMap::UpdateLight(float DeltaTime, const FViewportInfo& ViewportInf
 }
 void FGeometryMap::UpdateFog(float DeltaTime, const FViewportInfo& ViewportInfo)
 {
-	//更新雾
+	// 更新雾
 	if (Fog)
 	{
 		if (Fog->IsDirty())

@@ -1,1 +1,0 @@
-libfbxsdk-mt.zip与libfbxsdk-md.zip需解压至 RiDX12Engine\SourceCode\DX12EngineModelTool\ThirdPartyLibrary\FBX\lib\vs2019\x64\debug 路径下
