@@ -2,14 +2,15 @@
 #include "../../Component/TransformComponent.h"
 #include "../../Component/Mesh/Core/MeshComponent.h"
 #include "../../Math/EngineMath.h"
+#include "../../Core/Construction/MacroConstruction.h"
 
 // Actor对象
 GActorObject::GActorObject()
 {
-	FCreateObjectParam Param;
-	Param.Outer = this;
-	RootComponent = CreateObject<CTransformComponent>(Param, new CTransformComponent());
+	BUILD_OBJECT_PARAMETERS(Type, this);
+	RootComponent = CreateObject<CTransformComponent>(ParamType, new CTransformComponent());
 }
+
 void GActorObject::GetBoundingBox(BoundingBox& OutBoundingBox)
 {
 	if (RootComponent)

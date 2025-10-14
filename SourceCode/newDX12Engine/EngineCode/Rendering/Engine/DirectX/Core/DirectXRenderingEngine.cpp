@@ -1,4 +1,5 @@
 ﻿#include "DirectXRenderingEngine.h"
+#include "CoreObject/CoreMinimalObject.h"
 
 #include "../../../../Debug/EngineDebug.h"
 #include "../../../../Config/EngineRenderConfig.h"
@@ -14,7 +15,6 @@
 #include "../../../../Mesh/PipeMesh.h"
 #include "../../../../Mesh/TorusMesh.h"
 
-#include "../../../../Core/CoreObject/CoreMinimalObject.h"
 #include "../../../../Core/World.h"
 #include "../../../../Mesh/Core/MeshManager.h"
 #include "../../../../Mesh/Core/Material/Material.h"
@@ -32,6 +32,9 @@
 #include "../../../../Actor/Light/ParallelLight.h"
 #include "../../../../Actor/Light/SpotLight.h"
 #include "../../../../Actor/Light/PointLight.h"
+
+#include "../../../../Core/Construction/MacroConstruction.h"
+
 
 #if defined(_WIN32)
 #include "../../../../Core/WinMainCommandParameters.h"
@@ -66,11 +69,11 @@ CDirectXRenderingEngine::CDirectXRenderingEngine()
 
 	bTick = false;
 
-	FCreateObjectParam Param;
-	Param.Outer = this;
+	BUILD_OBJECT_PARAMETERS_BY_NO_COMPONENT(, this);
 	MeshManager = CreateObject<CMeshManager>(Param, new CMeshManager());
 	LightManager = CreateObject<CLightManager>(Param, new CLightManager());
 }
+
 
 CDirectXRenderingEngine::~CDirectXRenderingEngine()
 {

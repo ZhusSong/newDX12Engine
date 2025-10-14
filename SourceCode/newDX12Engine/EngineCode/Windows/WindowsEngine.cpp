@@ -1,4 +1,6 @@
 ﻿#include "WindowsEngine.h"
+#include "CoreObject/CoreMinimalObject.h"
+
 #include "../Debug/EngineDebug.h"
 #include "../Config//EngineRenderConfig.h"
 #include "../Rendering/Core/Rendering.h"
@@ -8,12 +10,13 @@
 #include "../Mesh/ConeMesh.h"
 #include "../Mesh/PlaneMesh.h"
 #include "../Mesh/CustomMesh.h"
-#include "../Core/CoreObject/CoreMinimalObject.h"
 #include "../Core/World.h"
 #include "../Core/Camera.h"
 #include "../Mesh//Core//MeshManager.h"
 
 #include "../Rendering/Engine/DirectX/DirectX12RenderingEngine.h"
+
+#include "../Core/Construction/MacroConstruction.h"
 
 #if EDITOR_ENGINE
 #include "../../EditorEngine/EditorEngine.h"
@@ -67,8 +70,8 @@ int CWindowsEngine::Init(FWinMainCommandParameters InParameters)
 
 	RenderingEngine->Init(InParameters);
 
-	FCreateObjectParam Param;
-	Param.Outer = this;
+	// 注册对应的world对象
+	BUILD_OBJECT_PARAMETERS_BY_NO_COMPONENT(, this);
 	World = CreateObject<CWorld>(Param, new CWorld());
 	RenderingEngine->World = World;
 

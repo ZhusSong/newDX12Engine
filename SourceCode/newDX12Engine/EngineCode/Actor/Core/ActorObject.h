@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "../../EngineMinimal.h"
-#include "../../Core/CoreObject/CoreMinimalObject.h"
+#include "CoreObject/CoreMinimalObject.h"
 
 class CTransformComponent;
 //G -> Game

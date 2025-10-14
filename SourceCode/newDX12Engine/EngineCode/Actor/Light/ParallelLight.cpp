@@ -1,12 +1,11 @@
 ﻿#include "ParallelLight.h"
+#include "../../Core/Construction/MacroConstruction.h"
 
 GParallelLight::GParallelLight()
 {
-	FCreateObjectParam Param;
-	Param.Outer = this;
-	SetLightComponent(CreateObject<CParallelLightComponent>(Param, new CParallelLightComponent()));
+	BUILD_OBJECT_PARAMETERS(Type, this);
+	SetLightComponent(CreateObject<CParallelLightComponent>(ParamType, new CParallelLightComponent()));
 }
-
 void GParallelLight::Tick(float DeltaTime)
 {
 	fvector_3d v3 = fvector_3d();

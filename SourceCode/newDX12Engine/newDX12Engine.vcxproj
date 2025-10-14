@@ -39,7 +39,6 @@
     <ClCompile Include="EngineCode\Actor\Sky\Fog.cpp" />
     <ClCompile Include="EngineCode\Actor\Sky\Sky.cpp" />
     <ClCompile Include="EngineCode\Collision\CollisionSceneQuery.cpp" />
-    <ClCompile Include="EngineCode\Component\Core\Component.cpp" />
     <ClCompile Include="EngineCode\Component\InputComponent.cpp" />
     <ClCompile Include="EngineCode\Component\Input\Input.cpp" />
     <ClCompile Include="EngineCode\Component\Input\InputType.cpp" />
@@ -67,11 +66,7 @@
     <ClCompile Include="EngineCode\Config\EngineRenderConfig.cpp" />
     <ClCompile Include="EngineCode\Core\Camera.cpp" />
     <ClCompile Include="EngineCode\Core\Construction\ActorMeshConstruction.cpp" />
-    <ClCompile Include="EngineCode\Core\Construction\ConstructionComponents.cpp" />
     <ClCompile Include="EngineCode\Core\Construction\MeshConstruction.cpp" />
-    <ClCompile Include="EngineCode\Core\Construction\ObjectConstruction.cpp" />
-    <ClCompile Include="EngineCode\Core\CoreObject\CoreMinimalObject.cpp" />
-    <ClCompile Include="EngineCode\Core\CoreObject\GuidInterface.cpp" />
     <ClCompile Include="EngineCode\Core\Engine.cpp" />
     <ClCompile Include="EngineCode\Core\Viewport\ClientViewport.cpp" />
     <ClCompile Include="EngineCode\Core\Viewport\Viewport.cpp" />
@@ -185,9 +180,7 @@
     <ClInclude Include="EngineCode\Actor\Light\SpotLight.h" />
     <ClInclude Include="EngineCode\Actor\Sky\Fog.h" />
     <ClInclude Include="EngineCode\Actor\Sky\Sky.h" />
-    <ClInclude Include="EngineCode\CodeReflection\CodeReflectionMacroTag.h" />
     <ClInclude Include="EngineCode\Collision\CollisionSceneQuery.h" />
-    <ClInclude Include="EngineCode\Component\Core\Component.h" />
     <ClInclude Include="EngineCode\Component\InputComponent.h" />
     <ClInclude Include="EngineCode\Component\Input\Input.h" />
     <ClInclude Include="EngineCode\Component\Input\InputType.h" />
@@ -218,12 +211,8 @@
     <ClInclude Include="EngineCode\Core\Camera.h" />
     <ClInclude Include="EngineCode\Core\CameraType.h" />
     <ClInclude Include="EngineCode\Core\Construction\ActorMeshConstruction.h" />
-    <ClInclude Include="EngineCode\Core\Construction\ConstructionComponents.h" />
     <ClInclude Include="EngineCode\Core\Construction\MacroConstruction.h" />
     <ClInclude Include="EngineCode\Core\Construction\MeshConstruction.h" />
-    <ClInclude Include="EngineCode\Core\Construction\ObjectConstruction.h" />
-    <ClInclude Include="EngineCode\Core\CoreObject\CoreMinimalObject.h" />
-    <ClInclude Include="EngineCode\Core\CoreObject\GuidInterface.h" />
     <ClInclude Include="EngineCode\Core\Engine.h" />
     <ClInclude Include="EngineCode\Core\Viewport\ClientViewport.h" />
     <ClInclude Include="EngineCode\Core\Viewport\Viewport.h" />
@@ -521,7 +510,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir);$(IncludePath);$(SolutionDir)SourceCode\EngineSimpleLibrary;$(SolutionDir)SourceCode\DX12EngineGeneralSetting;$(SolutionDir)SourceCode\DX12EngineModelTool;$(SolutionDir)SourceCode\newDX12Engine\imgui</IncludePath>
+    <IncludePath>$(ProjectDir);$(IncludePath);$(SolutionDir)SourceCode\EngineSimpleLibrary;$(SolutionDir)SourceCode\DX12EngineGeneralSetting;$(SolutionDir)SourceCode\DX12EngineModelTool;$(SolutionDir)SourceCode\newDX12Engine\imgui;$(SolutionDir)SourceCode\DX12EngineCoreObject</IncludePath>
     <LibraryPath>$(SolutionDir)Binaries\Win64;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)Binaries\Win64\</OutDir>
     <IntDir>$(SolutionDir)Intermediate\Other\</IntDir>

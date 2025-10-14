@@ -1,11 +1,11 @@
 ﻿// 2025.4.李
 #include "World.h"
 #include "Camera.h"
+#include "../Core/Construction/MacroConstruction.h"
 
 CWorld::CWorld()
 {
-	FCreateObjectParam Param;
-	Param.Outer = this;
+	BUILD_OBJECT_PARAMETERS_BY_NO_COMPONENT(, this);
 	Camera = CreateObject<GCamera>(Param, new GCamera());
 }
 

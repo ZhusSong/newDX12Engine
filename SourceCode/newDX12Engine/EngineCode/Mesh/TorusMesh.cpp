@@ -6,10 +6,10 @@
 
 GTorusMesh::GTorusMesh()
 {
-	FCreateObjectParam Param;
-	Param.Outer = this;
+	BUILD_OBJECT_PARAMETERS(, this);
 	SetMeshComponent(ConstructionObject<CTorusMeshComponent>(Param));
 }
+
 void GTorusMesh::Init()
 {
 

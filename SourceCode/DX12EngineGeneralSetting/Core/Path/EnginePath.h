@@ -1,4 +1,4 @@
-﻿
+﻿#pragma once
 #include "DX12EngineGeneralSetting.h"
 #include "DX12EngineGeneralSettingMarco.h"
 

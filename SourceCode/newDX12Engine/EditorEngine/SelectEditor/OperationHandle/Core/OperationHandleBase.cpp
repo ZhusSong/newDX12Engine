@@ -8,6 +8,7 @@
 #include "../../../../EngineCode/Core/Camera.h"
 #include "../../../../EngineCode/Math/EngineMath.h"
 #include "../../../../Common/OperationHandleSelectManager.h"
+#include "../../../../EngineCode/Core/Construction/MacroConstruction.h"
 
 extern CMeshComponent* SelectAxisComponent;
 extern GActorObject* SelectedObject;
@@ -19,15 +20,14 @@ GOperationHandleBase::GOperationHandleBase()
 
 	bPressRightMouse = false;
 
-	FCreateObjectParam Param;
-	Param.Outer = this;
+	BUILD_OBJECT_PARAMETERS(Type, this);
 
-	InputComponent = CreateObject<CInputComponent>(Param, new CInputComponent());
-
-	XAxisComponent = ConstructionObject<CCustomMeshComponent>(Param);
-	YAxisComponent = ConstructionObject<CCustomMeshComponent>(Param);
-	ZAxisComponent = ConstructionObject<CCustomMeshComponent>(Param);
-	AxisComponent = ConstructionObject<CCustomMeshComponent>(Param);
+	InputComponent = CreateObject<CInputComponent>(ParamType, new CInputComponent());
+	
+	XAxisComponent = ConstructionObject<CCustomMeshComponent>(ParamType);
+	YAxisComponent = ConstructionObject<CCustomMeshComponent>(ParamType);
+	ZAxisComponent = ConstructionObject<CCustomMeshComponent>(ParamType);
+	AxisComponent = ConstructionObject<CCustomMeshComponent>(ParamType);
 
 	SetMeshRenderLayerType(EMeshRenderLayerType::RENDERLAYER_OPERATION_HANDLE);
 

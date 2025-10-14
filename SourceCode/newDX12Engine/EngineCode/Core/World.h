@@ -2,7 +2,7 @@
 #pragma once
 
 #include "CoreObject/CoreMinimalObject.h"
-#include "../CodeReflection/CodeReflectionMacroTag.h"
+#include "CodeReflection/CodeReflectionMacroTag.h"
 #include "../EngineType.h"
 
 struct FInputKey;

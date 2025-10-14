@@ -3,7 +3,7 @@
 //25.6.16 李
 #pragma once
 
-#include "../Core/Component.h"
+#include "Component/Component.h"
 
 class CFogComponent :public CComponent
 {

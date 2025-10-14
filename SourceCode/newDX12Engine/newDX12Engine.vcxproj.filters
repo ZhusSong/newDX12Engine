@@ -44,17 +44,8 @@
     <Filter Include="EngineCode\Shader\Core">
       <UniqueIdentifier>{44974a97-2b02-4ea9-a382-84d7490978be}</UniqueIdentifier>
     </Filter>
-    <Filter Include="EngineCode\Core\CoreObject">
-      <UniqueIdentifier>{4b611164-a374-4756-9da3-ee2346e26a14}</UniqueIdentifier>
-    </Filter>
     <Filter Include="EngineCode\Component">
       <UniqueIdentifier>{5de13d9d-94b1-4ad4-9f63-24859c60df0f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="EngineCode\Component\Core">
-      <UniqueIdentifier>{c9a03d9f-9084-42ee-8071-69a72c2d3bca}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="EngineCode\CodeReflection">
-      <UniqueIdentifier>{6fac1f18-c502-4c31-93a4-219ee86bd94c}</UniqueIdentifier>
     </Filter>
     <Filter Include="EngineCode\Component\Input">
       <UniqueIdentifier>{593733b4-dd75-4eb0-aff1-15e020f4aaec}</UniqueIdentifier>
@@ -286,26 +277,17 @@
     <ClCompile Include="EngineCode\Core\WinMainCommandParameters.cpp">
       <Filter>EngineCode\Core</Filter>
     </ClCompile>
-    <ClCompile Include="EngineCode\Core\CoreObject\CoreMinimalObject.cpp">
-      <Filter>EngineCode\Core\CoreObject</Filter>
-    </ClCompile>
     <ClCompile Include="EngineCode\Component\TransformComponent.cpp">
       <Filter>EngineCode\Component</Filter>
     </ClCompile>
     <ClCompile Include="EngineCode\Component\InputComponent.cpp">
       <Filter>EngineCode\Component</Filter>
     </ClCompile>
-    <ClCompile Include="EngineCode\Component\Core\Component.cpp">
-      <Filter>EngineCode\Component\Core</Filter>
-    </ClCompile>
     <ClCompile Include="EngineCode\Core\Camera.cpp">
       <Filter>EngineCode\Core</Filter>
     </ClCompile>
     <ClCompile Include="EngineCode\Component\Input\InputType.cpp">
       <Filter>EngineCode\Component\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="EngineCode\Core\CoreObject\GuidInterface.cpp">
-      <Filter>EngineCode\Core\CoreObject</Filter>
     </ClCompile>
     <ClCompile Include="EngineCode\Core\World.cpp">
       <Filter>EngineCode\Core</Filter>
@@ -499,9 +481,6 @@
     <ClCompile Include="EngineCode\Core\Construction\MeshConstruction.cpp">
       <Filter>EngineCode\Core\Construction</Filter>
     </ClCompile>
-    <ClCompile Include="EngineCode\Core\Construction\ObjectConstruction.cpp">
-      <Filter>EngineCode\Core\Construction</Filter>
-    </ClCompile>
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\BackgroundRenderLayer.cpp">
       <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\RednerLayer</Filter>
     </ClCompile>
@@ -631,9 +610,6 @@
     <ClCompile Include="EngineCode\Component\TimelineComponent.cpp">
       <Filter>EngineCode\Component</Filter>
     </ClCompile>
-    <ClCompile Include="EngineCode\Core\Construction\ConstructionComponents.cpp">
-      <Filter>EngineCode\Core\Construction</Filter>
-    </ClCompile>
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer\NormalBuffer.cpp">
       <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer</Filter>
     </ClCompile>
@@ -723,29 +699,17 @@
     <ClInclude Include="EngineCode\Core\WinMainCommandParameters.h">
       <Filter>EngineCode\Core</Filter>
     </ClInclude>
-    <ClInclude Include="EngineCode\Core\CoreObject\CoreMinimalObject.h">
-      <Filter>EngineCode\Core\CoreObject</Filter>
-    </ClInclude>
     <ClInclude Include="EngineCode\Component\TransformComponent.h">
       <Filter>EngineCode\Component</Filter>
     </ClInclude>
     <ClInclude Include="EngineCode\Component\InputComponent.h">
       <Filter>EngineCode\Component</Filter>
     </ClInclude>
-    <ClInclude Include="EngineCode\Component\Core\Component.h">
-      <Filter>EngineCode\Component\Core</Filter>
-    </ClInclude>
     <ClInclude Include="EngineCode\Core\Camera.h">
       <Filter>EngineCode\Core</Filter>
     </ClInclude>
-    <ClInclude Include="EngineCode\CodeReflection\CodeReflectionMacroTag.h">
-      <Filter>EngineCode\CodeReflection</Filter>
-    </ClInclude>
     <ClInclude Include="EngineCode\Component\Input\InputType.h">
       <Filter>EngineCode\Component\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="EngineCode\Core\CoreObject\GuidInterface.h">
-      <Filter>EngineCode\Core\CoreObject</Filter>
     </ClInclude>
     <ClInclude Include="EngineCode\Core\World.h">
       <Filter>EngineCode\Core</Filter>
@@ -960,9 +924,6 @@
     <ClInclude Include="EngineCode\Core\Construction\MeshConstruction.h">
       <Filter>EngineCode\Core\Construction</Filter>
     </ClInclude>
-    <ClInclude Include="EngineCode\Core\Construction\ObjectConstruction.h">
-      <Filter>EngineCode\Core\Construction</Filter>
-    </ClInclude>
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\BackgroundRenderLayer.h">
       <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\RednerLayer</Filter>
     </ClInclude>
@@ -1106,9 +1067,6 @@
     </ClInclude>
     <ClInclude Include="EngineCode\Component\TimelineComponent.h">
       <Filter>EngineCode\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="EngineCode\Core\Construction\ConstructionComponents.h">
-      <Filter>EngineCode\Core\Construction</Filter>
     </ClInclude>
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer\NormalBuffer.h">
       <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderBuffer</Filter>

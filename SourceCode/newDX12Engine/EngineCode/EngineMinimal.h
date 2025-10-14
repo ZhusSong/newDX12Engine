@@ -18,9 +18,10 @@
 #include "simple_library/public/simple_library.h"
 #pragma comment(lib, "EngineSimpleLibrary.lib")
 
-// 链接EngineGeneralSetting
+// 链接EngineGeneralSetting与EngineCoreObject
 #include "Core/Path/EnginePath.h"
 #pragma comment(lib, "DX12EngineGeneralSetting.lib")
+#pragma comment(lib, "DX12EngineCoreObject.lib")
 
 #include "Debug/Log/SimpleLog.h"
 

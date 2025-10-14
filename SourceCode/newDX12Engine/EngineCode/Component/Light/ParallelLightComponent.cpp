@@ -3,6 +3,7 @@
 #include "../../Mesh/Core/MeshManager.h"
 #include "../../Component/Mesh/Core/MeshComponent.h"
 #include "../../Mesh/Core/Material/Material.h"
+#include "../../Core/Construction/MacroConstruction.h"
 
 CParallelLightComponent::CParallelLightComponent()
 	:Super()
@@ -11,8 +12,7 @@ CParallelLightComponent::CParallelLightComponent()
 	string MeshPath = FEnginePathHelper::GetEngineAssetPath() + "/SunMesh.obj";
 
 
-	FCreateObjectParam Param;
-	Param.Outer = this;
+	BUILD_OBJECT_PARAMETERS_BY_COMPONENT(, this);
 	SetLightMesh(GetMeshManager()->CreateMeshComponent(Param, MeshPath));
 
 	if (GetLightMesh())
