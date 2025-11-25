@@ -4,8 +4,14 @@
 #include "GuidInterface.h"
 #include "../Construction/ObjectConstruction.h"
 
+#include "../CodeReflection/ScriptCommand.h"
+#include "../CodeReflection/ScriptMacro.h"
+
 
 class CCoreMinimalObject;
+
+class CFunctionObject;
+struct FFrame;
 
 //提供核心对象接口
 class RI_ENGINECOREOBJECT_API CCoreMinimalObject :public IGuidInterface
@@ -26,6 +32,21 @@ public:
 	FORCEINLINE std::string GetName() const { return Name; }
 	void SetOuter(CCoreMinimalObject* InNewOuter) { Outer = InNewOuter; }
 	void Rename(const std::string& InName) { Name = InName; }
+
+	// 字节码表函数对应的内容
+public:
+	FUNCTION_DEFINITION(Script_Undefined);
+	FUNCTION_DEFINITION(Script_Int);
+	FUNCTION_DEFINITION(Script_Float);
+	FUNCTION_DEFINITION(Script_Funtion);
+
+	// 函数操作
+public:
+	static void CallFunction(FFrame& Stack, void const* Data, CFunctionObject* Function);
+	static void ExecutionScript(CFunctionObject* Function, void const* Data);
+
+	//该函数可以获取编译后带字节码的函数
+	CFunctionObject* FindScriptFuntion(const std::string& FunName);
 protected:
 	bool bTick;
 
@@ -34,6 +55,8 @@ protected:
 	CCoreMinimalObject* Outer;
 	std::string Name;
 
+	// 函数列表
+	std::map<std::string, CFunctionObject*> FunctionList;
 };
 
 

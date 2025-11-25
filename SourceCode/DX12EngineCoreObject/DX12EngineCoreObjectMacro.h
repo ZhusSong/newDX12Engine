@@ -7,5 +7,5 @@
 #ifdef RI_ENGINECOREOBJECT_EXPORTS
 #define RI_ENGINECOREOBJECT_API __declspec(dllexport)
 #else
-#define RENZHAICOREOBJECT_API __declspec(dllimport)
+#define RI_ENGINECOREOBJECT_API __declspec(dllimport)
 #endif // EEE

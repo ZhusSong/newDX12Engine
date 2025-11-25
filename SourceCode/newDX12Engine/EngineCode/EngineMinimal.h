@@ -4,7 +4,7 @@
 #define CLOSE_DISABLE_DEBUG_INFOR 
 
 // 是否使用第三方库(FBX)
-#define THIRD_PARTY_LIBRARY 1
+#define THIRD_PARTY_LIBRARY 0
 
 // 是否使用编辑器引擎
 #define EDITOR_ENGINE 1
