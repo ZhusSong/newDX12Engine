@@ -352,19 +352,19 @@ void FScreenSpaceAmbientOcclusion::BuildSSAOBlurParamConstantBuffer()
 void FScreenSpaceAmbientOcclusion::SaveToSSAOBuffer()
 {
 	// 检查Normal
-	//GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(
-	//	9,
-	//	NormalBuffer.GetRenderTarget()->GetGPUSRVOffset());
+	GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(
+		9,
+		NormalBuffer.GetRenderTarget()->GetGPUSRVOffset());
 
 	// 检查深度
-	//GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(
-	//	9,
-	//	DepthBufferRenderTarget->GetGPUSRVOffset());
+	GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(
+		9,
+		DepthBufferRenderTarget->GetGPUSRVOffset());
 
 	// SSAO渲染到buffer
-	//GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(
-	//	9,
-	//	AmbientBuffer.GetRenderTarget()->GetGPUSRVOffset());
+	GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(
+		9,
+		AmbientBuffer.GetRenderTarget()->GetGPUSRVOffset());
 }
 
 void FScreenSpaceAmbientOcclusion::BuildDepthBuffer()
