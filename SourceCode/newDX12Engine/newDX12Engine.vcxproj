@@ -510,7 +510,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir);$(IncludePath);$(SolutionDir)SourceCode\EngineSimpleLibrary;$(SolutionDir)SourceCode\DX12EngineGeneralSetting;$(SolutionDir)SourceCode\DX12EngineModelTool;$(SolutionDir)SourceCode\newDX12Engine\imgui;$(SolutionDir)SourceCode\DX12EngineCoreObject</IncludePath>
+    <IncludePath>$(ProjectDir);$(IncludePath);$(SolutionDir)SourceCode\EngineSimpleLibrary;$(SolutionDir)SourceCode\DX12EngineGeneralSetting;$(SolutionDir)SourceCode\DX12EngineModelTool;$(SolutionDir)SourceCode\newDX12Engine\imgui;$(SolutionDir)SourceCode\DX12EngineCoreObject;$(SolutionDir)Intermediate\CodeReflection</IncludePath>
     <LibraryPath>$(SolutionDir)Binaries\Win64;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)Binaries\Win64\</OutDir>
     <IntDir>$(SolutionDir)Intermediate\Other\</IntDir>

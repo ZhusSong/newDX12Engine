@@ -22,6 +22,9 @@
     <ClCompile Include="CodeReflection\IntermediateFile\SpawnIntermediateFile.cpp">
       <Filter>CodeReflection\IntermediateFile</Filter>
     </ClCompile>
+    <ClCompile Include="CodeReflection\CppSourceCodeType.cpp">
+      <Filter>CodeReflection</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CodeReflection\CollectClassInfoFun\CollectClassInfo.h">

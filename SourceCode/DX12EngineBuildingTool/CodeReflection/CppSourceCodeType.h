@@ -69,3 +69,5 @@ enum ECollectionParmType
 	Type_Return,//是返回
 	Type_Parm,//参数
 };
+
+bool IsCheckAllowCodeReflection(const std::vector<std::string>& InContent);

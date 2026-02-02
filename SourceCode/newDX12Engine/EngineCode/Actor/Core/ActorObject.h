@@ -2,10 +2,15 @@
 #include "../../EngineMinimal.h"
 #include "CoreObject/CoreMinimalObject.h"
 
+// 反射测试
+#include "ActorObject.CodeReflection.h"
 class CTransformComponent;
 //G -> Game
 class GActorObject :public CCoreMinimalObject
 {
+	// 反射测试
+	CODEREFLECTION()
+
 	CVARIABLE()
 		CTransformComponent* RootComponent;
 
@@ -43,5 +48,24 @@ public:
 	XMFLOAT3& GetForwardVector();
 	XMFLOAT3& GetRightVector();
 	XMFLOAT3& GetUPVector();
+
+
+
+	// 反射测试
+public:
+	CVARIABLE(CodeType = Resources)
+		bool PlayerState;
+
+	CDIAPER(CodeType = Event)
+		static void Hello123(int c, float b);
+
+	CDIAPER(CodeType = Event)
+		static void Hello();
+
+	CDIAPER(CodeType = Function)
+		static void Hello1() {}
+
+	CDIAPER(CodeType = PureFunction)
+		static void Hello2() {}
 
 };
