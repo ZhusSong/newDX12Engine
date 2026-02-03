@@ -530,7 +530,7 @@ int CDirectXRenderingEngine::PostInit()
 			    InMaterial->SetMaterialType(EMaterialType::WorldNormal);
 			}
 		}
-		//法线木材
+		// 法线木材
 		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 		{
 			SphereMesh->CreateMesh(2.f, 50, 50);
@@ -546,7 +546,7 @@ int CDirectXRenderingEngine::PostInit()
 			}
 		}
 
-		//法线地面效果
+		// 法线地面效果
 		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 		{
 			SphereMesh->CreateMesh(2.f, 50, 50);
@@ -829,65 +829,6 @@ void CDirectXRenderingEngine::Tick(float DeltaTime)
 
 	//录入完成
 	ANALYSIS_HRESULT(GraphicsCommandList->Close());
-
-	//// 确认命令列表, command queue 非空
-	//if (!GraphicsCommandList) {
-	//	OutputDebugStringA("ERROR: GraphicsCommandList is null before ExecuteCommandLists\n");
-	//	return;
-	//}
-	//if (!CommandQueue) {
-	//	OutputDebugStringA("ERROR: CommandQueue is null before ExecuteCommandLists\n");
-	//	return;
-	//}
-
-	//// 检查 Close() 是否成功的返回值（你用 ANALYSIS_HRESULT 包装，确保它没有吞掉错误）
-	//HRESULT hrClose = S_OK;
-	//try {
-	//	// 如果 ANALYSIS_HRESULT 会抛异常，捕获并 log
-	//	// 这里假设 GraphicsCommandList->Close() 返回 HRESULT
-	//	hrClose = GraphicsCommandList->Close();
-	//}
-	//catch (...) {
-	//	OutputDebugStringA("EXCEPTION: GraphicsCommandList->Close() threw\n");
-	//	// still try to get device removed reason
-	//}
-
-	//if (FAILED(hrClose)) {
-	//	char buf[256];
-	//	sprintf_s(buf, "ERROR: GraphicsCommandList->Close() failed 0x%08X\n", (unsigned)hrClose);
-	//	OutputDebugStringA(buf);
-	//}
-
-	//// 在 Execute 之前问 device 是否已被移除
-	//HRESULT reasonPre = D3dDevice->GetDeviceRemovedReason();
-	//{
-	//	char buf[256];
-	//	sprintf_s(buf, "DeviceRemovedReason before Execute: 0x%08X\n", (unsigned)reasonPre);
-	//	OutputDebugStringA(buf);
-	//}
-
-	//// 做 Execute
-	//ID3D12CommandList* CommandListArr[] = { GraphicsCommandList.Get() };
-	//try {
-	//	CommandQueue->ExecuteCommandLists(_countof(CommandListArr), CommandListArr);
-	//	OutputDebugStringA("INFO: ExecuteCommandLists returned (no immediate exception)\n");
-	//}
-	//catch (const std::exception& e) {
-	//	char buf[512];
-	//	sprintf_s(buf, "EXCEPTION on ExecuteCommandLists: %s\n", e.what());
-	//	OutputDebugStringA(buf);
-	//}
-	//catch (...) {
-	//	OutputDebugStringA("UNKNOWN EXCEPTION on ExecuteCommandLists\n");
-	//}
-
-	//// 查询DeviceRemovedReason并输出
-	//HRESULT reasonPost = D3dDevice->GetDeviceRemovedReason();
-	//{
-	//	char buf[256];
-	//	sprintf_s(buf, "DeviceRemovedReason after Execute: 0x%08X\n", (unsigned)reasonPost);
-	//	OutputDebugStringA(buf);
-	//}
 
 
 	//提交命令

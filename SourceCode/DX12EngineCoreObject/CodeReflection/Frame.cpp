@@ -49,7 +49,6 @@ void FFrame::Step(CCoreMinimalObject* Context, void const* RefData)
 	int B = *Code++;
 	(GScriptNatives[B])(Context, *this, RefData);
 }
-
 unsigned char* FFrame::GetParmAddr()
 {
 	CPropertyObject* Proper = OutParm->PropAddr;

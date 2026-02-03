@@ -11,20 +11,20 @@ namespace simple_cpp_string_algorithm
 	{
 		fframe_buffer_index()
 			:strat_pos(0)
-			,offset(0)
+			, offset(0)
 		{}
 
 		int strat_pos;
 		int offset;
 	};
 
-	bool string_contain(const std::string& buff,const char* find_buff)
+	bool string_contain(const std::string& buff, const char* find_buff)
 	{
 		return buff.find(find_buff) != -1;
 	}
 
 	void parse_into_vector_array(
-		const char* string_content, 
+		const char* string_content,
 		std::vector<std::string>& in_array,
 		const char* parse_string)
 	{
@@ -41,15 +41,15 @@ namespace simple_cpp_string_algorithm
 		else
 		{
 			auto handle_string = [&]()
-			{
-				in_array.push_back(std::string());
-				std::string& in_string = in_array[in_array.size() - 1];
-				in_string.resize(frame_buffer.offset);
-				char* in_ptr = const_cast<char*>(in_string.c_str());
+				{
+					in_array.push_back(std::string());
+					std::string& in_string = in_array[in_array.size() - 1];
+					in_string.resize(frame_buffer.offset);
+					char* in_ptr = const_cast<char*>(in_string.c_str());
 
-				//数据拷贝
-				strncpy(in_ptr, &string_content[frame_buffer.strat_pos], frame_buffer.offset);
-			};
+					//数据拷贝
+					strncpy(in_ptr, &string_content[frame_buffer.strat_pos], frame_buffer.offset);
+				};
 
 			bool bloop = false;
 			while (pos != -1)
@@ -72,7 +72,6 @@ namespace simple_cpp_string_algorithm
 			}
 		}
 	}
-	
 	bool index_valid(int in_size, int index)
 	{
 		if (index < in_size &&
@@ -82,5 +81,21 @@ namespace simple_cpp_string_algorithm
 		}
 
 		return false;
+	}
+
+	std::string printf(const char* format, ...)
+	{
+		char buf[STRING_SIZE_PRINTF] = { 0 };
+		memset(buf, 0, sizeof(char) * STRING_SIZE_PRINTF);
+		va_list args;
+		va_start(args, format);
+		_vsnprintf_s(buf, STRING_SIZE_PRINTF - 1, STRING_SIZE_PRINTF, format, args);
+		va_end(args);
+		buf[STRING_SIZE_PRINTF - 1] = 0;
+
+		char out_buf[STRING_SIZE_PRINTF] = { 0 };
+		strcat(out_buf, buf);
+
+		return std::string(out_buf);
 	}
 }

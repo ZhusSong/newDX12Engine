@@ -1,13 +1,12 @@
 #pragma once
-// 25.7.15 李
 
 #include "../DX12EngineBuildingTool.h"
 
-// 类参数
+
+//参数
 struct FParamElement
 {
-	
-	string Name; //参数名字                                                                                                          
+	string Name; //参数名字
 	bool bConst;//是否是const
 	bool bPointer;//是否是指针*
 	bool bReference;//是否是引用&
@@ -20,7 +19,7 @@ struct FParamElement
 	{}
 };
 
-// 类变量
+//变量
 struct FVariableAnalysis :public FParamElement
 {
 	string CodeType;
@@ -61,6 +60,7 @@ struct FClassAnalysis
 	std::vector<string> InheritName;//继承者名字
 
 	string CodeCPPName;//CPP名字
+	string Filename;//.h文件路径
 	int CodeLine;//反射宏标记在哪行？
 };
 

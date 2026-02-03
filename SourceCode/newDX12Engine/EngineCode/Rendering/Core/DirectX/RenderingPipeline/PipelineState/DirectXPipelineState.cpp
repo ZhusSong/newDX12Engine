@@ -32,20 +32,20 @@ void FDirectXPipelineState::ResetGPSDesc()
 
 void FDirectXPipelineState::BindInputLayout(const D3D12_INPUT_ELEMENT_DESC* InInputElementDescs, UINT InSize)
 {
-    //绑定输入布局
+    // 绑定输入布局
     GPSDesc.InputLayout.pInputElementDescs = InInputElementDescs;
     GPSDesc.InputLayout.NumElements = InSize;
 }
 
 void FDirectXPipelineState::BindRootSignature(ID3D12RootSignature* InRootSignature)
 {
-    //绑定根签名
+    // 绑定根签名
     GPSDesc.pRootSignature = InRootSignature;
 }
 
 void FDirectXPipelineState::BindShader(const FShader& InVertexShader, const FShader& InPixelShader)
 {
-    //绑定顶点着色器代码
+    // 绑定顶点着色器代码
     GPSDesc.VS.pShaderBytecode = reinterpret_cast<BYTE*>(InVertexShader.GetBufferPointer());
     GPSDesc.VS.BytecodeLength = InVertexShader.GetBufferSize();
 
@@ -65,7 +65,7 @@ void FDirectXPipelineState::Build(int InPSOType)
         PSO.insert(pair<int, ComPtr<ID3D12PipelineState>>(InPSOType, ComPtr<ID3D12PipelineState>()));//Shader
     }
 
-    //线框模型注册
+    // 线框模型注册
     ANALYSIS_HRESULT(GetD3dDevice()->CreateGraphicsPipelineState(&GPSDesc, IID_PPV_ARGS(&PSO[InPSOType])))
 
         ////实体模型注册
@@ -105,11 +105,10 @@ void FDirectXPipelineState::SetDepthStencilState(const CD3DX12_DEPTH_STENCIL_DES
 
 void FDirectXPipelineState::SaveGPSDescAsDefault()
 {
-    //配置光栅化状态
+    // 配置光栅化状态
     GPSDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
     GPSDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;//以固体方式显示
 
-    //0000..0000
     GPSDesc.SampleMask = UINT_MAX;
 
     GPSDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
@@ -121,7 +120,7 @@ void FDirectXPipelineState::SaveGPSDescAsDefault()
     GPSDesc.SampleDesc.Count = GetEngine()->GetRenderingEngine()->GetDXGISampleCount();
     GPSDesc.SampleDesc.Quality = GetEngine()->GetRenderingEngine()->GetDXGISampleQuality();
 
-    //RTV 和 DSV格式
+    // RTV 和 DSV格式
     GPSDesc.RTVFormats[0] = GetEngine()->GetRenderingEngine()->GetBackBufferFormat();
     GPSDesc.DSVFormat = GetEngine()->GetRenderingEngine()->GetDepthStencilFormat();
 

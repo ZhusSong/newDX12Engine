@@ -1,5 +1,4 @@
 #pragma once
-// 25.7.15 李
 
 #include "../../DX12EngineBuildingTool.h"
 #include "../CppSourceCodeType.h"

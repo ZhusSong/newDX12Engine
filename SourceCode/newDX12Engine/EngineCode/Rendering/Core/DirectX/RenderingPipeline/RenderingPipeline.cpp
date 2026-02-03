@@ -201,7 +201,7 @@ void FRenderingPipeline::Draw(float DeltaTime)
 	RenderLayer.Draw(RENDERLAYER_OPAQUE, DeltaTime);
 	RenderLayer.Draw(RENDERLAYER_TRANSPARENT, DeltaTime);
 
-	// 渲染选择层
+	// 渲染选择箭头
 	RenderLayer.Draw(RENDERLAYER_SELECT, DeltaTime);
 
 	// 渲染旋转面片
