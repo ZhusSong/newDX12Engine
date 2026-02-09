@@ -655,7 +655,9 @@
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\SSAOBilateralRenderLayer.cpp">
       <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\RednerLayer</Filter>
     </ClCompile>
-    <ClCompile Include="EngineCode\Manager\ViewportDataManager.cpp" />
+    <ClCompile Include="EngineCode\Manager\ViewportDataManager.cpp">
+      <Filter>EngineCode\Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EngineCode\Config\EngineRenderConfig.h">
