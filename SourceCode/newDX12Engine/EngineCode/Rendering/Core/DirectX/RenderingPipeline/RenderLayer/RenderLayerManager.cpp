@@ -209,6 +209,11 @@ void FRenderLayerManager::Clear(int InLayer)
 		Layer->Clear();
 	}
 }
+
+void FRenderLayerManager::OnResetSize(int InWidth, int InHeight)
+{
+}
+
 void FRenderLayerManager::PreDraw(float DeltaTime)
 {
 	for (auto& Tmp : RenderLayers)

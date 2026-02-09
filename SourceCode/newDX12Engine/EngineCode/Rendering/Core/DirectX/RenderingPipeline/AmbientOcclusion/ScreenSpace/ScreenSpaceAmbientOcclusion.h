@@ -16,6 +16,8 @@ public:
 	virtual void Init(FGeometryMap* InGeometryMap, FDirectXPipelineState* InDirectXPipelineState, FRenderLayerManager* InRenderLayer);
 	virtual void Init(int InWidth, int InHeight);
 
+	virtual void OnResetSize(int InWidth, int InHeight);
+
 	virtual void Draw(float DeltaTime);
 	virtual void DrawSSAO(float DeltaTime);
 	virtual void DrawBilateralBlur(float DeltaTime, UINT InDrawNum = 1);

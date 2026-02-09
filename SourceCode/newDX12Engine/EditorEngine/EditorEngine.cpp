@@ -8,7 +8,23 @@ CEditorEngine::CEditorEngine()
 	ToolbarEditor = new FToolbarEditor();
 	LogEditor = new FLogEditor();
 	OutLineEditor = new FOutLineEditor();
+
+
 }
+
+float GetCurrentDPIScale()
+{
+	// Your platform-specific DPI detection
+#ifdef _WIN32
+	HDC screen = GetDC(NULL);
+	int dpi = GetDeviceCaps(screen, LOGPIXELSX);
+	ReleaseDC(NULL, screen);
+	return dpi / 96.0f;
+#else
+	return 1.0f; // Default for other platforms
+#endif
+}
+
 
 int CEditorEngine::PreInit(
 #if defined(_WIN32)
@@ -31,6 +47,10 @@ int CEditorEngine::Init(
 int CEditorEngine::PostInit()
 {
 	return 0;
+}
+
+void CEditorEngine::OnResetSize(int InWidth, int InHeight)
+{
 }
 
 int CEditorEngine::PreExit()
@@ -56,6 +76,7 @@ void CEditorEngine::BuildEditor()
 
 	ToolbarEditor->BuildEditor();
 	LogEditor->BuildEditor();
+
 	OutLineEditor->BuildEditor();
 }
 

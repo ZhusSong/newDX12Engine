@@ -5,20 +5,21 @@
 GClientViewport::GClientViewport()
     :SuperV()
     , SuperA()
-    , YFOV(0.f)
-    , Aspect(0.f)
-    , ZNear(0.f)
-    , ZFar(0.f)
     , bDirty(true)
 {
 }
 
+void GClientViewport::SetFrustum(float InYFOV, float InZNear, float InZFar)
+{
+    SetFrustum(InYFOV, ViewportData.Aspect, InZNear, InZFar);
+}
+
 void GClientViewport::SetFrustum(float InYFOV, float InAspect, float InZNear, float InZFar)
 {
-    YFOV = InYFOV;
-    Aspect = InAspect;
-    ZNear = InZNear;
-    ZFar = InZFar;
+    ViewportData.YFOV = InYFOV;
+    ViewportData.Aspect = InAspect;
+    ViewportData.ZNear = InZNear;
+    ViewportData.ZFar = InZFar;
 
 #if USE_SIMPLE_LIB_MATH
     ProjectMatrix = EngineMath::ToFloat4x4(math_utils::matrix_perspective(
@@ -28,7 +29,7 @@ void GClientViewport::SetFrustum(float InYFOV, float InAspect, float InZNear, fl
         InZFar//到远剪裁平面的距离。必须大于零。
     ));
 #else
-    // 基于视野构建左手透视投影矩阵
+    //基于视野构建左手透视投影矩阵
     XMMATRIX Project = XMMatrixPerspectiveFovLH(
         InYFOV, //以弧度为单位的自上而下的视场角。
         InAspect,//视图空间 X:Y 的纵横比。
@@ -40,6 +41,7 @@ void GClientViewport::SetFrustum(float InYFOV, float InAspect, float InZNear, fl
 #endif // USE_SIMPLE_LIB_MATH
     SetDirty(true);
 }
+
 
 void GClientViewport::FaceTarget(
     const fvector_3d& InPosition,
@@ -72,6 +74,13 @@ void GClientViewport::FaceTarget(
 void GClientViewport::Tick(float DeltaTime)
 {
     BuildViewMatrix(DeltaTime);
+}
+
+void GClientViewport::OnResetSize(int InWidth, int InHeight)
+{
+    SuperV::OnResetSize(InWidth, InHeight);
+
+    ViewportData.ResetSize(InWidth, InHeight);
 }
 
 void GClientViewport::BuildViewMatrix(float DeltaTime)

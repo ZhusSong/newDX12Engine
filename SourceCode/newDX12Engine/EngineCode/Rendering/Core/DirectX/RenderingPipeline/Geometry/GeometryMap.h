@@ -79,6 +79,7 @@ struct FGeometryMap :public IDirectXDeviceInterface_Struct
 	void PreDraw(float DeltaTime);
 	void Draw(float DeltaTime);
 	void PostDraw(float DeltaTime);
+	virtual void OnResetSize(int InWidth, int InHeight);
 
 	// 更新每帧运算
 	void UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo);

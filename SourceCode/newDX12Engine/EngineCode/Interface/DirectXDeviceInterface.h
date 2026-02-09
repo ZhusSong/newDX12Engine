@@ -1,5 +1,4 @@
-﻿// 25.7.7 李
-#pragma once
+﻿#pragma once
 #include "../Core/Engine.h"
 
 #if defined(_WIN32)
@@ -11,6 +10,7 @@ class CEngine;
 class CLightManager;
 class CMeshManager;
 class CWorld;
+class GCamera;
 class FRenderLayerManager;
 
 struct FRenderingPipeline;
@@ -31,6 +31,7 @@ public:
 	CLightManager* GetLightManager()const;
 	CMeshManager* GetMeshManager()const;
 	CWorld* GetWorld()const;
+	GCamera* GetCamera() const;
 
 	ComPtr<ID3D12GraphicsCommandList> GetGraphicsCommandList()const;
 	ComPtr<ID3D12CommandAllocator> GetCommandAllocator()const;
@@ -38,6 +39,10 @@ public:
 
 	ID3D12DescriptorHeap* GetRTVHeap()const;
 	ID3D12DescriptorHeap* GetDSVHeap()const;
+
+	int GetViewportWidth()const;
+	int GetViewportHeight()const;
+
 
 	UINT GetDescriptorHandleIncrementSizeByDSV()const;
 	UINT GetDescriptorHandleIncrementSizeByRTV()const;

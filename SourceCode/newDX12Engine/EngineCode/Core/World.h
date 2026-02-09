@@ -16,7 +16,7 @@ class CWorld :public CCoreMinimalObject
 public:
 	CWorld();
 
-	GCamera* GetCamera() { return Camera; }
+	GCamera* GetCamera() const { return Camera; }
 
 	// 创建Actor对象
 	template<class T>

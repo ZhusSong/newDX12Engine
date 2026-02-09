@@ -3,7 +3,6 @@
 
 void FLogEditor::BuildEditor()
 {
-
 }
 
 void FLogEditor::DrawEditor(float DeltaTime)
@@ -11,13 +10,18 @@ void FLogEditor::DrawEditor(float DeltaTime)
 	ImGui::SetNextWindowSize(ImVec2(500, 400), ImGuiCond_FirstUseEver);
 
 	bool bOpenLog = true;
-	ImGui::Begin("Log", &bOpenLog);
+
+	if (ImGui::Begin("Log", &bOpenLog))
+	{
+		FEditorLogSystem::Get()->Draw(DeltaTime);
+	}
+	//ImGui::Begin("Log", &bOpenLog);
 
 	//ImGui::Text("xxxx");
 
 	ImGui::End();
 
-	FEditorLogSystem::Get()->Draw(DeltaTime);
+	//FEditorLogSystem::Get()->Draw(DeltaTime);
 }
 
 void FLogEditor::ExitEditor()

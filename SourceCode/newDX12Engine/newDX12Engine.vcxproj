@@ -80,6 +80,7 @@
     <ClCompile Include="EngineCode\Interface\DirectXDeviceInterface.cpp" />
     <ClCompile Include="EngineCode\Library\RaycastSystemLibrary.cpp" />
     <ClCompile Include="EngineCode\Manager\LightManager.cpp" />
+    <ClCompile Include="EngineCode\Manager\ViewportDataManager.cpp" />
     <ClCompile Include="EngineCode\Math\EngineMath.cpp" />
     <ClCompile Include="EngineCode\Mesh\BoxMesh.cpp" />
     <ClCompile Include="EngineCode\Mesh\ConeMesh.cpp" />
@@ -228,6 +229,7 @@
     <ClInclude Include="EngineCode\Interface\DirectXDeviceInterface.h" />
     <ClInclude Include="EngineCode\Library\RaycastSystemLibrary.h" />
     <ClInclude Include="EngineCode\Manager\LightManager.h" />
+    <ClInclude Include="EngineCode\Manager\ViewportDataManager.h" />
     <ClInclude Include="EngineCode\Math\EngineMath.h" />
     <ClInclude Include="EngineCode\Mesh\BoxMesh.h" />
     <ClInclude Include="EngineCode\Mesh\ConeMesh.h" />

@@ -28,6 +28,7 @@ public:
 
 	virtual void UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo);
 
+	virtual void OnResetSize(int InWidth, int InHeight);
 	// 构建渲染流水线
 	void BuildPipeline();
 

@@ -25,6 +25,48 @@ void FEditorLogSystem::Destory()
         LogSystem = NULL;
     }
 }
+// 初始化字体配置以提高清晰度
+void FEditorLogSystem::InitializeFonts(float FontSize, float DPIScale)
+{
+    ImGuiIO& io = ImGui::GetIO();
+
+    // 清除现有字体
+    io.Fonts->Clear();
+
+    // 字体配置 - 关键：启用抗锯齿和像素对齐
+    ImFontConfig fontConfig;
+    fontConfig.OversampleH = 3; // 水平过采样，提高清晰度
+    fontConfig.OversampleV = 3; // 垂直过采样，提高清晰度
+    fontConfig.PixelSnapH = true; // 像素对齐，减少模糊
+    fontConfig.GlyphExtraSpacing.x = 0.0f; // 字符间距
+    fontConfig.RasterizerMultiply = 1.0f; // 光栅化倍增器
+
+    // 根据DPI缩放调整字体大小
+    float scaledFontSize = FontSize * DPIScale;
+
+    // 方案1: 使用默认字体（改进配置）
+    io.Fonts->AddFontDefault(&fontConfig);
+
+    // 方案2: 如果你有自定义字体文件，取消下面的注释
+    // 推荐使用高质量等宽字体，如 Consolas, Courier New, Source Code Pro
+    /*
+    const char* fontPath = "C:/Windows/Fonts/consola.ttf"; // Windows Consolas
+    // const char* fontPath = "/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf"; // Linux
+    ImFont* font = io.Fonts->AddFontFromFileTTF(fontPath, scaledFontSize, &fontConfig);
+    if (font == NULL)
+    {
+        // 如果加载失败，回退到默认字体
+        io.Fonts->AddFontDefault(&fontConfig);
+    }
+    */
+
+    // 构建字体纹理 - 使用更高质量的设置
+    io.Fonts->Build();
+
+    // 设置全局字体缩放（如果需要）
+    // io.FontGlobalScale = DPIScale;
+}
+
 
 void FEditorLogSystem::Clear()
 {

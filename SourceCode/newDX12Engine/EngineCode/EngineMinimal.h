@@ -1,6 +1,7 @@
 ﻿#pragma once
 // 项目基础设置
 
+#define USE_SIMPLE_LIB_MATH 0
 #define CLOSE_DISABLE_DEBUG_INFOR 
 
 // 是否使用第三方库(FBX)

@@ -16,6 +16,7 @@ class FDynamicShadowCubeMap :public FDynamicCubeMap
 
 public:
 	FDynamicShadowCubeMap();
+	virtual void OnResetSize(int InWidth, int InHeight);
 
 	virtual void UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo);
 	virtual void Init(FGeometryMap* InGeometryMap, FDirectXPipelineState* InDirectXPipelineState, FRenderLayerManager* InRenderLayer);

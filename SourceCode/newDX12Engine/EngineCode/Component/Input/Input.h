@@ -11,3 +11,5 @@ extern FCaptureOnMousesDelegate LMouseUpDelegate;
 extern FCaptureOnMousesDelegate MouseDownDelegate;
 extern FCaptureOnMousesDelegate MouseUpDelegate;
 extern FCaptureOnMousesDelegate MouseMoveDelegate;
+
+extern FCaptureOnMousesDelegate OnResetSizeDelegate;

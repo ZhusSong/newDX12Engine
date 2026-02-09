@@ -58,3 +58,9 @@ void FViewport::ResetScissorRect(UINT InWidth, UINT InHeight)
     };
 }
 
+void FViewport::OnResetSize(int InWidth, int InHeight)
+{
+    ResetViewport(InWidth, InHeight);
+    ResetScissorRect(InWidth, InHeight);
+}
+

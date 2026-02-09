@@ -1,5 +1,4 @@
-﻿// 2025.4.李
-#pragma once
+﻿#pragma once
 
 #ifndef FORCEINLINE
 #define FORCEINLINE __forceinline	

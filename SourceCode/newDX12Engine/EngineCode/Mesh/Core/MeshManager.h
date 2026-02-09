@@ -23,6 +23,8 @@ public:
 	virtual void BuildMesh();
 	virtual void UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo);
 
+	virtual void OnResetSize(int InWidth, int InHeight);
+
 	virtual void PreDraw(float DeltaTime);
 	virtual void Draw(float DeltaTime);
 	virtual void PostDraw(float DeltaTime);

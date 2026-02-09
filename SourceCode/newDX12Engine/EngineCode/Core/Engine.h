@@ -33,6 +33,9 @@ public:
 
 	virtual void Tick(float DeltaTime) = 0;
 
+
+	virtual void OnResetSize(int InWidth, int InHeight) = 0;
+
 	virtual int PreExit() = 0;
 	virtual int Exit() = 0;
 	virtual int PostExit() = 0;

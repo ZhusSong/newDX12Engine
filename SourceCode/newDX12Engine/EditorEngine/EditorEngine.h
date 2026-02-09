@@ -1,5 +1,4 @@
-﻿// 25.7.7 李
-#pragma once
+﻿#pragma once
 #include "../EngineCode/Core/Engine.h"
 #include "Core/EditorBase.h"
 
@@ -25,6 +24,7 @@ public:
 	virtual int PostInit();
 
 	virtual void Tick(float DeltaTime) {};
+	virtual void OnResetSize(int InWidth, int InHeight);
 
 	virtual int PreExit();
 	virtual int Exit();

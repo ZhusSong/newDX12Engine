@@ -13,6 +13,8 @@ public:
 	void ResetViewport(UINT InWidth, UINT InHeight);
 	void ResetScissorRect(UINT InWidth, UINT InHeight);
 
+	virtual void OnResetSize(int InWidth, int InHeight);
+
 	// 和屏幕的视口有关
 	D3D12_VIEWPORT ViewprotInfo;
 	D3D12_RECT ViewprotRect;

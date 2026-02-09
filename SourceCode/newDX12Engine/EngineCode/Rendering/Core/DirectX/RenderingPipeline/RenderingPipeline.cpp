@@ -34,6 +34,14 @@ void FRenderingPipeline::UpdateCalculations(float DeltaTime, const FViewportInfo
 	RenderLayer.UpdateCalculations(DeltaTime, ViewportInfo);
 }
 
+void FRenderingPipeline::OnResetSize(int InWidth, int InHeight)
+{
+	//SSAO.OnResetSize(InWidth, InHeight);
+	DynamicCubeMap.OnResetSize(InWidth, InHeight);
+	GeometryMap.OnResetSize(InWidth, InHeight);
+	RenderLayer.OnResetSize(InWidth, InHeight);
+}
+
 void FRenderingPipeline::BuildPipeline()
 {
 
@@ -64,8 +72,8 @@ void FRenderingPipeline::BuildPipeline()
 		&DirectXPipelineState,
 		&RenderLayer);
 
-	SSAO.Init(FEngineRenderConfig::GetRenderConfig()->ScreenWidth,
-			FEngineRenderConfig::GetRenderConfig()->ScreenHight);
+	SSAO.Init(GetViewportWidth(), GetViewportHeight());
+
 
 
 	// 构建普通阴影map

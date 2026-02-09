@@ -655,6 +655,7 @@
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\SSAOBilateralRenderLayer.cpp">
       <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\RednerLayer</Filter>
     </ClCompile>
+    <ClCompile Include="EngineCode\Manager\ViewportDataManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EngineCode\Config\EngineRenderConfig.h">
@@ -1062,9 +1063,6 @@
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\OperationHandleRotPlaneRenderLayer.h">
       <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\RednerLayer</Filter>
     </ClInclude>
-    <ClInclude Include="EngineCode\Debug\Log\SimpleLog.h">
-      <Filter>EngineCode\Debug\Log</Filter>
-    </ClInclude>
     <ClInclude Include="EngineCode\Component\TimelineComponent.h">
       <Filter>EngineCode\Component</Filter>
     </ClInclude>
@@ -1112,6 +1110,12 @@
     </ClInclude>
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\SSAOBilateralRenderLayer.h">
       <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\RednerLayer</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Manager\ViewportDataManager.h">
+      <Filter>EngineCode\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Debug\Log\SimpleLog.h">
+      <Filter>EngineCode\Debug\Log</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

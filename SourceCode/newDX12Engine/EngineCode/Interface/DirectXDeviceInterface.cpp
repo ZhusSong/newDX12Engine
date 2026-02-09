@@ -4,6 +4,8 @@
 #include "../Rendering/Core/DirectX/RenderingPipeline/RenderingPipeline.h"
 #include "../Mesh/Core/MeshManager.h"
 #include "../Rendering/Core/DirectX/RenderingPipeline/RenderLayer/RenderLayerManager.h"
+#include "../Core/World.h"
+#include "../Core/Camera.h"
 
 void IDirectXDeviceInterface::StartSetMainViewportRenderTarget()
 {
@@ -77,6 +79,16 @@ CWorld* IDirectXDeviceInterface::GetWorld() const
 	return NULL;
 }
 
+GCamera* IDirectXDeviceInterface::GetCamera() const
+{
+	if (GetWorld())
+	{
+		return GetWorld()->GetCamera();
+	}
+
+	return nullptr;
+}
+
 // 得到图形命令列表
 ComPtr<ID3D12GraphicsCommandList> IDirectXDeviceInterface::GetGraphicsCommandList() const
 {
@@ -144,6 +156,26 @@ ID3D12DescriptorHeap* IDirectXDeviceInterface::GetDSVHeap() const
 	}
 
 	return NULL;
+}
+
+int IDirectXDeviceInterface::GetViewportWidth() const
+{
+	if (GCamera* InCamera = GetCamera())
+	{
+		return InCamera->GetWidth();
+	}
+
+	return 0;
+}
+
+int IDirectXDeviceInterface::GetViewportHeight() const
+{
+	if (GCamera* InCamera = GetCamera())
+	{
+		return InCamera->GetHeight();
+	}
+
+	return 0;
 }
 
 UINT IDirectXDeviceInterface::GetDescriptorHandleIncrementSizeByDSV() const

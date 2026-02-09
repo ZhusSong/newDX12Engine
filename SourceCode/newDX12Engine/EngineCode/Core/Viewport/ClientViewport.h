@@ -3,6 +3,7 @@
 #include "../../Core/Engine.h"
 #include "Viewport.h"
 #include "../../Actor/Core/ActorObject.h"
+#include "../../Manager/ViewportDataManager.h"
 
 class GClientViewport :public GActorObject
 	, public FViewport
@@ -14,6 +15,7 @@ public:
 	GClientViewport();
 
 	// 设置视锥
+	void SetFrustum(float InYFOV, float InZNear, float InZFar);
 	void SetFrustum(float InYFOV, float InAspect, float InZNear, float InZFar);
 
 	// 视图控制
@@ -22,21 +24,23 @@ public:
 	virtual void BuildViewMatrix(float DeltaTime);
 	virtual void Tick(float DeltaTime);
 
+	virtual void OnResetSize(int InWidth, int InHeight);
+
 	// 构建正交矩阵
 	void BuildOrthographicOffCenterLHMatrix(float InRadius, const fvector_3d& InTargetPosition);
 public:
-	FORCEINLINE float GetFOV() const { return YFOV; }
-	FORCEINLINE float GetAspect() const { return Aspect; }
-	FORCEINLINE float GetNear() const { return ZNear; }
-	FORCEINLINE float GetFar() const { return ZFar; }
+	FORCEINLINE float GetFOV() const { return ViewportData.YFOV; }
+	FORCEINLINE float GetAspect() const { return  ViewportData.Aspect; }
+	FORCEINLINE float GetNear() const { return  ViewportData.ZNear; }
+	FORCEINLINE float GetFar() const { return  ViewportData.ZFar; }
+	FORCEINLINE int GetWidth() const { return ViewportData.Width; }
+	FORCEINLINE int GetHeight() const { return ViewportData.Height; }
 	FORCEINLINE bool GetDirty() const { return bDirty; }
 
 	void SetDirty(bool bNewDirty) { bDirty = bNewDirty; }
 private:
-	float YFOV;
-	float Aspect;
-	float ZNear;
-	float ZFar;
+
+	FViewportDataManager ViewportData;
 
 	bool bDirty;
 };

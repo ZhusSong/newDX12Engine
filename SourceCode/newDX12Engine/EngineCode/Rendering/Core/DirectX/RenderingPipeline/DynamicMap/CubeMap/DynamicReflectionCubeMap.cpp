@@ -13,6 +13,10 @@ FDynamicReflectionCubeMap::FDynamicReflectionCubeMap()
 
 }
 
+void FDynamicReflectionCubeMap::OnResetSize(int InWidth, int InHeight)
+{
+}
+
 void FDynamicReflectionCubeMap::UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo)
 {
 	if (CubeMapViewport.size() == 6)

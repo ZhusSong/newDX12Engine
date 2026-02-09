@@ -1,5 +1,4 @@
-﻿// 25.7.7 李
-#pragma once
+﻿#pragma once
 #include "../../../imgui/imgui.h"
 #include "simple_library/public/simple_library.h"
 
@@ -12,6 +11,9 @@ public:
 
 	static FEditorLogSystem* Get();
 	static void Destory();
+	
+	// 初始化字体配置 
+	static void InitializeFonts(float FontSize = 16.0f, float DPIScale = 1.0f);
 public:
 	void Clear();
 

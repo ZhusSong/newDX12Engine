@@ -16,6 +16,8 @@
 
 #include "../Rendering/Engine/DirectX/DirectX12RenderingEngine.h"
 
+#include "../Component/Input/Input.h"
+
 #include "../Core/Construction/MacroConstruction.h"
 
 #if EDITOR_ENGINE
@@ -41,6 +43,10 @@ CWindowsEngine::~CWindowsEngine()
 
 int CWindowsEngine::PreInit(FWinMainCommandParameters InParameters)
 {
+	// 自适应屏幕大小绑定
+	OnResetSizeDelegate.AddFunction(this, &CWindowsEngine::OnResetSize);
+
+
 	InitPath();
 
 	// 日志系统初始化
@@ -122,6 +128,15 @@ void CWindowsEngine::Tick(float DeltaTime)
 			RenderingEngine->Tick(DeltaTime);
 		}
 	}
+}
+
+void CWindowsEngine::OnResetSize(int InWidth, int InHeight)
+{
+	RenderingEngine->OnResetSize(InWidth, InHeight);
+
+#if EDITOR_ENGINE
+	EditorEngine->OnResetSize(InWidth, InHeight);
+#endif
 }
 
 int CWindowsEngine::PreExit()

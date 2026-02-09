@@ -15,6 +15,10 @@ FDynamicShadowCubeMap::FDynamicShadowCubeMap()
 
 }
 
+void FDynamicShadowCubeMap::OnResetSize(int InWidth, int InHeight)
+{
+}
+
 
 void FDynamicShadowCubeMap::UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo)
 {
