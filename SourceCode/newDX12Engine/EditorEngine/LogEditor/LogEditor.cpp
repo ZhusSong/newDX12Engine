@@ -26,5 +26,5 @@ void FLogEditor::DrawEditor(float DeltaTime)
 
 void FLogEditor::ExitEditor()
 {
-	FEditorLogSystem::Destory();
+	FEditorLogSystem::Destroy();
 }

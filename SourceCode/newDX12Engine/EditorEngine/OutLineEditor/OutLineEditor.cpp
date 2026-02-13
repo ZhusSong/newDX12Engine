@@ -5,14 +5,11 @@
 
 #include "../../Common/OperationHandleSelectManager.h"
 
-
 extern int ActorSelected;
 
 void FOutLineEditor::BuildEditor()
 {
 }
-
-
 
 void FOutLineEditor::DrawEditor(float DeltaTime)
 {
@@ -31,16 +28,17 @@ void FOutLineEditor::DrawEditor(float DeltaTime)
 			{
 				HighlightDisplayObject(Actors[i]);
 
-				//设置选择对象
+				// 设置选择对象
+				// 選択オブジェクトを設定する
 				FOperationHandleSelectManager::Get()->SetNewSelectedObject(Actors[i]);
 
-				//显示操作手柄
+				// 显示操作手柄
+				// 操作ハンドルを表示する
 				FOperationHandleSelectManager::Get()->DisplaySelectedOperationHandle();
 			}
 		}
 
 		ImGui::EndChild();
-
 	}
 	ImGui::End();
 }
@@ -48,10 +46,9 @@ void FOutLineEditor::DrawEditor(float DeltaTime)
 void FOutLineEditor::ExitEditor()
 {
 }
+
 void FOutLineEditor::HighlightDisplayObject(GActorObject* InObject)
 {
 	if (FRenderLayerManager* InLayer = GetRenderLayerManager())
 	{
-		InLayer->HighlightDisplayObject(InObject);
-	}
-}
+		InLayer->HighlightDisplayObject(InObject

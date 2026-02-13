@@ -49,17 +49,19 @@ void FOperationHandleSelectManager::DisplaySelectedOperationHandle(GActorObject*
 	if (SelectedObject)
 	{
 		// 隐藏所有手柄
+		// すべての操作ハンドルを非表示にする
 		AllOperationHandleHide();
 
 		// 操作手柄附加到对象身上
+		// 操作ハンドルを対象オブジェクトにアタッチする
 		if (GOperationHandleBase* InHandleBase = dynamic_cast<GOperationHandleBase*>(InNewSelectedObject))
 		{
 			InHandleBase->SetPosition(SelectedObject->GetPosition());
-			//InHandleBase->SetRotation(SelectedObject->GetRotation());
 			InHandleBase->SetVisible(true);
 		}
 
 		// 记录操作手柄
+		// 現在の操作ハンドルを記録する
 		SetNewSelectedOperationHandle(InNewSelectedObject);
 	}
 }

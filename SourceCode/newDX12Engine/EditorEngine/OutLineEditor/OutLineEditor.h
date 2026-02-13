@@ -1,5 +1,4 @@
-﻿// 25.7.15 李
-#pragma once
+﻿#pragma once
 #include "../Core/EditorBase.h"
 #include "../../EngineCode/Interface/DirectXDeviceInterface.h"
 
