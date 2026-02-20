@@ -51,4 +51,6 @@ void FOutLineEditor::HighlightDisplayObject(GActorObject* InObject)
 {
 	if (FRenderLayerManager* InLayer = GetRenderLayerManager())
 	{
-		InLayer->HighlightDisplayObject(InObject
+		InLayer->HighlightDisplayObject(InObject);
+	}
+}
