@@ -1,4 +1,5 @@
 ﻿// 平行光组件
+// 平行光コンポーネント
 #pragma once
 #include "Core/LightComponent.h"
 

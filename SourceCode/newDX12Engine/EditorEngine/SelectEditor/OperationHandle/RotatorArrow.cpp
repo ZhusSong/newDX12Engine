@@ -25,11 +25,13 @@ GRotatorArrow::GRotatorArrow()
 	ZPlaneComponent = ConstructionObject<CPlaneMeshComponent>(ParamType);
 
 	// 射线检测中 不希望这些组件被检测
+	// レイキャスト判定時に、これらのコンポーネントは検出対象外とする
 	IgnoreComponents.push_back(XPlaneComponent);
 	IgnoreComponents.push_back(YPlaneComponent);
 	IgnoreComponents.push_back(ZPlaneComponent);
 
 	// 指定渲染层级
+	// レンダリングレイヤーを指定する
 	XPlaneComponent->SetMeshRenderLayerType(EMeshRenderLayerType::RENDERLAYER_OPERATION_HANDLE_ROT_PLANE);
 	YPlaneComponent->SetMeshRenderLayerType(EMeshRenderLayerType::RENDERLAYER_OPERATION_HANDLE_ROT_PLANE);
 	ZPlaneComponent->SetMeshRenderLayerType(EMeshRenderLayerType::RENDERLAYER_OPERATION_HANDLE_ROT_PLANE);
@@ -51,12 +53,14 @@ void GRotatorArrow::CreateMesh()
 		FEnginePathHelper::GetEngineAssetPath() + "\\Handle\\RotateHandleZ.fbx");
 
 	// 创建操作轴
+	// 操作軸を作成する
 	CREATE_RENDER_DATA_BY_COMPONENT(CCustomMeshComponent, XAxisComponent, MeshPathX);
 	CREATE_RENDER_DATA_BY_COMPONENT(CCustomMeshComponent, YAxisComponent, MeshPathY);
 	CREATE_RENDER_DATA_BY_COMPONENT(CCustomMeshComponent, ZAxisComponent, MeshPathZ);
 	CREATE_RENDER_DATA_BY_COMPONENT(CCustomMeshComponent, AxisComponent, MeshPathZ);
 
 	// 显示AG面片
+	// AGメッシュを表示する
 	CREATE_RENDER_DATA_BY_COMPONENT(CPlaneMeshComponent, XPlaneComponent, 5.2, 5.2, 2, 2);
 	CREATE_RENDER_DATA_BY_COMPONENT(CPlaneMeshComponent, YPlaneComponent, 5.2, 5.2, 2, 2);
 	CREATE_RENDER_DATA_BY_COMPONENT(CPlaneMeshComponent, ZPlaneComponent, 5.2, 5.2, 2, 2);
@@ -64,11 +68,13 @@ void GRotatorArrow::CreateMesh()
 	AxisComponent->SetPickup(false);
 
 	// 相互垂直
+	// 互いに直交させる
 	YPlaneComponent->SetRotation(fvector_3d(90.f, 0.f, 0.f));
 	XPlaneComponent->SetRotation(fvector_3d(0.f, 00.f, 0.f));
 	ZPlaneComponent->SetRotation(fvector_3d(0.f, 0.f, -90.f));
 
-	// 读取材质
+	// 读取材质	
+	// マテリアルを読み込む
 	std::string PlaneComponentMaterial = "Rot_Handle_Plane";
 	LoadPlaneComponentMaterial(YPlaneComponent, PlaneComponentMaterial);
 	LoadPlaneComponentMaterial(XPlaneComponent, PlaneComponentMaterial);
@@ -114,6 +120,7 @@ fvector_3d GRotatorArrow::GetSelectedObjectDirection(const fvector_3d& WorldOrig
 	if (true)
 	{
 		// 按世界方向
+		// ワールド方向に基づいて
 		switch (AxisType)
 		{
 		case GOperationHandleBase::SELECTAXIS_X:
@@ -136,6 +143,7 @@ fvector_3d GRotatorArrow::GetSelectedObjectDirection(const fvector_3d& WorldOrig
 	else
 	{
 		// 按对象方向
+		// オブジェクト方向に基づいて
 		switch (AxisType)
 		{
 		case GOperationHandleBase::SELECTAXIS_X:
@@ -216,14 +224,14 @@ void GRotatorArrow::Tick(float DeltaTime)
 		switch (Sample8CubeIndex)
 		{
 		case 0:
-			YAxisComponent->SetRotation(frotator(0.f, 90.f, 0.f));//绿
-			XAxisComponent->SetRotation(frotator(-90.f, 0, 0.f));//红色
+			YAxisComponent->SetRotation(frotator(0.f, 90.f, 0.f));
+			XAxisComponent->SetRotation(frotator(-90.f, 0, 0.f));
 			AxisComponent->SetRotation(frotator());
 			ZAxisComponent->SetRotation(frotator());
 			break;
 		case 1:
-			YAxisComponent->SetRotation(frotator(0.f, -180.f, 0.f));//绿
-			XAxisComponent->SetRotation(frotator(-90.f, 0, 0.f));//红色
+			YAxisComponent->SetRotation(frotator(0.f, -180.f, 0.f));
+			XAxisComponent->SetRotation(frotator(-90.f, 0, 0.f));
 			AxisComponent->SetRotation(frotator(0.f, 0.f, -90.f));
 			ZAxisComponent->SetRotation(frotator(0.f, 0.f, -90.f));
 			break;
@@ -234,34 +242,34 @@ void GRotatorArrow::Tick(float DeltaTime)
 			ZAxisComponent->SetRotation(frotator(0.f, 0.f, -90.f));
 			break;
 		case 3:
-			YAxisComponent->SetRotation(frotator());//绿
-			XAxisComponent->SetRotation(frotator());//红色
-			AxisComponent->SetRotation(frotator());//青色
-			ZAxisComponent->SetRotation(frotator());//蓝色
+			YAxisComponent->SetRotation(frotator());
+			XAxisComponent->SetRotation(frotator());
+			AxisComponent->SetRotation(frotator());
+			ZAxisComponent->SetRotation(frotator());
 			break;
 		case 4:
-			YAxisComponent->SetRotation(frotator(0.f, 90.f, 0.f));//绿
-			XAxisComponent->SetRotation(frotator(-180.f, 0, 0.f));//红色
-			AxisComponent->SetRotation(frotator(0.f, 0.f, 90.f));//青色
-			ZAxisComponent->SetRotation(frotator(0.f, 0.f, 90.f));//蓝色
+			YAxisComponent->SetRotation(frotator(0.f, 90.f, 0.f));
+			XAxisComponent->SetRotation(frotator(-180.f, 0, 0.f));
+			AxisComponent->SetRotation(frotator(0.f, 0.f, 90.f));
+			ZAxisComponent->SetRotation(frotator(0.f, 0.f, 90.f));
 			break;
 		case 5:
-			YAxisComponent->SetRotation(frotator(0.f, 180.f, 0.f));//绿
-			XAxisComponent->SetRotation(frotator(-180.f, 0, 0.f));//红色
-			AxisComponent->SetRotation(frotator(0.f, 0.f, -180.f));//青色
-			ZAxisComponent->SetRotation(frotator(0.f, 0.f, -180.f));//蓝色
+			YAxisComponent->SetRotation(frotator(0.f, 180.f, 0.f));
+			XAxisComponent->SetRotation(frotator(-180.f, 0, 0.f));
+			AxisComponent->SetRotation(frotator(0.f, 0.f, -180.f));
+			ZAxisComponent->SetRotation(frotator(0.f, 0.f, -180.f));
 			break;
 		case 6:
-			YAxisComponent->SetRotation(frotator(0.f, 0.f, -180.f));//绿
-			XAxisComponent->SetRotation(frotator(0.f, 0.f, 180.f));//红色
-			AxisComponent->SetRotation(frotator(0.f, 0.f, -180.f));//青色
-			ZAxisComponent->SetRotation(frotator(0.f, 0.f, -180.f));//蓝色
+			YAxisComponent->SetRotation(frotator(0.f, 0.f, -180.f));
+			XAxisComponent->SetRotation(frotator(0.f, 0.f, 180.f));
+			AxisComponent->SetRotation(frotator(0.f, 0.f, -180.f));
+			ZAxisComponent->SetRotation(frotator(0.f, 0.f, -180.f));
 			break;
 		case 7:
-			YAxisComponent->SetRotation(frotator());//绿
-			XAxisComponent->SetRotation(frotator(0.f, 0.f, 180.f));//红色
-			AxisComponent->SetRotation(frotator(0.f, 0.f, 90.f));//青色
-			ZAxisComponent->SetRotation(frotator(0.f, 0.f, 90.f));//蓝色
+			YAxisComponent->SetRotation(frotator());
+			XAxisComponent->SetRotation(frotator(0.f, 0.f, 180.f));
+			AxisComponent->SetRotation(frotator(0.f, 0.f, 90.f));
+			ZAxisComponent->SetRotation(frotator(0.f, 0.f, 90.f));
 			break;
 		}
 	}
@@ -419,6 +427,7 @@ float GRotatorArrow::GetSymbolByCubeIndex(float InValueOffset)
 }
 
 // 通过8方向立方体索引判断材质方向是否需要翻转
+// 8方向キューブのインデックスに基づいて、マテリアルの向きを反転する必要があるかを判定する
 float GRotatorArrow::GetSymbolMaterialByCubeIndex(float InValueOffset)
 {
 	float Symbol = 1.f;
@@ -533,20 +542,25 @@ void GRotatorArrow::OnMouseMove(int X, int Y)
 							EngineMath::ToVector3d(SelectedObject->GetPosition())).len();
 
 					// 摄像机和物体的相对 拖拽相对偏移保持不变
+					// カメラとオブジェクトの相対関係において、ドラッグ時の相対オフセットを維持する
 					float DelteRatio = (T2 - LastT2Value) / CameraAndSelectedDistance;
 
 					// 每帧的偏移
+					// 毎フレームごとのオフセット
 					float InValueOffset = DelteRatio - RotatorRatio;
 					fvector_3d DeltaVector;
 					// 模型旋转
+					// モデルの回転
 					{
 						// 矫正到正确的符号
+						// 正しい符号に補正する
 						float Symbol = GetSymbolByCubeIndex(InValueOffset);
 
 						DeltaVector = ActorWorldDir * Symbol * fabsf(InValueOffset) * 360.f;
 					}
 
-					//材质面片旋转
+					// 材质面片旋转
+					// マテリアル平面の回転
 					{
 						float SymbolMaterial = GetSymbolMaterialByCubeIndex(InValueOffset);
 
@@ -579,6 +593,7 @@ void GRotatorArrow::OnMouseMove(int X, int Y)
 					if (true)
 					{
 						// 按世界方向
+						// ワールド方向に基づいて
 						XMMATRIX WorldInverseMatrix;
 						EngineMath::BuildInverseMatrix(
 							WorldInverseMatrix,
@@ -615,7 +630,6 @@ void GRotatorArrow::OnLeftMouseButtonDown(int X, int Y)
 	{
 		if (SelectAxisComponent)
 		{
-			// 对AG 做0值的清除
 			ResetAGValue();
 
 			ResetVisible(dynamic_cast<CCustomMeshComponent*>(SelectAxisComponent), true);
@@ -628,6 +642,7 @@ void GRotatorArrow::OnLeftMouseButtonDown(int X, int Y)
 			if (T2 != -1)
 			{
 				// 清除上一次旋转的影响
+				// 前回の回転の影響をクリアする
 				RotatorRatio = 0.f;
 				LastT2Value = T2;
 			}

@@ -29,12 +29,14 @@ void CPipeMeshComponent::BuildRadiusPoint(
 	uint32_t InHeightSubdivision)
 {
 
-	//构建身体外圈
+	// 构建外圈
+	// 外周を構築
 	for (uint32_t i = 0; i < InHeightSubdivision + 1; ++i)
 	{
 		float Y = 0.5f * InHeight - HeightInterval * i;
 
-		//计算出内外圈半径
+		// 计算出内外圈半径
+		// 内側と外側の半径を計算
 		float OuterRadius = InTopRadius + i * RadiusInterval;
 		float InnerRadius = math_libray::Clamp((OuterRadius - 0.1f) - InThickness, 0.f, OuterRadius);
 
@@ -43,7 +45,8 @@ void CPipeMeshComponent::BuildRadiusPoint(
 			float BetaValueCos = cosf(j * BetaValue);
 			float BetaValueSin = sinf(j * BetaValue);
 
-			//外圈点
+			// 外圈点
+			// 外周の頂点
 			MeshData.VertexData.push_back(FVertex(
 				XMFLOAT3(
 					OuterRadius * BetaValueCos,//x
@@ -68,7 +71,8 @@ void CPipeMeshComponent::BuildRadiusPoint(
 				MyVertex.TexCoord.y = (float)i / (float)InHeightSubdivision;
 			}
 
-			//绘制内圈
+			// 绘制内圈
+			// 内周を描画
 			MeshData.VertexData.push_back(FVertex(
 				XMFLOAT3(
 					InnerRadius * BetaValueCos,//x
@@ -105,9 +109,11 @@ void CPipeMeshComponent::CreateMesh(
 	uint32_t InAxialSubdivision,
 	uint32_t InHeightSubdivision)
 {
-	//半径间隔
+	// 半径间隔
+	// 半径の間隔
 	float RadiusInterval = (InTopRadius - InBottomRadius) / InHeightSubdivision;
-	//高度间隔
+	// 高度间隔
+	// 高さの間隔
 	float HeightInterval = InHeight / InHeightSubdivision;
 
 	float BetaValue = XM_2PI / (float)InAxialSubdivision;
@@ -126,7 +132,8 @@ void CPipeMeshComponent::CreateMesh(
 
 	float VertexCircleNum = InAxialSubdivision;
 
-	//绘制腰围
+	// 绘制腰围
+	// ウエスト部分を描画
 	for (uint32_t i = 0; i < InHeightSubdivision + 1; ++i)
 	{
 		for (uint32_t j = 0; j < InAxialSubdivision; ++j)
@@ -136,26 +143,30 @@ void CPipeMeshComponent::CreateMesh(
 
 			int VC = VertexCircleNum * 2;
 
-			//绘制圈外
+			// 绘制圈外
+			// 外周を描画
 			DrawQuadrilateral(
-				MeshData,//提取绘制信息
-				GetQuadrilateralDrawPointTypeA(OuterStartPoint, i, VC, 2));//拿到圈外四个点
+				MeshData, // 提取绘制信息
+				GetQuadrilateralDrawPointTypeA(OuterStartPoint, i, VC, 2)); // 拿到圈外四个点
 
-			//绘制圈内
+			// 绘制圈内
+			// 内周を描画
 			DrawQuadrilateral(
-				MeshData,//提取绘制信息
-				GetQuadrilateralDrawPointTypeA(InnerStartPoint, i, VC, 2), true);//拿到圈内四个点																		
+				MeshData, // 提取绘制信息
+				GetQuadrilateralDrawPointTypeA(InnerStartPoint, i, VC, 2), true); // 拿到圈内四个点
 		}
 	}
 
-	//构建顶部
+	// 构建顶部
+	// 上部を構築
 	if (1)
 	{
 		for (uint32_t i = 0; i < 1; ++i)
 		{
 			float Y = 0.5f * InHeight - HeightInterval * i;
 
-			//计算出内外圈半径
+			// 计算出内外圈半径
+			// 内側と外側の半径を計算
 			float OuterRadius = InTopRadius + i * RadiusInterval;
 			float InnerRadius = math_libray::Clamp((OuterRadius - 0.1f) - InThickness, 0.f, OuterRadius);
 
@@ -164,7 +175,8 @@ void CPipeMeshComponent::CreateMesh(
 				float BetaValueCos = cosf(j * BetaValue);
 				float BetaValueSin = sinf(j * BetaValue);
 
-				//外圈点
+				// 外圈点
+				// 外周の頂点
 				MeshData.VertexData.push_back(FVertex(
 					XMFLOAT3(
 						OuterRadius * BetaValueCos,//x
@@ -177,7 +189,8 @@ void CPipeMeshComponent::CreateMesh(
 				InOuterVertex.TexCoord.x = (BetaValueCos * 0.5f) + 0.5f;
 				InOuterVertex.TexCoord.y = (BetaValueSin * 0.5f) + 0.5f;
 
-				//绘制内圈
+				// 绘制内圈
+				// 内周を描画
 				MeshData.VertexData.push_back(FVertex(
 					XMFLOAT3(
 						InnerRadius * BetaValueCos,//x
@@ -209,13 +222,15 @@ void CPipeMeshComponent::CreateMesh(
 		}
 	}
 
-	//构建底部
+	// 构建底部
+	// 下部を構築
 	if (1)
 	{
 		{
 			float Y = 0.5f * InHeight - HeightInterval * InHeightSubdivision;
 
-			//计算出内外圈半径
+			// 计算出内外圈半径
+			// 内側と外側の半径を計算
 			float OuterRadius = InTopRadius + InHeightSubdivision * RadiusInterval;
 			float InnerRadius = math_libray::Clamp((OuterRadius - 0.1f) - InThickness, 0.f, OuterRadius);
 
@@ -224,19 +239,21 @@ void CPipeMeshComponent::CreateMesh(
 				float BetaValueCos = cosf(j * BetaValue);
 				float BetaValueSin = sinf(j * BetaValue);
 
-				//外圈点
+				// 外圈点
+				// 外周の頂点
 				MeshData.VertexData.push_back(FVertex(
 					XMFLOAT3(
-						OuterRadius * BetaValueCos,//x
-						Y,//y
-						OuterRadius * BetaValueSin), //z
+						OuterRadius* BetaValueCos, // x
+						Y,                           // y
+						OuterRadius* BetaValueSin), // z
 					XMFLOAT4(Colors::White), XMFLOAT3(0.f, -1.f, 0.f)));
 
-				FVertex& InOuterVertex = MeshData.VertexData[MeshData.VertexData.size() - 1];
-				InOuterVertex.TexCoord.x = (BetaValueCos * 0.5f) + 0.5f;
-				InOuterVertex.TexCoord.y = (BetaValueSin * 0.5f) + 0.5f;
+					FVertex& InOuterVertex = MeshData.VertexData[MeshData.VertexData.size() - 1];
+					InOuterVertex.TexCoord.x = (BetaValueCos * 0.5f) + 0.5f;
+					InOuterVertex.TexCoord.y = (BetaValueSin * 0.5f) + 0.5f;
 
-				//绘制内圈
+					// 绘制内圈
+					// 内周を描画
 				MeshData.VertexData.push_back(FVertex(
 					XMFLOAT3(
 						InnerRadius * BetaValueCos,//x

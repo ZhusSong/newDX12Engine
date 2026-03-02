@@ -5,6 +5,7 @@
 #include "../../Core/Construction/MacroConstruction.h"
 
 // Actor对象
+// Actorオブジェクト
 GActorObject::GActorObject()
 {
 	BUILD_OBJECT_PARAMETERS(Type, this);
@@ -18,6 +19,7 @@ void GActorObject::GetBoundingBox(BoundingBox& OutBoundingBox)
 		fvector_3d MaxPoint = fvector_3d(-FLT_MAX);
 		fvector_3d MinPoint = fvector_3d(+FLT_MAX);
 		// 得到子类中所有Mesh组件
+		// サブクラス内のすべてのMeshコンポーネントを取得する
 		std::vector<CComponent*>& InChildrens = RootComponent->GetChildrens();
 		for (auto& Tmp : InChildrens)
 		{
@@ -33,7 +35,8 @@ void GActorObject::GetBoundingBox(BoundingBox& OutBoundingBox)
 				fvector_3d ComponentMinPoint = Center - Extents;
 
 
-				//提取最大最小值
+				// 提取最大最小值
+				// 最大値と最小値を取得する
 				MinPoint.x = math_libray::Min(ComponentMinPoint.x, MinPoint.x);
 				MinPoint.y = math_libray::Min(ComponentMinPoint.y, MinPoint.y);
 				MinPoint.z = math_libray::Min(ComponentMinPoint.z, MinPoint.z);
@@ -45,6 +48,7 @@ void GActorObject::GetBoundingBox(BoundingBox& OutBoundingBox)
 		}
 
 		// 合并最终AABB
+		// 最終的なAABBを統合する
 		if (MaxPoint != fvector_3d(-FLT_MAX) ||
 			MinPoint != fvector_3d(+FLT_MAX))
 		{

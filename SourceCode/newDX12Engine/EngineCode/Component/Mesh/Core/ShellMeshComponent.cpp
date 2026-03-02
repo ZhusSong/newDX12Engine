@@ -1,5 +1,4 @@
-﻿// 25.6.6 李
-#include "ShellMeshComponent.h"
+﻿#include "ShellMeshComponent.h"
 #include "../../../Mesh/Core/MeshType.h"
 
 CShellMeshComponent::CShellMeshComponent()
@@ -12,24 +11,24 @@ void CShellMeshComponent::DrawQuadrilateral(FMeshRenderingData& MeshData, const 
 {
 	if (!bReversal)
 	{
-		//三角形1
+		// 三角形1
 		MeshData.IndexData.push_back(InDrawPoint.z);
 		MeshData.IndexData.push_back(InDrawPoint.y);
 		MeshData.IndexData.push_back(InDrawPoint.x);
 
-		//三角形2
+		// 三角形2
 		MeshData.IndexData.push_back(InDrawPoint.w);
 		MeshData.IndexData.push_back(InDrawPoint.z);
 		MeshData.IndexData.push_back(InDrawPoint.x);
 	}
 	else
 	{
-		//三角形1
+		// 三角形1
 		MeshData.IndexData.push_back(InDrawPoint.x);
 		MeshData.IndexData.push_back(InDrawPoint.y);
 		MeshData.IndexData.push_back(InDrawPoint.z);
 
-		//三角形2
+		// 三角形2
 		MeshData.IndexData.push_back(InDrawPoint.x);
 		MeshData.IndexData.push_back(InDrawPoint.z);
 		MeshData.IndexData.push_back(InDrawPoint.w);

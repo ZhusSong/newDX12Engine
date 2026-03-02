@@ -2,6 +2,7 @@
 #include "../../Core/Engine.h"
 
 // 鼠标代理
+// マウスプロキシ
 DEFINITION_MULTICAST_SINGLE_DELEGATE(FCaptureOnMousesDelegate, void, int, int);
 DEFINITION_MULTICAST_SINGLE_DELEGATE(FCaptureOnMousesWheelsDelegate, void, int, int, float);
 

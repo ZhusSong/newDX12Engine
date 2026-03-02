@@ -1,5 +1,5 @@
 ﻿// 灯光组件
-// 25.5.19 李
+// ライトコンポーネント
 #pragma once
 #include "../../TransformComponent.h"
 #include "../../../Interface/DirectXDeviceInterface.h"
@@ -18,6 +18,7 @@ public:
 	virtual ~CLightComponent();
 
 	// 设置灯光强度
+	// ライトの強度を設定する
 	void SetLightIntensity(const fvector_3d& InNewLightIntensity);
 public:
 	CMeshComponent* GetLightMesh() { return LightMesh; }

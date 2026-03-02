@@ -1,5 +1,4 @@
-﻿// 25.6.6 李
-#pragma once
+﻿#pragma once
 #include "Core/ShellMeshComponent.h"
 
 class CPipeMeshComponent :public CShellMeshComponent
@@ -23,7 +22,8 @@ public:
 		uint32_t InHeightSubdivision);
 protected:
 
-	//构建半径点
+	// 构建半径点
+	// 半径の頂点を構築
 	void BuildRadiusPoint(
 		FMeshRenderingData& MeshData,
 		float HeightInterval,

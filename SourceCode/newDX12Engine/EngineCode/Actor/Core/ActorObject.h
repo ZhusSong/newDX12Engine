@@ -3,12 +3,14 @@
 #include "CoreObject/CoreMinimalObject.h"
 
 // 反射测试
+// コードリフレクションのテスト
 //#include "ActorObject.CodeReflection.h"
 class CTransformComponent;
 //G -> Game
 class GActorObject :public CCoreMinimalObject
 {
 	//// 反射测试
+	// コードリフレクションのテスト
 	//CODEREFLECTION()
 
 	CVARIABLE()
@@ -20,7 +22,8 @@ public:
 public:
 	FORCEINLINE CTransformComponent* GetRootComponent() const { return RootComponent; }
 
-	// 获取碰撞盒
+	// 获取碰撞盒 
+	// コリジョンボックスを取得する
 	void GetBoundingBox(BoundingBox& OutBoundingBox);
 	BoundingBox GetBoundingBox();
 public:
@@ -29,6 +32,7 @@ public:
 
 	virtual void SetRotation(const frotator& InNewRotation);
 	// 设置四元数旋转
+	// クォータニオン回転を設定する
 	virtual void SetRotationQuat(const fquat& InNewQuatRotation);
 	virtual void SetScale(const fvector_3d& InNewScale);
 
@@ -43,6 +47,7 @@ public:
 	fvector_3d GetScale()const;
 
 	// 四元数
+	// クォータニオン
 	fquat GetRotationQuat() const;
 
 	XMFLOAT3& GetForwardVector();
@@ -52,6 +57,7 @@ public:
 
 
 //	// 反射测试
+// 	   コードリフレクションのテスト
 //public:
 //	CVARIABLE(CodeType = Resources)
 //		bool PlayerState;

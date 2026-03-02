@@ -1,4 +1,5 @@
 ﻿// 平行光组件
+// 平行光コンポーネント
 #include "ParallelLightComponent.h"
 #include "../../Mesh/Core/MeshManager.h"
 #include "../../Component/Mesh/Core/MeshComponent.h"
@@ -8,7 +9,8 @@
 CParallelLightComponent::CParallelLightComponent()
 	:Super()
 {
-	// 读取模型资源
+	// 读取灯光模型资源
+	// ライトモデルリソースを読み込む
 	string MeshPath = FEnginePathHelper::GetEngineAssetPath() + "/SunMesh.obj";
 
 

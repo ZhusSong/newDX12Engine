@@ -1,5 +1,4 @@
-﻿// 25.5.29 李
-#pragma once
+﻿#pragma once
 #include "Core/RangeLight.h"
 
 //G -> Game

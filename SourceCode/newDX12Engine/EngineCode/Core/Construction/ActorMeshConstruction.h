@@ -1,9 +1,8 @@
 ﻿#pragma once
-//25.6.11 李
 #include "MeshConstruction.h"
 #include "../../Mesh/Core/Mesh.h"
-
 // Actor对象Mesh数据构造
+// ActorオブジェクトのMeshデータ構築
 namespace ActorMeshConstruction
 {
 	template<class T, typename ...ParamTypes>

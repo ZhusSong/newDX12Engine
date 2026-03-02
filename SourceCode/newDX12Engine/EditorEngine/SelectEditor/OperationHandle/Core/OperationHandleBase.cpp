@@ -113,7 +113,7 @@ void GOperationHandleBase::ResetColor()
 	ResetColor(YAxisComponent, fvector_4d(0.f, 1.f, 0.f, 1.f));
 	ResetColor(ZAxisComponent, fvector_4d(0.f, 0.f, 1.f, 1.f));
 
-	ResetColor(AxisComponent, fvector_4d(0.f, 1.f, 1.f, 1.f)); //绿 + 蓝
+	ResetColor(AxisComponent, fvector_4d(0.f, 1.f, 1.f, 1.f));
 }
 
 void GOperationHandleBase::ResetColor(CCustomMeshComponent* InAxisComponent, const fvector_4d& InColor)
@@ -188,6 +188,7 @@ fvector_3d GOperationHandleBase::GetSelectedObjectDirection(
 	if (true)
 	{
 		// 按世界方向
+		// ワールド方向に基づいて
 		switch (AxisType)
 		{
 		case GOperationHandleBase::SELECTAXIS_X:
@@ -210,6 +211,7 @@ fvector_3d GOperationHandleBase::GetSelectedObjectDirection(
 	else
 	{
 		// 按对象方向
+		// オブジェクト方向に基づいて
 		switch (AxisType)
 		{
 		case GOperationHandleBase::SELECTAXIS_X:
@@ -329,6 +331,7 @@ float GOperationHandleBase::GetMouseCreenMovePosition(
 			XMStoreFloat3(&WorldDirectionLOAT3, CTORWorldDirection);
 
 			// 射线的方向和位置(世界)
+			// レイの方向と位置（ワールド座標）
 			fvector_3d WorldOriginPoint = EngineMath::ToVector3d(WorldOriginPointLOAT3);
 			fvector_3d WorldDirection = EngineMath::ToVector3d(WorldDirectionLOAT3);
 

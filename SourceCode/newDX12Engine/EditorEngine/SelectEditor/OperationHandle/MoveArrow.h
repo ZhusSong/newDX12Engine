@@ -1,5 +1,4 @@
 ﻿#pragma once
-// 25.8.15 李
 #include "Core/OperationHandleBase.h"
 
 class GMoveArrow :public GOperationHandleBase

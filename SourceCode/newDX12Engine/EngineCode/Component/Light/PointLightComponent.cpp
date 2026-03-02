@@ -1,5 +1,5 @@
-﻿// 25.5.29 李
-//  点光源组件
+﻿//  点光源组件
+//  点光源コンポーネント
 #include "PointLightComponent.h"
 #include "../../Mesh/Core/MeshManager.h"
 #include "../../Component/Mesh/Core/MeshComponent.h"
@@ -8,8 +8,9 @@
 
 CPointLightComponent::CPointLightComponent()
 	:Super()
-{
+{	
 	// 加载模型
+	// モデルを読み込む
 	string MeshPath = FEnginePathHelper::GetEngineAssetPath() +  "/PointMesh.obj";
 	
 	//string MeshPath = "Asset/PointMesh.obj";

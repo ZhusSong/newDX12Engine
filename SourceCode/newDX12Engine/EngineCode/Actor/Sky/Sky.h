@@ -1,6 +1,5 @@
 ﻿#pragma once
 #pragma once
-//25.6.16李
 #include "../../Mesh/SphereMesh.h"
 
 class CSkyComponent;

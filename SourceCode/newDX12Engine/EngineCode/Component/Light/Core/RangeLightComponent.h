@@ -1,5 +1,4 @@
-﻿// 范围灯光组件
-// 25.5.30 李
+﻿
 #pragma once
 #include "LightComponent.h"
 

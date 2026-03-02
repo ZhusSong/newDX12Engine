@@ -14,15 +14,17 @@ void CPyramidMeshComponent::CreateMesh(
 	float InRadius = InSize;
 	float InHeight = InSize * 2.f;
 	uint32_t InAxialSubdivision = (uint32_t)PyramidNumberSides;
-
-	//半径间隔
+	// 半径间隔
+	// 半径の間隔
 	float RadiusInterval = -InRadius / (float)InHeightSubdivide;
-	//高度间隔
+	// 高度间隔
+	// 高さの間隔
 	float HeightInterval = InHeight / (float)InHeightSubdivide;
 
 	float BetaValue = XM_2PI / (float)InAxialSubdivision;
 
-	//构建顶部
+	// 构建顶部
+	// 上部を構築
 	MeshData.VertexData.push_back(
 		FVertex(
 			XMFLOAT3(0.f, 0.5f * InHeight, 0.f),
@@ -60,14 +62,16 @@ void CPyramidMeshComponent::CreateMesh(
 		}
 	}
 
-	//添加中点
+	// 添加中点
+	// 中心点を追加
 	MeshData.VertexData.push_back(
 		FVertex(
 			XMFLOAT3(0.f, -0.5f * InHeight, 0.f),
 			XMFLOAT4(Colors::White),
 			XMFLOAT3(0.f, -1.f, 0.f)));
 
-	//绘制index模型
+	// 绘制index模型
+	// インデックスモデルを描画
 	for (uint32_t i = 0; i < InAxialSubdivision; ++i)
 	{
 		MeshData.IndexData.push_back(0);
@@ -77,12 +81,12 @@ void CPyramidMeshComponent::CreateMesh(
 
 	float BaseIndex = 1;
 	float VertexCircleNum = InAxialSubdivision + 1;
-	//绘制腰围
+	// 绘制腰围
+	// ウエスト部分を描画
 	for (uint32_t i = 0; i <= InHeightSubdivide - 1; ++i)
 	{
 		for (uint32_t j = 0; j < InAxialSubdivision; ++j)
 		{
-			//我们绘制的是四边形
 			//三角形1
 			MeshData.IndexData.push_back(BaseIndex + i * VertexCircleNum + j);
 			MeshData.IndexData.push_back(BaseIndex + i * VertexCircleNum + j + 1);
@@ -93,8 +97,8 @@ void CPyramidMeshComponent::CreateMesh(
 			MeshData.IndexData.push_back(BaseIndex + (i + 1) * VertexCircleNum + j + 1);
 		}
 	}
-
-	//添加南极点
+	// 绘制底部极点
+	// 底面の極点を描画
 	{
 		int i = InHeightSubdivide;
 
@@ -114,7 +118,8 @@ void CPyramidMeshComponent::CreateMesh(
 	}
 
 
-	//绘制南极
+	// 绘制底部
+	// 底面を描画
 	uint32_t SouthBaseIndex = MeshData.VertexData.size() - 1;
 	BaseIndex = SouthBaseIndex - VertexCircleNum;
 	for (uint32_t Index = 0; Index < InAxialSubdivision; ++Index)

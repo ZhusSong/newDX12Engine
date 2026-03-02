@@ -1,5 +1,4 @@
-﻿// 25.5.29 李 范围灯光actor
-#include "RangeLight.h"
+﻿#include "RangeLight.h"
 #include "../../../Component/Light/Core/RangeLightComponent.h"
 
 

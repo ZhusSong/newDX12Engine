@@ -25,6 +25,7 @@ public:
 
 protected:
 	// 旋转指示面片(Angle Guide)相关
+	// 回転ガイド面（Angle Guide）関連
 	void SetAGValue(CMeshComponent* InComponent, float InValue);
 	void SetAGValue(float InValue);
 	void ResetAGValue();

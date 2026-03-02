@@ -1,5 +1,4 @@
-﻿//25.5.30 李 范围灯光组件
-#include "RangeLightComponent.h"
+﻿#include "RangeLightComponent.h"
 
 CRangeLightComponent::CRangeLightComponent()
 	:Super()

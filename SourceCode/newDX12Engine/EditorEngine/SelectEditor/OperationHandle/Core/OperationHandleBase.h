@@ -1,5 +1,4 @@
 ﻿#pragma once
-// 25.8.15 李
 #include "../../../../EngineCode/Actor/Core/ActorObject.h"
 #include "../../../../EngineCode/Interface/DirectXDeviceInterface.h"
 #include "../../../../EngineCode/Component/Input/InputType.h"
@@ -11,6 +10,7 @@ class CComponent;
 enum EMeshRenderLayerType;
 
 // 移动、缩放与旋转手柄基类
+// 移動、拡大縮小、回転ハンドルの基底クラス
 class GOperationHandleBase
 	:public GActorObject
 	, public IDirectXDeviceInterface
@@ -25,6 +25,7 @@ protected:
 		SELECTAXIS_Z,//z
 		SELECTAXIS_ANY,//A
 	};
+
 
 protected:
 	CVARIABLE()
@@ -59,6 +60,7 @@ public:
 	void ResetColor(CCustomMeshComponent* InAxisComponent, const fvector_4d& InColor);
 
 	// 是否点击到物体
+	// オブジェクトがクリックされたかどうか
 	void SetHitActor(bool isHit) { bIsHitActor = isHit; };
 
 public:
@@ -92,23 +94,27 @@ protected:
 
 protected:
 	// 通过屏幕映射计算物体企图移动的下一个位置
+	// スクリーン座標のマッピングにより、オブジェクトが移動しようとする次の位置を計算する
 	float GetMouseCreenMovePosition(int X, int Y,
 		fvector_3d& ActorWorldPosition,
 		fvector_3d& ActorWorldDir);
 
 	// 判断当前选择的手柄
+	// 現在選択されているハンドルかどうかを判定する
 	bool IsCurrentSelectedHandle();
 protected:
 	// 缩放标准值
+	// スケーリングの基準値
 	float FixedZoom;
 
 	std::vector<CComponent*> IgnoreComponents;
 	bool bPressRightMouse;
 
 	// 未选中目标时操作手柄的位置
-	XMFLOAT3 HiddenPosition= XMFLOAT3(10000,10000,10000);
+	// 対象が未選択時の操作ハンドルの位置
+	XMFLOAT3 HiddenPosition = XMFLOAT3(10000, 10000, 10000);
 
 	// 是否点击到物体
+	// オブジェクトがクリックされたかどうか
 	bool bIsHitActor = false;
-	
 };

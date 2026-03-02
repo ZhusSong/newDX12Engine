@@ -1,5 +1,5 @@
-﻿// 25.5.29 李
-//  点光源组件
+﻿//  聚光灯组件
+//  スポットライトコンポーネント
 #include "SpotLightComponent.h"
 #include "../../Mesh/Core/MeshManager.h"
 #include "../../Component/Mesh/Core/MeshComponent.h"

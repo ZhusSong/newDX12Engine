@@ -1,5 +1,4 @@
-﻿// 25.5.16 李
-#include "MeshComponent.h"
+﻿#include "MeshComponent.h"
 #include "../../../Mesh/Core/Material/Material.h"
 #include "../../../Rendering/Core/DirectX/RenderingPipeline/Geometry/GeometryMap.h"
 #include "../../../Core/Construction/MacroConstruction.h"

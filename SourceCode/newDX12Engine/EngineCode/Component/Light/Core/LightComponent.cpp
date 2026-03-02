@@ -1,4 +1,5 @@
 ﻿// 灯光组件
+// ライトコンポーネント
 #include "LightComponent.h"
 #include "../../../Manager/LightManager.h"
 #include "../../Mesh/Core/MeshComponent.h"
@@ -33,6 +34,7 @@ void CLightComponent::SetRotation(const fvector_3d& InNewRotation)
 	Super::SetRotation(InNewRotation);
 
 	// 取反，保证灯光方向与shader中算法一致
+	// 反転して、ライト方向がシェーダー内のアルゴリズムと一致するようにする
 	if (LightMesh)
 	{
 		LightMesh->SetRotation(InNewRotation * (-1.f));
@@ -84,5 +86,6 @@ void CLightComponent::SetLightMesh(CMeshComponent* InLightMesh)
 	LightMesh = InLightMesh;
 
 	// 灯光不投射阴影
+	// ライトは影を投射しない
 	LightMesh->SetCastShadow(false);
 }

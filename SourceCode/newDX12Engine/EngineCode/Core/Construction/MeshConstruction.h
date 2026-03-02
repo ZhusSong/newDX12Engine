@@ -1,10 +1,10 @@
 ﻿#pragma once
-//25.6.11 李
 #include "../../Mesh/Core/MeshManager.h"
 
 namespace MeshConstruction
-{
+{    
     // Mesh结构定义
+    // Mesh構造体の定義
     template<class T, typename ...ParamTypes>
     T* CreateMeshComponent(CMeshManager* InManager, T* InMesh, ParamTypes &&...Params)
     {
@@ -21,10 +21,12 @@ namespace MeshConstruction
             else
             {
                 // 提取模型资源
+                 // モデルリソースを取得
                 FMeshRenderingData MeshData;
                 InMesh->CreateMesh(MeshData, forward<ParamTypes>(Params)...);
 
                 // 构建mesh
+                // Meshを構築
                 InManager->GetRenderingPipeline()->BuildMesh(HashKey, InMesh, MeshData);
             }
 

@@ -29,7 +29,8 @@ void CTorusMeshComponent::CreateMesh(FMeshRenderingData& MeshData, float InRadiu
 			float ThetaBetaValueCosSin = cosf(ThetaRadian) * sinf(BetaRadian);
 			float ThetaValueSin = sinf(ThetaRadian);
 
-			//拿到点的位置
+			// 拿到点的位置
+			// 頂点の位置を取得
 			fvector_3d PointPosition(
 				Center.x + InSectionRadius * ThetaBetaValueCosCos,
 				Center.y + InSectionRadius * ThetaValueSin,
@@ -41,14 +42,18 @@ void CTorusMeshComponent::CreateMesh(FMeshRenderingData& MeshData, float InRadiu
 
 			FVertex& InVertex = MeshData.VertexData[MeshData.VertexData.size() - 1];
 
-			//求法线
+
+			// 求法线
+			// 法線を計算
 			fvector_3d Normal = PointPosition - Center;
 			Normal.normalize();
 
-			//法线赋值
+			// 法线赋值
+			// 法線を設定
 			InVertex.Normal = EngineMath::ToFloat3(Normal);
 
-			//展UV
+			// 展UV
+			// UV展開
 			InVertex.TexCoord.x = (float)j / (float)InHeightSubdivision;
 			InVertex.TexCoord.y = (float)i / (float)InAxialSubdivision;
 
@@ -61,10 +66,11 @@ void CTorusMeshComponent::CreateMesh(FMeshRenderingData& MeshData, float InRadiu
 	{
 		for (size_t j = 0; j < InHeightSubdivision; ++j)
 		{
-			//绘制外圈两个三角形
+			// 绘制外圈两个三角形
+			// 外周の二つの三角形を描画
 			DrawQuadrilateral(
-				MeshData,//提取绘制信息
-				GetQuadrilateralDrawPointTypeA(j, i, InHeightSubdivision));//拿到四个点
+				MeshData,//提取绘制信息  // 描画情報を取得
+				GetQuadrilateralDrawPointTypeA(j, i, InHeightSubdivision));//拿到四个点  // 4つの頂点を取得
 		}
 	}
 }

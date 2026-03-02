@@ -1,5 +1,4 @@
-﻿// 25.5.29 李 范围灯光actor，基于GLight
-#pragma once
+﻿#pragma once
 #include "Light.h"
 
 //G -> Game

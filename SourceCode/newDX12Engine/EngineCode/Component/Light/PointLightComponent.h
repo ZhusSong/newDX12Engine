@@ -1,5 +1,5 @@
-﻿// 25.5.29 李 
-// 点光源组件
+﻿// 点光源组件
+//  点光源コンポーネント
 #pragma once
 #include "Core/RangeLightComponent.h"
 

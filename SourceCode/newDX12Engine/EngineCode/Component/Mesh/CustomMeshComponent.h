@@ -1,8 +1,8 @@
-﻿// 25.6.30 李
-#pragma once
+﻿#pragma once
 #include "Core/ShellMeshComponent.h"
 
 // 外部资源类型
+// 外部リソースの種類
 enum EMeshLoadAssetType
 {
 	MESH_OBJ,

@@ -3,6 +3,7 @@
 #include "Core/EditorBase.h"
 
 // 编辑器引擎
+// エディタエンジン
 class CEditorEngine
 	:public CEngine
 	, public FEditorBase

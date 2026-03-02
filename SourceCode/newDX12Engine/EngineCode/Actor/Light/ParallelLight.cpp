@@ -14,6 +14,5 @@ void GParallelLight::Tick(float DeltaTime)
 	v3.y -= DeltaTime * 30.f;
 	//v3.z += DeltaTime * 100.f;
 
-	//叠加
 	SetRotation(v3);
 }

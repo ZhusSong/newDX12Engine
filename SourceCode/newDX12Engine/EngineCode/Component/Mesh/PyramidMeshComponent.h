@@ -1,5 +1,4 @@
-﻿// 25.6.6 李
-#pragma once
+﻿#pragma once
 #include "Core/ShellMeshComponent.h"
 #include "../../Mesh/Core/MeshType.h"
 

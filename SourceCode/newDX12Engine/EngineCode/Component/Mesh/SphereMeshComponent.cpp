@@ -11,7 +11,8 @@ void CSphereMeshComponent::CreateMesh(FMeshRenderingData& MeshData, float InRadi
 	float ThetaValue = XM_2PI / InHeightSubdivision;
 	float BetaValue = XM_PI / InAxialSubdivision;
 
-	//添加顶部
+	// 添加顶部
+	// 上部を追加
 	MeshData.VertexData.push_back(FVertex(
 		XMFLOAT3(0.f, InRadius, 0.f), XMFLOAT4(Colors::Red),
 		bReverse ? XMFLOAT3(0.0f, -1.0f, 0.0f) : XMFLOAT3(0.0f, 1.0f, 0.0f),
@@ -25,7 +26,8 @@ void CSphereMeshComponent::CreateMesh(FMeshRenderingData& MeshData, float InRadi
 		{
 			float Theta = j * ThetaValue;
 
-			//球面坐标转为笛卡尔坐标
+			// 球面坐标转为笛卡尔坐标
+			// 球面座標をデカルト座標に変換
 			MeshData.VertexData.push_back(FVertex(
 				XMFLOAT3(
 					InRadius * sinf(Beta) * cosf(Theta),//x
@@ -36,11 +38,13 @@ void CSphereMeshComponent::CreateMesh(FMeshRenderingData& MeshData, float InRadi
 			int TopIndex = MeshData.VertexData.size() - 1;
 			FVertex& InVertex = MeshData.VertexData[TopIndex];
 
-			//存储位置
+			// 存储位置
+			// 位置を格納
 			XMVECTOR Pos = XMLoadFloat3(&InVertex.Position);
 			XMStoreFloat3(&InVertex.Normal, XMVector3Normalize(Pos));
 
-			//U方向的切线
+			// U方向的切线
+			// U方向の接線
 			InVertex.UTangent.x = -InRadius * sinf(Beta) * sinf(Theta);
 			InVertex.UTangent.y = 0.f;
 			InVertex.UTangent.z = InRadius * sinf(Beta) * cosf(Theta);
@@ -48,19 +52,22 @@ void CSphereMeshComponent::CreateMesh(FMeshRenderingData& MeshData, float InRadi
 			InVertex.TexCoord.x = Theta / XM_2PI;
 			InVertex.TexCoord.y = Beta / XM_PI;
 
-			//存储切线
+			// 存储切线
+			// 接線を格納
 			XMVECTOR Tangent = XMLoadFloat3(&InVertex.UTangent);
 			XMStoreFloat3(&InVertex.UTangent, XMVector3Normalize(Tangent));
 		}
 	}
 
-	//添加底部
+	// 添加底部
+	// 下部を追加
 	MeshData.VertexData.push_back(FVertex(
 		XMFLOAT3(0.f, -InRadius, 0.f), XMFLOAT4(Colors::Red),
 		bReverse ? XMFLOAT3(0.0f, 1.0f, 0.0f) : XMFLOAT3(0.0f, -1.0f, 0.0f),
 		XMFLOAT2(0.f, 0.5f)));
 
-	//绘制北极
+	// 绘制顶部
+	// 上部を描画
 	for (uint32_t Index = 0; Index <= InAxialSubdivision; ++Index)
 	{
 		if (bReverse)
@@ -80,8 +87,9 @@ void CSphereMeshComponent::CreateMesh(FMeshRenderingData& MeshData, float InRadi
 	float BaseIndex = 1;
 	float VertexCircleNum = InAxialSubdivision + 1;
 
-	//绘制腰围
-	for (uint32_t i = 0; i < InHeightSubdivision - 1; ++i)//减去1
+	// 绘制腰围
+	// ウエスト部分を描画
+	for (uint32_t i = 0; i < InHeightSubdivision - 1; ++i)
 	{
 		for (uint32_t j = 0; j < InAxialSubdivision; ++j)
 		{
@@ -93,7 +101,9 @@ void CSphereMeshComponent::CreateMesh(FMeshRenderingData& MeshData, float InRadi
 		}
 	}
 
-	//绘制南极
+
+	// 绘制底部
+	// 底面の描画
 	uint32_t SouthBaseIndex = MeshData.VertexData.size() - 1;
 	BaseIndex = SouthBaseIndex - VertexCircleNum;
 	for (uint32_t Index = 0; Index < InAxialSubdivision; ++Index)

@@ -1,5 +1,4 @@
-﻿// 25.5.30 李 点光源
-#pragma once
+﻿#pragma once
 #include "Core/RangeLight.h"
 
 //G -> Game

@@ -8,9 +8,11 @@ CCylinderMeshComponent::CCylinderMeshComponent()
 
 void CCylinderMeshComponent::CreateMesh(FMeshRenderingData& MeshData, float InTopRadius, float InBottomRadius, float InHeight, uint32_t InAxialSubdivision, uint32_t InHeightSubdivision)
 {
-	//半径间隔
+	// 半径间隔
+	// 半径の間隔
 	float RadiusInterval = (InTopRadius - InBottomRadius) / InHeightSubdivision;
-	//高度间隔
+	// 高度间隔
+	// 高さの間隔
 	float HeightInterval = InHeight / InHeightSubdivision;
 
 	float BetaValue = XM_2PI / (float)InAxialSubdivision;
@@ -42,7 +44,8 @@ void CCylinderMeshComponent::CreateMesh(FMeshRenderingData& MeshData, float InTo
 			XMVECTOR N = XMVector3Normalize(XMVector3Cross(T, B));
 			XMStoreFloat3(&MyVertex.Normal, N);
 
-			//展UV
+			// 展UV
+			// UVを展開
 			MyVertex.TexCoord.x = (float)j / (float)InHeightSubdivision;
 			MyVertex.TexCoord.y = (float)i / (float)InAxialSubdivision;
 		}
@@ -50,14 +53,10 @@ void CCylinderMeshComponent::CreateMesh(FMeshRenderingData& MeshData, float InTo
 
 	float VertexCircleNum = InAxialSubdivision;
 
-	//绘制腰围
 	for (uint32_t i = 0; i < InHeightSubdivision + 1; ++i)
 	{
 		for (uint32_t j = 0; j < InAxialSubdivision; ++j)
 		{
-			//我们绘制的是四边形
-			// 
-			// 法线远离摄像机
 			//三角形1
 			//MeshData.IndexData.push_back(i * VertexCircleNum + j);
 			//MeshData.IndexData.push_back((i + 1 )* VertexCircleNum + j);
@@ -69,19 +68,21 @@ void CCylinderMeshComponent::CreateMesh(FMeshRenderingData& MeshData, float InTo
 			//MeshData.IndexData.push_back(i * VertexCircleNum + j + 1);
 
 			// 法线朝向自己
-			//三角形1
-			MeshData.IndexData.push_back((i + 1) * VertexCircleNum + j + 1);//C
-			MeshData.IndexData.push_back((i + 1) * VertexCircleNum + j);//B
-			MeshData.IndexData.push_back(i * VertexCircleNum + j);//A
+			// 法線が自分自身を向く
+			// 三角形1
+			MeshData.IndexData.push_back((i + 1) * VertexCircleNum + j + 1); // C
+			MeshData.IndexData.push_back((i + 1) * VertexCircleNum + j);     // B
+			MeshData.IndexData.push_back(i * VertexCircleNum + j);           // A
 
-			//三角形2
-			MeshData.IndexData.push_back(i * VertexCircleNum + j + 1);//D
-			MeshData.IndexData.push_back((i + 1) * VertexCircleNum + j + 1);//C
-			MeshData.IndexData.push_back(i * VertexCircleNum + j);//A
+			// 三角形2
+			MeshData.IndexData.push_back(i * VertexCircleNum + j + 1);       // D
+			MeshData.IndexData.push_back((i + 1) * VertexCircleNum + j + 1); // C
+			MeshData.IndexData.push_back(i * VertexCircleNum + j);           // A
 		}
 	}
 
-	//构建顶部
+	// 构建顶部
+	// 上部を構築
 	if (1)
 	{
 		uint32_t Index = MeshData.VertexData.size();
@@ -102,14 +103,17 @@ void CCylinderMeshComponent::CreateMesh(FMeshRenderingData& MeshData, float InTo
 			FVertex& MyVertex = MeshData.VertexData[MeshData.VertexData.size() - 1];
 
 			//展UV
+			// UVを展開
 			MyVertex.TexCoord.x = RCos;
 			MyVertex.TexCoord.y = RSin;
 		}
 
-		//添加中点
+		// 添加中点
+		// 中心点を追加
 		MeshData.VertexData.push_back(FVertex(XMFLOAT3(0.f, Y, 0.f), XMFLOAT4(Colors::White), XMFLOAT3(0.f, 1.f, 0.f)));
 
-		//绘制index模型
+		// 绘制index模型
+		// インデックスモデルを描画
 		float CenterPoint = MeshData.VertexData.size() - 1;
 		for (uint32_t i = 0; i < InAxialSubdivision; ++i)
 		{
@@ -119,7 +123,8 @@ void CCylinderMeshComponent::CreateMesh(FMeshRenderingData& MeshData, float InTo
 		}
 	}
 
-	//构建底部
+	// 构建底部
+	// 下部を構築
 	if (1)
 	{
 		uint32_t Index = MeshData.VertexData.size();
@@ -139,15 +144,18 @@ void CCylinderMeshComponent::CreateMesh(FMeshRenderingData& MeshData, float InTo
 
 			FVertex& MyVertex = MeshData.VertexData[MeshData.VertexData.size() - 1];
 
-			//展UV
+			// 展UV
+			// UVを展開
 			MyVertex.TexCoord.x = RCos;
 			MyVertex.TexCoord.y = RSin;
 		}
 
-		//添加中点
+		// 添加中点
+		// 中心点を追加
 		MeshData.VertexData.push_back(FVertex(XMFLOAT3(0.f, Y, 0.f), XMFLOAT4(Colors::White), XMFLOAT3(0.f, -1.f, 0.f)));
 
-		//绘制index模型
+		// 绘制index模型
+		// インデックスモデルを描画
 		float CenterPoint = MeshData.VertexData.size() - 1;
 		for (uint32_t i = 0; i < InAxialSubdivision; ++i)
 		{

@@ -1,4 +1,5 @@
 ﻿// 灯光常量缓冲区
+// ライト用定数バッファ
 #include "LightConstantBuffer.h"
 #include "LightType.h"
 #include "../../../Math/EngineMath.h"

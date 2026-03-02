@@ -1,5 +1,4 @@
-﻿// 25.5.29 李 灯光actor
-#pragma once
+﻿#pragma once
 #include "../../Core/ActorObject.h"
 
 class CLightComponent;

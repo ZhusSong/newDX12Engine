@@ -15,18 +15,22 @@ void GetRaycastDataByLocal(
 {
 
 	// 转模型局部
+	// モデルのローカル空間へ変換する
 	XMMATRIX WorldMatrix = XMLoadFloat4x4(&InRenderingData->WorldMatrix);
 	XMVECTOR WorldMatrixDeterminant = XMMatrixDeterminant(WorldMatrix);
 	XMMATRIX WorldMatrixInverse = XMMatrixInverse(&WorldMatrixDeterminant, WorldMatrix);
 
 	// 局部矩阵
+	// ローカル行列
 	XMMATRIX LocalMatrix = XMMatrixMultiply(ViewInverseMatrix, WorldMatrixInverse);
 
 	// 局部空间的射线点位置
+	// ローカル空間におけるレイの原点位置
 	OutLocalOriginPoint = XMVector3TransformCoord(OriginPoint, LocalMatrix);
 	OutLocalDirection = XMVector3TransformNormal(Direction, LocalMatrix);
 
 	// 单位化
+	// 正規化
 	OutLocalDirection = XMVector3Normalize(OutLocalDirection);
 }
 
@@ -61,6 +65,7 @@ bool FCollisionSceneQuery::RaycastSingle(
 			XMVECTOR LocalDirection;
 
 			// 转为局部坐标
+			// ローカル座標へ変換する
 			GetRaycastDataByLocal(
 				InRenderingData,
 				OriginPoint,
@@ -70,6 +75,7 @@ bool FCollisionSceneQuery::RaycastSingle(
 				LocalDirection);
 
 			// 射线是否可以和AABB相交
+			// レイがAABBと交差するかどうか
 			float BoundTime = 0.f;
 			if (InRenderingData->Bounds.Intersects(LocalOriginPoint, LocalDirection, BoundTime))
 			{
@@ -110,6 +116,7 @@ bool FCollisionSceneQuery::RaycastSingle(
 										}
 
 										// 拿到渲染数据
+										// レンダリングデータを取得する
 										OutResult.RenderingData = InRenderingData;
 									}
 								}
@@ -166,7 +173,8 @@ bool FCollisionSceneQuery::RaycastSingle(
 							OutResult.Time = BoundTime;
 							OutResult.Actor = InActorObject;
 
-							//拿到渲染数据
+							// 拿到渲染数据
+							// レンダリングデータを取得する
 							OutResult.RenderingData = InRenderingData;
 						}
 					}

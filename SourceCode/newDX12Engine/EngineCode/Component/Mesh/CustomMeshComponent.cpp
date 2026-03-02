@@ -16,22 +16,27 @@ CCustomMeshComponent::CCustomMeshComponent()
 
 void CCustomMeshComponent::CreateMesh(FMeshRenderingData& MeshData, string& InPath)
 {
-	// 获取文件路径
+	// 获取外部文件路径
+	// 外部ファイルパスを取得
 	// x.obj
 	char Buff[1024] = { 0 };
 	get_path_clean_filename(Buff, InPath.c_str());
 	if (find_string(Buff, ".obj", 0) != -1 ||
 		find_string(Buff, ".OBJ", 0) != -1)
 	{
-		//拿到文件大小
+		// 拿到文件大小
+		// ファイルサイズを取得
 		unsigned int FileSize = get_file_size_by_filename(InPath.c_str());
 
-		//根据文件大小创建buff
+		// 根据文件大小创建buff
+		// ファイルサイズに基づいてバッファを作成
 		char* Buff = new char[FileSize + 1];
-		//必须要初始化
+		// 必须要初始化
+		// 初期化が必要
 		memset(Buff, 0, FileSize + 1);
 
-		//提取buff
+		// 提取buff
+		// バッファを取得
 		get_file_buf(InPath.c_str(), Buff);
 
 		if (!LoadObjFromBuff(Buff, FileSize, MeshData))
@@ -63,7 +68,8 @@ bool CCustomMeshComponent::LoadObjFromBuff(char* InBuff, uint32_t InBuffSize, FM
 		{
 			memset(TmpLine, 0, 256);
 
-			//读取一行数据
+			// 读取一行数据
+			// 1行分のデータを読み込む
 			BuffStream.getline(TmpLine, 256);
 			if (strlen(TmpLine) > 0)
 			{
@@ -74,23 +80,24 @@ bool CCustomMeshComponent::LoadObjFromBuff(char* InBuff, uint32_t InBuffSize, FM
 
 					if (TmpLine[1] == 'n')
 					{
-						//以后再写
 					}
 					else if (TmpLine[1] == 't')
 					{
-						//以后再写
 					}
 					else
 					{
-						//先添加一个
+						// 先添加一个
+						// まず1つ追加
 						MeshData.VertexData.push_back(FVertex(
 							XMFLOAT3(), XMFLOAT4(Colors::White)));
 
-						//拿到添加后的位置
+						// 拿到添加后的位置
+						// 追加後の位置を取得
 						int TopIndex = MeshData.VertexData.size() - 1;
 						XMFLOAT3& Float3InPos = MeshData.VertexData[TopIndex].Position;
 
-						//解析了位置
+						// 解析了位置
+						// 位置を解析
 						LineStream >> Float3InPos.x;
 						LineStream >> Float3InPos.y;
 						LineStream >> Float3InPos.z;
@@ -106,24 +113,28 @@ bool CCustomMeshComponent::LoadObjFromBuff(char* InBuff, uint32_t InBuffSize, FM
 					for (size_t i = 0; i < 3; i++)
 					{
 						memset(SaveLineString, 0, 256);
-
-						//输入一行数据
+						// 输入一行数据
+						// 1行のデータを入力
 						LineStream >> SaveLineString;
 
-						//找到索引的位置
+						// 找到索引的位置
+						// インデックスの位置を見つける
 						int StringPosA = find_string(SaveLineString, "/", 0);
 						memset(TmpBuff, 0, 256);
 						char* VPosIndex = string_mid(SaveLineString, TmpBuff, 0, StringPosA);
 
-						//放到索引容器里面
+						// 放到索引容器里面
+						// インデックスコンテナに格納
 						MeshData.IndexData.push_back(atoi(VPosIndex) - 1);
 
-						//纹理Index
+						// 纹理Index
+						// テクスチャインデックス
 						int StringPosB = find_string(SaveLineString, "/", StringPosA + 1);
 						memset(TmpBuff, 0, 256);
 						char* TexcoordIndex = string_mid(SaveLineString, TmpBuff, StringPosA + 1, StringPosB - (StringPosA + 1));
 
-						//法线index
+						// 法线index
+						// 法線インデックス
 						memset(TmpBuff, 0, 256);
 						char* NormalIndex = string_mid(SaveLineString, TmpBuff, StringPosB + 1, strlen(SaveLineString) - (StringPosB + 1));
 					}
@@ -180,6 +191,7 @@ bool CCustomMeshComponent::LoadFBXFromBuff(const string& InPath, FMeshRenderingD
 			}
 
 			// 索引
+			// インデックス
 			MeshData.IndexData = MeshTmp.IndexData;
 		}
 	}

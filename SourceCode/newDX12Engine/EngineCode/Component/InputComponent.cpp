@@ -2,6 +2,7 @@
 #include "Input/Input.h"
 
 // 绑定代理函数
+// デリゲート関数をバインド
 void CInputComponent::BeginInit()
 {
 	LMouseDownDelegate.AddFunction(this, &CInputComponent::OnLeftMouseButtonDown);
@@ -15,9 +16,11 @@ void CInputComponent::BeginInit()
 	MousesWheelsDelegate.AddFunction(this, &CInputComponent::OnMouseWheel);
 }
 // 每帧运行
+// 毎フレーム実行
 void CInputComponent::Tick(float DeltaTime)
 {
 	// 检测是否进行了键盘事件的绑定
+	// キーボードイベントがバインドされているかをチェック
 	if (CaptureKeyboardInforDelegate.IsBound())
 	{
 		FInputKey InputKey;
@@ -66,6 +69,7 @@ void CInputComponent::Tick(float DeltaTime)
 	}
 }
 // 鼠标左键按下时
+// マウス左ボタンが押された時
 void CInputComponent::OnLeftMouseButtonDown(int X, int Y)
 {
 	if (OnLMouseButtonDownDelegate.IsBound())
@@ -90,6 +94,7 @@ void CInputComponent::OnRightMouseButtonDown(int X, int Y)
 }
 
 // 鼠标抬起时
+// マウスボタンを離した時
 void CInputComponent::OnRightMouseButtonUp(int X, int Y)
 {
 	if (OnRMouseButtonUpDelegate.IsBound())
@@ -99,6 +104,7 @@ void CInputComponent::OnRightMouseButtonUp(int X, int Y)
 }
 
 // 鼠标抬起时
+// マウスボタンを離した時
 void CInputComponent::OnMouseMove(int X, int Y)
 {
 	if (OnMouseMoveDelegate.IsBound())
@@ -106,8 +112,8 @@ void CInputComponent::OnMouseMove(int X, int Y)
 		OnMouseMoveDelegate.Execute((int)X, (int)Y);
 	}
 }
-
 // 滚轮滚动时
+// マウスホイールがスクロールされた時
 void CInputComponent::OnMouseWheel(int X, int Y, float InDelta)
 {
 	if (OnMouseWheelDelegate.IsBound())

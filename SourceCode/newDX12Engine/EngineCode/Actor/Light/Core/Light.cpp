@@ -1,5 +1,4 @@
-﻿// 25.5.29 李 灯光actor
-#include "Light.h"
+﻿#include "Light.h"
 #include "../../../Component/Light/Core/LightComponent.h"
 
 GLight::GLight()

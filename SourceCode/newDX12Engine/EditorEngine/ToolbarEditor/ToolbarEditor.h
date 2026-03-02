@@ -1,5 +1,4 @@
-﻿// 25.7.7 李
-#pragma once
+﻿#pragma once
 #include "../Core/EditorBase.h"
 
 class FToolbarEditor :public FEditorBase

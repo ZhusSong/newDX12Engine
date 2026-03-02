@@ -1,5 +1,4 @@
-﻿// 25.5.16 李
-#pragma once
+﻿#pragma once
 #include "Core/ShellMeshComponent.h"
 
 class CCylinderMeshComponent :public CShellMeshComponent

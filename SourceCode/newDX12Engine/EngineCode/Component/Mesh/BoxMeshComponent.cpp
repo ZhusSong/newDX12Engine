@@ -14,42 +14,49 @@ void CBoxMeshComponent::CreateMesh(FMeshRenderingData& MeshData, float InHeight,
 	float CDepth = 0.5f * InDepth;
 
 	// 前面点
+	// 前面の頂点
 	MeshData.VertexData.push_back(FVertex(XMFLOAT3(-CWidth, -CHeight, -CDepth), XMFLOAT4(Colors::White), XMFLOAT3(0.0f, 0.0f, -1.0f), XMFLOAT2(0.0f, 1.0f)));
 	MeshData.VertexData.push_back(FVertex(XMFLOAT3(-CWidth, +CHeight, -CDepth), XMFLOAT4(Colors::White), XMFLOAT3(0.0f, 0.0f, -1.0f), XMFLOAT2(0.0f, 0.0f)));
 	MeshData.VertexData.push_back(FVertex(XMFLOAT3(+CWidth, +CHeight, -CDepth), XMFLOAT4(Colors::White), XMFLOAT3(0.0f, 0.0f, -1.0f), XMFLOAT2(1.0f, 0.0f)));
 	MeshData.VertexData.push_back(FVertex(XMFLOAT3(+CWidth, -CHeight, -CDepth), XMFLOAT4(Colors::White), XMFLOAT3(0.0f, 0.0f, -1.0f), XMFLOAT2(1.0f, 1.0f)));
 
 	// 后面点
+	// 後面の頂点
 	MeshData.VertexData.push_back(FVertex(XMFLOAT3(-CWidth, -CHeight, +CDepth), XMFLOAT4(Colors::White), XMFLOAT3(0.0f, 0.0f, 1.0f), XMFLOAT2(1.0f, 1.0f)));
 	MeshData.VertexData.push_back(FVertex(XMFLOAT3(+CWidth, -CHeight, +CDepth), XMFLOAT4(Colors::White), XMFLOAT3(0.0f, 0.0f, 1.0f), XMFLOAT2(0.0f, 1.0f)));
 	MeshData.VertexData.push_back(FVertex(XMFLOAT3(+CWidth, +CHeight, +CDepth), XMFLOAT4(Colors::White), XMFLOAT3(0.0f, 0.0f, 1.0f), XMFLOAT2(0.0f, 0.0f)));
 	MeshData.VertexData.push_back(FVertex(XMFLOAT3(-CWidth, +CHeight, +CDepth), XMFLOAT4(Colors::White), XMFLOAT3(0.0f, 0.0f, 1.0f), XMFLOAT2(1.0f, 0.0f)));
 
 	// 上面点
+	// 上面の頂点
 	MeshData.VertexData.push_back(FVertex(XMFLOAT3(-CWidth, +CHeight, -CDepth), XMFLOAT4(Colors::White), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT2(0.0f, 1.0f)));
 	MeshData.VertexData.push_back(FVertex(XMFLOAT3(-CWidth, +CHeight, +CDepth), XMFLOAT4(Colors::White), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT2(0.0f, 0.0f)));
 	MeshData.VertexData.push_back(FVertex(XMFLOAT3(+CWidth, +CHeight, +CDepth), XMFLOAT4(Colors::White), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT2(1.0f, 0.0f)));
 	MeshData.VertexData.push_back(FVertex(XMFLOAT3(+CWidth, +CHeight, -CDepth), XMFLOAT4(Colors::White), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT2(1.0f, 1.0f)));
 
-	// 右面点
+	// 下面点
+	// 下側の頂点
 	MeshData.VertexData.push_back(FVertex(XMFLOAT3(-CWidth, -CHeight, -CDepth), XMFLOAT4(Colors::White), XMFLOAT3(0.0f, -1.0f, 0.0f), XMFLOAT2(1.0f, 1.0f)));
 	MeshData.VertexData.push_back(FVertex(XMFLOAT3(+CWidth, -CHeight, -CDepth), XMFLOAT4(Colors::White), XMFLOAT3(0.0f, -1.0f, 0.0f), XMFLOAT2(0.0f, 1.0f)));
 	MeshData.VertexData.push_back(FVertex(XMFLOAT3(+CWidth, -CHeight, +CDepth), XMFLOAT4(Colors::White), XMFLOAT3(0.0f, -1.0f, 0.0f), XMFLOAT2(0.0f, 0.0f)));
 	MeshData.VertexData.push_back(FVertex(XMFLOAT3(-CWidth, -CHeight, +CDepth), XMFLOAT4(Colors::White), XMFLOAT3(0.0f, -1.0f, 0.0f), XMFLOAT2(1.0f, 0.0f)));
 
 	// 左面点
+	// 左側の頂点
 	MeshData.VertexData.push_back(FVertex(XMFLOAT3(-CWidth, -CHeight, +CDepth), XMFLOAT4(Colors::White), XMFLOAT3(-1.0f, 0.0f, 0.0f), XMFLOAT2(0.0f, 1.0f)));
 	MeshData.VertexData.push_back(FVertex(XMFLOAT3(-CWidth, +CHeight, +CDepth), XMFLOAT4(Colors::White), XMFLOAT3(-1.0f, 0.0f, 0.0f), XMFLOAT2(0.0f, 0.0f)));
 	MeshData.VertexData.push_back(FVertex(XMFLOAT3(-CWidth, +CHeight, -CDepth), XMFLOAT4(Colors::White), XMFLOAT3(-1.0f, 0.0f, 0.0f), XMFLOAT2(1.0f, 0.0f)));
 	MeshData.VertexData.push_back(FVertex(XMFLOAT3(-CWidth, -CHeight, -CDepth), XMFLOAT4(Colors::White), XMFLOAT3(-1.0f, 0.0f, 0.0f), XMFLOAT2(1.0f, 1.0f)));
 
 	// 右面点
+	// 右側の頂点
 	MeshData.VertexData.push_back(FVertex(XMFLOAT3(+CWidth, -CHeight, -CDepth), XMFLOAT4(Colors::White), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT2(0.0f, 1.0f)));
 	MeshData.VertexData.push_back(FVertex(XMFLOAT3(+CWidth, +CHeight, -CDepth), XMFLOAT4(Colors::White), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT2(0.0f, 0.0f)));
 	MeshData.VertexData.push_back(FVertex(XMFLOAT3(+CWidth, +CHeight, +CDepth), XMFLOAT4(Colors::White), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT2(1.0f, 0.0f)));
 	MeshData.VertexData.push_back(FVertex(XMFLOAT3(+CWidth, -CHeight, +CDepth), XMFLOAT4(Colors::White), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT2(1.0f, 1.0f)));
 
 	// 绘制模型
+	// モデルを描画する
 	// 前面
 	MeshData.IndexData.push_back(0); MeshData.IndexData.push_back(1); MeshData.IndexData.push_back(2);
 	MeshData.IndexData.push_back(0); MeshData.IndexData.push_back(2); MeshData.IndexData.push_back(3);

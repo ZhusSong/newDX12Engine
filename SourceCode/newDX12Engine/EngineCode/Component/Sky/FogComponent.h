@@ -1,7 +1,5 @@
 ﻿#pragma once
 
-//25.6.16 李
-#pragma once
 
 #include "Component/Component.h"
 

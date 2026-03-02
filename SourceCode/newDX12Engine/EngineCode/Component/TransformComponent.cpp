@@ -1,7 +1,7 @@
 ﻿#include "TransformComponent.h"
 #include "../Math/EngineMath.h"
-
 // 初始化Transform组件
+// Transformコンポーネントを初期化
 CTransformComponent::CTransformComponent()
 	:Position(0.f, 0.f, 0.f)
 	, Rotation(0.f, 0.f, 0.f)
@@ -23,8 +23,8 @@ void CTransformComponent::SetRotation(const fvector_3d& InNewRotation)
 	float RollRadians = XMConvertToRadians(InNewRotation.z);
 	float PithRadians = XMConvertToRadians(InNewRotation.x);
 	float YawRadians = XMConvertToRadians(InNewRotation.y);
-
-	//旋转矩阵
+	// 旋转矩阵
+	// 回転行列
 	XMMATRIX RotationRollPitchYawMatrix = XMMatrixRotationRollPitchYaw(
 		PithRadians, YawRadians, RollRadians);
 
@@ -43,11 +43,13 @@ void CTransformComponent::SetRotation(const frotator& InNewRotation)
 	float PithRadians = XMConvertToRadians(InNewRotation.pitch);
 	float YawRadians = XMConvertToRadians(InNewRotation.yaw);
 
-	//旋转矩阵
+	// 旋转矩阵
+	// 回転行列
 	XMMATRIX RotationRollPitchYawMatrix = XMMatrixRotationRollPitchYaw(
 		PithRadians, YawRadians, RollRadians);
 
-	//还原为最原始的
+	// 还原为最原始的
+	// 元の状態に戻す
 	XMVECTOR Right = XMVectorSet(1.f, 0.f, 0.f, 0.f);
 	XMVECTOR Up = XMVectorSet(0.f, 1.f, 0.f, 0.f);
 	XMVECTOR Forward = XMVectorSet(0.f, 0.f, 1.f, 0.f);
@@ -111,8 +113,8 @@ frotator CTransformComponent::GetRotation() const
 		ForwardVector);
 
 	Rotator.inertia_to_object(RotatorMatrix);
-
 	// 转为DirectX的旋转矩阵
+	// DirectXの回転行列に変換
 	return EngineMath::ToDXRotator(Rotator);
 }
 
@@ -131,8 +133,8 @@ fquat CTransformComponent::GetRotationQuat() const
 
 	return Quat;
 }
-
 // 矫正位置矩阵
+// 位置補正行列
 void CTransformComponent::CorrectionVector()
 {
 	XMVECTOR Right = XMLoadFloat3(&RightVector);

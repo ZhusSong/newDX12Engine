@@ -10,7 +10,8 @@ extern int ActorSelected;
 void FOutLineEditor::BuildEditor()
 {
 }
-
+// 设置高亮的文本
+// テキストのハイライト
 void FOutLineEditor::DrawEditor(float DeltaTime)
 {
 	ImGui::Begin("OutLine");

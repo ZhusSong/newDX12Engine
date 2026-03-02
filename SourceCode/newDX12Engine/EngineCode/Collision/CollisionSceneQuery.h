@@ -5,12 +5,14 @@
 class CWorld;
 struct FCollisionSceneQuery
 {
-	// 忽略组件
+	// 是否忽略组件
+	// コンポーネントを無視するかどうか
 	static bool IsIgnoreComponents(
-		CComponent* InComponent, 
+		CComponent* InComponent,
 		const std::vector<CComponent*>& IgnoreComponents);
 
 	// 射线检测
+	// レイキャスト判定
 	static bool RaycastSingle(
 		CWorld* InWorld,
 		const XMVECTOR& OriginPoint,
