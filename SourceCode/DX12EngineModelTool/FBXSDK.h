@@ -10,6 +10,7 @@
 #define FBXASSETIMPORT_API __declspec(dllimport)
 #endif 
 // 2D向量
+// 2Dベクトル
 struct FFBXVector2
 {
 	FFBXVector2()
@@ -20,7 +21,8 @@ struct FFBXVector2
 	float Y;
 };
 
-//3D向量
+// 3D向量
+// 3Dベクトル
 struct FFBXVector3 :public FFBXVector2
 {
 	FFBXVector3()
@@ -31,7 +33,7 @@ struct FFBXVector3 :public FFBXVector2
 	float Z;
 };
 
-// 顶点
+// 頂点
 struct FBXASSETIMPORT_API FFBXVertex
 {
 	FFBXVector3 Position;
@@ -43,6 +45,7 @@ struct FBXASSETIMPORT_API FFBXVertex
 };
 
 // 三角图元信息
+// 三角形プリミティブ情報
 struct FBXASSETIMPORT_API FFBXTriangle
 {
 	FFBXTriangle()
@@ -54,6 +57,7 @@ struct FBXASSETIMPORT_API FFBXTriangle
 };
 
 // 网格数据
+// メッシュデータ
 struct FBXASSETIMPORT_API FFBXMesh
 {
 	FFBXMesh()
@@ -65,6 +69,7 @@ struct FBXASSETIMPORT_API FFBXMesh
 };
 
 // 材质数据
+// マテリアルデータ
 struct FBXASSETIMPORT_API FFBXMaterial
 {
 	std::string DiffuseMapFileName;
@@ -74,6 +79,7 @@ struct FBXASSETIMPORT_API FFBXMaterial
 };
 
 // 带材质的模型数据
+// マテリアル付きモデルデータ
 struct FBXASSETIMPORT_API FFBXModel
 {
 	std::vector<FFBXMesh> MeshData;
@@ -81,12 +87,14 @@ struct FBXASSETIMPORT_API FFBXModel
 };
 
 // FBX渲染数据
+// FBXレンダリングデータ
 struct FBXASSETIMPORT_API FFBXRenderData
 {
 	std::vector<FFBXModel> ModelData;
 };
 
 // SDK 版本
+// SDKバージョン
 struct FBXASSETIMPORT_API FFBXVersion
 {
 	int Major;

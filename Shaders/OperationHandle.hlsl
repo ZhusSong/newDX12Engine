@@ -1,4 +1,3 @@
-//25.8.15 李
 #include "Material.hlsli"
 
 struct MeshVertexIn

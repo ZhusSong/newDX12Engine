@@ -2,7 +2,8 @@
 #include "../CoreObjectMinimal.h"
 #include "../DX12EngineCoreObjectMacro.h"
 
-//提供一个对象的GUID
+// 提供一个对象的GUID
+// オブジェクトのGUIDを提供
 class RI_ENGINECOREOBJECT_API IGuidInterface
 {
 public:

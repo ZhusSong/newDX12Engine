@@ -24,6 +24,7 @@ void FDynamicShadowMap::UpdateCalculations(float DeltaTime, const FViewportInfo&
 	Super::UpdateCalculations(DeltaTime, ViewportInfo);
 
 	//更新视口
+	//ビューポートを更新
 	if (ShadowViewport)
 	{
 		for (size_t i = 0; i < GetLightManager()->GetLights().size(); i++)
@@ -42,8 +43,8 @@ void FDynamicShadowMap::UpdateCalculations(float DeltaTime, const FViewportInfo&
 				GeometryMap->UpdateCalculationsViewport(
 					DeltaTime,
 					ShadowViewportInfo,
-					GeometryMap->GetDynamicReflectionViewportNum() + //动态反射的摄像机
-					1);//主视口
+					GeometryMap->GetDynamicReflectionViewportNum() + //动态反射的摄像机  //動的反射用のカメラ
+					1);//主视口     //メインビューポート
 			}
 		}
 	}
@@ -81,6 +82,8 @@ void FDynamicShadowMap::Draw(float DeltaTime)
 
 					// 需要每帧执行
 					// 绑定矩形框
+					// 毎フレーム実行が必要
+					// 矩形ボックスをバインド
 					auto RenderTargetViewport = InRenderTarget->GetViewport();
 					auto RenderTargetScissorRect = InRenderTarget->GetScissorRect();
 					GetGraphicsCommandList()->RSSetViewports(1, &RenderTargetViewport);
@@ -89,12 +92,14 @@ void FDynamicShadowMap::Draw(float DeltaTime)
 					UINT CBVSize = GeometryMap->ViewportConstantBufferViews.GetConstantBufferByteSize();
 
 					// 清除深度模板缓冲区
+					// 深度バッファーをクリア
 					GetGraphicsCommandList()->ClearDepthStencilView(
 						InRenderTarget->DSVDes,
 						D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL,
 						1.f, 0, 0, NULL);
 
 					// 输出的合并阶段
+					// 出力のマージフェーズ
 					GetGraphicsCommandList()->OMSetRenderTargets(0,
 						nullptr,
 						false,
@@ -102,8 +107,8 @@ void FDynamicShadowMap::Draw(float DeltaTime)
 
 					auto ViewprotAddr = GeometryMap->ViewportConstantBufferViews.GetBuffer()->GetGPUVirtualAddress();
 					ViewprotAddr += (
-						1 + //主摄像机
-						GeometryMap->GetDynamicReflectionViewportNum()) //反射摄像机
+						1 + //主摄像机   //メインカメラ
+						GeometryMap->GetDynamicReflectionViewportNum()) //反射摄像机  //反射用カメラ
 						* CBVSize;
 
 					GetGraphicsCommandList()->SetGraphicsRootConstantBufferView(1, ViewprotAddr);
@@ -174,7 +179,6 @@ void FDynamicShadowMap::BuildParallelLightMatrix(
 	float InRadius)
 {
 	// ShadowViewport
-	// 构建ViewMatrix
 	fvector_3d ViewPosition = (InDirection * -InRadius);
 	ShadowViewport->SetPosition(XMFLOAT3(ViewPosition.x, ViewPosition.y, ViewPosition.z));
 	ShadowViewport->FaceTarget(ViewPosition, InTargetPosition, fvector_3d(0.f, 1.f, 0.f));
@@ -182,6 +186,7 @@ void FDynamicShadowMap::BuildParallelLightMatrix(
 	BuildViewMatrix(0.3f);
 
 	// 构建ProjMatrix
+	// ProjMatrixを構築
 	ShadowViewport->BuildOrthographicOffCenterLHMatrix(InRadius, InTargetPosition);
 }
 
@@ -191,6 +196,7 @@ void FDynamicShadowMap::BuildSpotLightMatrix(
 {
 	// ShadowViewport
 	// 构建ViewMatrix
+	// ViewMatrixを構築
 	fvector_3d ViewPosition = (InDirection * -InRadius);
 	ShadowViewport->SetPosition(XMFLOAT3(InPosition.x, InPosition.y, InPosition.z));
 	ShadowViewport->FaceTarget(InPosition, ViewPosition, fvector_3d(0.f, 1.f, 0.f));
@@ -198,6 +204,7 @@ void FDynamicShadowMap::BuildSpotLightMatrix(
 	BuildViewMatrix(0.3f);
 
 	// 构建ProjMatrix
+	// ProjMatrixを構築
 	ShadowViewport->SetFrustum(0.9f * XM_PI, 1.f, 0.1f, InRadius);
 }
 
@@ -218,10 +225,12 @@ void FDynamicShadowMap::BuildViewport(const fvector_3d& InCenterPoint)
 void FDynamicShadowMap::BuildDepthStencilDescriptor()
 {  
 	// 确保描述符堆已创建且有效
+	// 記述子ヒープが作成され、有効であることを確認
 	if (!GetDSVHeap())
 	{
 		Engine_Log("需要先创建描述符堆");
 		// 需要先创建描述符堆
+		// まず記述子ヒープを作成する必要があります
 		return;
 	}
 	UINT DescriptorHandleIncrementSize = GetD3dDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV);
@@ -231,7 +240,7 @@ void FDynamicShadowMap::BuildDepthStencilDescriptor()
 
 		InRenderTarget->DSVDes = CD3DX12_CPU_DESCRIPTOR_HANDLE(
 			GetDSVHeap()->GetCPUDescriptorHandleForHeapStart(),
-			1 + //主视口的 DSV
+			1 + //主视口的 DSV      //メインビューポートのDSV
 			1, //CubeMap DSV
 			DescriptorHandleIncrementSize);
 	}
@@ -258,6 +267,7 @@ void FDynamicShadowMap::BuildRenderTargetSRV()
 	if (FShadowMapRenderTarget* InRenderTarget = dynamic_cast<FShadowMapRenderTarget*>(RenderTarget.get()))
 	{
 		// 创建Shadow常量缓冲区
+		// シャドウ定数バッファを作成
 		InRenderTarget->CPUShaderResourceView =
 			CD3DX12_CPU_DESCRIPTOR_HANDLE(CPUSRVDesHeapStart,
 				ShadowMapOffset,//

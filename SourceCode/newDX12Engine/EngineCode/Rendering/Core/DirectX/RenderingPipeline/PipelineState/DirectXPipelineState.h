@@ -5,6 +5,7 @@
 #include "../RenderingPipelineType.h"
 
 // 渲染流水线状态
+// レンダリングパイプラインのステート
 struct FDirectXPipelineState :public IDirectXDeviceInterface_Struct
 {
 public:
@@ -15,35 +16,47 @@ public:
 	void PostDraw(float DeltaTime);
 
 	// 重置渲染流水线描述
+	// レンダリングパイプライン記述をリセットする
 	void ResetGPSDesc();
 
 	// 绑定输入布局
+	// 入力レイアウトをバインドする
 	void BindInputLayout(const D3D12_INPUT_ELEMENT_DESC* InInputElementDescs, UINT InSize);
 
 	// 绑定根签名
+	// ルートシグネチャをバインドする
 	void BindRootSignature(ID3D12RootSignature* InRootSignature);
 
 	// 绑定shader
+	// シェーダーをバインドする
 	void BindShader(const FShader& InVertexShader, const FShader& InPixelShader);
 
-	//构建参数
+	// 构建参数
+	// パラメータを構築する
 	void BuildParam();
 
-	//BuildPSO
+	// BuildPSO
+	// PSOを構築する
 	void Build(int InPSOType);
 
 	// 重置PSO
+	// PSOをリセットする
 	void ResetPSO(int InPSOType);
 
 	// 只供不透明层使用
+	// 不透明レイヤー専用
 	void ResetPSO();
+
 	// 提供线框渲染模式
+	// ワイヤーフレームレンダリングモードを提供する
 	void ResetPSO(bool bWireframe);
 
 	// 设置渲染模式
+	// レンダリングモードを設定する
 	void SetFillMode(bool bWireframe);
 
 	// 设置渲染目标
+	// レンダーターゲットを設定する
 	void SetRenderTarget(int Index, const D3D12_RENDER_TARGET_BLEND_DESC& InRenderTargetBlend);
 
 
@@ -51,6 +64,7 @@ public:
 	void SetDepthStencilState(const CD3DX12_DEPTH_STENCIL_DESC& InDepthStencilDesc);
 
 	// 将当前设置作为默认
+	// 現在の設定をデフォルトとして保存する
 	void SaveGPSDescAsDefault();
 
 public:
@@ -58,10 +72,12 @@ public:
 
 private:
 	//按键捕获
+	// キー入力をキャプチャする
 	void CaptureKeyboardKeys();
 
 private:
 	// 渲染流水线对象
+	// レンダリングパイプラインオブジェクト
 	unordered_map<int, ComPtr<ID3D12PipelineState>> PSO;
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC GPSDesc;
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC DefaultGPSDesc;

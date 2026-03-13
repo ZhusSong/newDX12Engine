@@ -3,6 +3,7 @@
 #include "../StaticSampler/StaticSamplerObject.h"
 
 // 默认根签名
+// デフォルトルートシグネチャ
 struct FDefaultDirectXRootSignature :public FDirectXRootSignature
 {
 private:

@@ -2,24 +2,28 @@
 struct Light
 {
     float3 LightIntensity;
-    float StartAttenuation;  // 聚光灯起始点
+    float StartAttenuation; // 聚光灯起始点   // スポットライトの開始点
 	
     float3 LightDirection;
-    float EndAttenuation;  // 聚光灯结束点
+    float EndAttenuation; // 聚光灯结束点    // スポットライトの終了点
 	
     float3 Position;
     int LightType;
 
     // 聚光灯内角
+    // スポットライトの内角
     float  ConicalInnerCorner;
     // 聚光灯外角
+    // スポットライトの外角
 	float  ConicalOuterCorner;
 
     // 后续添加
+    // 後で追加パラメータ
 	float xx1;
     float xx2;
     
-	//灯光视角
+	//　灯光视角
+    //　ライトの視点
     float4x4 ShadowTransform;
 };
 
@@ -42,6 +46,7 @@ float3 GetLightDirection(Light L, float3 InObjectWorldLocation)
 }
 
 // 计算距离衰减
+// 距離減衰を計算
 float4 AttenuationPointLights1(Light L,float Distance)
 {
     float4 LightStrength = float4(1.f, 1.f, 1.f, 1.f);
@@ -52,6 +57,7 @@ float4 AttenuationPointLights1(Light L,float Distance)
 }
 
 // 计算根据衰减因子的衰减
+// 減衰係数に基づく減衰を計算
 float4 AttenuationPointLights2(Light L,float Distance,float C,float I,float Q)
 {
     float4 LightStrength = float4(1.f, 1.f, 1.f, 1.f);
@@ -60,7 +66,7 @@ float4 AttenuationPointLights2(Light L,float Distance,float C,float I,float Q)
 
 float4 ComputeLightStrength(Light L,float3 InObjectPointNormal,float3 InObjectWorldLocation, float3 NormalizeLightDirection)
 {
-    // 平行光时
+    // 平行光
     if (L.LightType == 0)
     {
         return float4(1.f, 1.f, 1.f, 1.f) * float4(L.LightIntensity, 1.f);
@@ -105,12 +111,14 @@ float4 ComputeLightStrength(Light L,float3 InObjectPointNormal,float3 InObjectWo
 			else if (Theta1 <= L.ConicalOuterCorner)
 			{
 				// 线性插值计算
+                // 線形補間計算
                 float OuterInnerDistance = L.ConicalOuterCorner - L.ConicalInnerCorner;
                 float CurrentDistance = OuterInnerDistance - (Theta1 - L.ConicalInnerCorner);
 
                 return (CurrentDistance / OuterInnerDistance) * LightStrength;
 
 				// 平滑插值计算
+                // 滑らかな補間計算
 				//float spotlightFactor = smoothstep(L.ConicalOuterCorner, L.ConicalInnerCorner, Theta1);
 				//return spotlightFactor * LightStrength;
 

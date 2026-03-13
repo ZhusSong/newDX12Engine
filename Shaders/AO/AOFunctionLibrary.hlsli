@@ -4,6 +4,7 @@
 #include "AOCommon.hlsli"
 
 // 深度的逆运算
+// 深度の逆演算
 float DepthNdcSpaceToViewSpace(float InDepthNdc)
 {
     float B = ProjectionMatrix[3][2];

@@ -1,5 +1,4 @@
-﻿// 25.6.6 李
-#include "RenderingTextureResourcesUpdate.h"
+﻿#include "RenderingTextureResourcesUpdate.h"
 
 const wchar_t DDS[] = L".dds";
 const wchar_t Asset[] = L"/Asset/";
@@ -24,7 +23,8 @@ void FRenderingTextureResourcesUpdate::LoadTextureResources(const wstring& InFil
 
 	MyTexture->Name = Filename;
 
-	//读取DDS数据
+	// 读取DDS数据
+	// DDSデータを読み込む
 	CreateDDSTextureFromFile12(
 		GetD3dDevice().Get(),
 		GetGraphicsCommandList().Get(),
@@ -64,6 +64,7 @@ void FRenderingTextureResourcesUpdate::BuildTextureConstantBuffer(ID3D12Descript
 	for (auto& Tmp : TexturesMapping)
 	{
 		// 根据类型初始化对应贴图
+		// タイプに応じて対応するテクスチャを初期化する
 		ResetTextureByType(&Tmp.second);
 
 		GetD3dDevice()->CreateShaderResourceView(
@@ -85,9 +86,9 @@ void FRenderingTextureResourcesUpdate::BuildParam()
 void FRenderingTextureResourcesUpdate::ResetTextureByType(std::unique_ptr<FRenderingTexture>* InTexture)
 {
 	// 确定当前格式
+	// 現在のフォーマットを決定する
 	ShaderResourceViewDesc.Format = (*InTexture)->Data->GetDesc().Format;
 
-	// 注册
 	switch (ShaderResourceViewDesc.ViewDimension)
 	{
 	case D3D12_SRV_DIMENSION_TEXTURE2D:
@@ -120,6 +121,7 @@ std::unique_ptr<FRenderingTexture>* FRenderingTextureResourcesUpdate::FindRender
 	if (!InKey.empty())
 	{
 		// 宽字符转化
+		// ワイド文字変換
 		const char* InString = InKey.c_str();
 		wchar_t TexturePath[1024] = { 0 };
 
@@ -133,17 +135,17 @@ std::unique_ptr<FRenderingTexture>* FRenderingTextureResourcesUpdate::FindRender
 		{
 			for (auto& Tmp : TexturesMapping)
 			{
-				if (Tmp.second->Filename == TexturePath)//路径
+				if (Tmp.second->Filename == TexturePath)
 				{
 					return &Tmp.second;
 				}
 
-				if (Tmp.second->AssetFilename == TexturePath)//资源路径
+				if (Tmp.second->AssetFilename == TexturePath)
 				{
 					return &Tmp.second;
 				}
 
-				if (Tmp.second->SimpleAssetFilename == TexturePath)//简单的资源路径
+				if (Tmp.second->SimpleAssetFilename == TexturePath)
 				{
 					return &Tmp.second;
 				}

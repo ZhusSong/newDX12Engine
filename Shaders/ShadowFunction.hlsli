@@ -4,6 +4,7 @@
 #include "ShaderCommon.hlsli"
 
 // 直接采样 有锯齿
+// 直接サンプリング ジャギーあり
 float GetShadowFactor(float4 InWorldPosition, float4x4 InShadowMatrix)
 {
     float4 ShadowPointHome = mul(InWorldPosition, InShadowMatrix);
@@ -13,6 +14,7 @@ float GetShadowFactor(float4 InWorldPosition, float4x4 InShadowMatrix)
 }
 
 // 直接采样 有锯齿 有透视
+// 直接サンプリング ジャギーあり 透視あり
 float GetShadowFactorByDirectSample(float4 InWorldPosition, float4x4 InShadowMatrix)
 {
     float4 ShadowPointHome = mul(InWorldPosition, InShadowMatrix);
@@ -20,6 +22,7 @@ float GetShadowFactorByDirectSample(float4 InWorldPosition, float4x4 InShadowMat
 }
 
 // 四个样本PCF采样 有模糊的锯齿
+// 4サンプルPCFサンプリング ぼやけたジャギーあり
 float GetShadowFactor_PCF_Sample4(float4 InWorldPosition, float4x4 InShadowMatrix)
 {
     uint Width = 0;
@@ -46,6 +49,7 @@ float GetShadowFactor_PCF_Sample4(float4 InWorldPosition, float4x4 InShadowMatri
     float R4 = ShadowDepth <= S4;
 
 	// 转到纹素空间
+    // テクセル空間に変換
     float2 TexelsPosition = frac(Width * ShadowPointHome.xy);
 
     return lerp(
@@ -55,6 +59,7 @@ float GetShadowFactor_PCF_Sample4(float4 InWorldPosition, float4x4 InShadowMatri
 }
 
 // 九个点的PCF采样
+// 9点のPCFサンプリング
 float GetShadowFactor_PCF_Sample9(float4 InWorldPosition, float4x4 InShadowMatrix)
 {
     float4 ShadowPointHome = mul(InWorldPosition, InShadowMatrix);
@@ -87,6 +92,7 @@ float GetShadowFactor_PCF_Sample9(float4 InWorldPosition, float4x4 InShadowMatri
     }
 
     // 添加max限制，以增加阴影细节
+    // 最大値制限を追加して、シャドウのディテールを向上
     return max(R / 9.f,0.5f);
 }
 
@@ -105,7 +111,8 @@ float ProcessingOmnidirectionalSampleCmpLevelZeroCubeMapShadow(float4 InWorldPos
     return SimpleShadowCubeMap.SampleCmpLevelZero(ShadowSampler, float4(LightView, 1.f), ShadowDepth).r;
 }
 
-//笛卡尔转球面
+//　笛卡尔转球面
+//　デカルト座標から球面座標へ変換
 float3 GetPointSphericalCoordinates(float3 InPoint)
 {
     float AnglePre = (180.f / 3.1415926f);
@@ -137,7 +144,7 @@ bool IsAngleAxisRange(
     float InCriticalValue,
     bool bComMin)
 {
-    if (bComMin) //比小
+    if (bComMin) 
     {
         if (InAngle > InCriticalValue)
         {
@@ -249,12 +256,12 @@ struct FCubeMapAxialRangeR
 int GetSampleCubeMapIndexR(float3 InPointPosition)
 {
     FCubeMapAxialRangeR CubeMapAxialRangeRight;
-    CubeMapAxialRangeRight.PositiveX = float4(45.f, 135.f, 45.f, -45.f); //fai 属于 0-45  0--45
-    CubeMapAxialRangeRight.NegativeX = float4(45.f, 135.f, 135.f, -135.f); //fail 属于 135-180 -135--180 //确保它已经转为CubeMapViewport下的坐标
-    CubeMapAxialRangeRight.PositiveY = float4(0.f, 45.f, 360.f, -360.f); //theta 属于 0-45 //转为球面坐标
-    CubeMapAxialRangeRight.NegativeY = float4(135.f, 180.f, 360.f, -360.f); //theta 属于 135-180 float3 Point = GetPointSphericalCoordinates(InPointPosition);
+    CubeMapAxialRangeRight.PositiveX = float4(45.f, 135.f, 45.f, -45.f);
+    CubeMapAxialRangeRight.NegativeX = float4(45.f, 135.f, 135.f, -135.f); 
+    CubeMapAxialRangeRight.PositiveY = float4(0.f, 45.f, 360.f, -360.f); 
+    CubeMapAxialRangeRight.NegativeY = float4(135.f, 180.f, 360.f, -360.f); 
     CubeMapAxialRangeRight.PositiveZ = float4(45.f, 135.f, 45.f, 135.f);
-    CubeMapAxialRangeRight.NegativeZ = float4(45.f, 135.f, -45.f, -135.f); //球面坐标值
+    CubeMapAxialRangeRight.NegativeZ = float4(45.f, 135.f, -45.f, -135.f); 
 
     float3 Point = GetPointSphericalCoordinates(InPointPosition);
 
@@ -320,6 +327,7 @@ float4 DebugCubeVieport(int Index)
 }
 
 // 将uv坐标转为极坐标，用于计算旋转时的手柄面片角度
+// UV座標を極座標に変換し、回転時のハンドルパッチ角度を計算するために使用
 float SampleBuildAGTexture(float2 InTexCoord)
 {
     float PI = 3.1415926f; //180°
@@ -332,11 +340,11 @@ float SampleBuildAGTexture(float2 InTexCoord)
     float R = 0.f;
     if (A > 0.f)
     {
-        R = ATan2Value / PI2; //把正值映射到 0-1
+        R = ATan2Value / PI2; //把正值映射到 0-1　　//正の値を0-1にマッピング
     }
     else if (A < 0.f)
     {
-        R = (ATan2Value.y + PI2) / PI2; //映射到 0-1空间里面
+        R = (ATan2Value.y + PI2) / PI2; //映射到 0-1空间里面　　//0-1空間にマッピング
     }
 
     return R;

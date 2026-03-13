@@ -34,6 +34,7 @@ void CMeshManager::Init()
 void CMeshManager::BuildMesh()
 {
     // 创建渲染流水线
+    // レンダリングパイプラインを作成
     RenderingPipeline.BuildPipeline();
 }
 

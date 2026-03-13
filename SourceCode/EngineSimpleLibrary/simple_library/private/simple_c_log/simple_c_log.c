@@ -2,8 +2,8 @@
 #include "simple_library/public/simple_core_minimal/simple_c_windows/simple_c_windows_setting.h"
 #include "simple_library/public/simple_core_minimal/simple_c_core/simple_c_string_algorithm/string_algorithm.h"
 
-char log_path[MAX_PATH] = { 0 }; //路径
-char log_filename[MAX_PATH] = { 0 };//具体文件
+char log_path[MAX_PATH] = { 0 }; 
+char log_filename[MAX_PATH] = { 0 };
 
 const char *get_log_filename()
 {

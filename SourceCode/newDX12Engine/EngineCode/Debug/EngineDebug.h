@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 // 运行状态宏
+// 実行状態マクロ
 
 #define ANALYSIS_HRESULT(InValue) \
 {\

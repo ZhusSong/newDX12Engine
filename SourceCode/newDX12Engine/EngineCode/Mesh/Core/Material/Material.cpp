@@ -1,5 +1,4 @@
-﻿// 材质
-#include "Material.h"
+﻿#include "Material.h"
 #include "../../../Math/EngineMath.h"
 
 CMaterial::CMaterial()

@@ -1,5 +1,4 @@
 ﻿#pragma once
-//25.8.15  李
 #include "../Core/RenderLayer.h"
 
 class FOperationHandleRenderLayer :public FRenderLayer

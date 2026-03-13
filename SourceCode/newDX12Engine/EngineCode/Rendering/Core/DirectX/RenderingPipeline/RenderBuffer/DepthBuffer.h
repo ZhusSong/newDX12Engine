@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "Core/RenderBuffer.h"
 // 深度缓冲区
+// 深度バッファ
 extern std::shared_ptr<class FBufferRenderTarget> DepthBufferRenderTarget;
 
 namespace DepthBuffer

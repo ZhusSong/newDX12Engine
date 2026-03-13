@@ -16,7 +16,8 @@ void FOperationHandleRenderLayer::Draw(float DeltaTime)
 
 void FOperationHandleRenderLayer::BuildShader()
 {
-	//构建Shader
+	// 构建Shader
+	// シェーダーを構築する
 	//HLSL
 	vector<ShaderType::FShaderMacro> ShaderMacro;
 	BuildShaderMacro(ShaderMacro);
@@ -29,7 +30,8 @@ void FOperationHandleRenderLayer::BuildShader()
 	PixelShader.BuildShaders(ShaderPath, "PixelShaderMain", "ps_5_1", D3DShaderMacro.data());
 	DirectXPipelineState->BindShader(VertexShader, PixelShader);
 
-	//输入布局
+	// 输入布局
+	// シェーダー入力フォーマット
 	InputElementDesc =
 	{
 		{"POSITION",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},

@@ -6,15 +6,18 @@ class CWorld;
 struct FRaycastSystemLibrary
 {
 	// 判断射线检测结果
+	// レイキャストの判定結果を取得
 	static bool HitResultByScreen(CWorld* InWorld, int ScreenX, int ScreenY, FCollisionResult& OutResult);
-	
+
 	// 判断射线是否点击到物体
+	// レイが特定のオブジェクトにヒットしたかを判定
 	static bool HitSpecificObjectsResultByScreen(
 		CWorld* InWorld, GActorObject* InSpecificObjects,
 		const std::vector<CComponent*>& IgnoreComponents,
 		int ScreenX, int ScreenY, FCollisionResult& OutResult);
 
 	// 从屏幕坐标到世界空间的转换
+	// スクリーン座標からワールド空間への変換
 	static bool GetRaycastByScreenParam(
 		CWorld* InWorld,
 		const fvector_2id& ScreenXY,

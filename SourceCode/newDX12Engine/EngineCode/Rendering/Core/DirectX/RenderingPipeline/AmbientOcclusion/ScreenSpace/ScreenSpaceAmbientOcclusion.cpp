@@ -51,22 +51,29 @@ void FScreenSpaceAmbientOcclusion::Draw(float DeltaTime)
 	BilateralBlur.Draw(DeltaTime);
 
 	// 构建SSAO
+	// SSAOを構築
+
 	// 设置根签名
+	// ルートシグネチャを設定
 	DirectXRootSignature.PreDraw(DeltaTime);
 
 	// 渲染资源
+	// リソースを描画
 	DrawResources(DeltaTime);
 
 	// 渲染SSAO
+	// SSAOを描画
 	DrawSSAO(DeltaTime);
 
 	// 渲染模糊
+	// ブラーを描画
 	DrawBilateralBlur(DeltaTime);
 }
 
 void FScreenSpaceAmbientOcclusion::DrawSSAO(float DeltaTime)
 {
 	// 主SSAO渲染
+	// メインSSAO描画
 	if (FBufferRenderTarget* InRenderTarget = dynamic_cast<FBufferRenderTarget*>(AmbientBuffer.GetRenderTarget().get()))
 	{
 		auto RenderTargetViewport = InRenderTarget->GetViewport();
@@ -75,7 +82,8 @@ void FScreenSpaceAmbientOcclusion::DrawSSAO(float DeltaTime)
 		GetGraphicsCommandList()->RSSetViewports(1, &RenderTargetViewport);
 		GetGraphicsCommandList()->RSSetScissorRects(1, &RenderTargetScissorRect);
 
-		// 指向哪个资源 转换其状态
+		// 转换资源状态
+		// リソース状態を変換
 		CD3DX12_RESOURCE_BARRIER ResourceBarrierPresent = CD3DX12_RESOURCE_BARRIER::Transition(
 			InRenderTarget->GetRenderTarget(),
 			D3D12_RESOURCE_STATE_GENERIC_READ, D3D12_RESOURCE_STATE_RENDER_TARGET);
@@ -91,6 +99,7 @@ void FScreenSpaceAmbientOcclusion::DrawSSAO(float DeltaTime)
 			true, nullptr);
 
 		// 渲染SSAOPSO
+		// SSAO PSOを描画
 		RenderLayer->Draw(RENDERLAYER_SSAO, DeltaTime);
 
 		CD3DX12_RESOURCE_BARRIER ResourceBarrierPresentRenderTarget = CD3DX12_RESOURCE_BARRIER::Transition(
@@ -148,6 +157,7 @@ void FScreenSpaceAmbientOcclusion::SetRoot32BitConstant(bool bHorizontal)
 void FScreenSpaceAmbientOcclusion::DrawResources(float DeltaTime)
 {
 	// 绑定SSAO常量缓冲区
+	// SSAO定数バッファをバインド
 	GetGraphicsCommandList()->SetGraphicsRootConstantBufferView(
 		0,
 		SSAOViewConstantBufferViews.GetBuffer()->GetGPUVirtualAddress());
@@ -166,7 +176,7 @@ void FScreenSpaceAmbientOcclusion::DrawResources(float DeltaTime)
 			NormalRenderTarget->GetGPUSRVOffset());
 	}
 
-	// 深度
+	// Depth
 	GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(
 		4,
 		DepthBufferRenderTarget->GetGPUSRVOffset());
@@ -215,6 +225,7 @@ void FScreenSpaceAmbientOcclusion::BuildBlurWeights(float InSigma, bool bReBuild
 		}
 
 		// 将权重值 映射到 0 - 1
+		// 重み値を0～1にマッピング
 		for (int i = 0; i < BlurWeights.size(); i++)
 		{
 			BlurWeights[i] /= Weights;
@@ -227,6 +238,7 @@ void FScreenSpaceAmbientOcclusion::DrawViewConstantBufferViews(float DeltaTime, 
 	FSSAOViewportTransformation SSAOViewportTransformation;
 
 	// 逆矩阵
+	// 逆行列
 	XMMATRIX ProjectMatrixRIX = XMLoadFloat4x4(&ViewportInfo.ProjectMatrix);
 
 	XMVECTOR ProjectDeterminant = XMMatrixDeterminant(ProjectMatrixRIX);
@@ -235,6 +247,7 @@ void FScreenSpaceAmbientOcclusion::DrawViewConstantBufferViews(float DeltaTime, 
 	XMStoreFloat4x4(&SSAOViewportTransformation.ProjectionMatrix, XMMatrixTranspose(ProjectMatrixRIX));
 
 	// 纹理空间
+	// テクスチャ空間
 	// [-1.1] =>[0,1] 
 	XMMATRIX HalLambertMatrix(
 		0.5f, 0.0f, 0.0f, 0.0f,
@@ -251,9 +264,11 @@ void FScreenSpaceAmbientOcclusion::DrawViewConstantBufferViews(float DeltaTime, 
 	SSAOViewportTransformation.ObscurationThreshold = 0.05f;
 
 	// 存储随机向量
+	// ランダムベクトルを格納
 	SampleVolumeBuffer.Update(SSAOViewportTransformation.SampleVolumeBuffer);
 
 	// 上传
+	// アップロード
 	SSAOViewConstantBufferViews.Update(0, &SSAOViewportTransformation);
 }
 
@@ -275,7 +290,6 @@ void FScreenSpaceAmbientOcclusion::BuildDescriptors()
 {
 	if (GeometryMap && RenderLayer)
 	{
-		//保证CPU GPU SRV
 		BuildDepthBuffer();
 
 		NormalBuffer.SetSRVOffset(GetNormalBufferSRVOffset());
@@ -298,7 +312,8 @@ void FScreenSpaceAmbientOcclusion::BuildDescriptors()
 		AmbientBuffer.BuildSRVDescriptors();
 		AmbientBuffer.BuildRTVDescriptors();
 
-		//初始化双边模糊
+		// 初始化双边模糊
+		// バイラテラルブラーを初期化
 		BilateralBlur.SetSRVOffset(GetBilateralBlurSRVOffset());
 		BilateralBlur.SetRTVOffset(GetBilateralBlurRTVOffset());
 		BilateralBlur.BuildDescriptors();
@@ -311,18 +326,23 @@ void FScreenSpaceAmbientOcclusion::BuildDescriptors()
 void FScreenSpaceAmbientOcclusion::Build()
 {
 	// 构建根签名
+	// ルートシグネチャを構築
 	DirectXRootSignature.BuildRootSignature();
 
 	// 构建SSAOView常量缓冲区
+	// SSAOView定数バッファを構築
 	BuildSSAOViewConstantBuffer();
 
 	// 构建模糊常量缓冲区
+	// ブラー定数バッファを構築
 	BuildSSAOBlurParamConstantBuffer();
 
 	// 绑定BuildPSO
+	// Build PSOをバインド
 	BindBuildPSO();
 
 	// 构建模糊权重
+	// ブラーの重みを構築
 	BuildBlurWeights(2.5f);
 }
 
@@ -351,6 +371,7 @@ void FScreenSpaceAmbientOcclusion::BuildSSAOViewConstantBuffer()
 {
 	// FSSAOViewportTransformation
 	// 创建常量缓冲区
+	// 定数バッファを作成
 	SSAOViewConstantBufferViews.CreateConstant(sizeof(FSSAOViewportTransformation), 1);
 }
 
@@ -362,16 +383,19 @@ void FScreenSpaceAmbientOcclusion::BuildSSAOBlurParamConstantBuffer()
 void FScreenSpaceAmbientOcclusion::SaveToSSAOBuffer()
 {
 	//// 检查Normal
+	//Normalを確認
 	//GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(
 	//	9,
 	//	NormalBuffer.GetRenderTarget()->GetGPUSRVOffset());
 
 	//// 检查深度
+	//デプスを確認
 	//GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(
 	//	9,
 	//	DepthBufferRenderTarget->GetGPUSRVOffset());
 
 	// SSAO渲染到buffer
+	// SSAOをバッファに描画
 	GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(
 		9,
 		AmbientBuffer.GetRenderTarget()->GetGPUSRVOffset());
@@ -392,17 +416,19 @@ void FScreenSpaceAmbientOcclusion::BuildDepthBuffer()
 
 void FScreenSpaceAmbientOcclusion::DrawBlur(float DeltaTime, bool bHorizontal)
 {
-	// 1.资源
+	// 1.リソース
 	// 2.SRV
 	// 3.RTV
 
 	// 通知Shader
+	// シェーダーに通知
 	SetRoot32BitConstant(bHorizontal);
 
 	ID3D12Resource* InDrawResources = GetDrawResources(bHorizontal);
 	CD3DX12_CPU_DESCRIPTOR_HANDLE* InDrawResourcesRTV = GetDrawRTVResources(bHorizontal);
 
-	// 指向哪个资源 转换其状态
+	// 转换资源状态
+	// リソース状態を変換
 	CD3DX12_RESOURCE_BARRIER ResourceBarrierPresent = CD3DX12_RESOURCE_BARRIER::Transition(
 		InDrawResources,
 		D3D12_RESOURCE_STATE_GENERIC_READ, D3D12_RESOURCE_STATE_RENDER_TARGET);
@@ -418,11 +444,13 @@ void FScreenSpaceAmbientOcclusion::DrawBlur(float DeltaTime, bool bHorizontal)
 		true, nullptr);
 
 	// 绑定接受的缓冲区
+	// 受け取るバッファをバインド
 	GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(
 		6,
 		*GetDrawSRVResources(bHorizontal));
 
 	// 渲染SSAOPSO
+	// SSAO PSOを描画
 	RenderLayer->Draw(RENDERLAYER_SSAO_BILATERAL_BLUR, DeltaTime);
 
 	CD3DX12_RESOURCE_BARRIER ResourceBarrierPresentRenderTarget = CD3DX12_RESOURCE_BARRIER::Transition(
@@ -434,10 +462,10 @@ void FScreenSpaceAmbientOcclusion::DrawBlur(float DeltaTime, bool bHorizontal)
 UINT FScreenSpaceAmbientOcclusion::GetDepthBufferSRVOffset() const
 {
 	return	GeometryMap->GetDrawTexture2DResourcesNumber() + //Texture2D
-		GeometryMap->GetDrawCubeMapResourcesNumber() + //静态Cube贴图 背景 天空球
-		1 + //动态Cube贴图 反射
-		1 + //Shadow 直射灯 聚光灯 Shadow
-		1 + //ShadowCubeMap 点光源的 Shadow
+		GeometryMap->GetDrawCubeMapResourcesNumber() + //静态Cube贴图 背景 天空球  // 静的キューブマップ（背景・スカイボックス）
+		1 + //动态Cube贴图 反射          // 動的キューブマップ（反射）
+		1 + //Shadow 直射灯 聚光灯       // シャドウ（平行光・スポットライト）
+		1 + //ShadowCubeMap 点光源       // シャドウキューブマップ（ポイントライト）
 		1 + //UI
 		1;  //Nor
 }
@@ -445,72 +473,72 @@ UINT FScreenSpaceAmbientOcclusion::GetDepthBufferSRVOffset() const
 UINT FScreenSpaceAmbientOcclusion::GetNormalBufferSRVOffset() const
 {
 	return  GeometryMap->GetDrawTexture2DResourcesNumber() + //Texture2D
-		GeometryMap->GetDrawCubeMapResourcesNumber() + //静态Cube贴图 背景 天空球
-		1 + //动态Cube贴图 反射
-		1 + //Shadow 直射灯 聚光灯 Shadow
-		1 + //ShadowCubeMap 点光源的 Shadow
+		GeometryMap->GetDrawCubeMapResourcesNumber() + //静态Cube贴图 背景 天空球  // 静的キューブマップ（背景・スカイボックス）
+		1 + //动态Cube贴图 反射                     // 動的キューブマップ（反射）
+		1 + //Shadow 直射灯 聚光灯                  // シャドウ（平行光・スポットライト）
+		1 + //ShadowCubeMap 点光源的                // シャドウキューブマップ（ポイントライト）
 		1;//UI
 }
 
 UINT FScreenSpaceAmbientOcclusion::GetNormalBufferRTVOffset() const
 {
-	return	FEngineRenderConfig::GetRenderConfig()->SwapChainCount +//交换链
-		6 +//反射的CubeMap RTV
+	return	FEngineRenderConfig::GetRenderConfig()->SwapChainCount +//交换链     // スワップチェーン
+		6 +//反射的CubeMap RTV            // 反射用CubeMap RTV                          
 		6; //ShadowCubeMap RTV Point Light
 }
 
 UINT FScreenSpaceAmbientOcclusion::GetNoiseBufferSRVOffset() const
 {
 	return  GeometryMap->GetDrawTexture2DResourcesNumber() + //Texture2D
-		GeometryMap->GetDrawCubeMapResourcesNumber() + //静态Cube贴图 背景 天空球
-		1 + //动态Cube贴图 反射
-		1 + //Shadow 直射灯 聚光灯 Shadow
-		1 + //ShadowCubeMap 点光源的 Shadow
+		GeometryMap->GetDrawCubeMapResourcesNumber() + //静态Cube贴图 背景 天空球  // 静的キューブマップ（背景・スカイボックス）
+		1 + //动态Cube贴图 反射               // 動的キューブマップ（反射）
+		1 + //Shadow 直射灯 聚光灯            // シャドウ（平行光・スポットライト）
+		1 + //ShadowCubeMap 点光源的          // シャドウキューブマップ（ポイントライト）
 		1 + //UI
-		1 + //法线
-		1; //深度 
+		1 + //法线                            // 法線
+		1; //深度                             //Depth
 }
 
 UINT FScreenSpaceAmbientOcclusion::GetAmbientBufferSRVOffset() const
 {
 	return	GeometryMap->GetDrawTexture2DResourcesNumber() + //Texture2D
-		GeometryMap->GetDrawCubeMapResourcesNumber() + //静态Cube贴图 背景 天空球
-		1 + //动态Cube贴图 反射
-		1 + //Shadow 直射灯 聚光灯 Shadow
-		1 + //ShadowCubeMap 点光源的 Shadow
+		GeometryMap->GetDrawCubeMapResourcesNumber() + //静态Cube贴图 背景 天空球  // 静的キューブマップ（背景・スカイボックス）
+		1 + //动态Cube贴图 反射               // 動的キューブマップ（反射）
+		1 + //Shadow 直射灯 聚光灯            // シャドウ（平行光・スポットライト）
+		1 + //ShadowCubeMap 点光源的          // シャドウキューブマップ（ポイントライト）
 		1 + //UI
-		1 + //法线
-		1 + //深度 
-		1;  //Noise图
+		1 + //法线                            // 法線
+		1 +//深度                             //Depth
+		1;  //Noise
 }
 
 UINT FScreenSpaceAmbientOcclusion::GetAmbientBufferRTVOffset() const
 {
-	return  FEngineRenderConfig::GetRenderConfig()->SwapChainCount +//交换链
-		6 +//反射的CubeMap RTV
+	return  FEngineRenderConfig::GetRenderConfig()->SwapChainCount +//交换链    // スワップチェーン
+		6 +//反射的CubeMap RTV                     // 反射用CubeMap RTV                       
 		6 +//ShadowCubeMap RTV Point Light
-		1; //法线
+		1; //法线                                  // 法線
 }
 
 UINT FScreenSpaceAmbientOcclusion::GetBilateralBlurSRVOffset() const
 {
 	return	GeometryMap->GetDrawTexture2DResourcesNumber() + //Texture2D
-		GeometryMap->GetDrawCubeMapResourcesNumber() + //静态Cube贴图 背景 天空球
-		1 + //动态Cube贴图 反射
-		1 + //Shadow 直射灯 聚光灯 Shadow
-		1 + //ShadowCubeMap 点光源的 Shadow
+		GeometryMap->GetDrawCubeMapResourcesNumber() + //静态Cube贴图 背景 天空球  // 静的キューブマップ（背景・スカイボックス）
+		1 + //动态Cube贴图 反射               // 動的キューブマップ（反射）
+		1 + //Shadow 直射灯 聚光灯            // シャドウ（平行光・スポットライト）
+		1 + //ShadowCubeMap 点光源的          // シャドウキューブマップ（ポイントライト）
 		1 + //UI
-		1 + //法线
-		1 + //深度 
-		1 + //Noise图
+		1 + //法线                            // 法線
+		1 + //深度                            //Depth
+		1 + //Noise
 		1;  //SSAO
 }
 
 UINT FScreenSpaceAmbientOcclusion::GetBilateralBlurRTVOffset() const
 {
-	return  FEngineRenderConfig::GetRenderConfig()->SwapChainCount +//交换链
-		6 +//反射的CubeMap RTV
+	return  FEngineRenderConfig::GetRenderConfig()->SwapChainCount +//交换链    // スワップチェーン
+		6 +//反射的CubeMap RTV                        // 反射用CubeMap RTV             
 		6 +//ShadowCubeMap RTV Point Light
-		1 +//法线
+		1 +//法线                                     // 法線
 		1; //SSAO
 }

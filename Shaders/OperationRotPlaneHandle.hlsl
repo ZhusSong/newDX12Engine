@@ -25,6 +25,7 @@ MeshVertexOut VertexShaderMain(MeshVertexIn MV)
 	Out.PositionH = mul(Out.WorldPosition, ViewProjectionMatrix);
 
 	// uv坐标
+    // UI座標
 	float4 MyTexCoord = mul(float4(MV.TexCoord, 0.0f, 1.f), ObjectTextureTransform);
 	Out.TexCoord = mul(MyTexCoord, MatConstBuffer.TransformInformation).xy;
 
@@ -37,17 +38,18 @@ float4 PixelShaderMain(MeshVertexOut MVOut) :SV_TARGET
 
 	float R = SampleBuildAGTexture(MVOut.TexCoord);
 
-	R += MatConstBuffer.Param0;//AG的驱动
+	R += MatConstBuffer.Param0;//AG
 	R = floor(R);
 
-	R *= 0.5f;//控制透明
-	R *= 1.f;//AG开关
+    R *= 0.5f; //控制透明  //透明度を制御
+	R *= 1.f;//AG
 
 	float4 BaseColor = GetMaterialBaseColor(MatConstBuffer, MVOut.TexCoord);
 
 	float Alpha = abs(BaseColor.a * R + BaseColor.r);
 
-	//主要用于裁角
+	// 主要用于裁角
+	// 主に角のカットに使用
 	if (Alpha <= 0.1f)
 	{
 		Alpha = 0.f;

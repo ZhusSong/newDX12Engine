@@ -3,6 +3,7 @@
 #include <DirectXMath.h>
 
 // 数学相关
+// 数学関連
 namespace EngineMath
 {
 	enum ECubeMapFaceType
@@ -13,7 +14,7 @@ namespace EngineMath
 		NEGATIVE_Y,//-Y
 		POSITIVE_Z,//Z
 		NEGATIVE_Z,//-Z
-		NEGATIVE_INVALID,//无效
+		NEGATIVE_INVALID,
 	};
 
 	bool IsRange(float InMax, int InMin, int InValue);
@@ -40,6 +41,7 @@ namespace EngineMath
 	frotator BuildRotatorMatrix(const fvector_3d& InForwardVector, const fvector_3d& InUPVector = fvector_3d(0.f, 1.f, 0.f));
 
 	// 与DirectX的旋转矩阵做转换
+	// DirectXの回転行列との変換を行う
 	frotator ToDXRotator(const frotator& InRotator);
 
 	void BuildRotatorMatrix(
@@ -67,9 +69,11 @@ namespace EngineMath
 		const XMFLOAT3& InRightVector, const XMFLOAT3& InUPVector, const XMFLOAT3& InForwardVector);
 
 	// 球面坐标采样
+	// 球面座標のサンプリング
 	int GetSample8CubeIndex(const fvector_3d& InRelativePointPosition);
 
-	//插值
+	// 插值
+	// 補間
 	template<class T>
 	static T Lerp(const T& InA, const T& InB, float InTime)
 	{

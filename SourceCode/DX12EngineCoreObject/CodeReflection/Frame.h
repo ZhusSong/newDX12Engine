@@ -35,7 +35,7 @@ struct FFrame
 public:
 	unsigned char* Code;
 	CFunctionObject* Function;
-	std::shared_ptr<FOutParm> OutParm;//链表
+	std::shared_ptr<FOutParm> OutParm;//リンクリスト
 };
 
 typedef void(*FNativeFuntionPtr)(CCoreMinimalObject* Context, FFrame& TheStack, void const* RefData);

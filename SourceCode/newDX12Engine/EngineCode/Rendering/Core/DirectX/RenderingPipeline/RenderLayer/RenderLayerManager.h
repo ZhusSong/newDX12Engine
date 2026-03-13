@@ -1,5 +1,4 @@
 ﻿
-//25.6.10 李
 #pragma once
 #include "../../../../../Interface/DirectXDeviceInterface.h"
 #include "Core/RenderLayer.h"
@@ -25,7 +24,6 @@ public:
 	virtual void PostDraw(float DeltaTime);
 
 
-	// 需要渲染哪个层
 	virtual void Draw(int InLayer, float DeltaTime);
 	virtual void FindObjectDraw(float DeltaTime, int InLayer, const CMeshComponent* InKey);
 
@@ -38,13 +36,19 @@ public:
 
 
 	// 排序
+	// ソート
 	virtual void Sort();
+
 	// 单独设置PSO
+	// PSOを個別に設定する
 	virtual void ResetPSO(int InLayer);
+
 	// 通过流水线状态设置PSO
+	// パイプラインステートを通じてPSOを設定する
 	virtual void ResetPSO(int InLayer, EPipelineState InPipelineState);
 
 	// 渲染 不包含设置PSO
+	// PSO設定を含まない描画
 	virtual void DrawMesh(float DeltaTime, int InLayer, ERenderingConditions RC = ERenderingConditions::RC_None);
 
 	static std::shared_ptr<FRenderLayer> FindByRenderLayer(int InRenderLayer);
@@ -60,6 +64,7 @@ protected:
 };
 
 // 注册渲染层级
+// 描画レイヤーを登録する
 template<class T>
 std::shared_ptr<T> CreateRenderLayer()
 {

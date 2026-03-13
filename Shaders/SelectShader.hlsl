@@ -1,4 +1,3 @@
-//25.7.10 李
 #include "ShaderCommon.hlsli"
 #include "Material.hlsli"
 
@@ -30,38 +29,42 @@ MeshVertexOut VertexShaderMain(MeshVertexIn MV)
 	////PositionWorld.x += 4.f; Debug
 
 	//Out.PositionH = mul(Out.WorldPosition, ViewProjectionMatrix);
-
-	//// UI坐标
+	
 	//float4 MyTexCoord = mul(float4(MV.TexCoord, 0.0f, 1.f), ObjectTextureTransform);
 	//Out.TexCoord = mul(MyTexCoord, MatConstBuffer.TransformInformation).xy;
-
-	//// 法线
+	
 	//Out.Normal = mul(MV.Normal, (float3x3)NormalTransformation);
 
 	//return Out;
 	
 	// 新描边
+	// 新しいアウトライン
     MaterialConstBuffer MatConstBuffer = Materials[MaterialIndex];
     MeshVertexOut Out = (MeshVertexOut) 0;
 
     // 计算世界空间位置
+	// ワールド空間位置を計算
     Out.WorldPosition = mul(float4(MV.Position, 1.0f), WorldMatrix);
     
     // 计算世界空间法线
+	// ワールド空間法線を計算
     float3 WorldNormal = normalize(mul(MV.Normal, (float3x3) NormalTransformation));
     
     // 沿法线方向外扩，创建描边效果
-    float OutlineWidth = 0.05f; // 描边宽度
+	// 法線方向に沿って外側に拡張し、アウトライン効果を作成
+    float OutlineWidth = 0.05f; // 描边宽度  // アウトラインの幅
     Out.WorldPosition.xyz += WorldNormal * OutlineWidth;
     
     // 变换到裁剪空间
+	// クリップ空間に変換
     Out.PositionH = mul(Out.WorldPosition, ViewProjectionMatrix);
 
     // UV坐标变换
+	// UV座標変換
     float4 MyTexCoord = mul(float4(MV.TexCoord, 0.0f, 1.f), ObjectTextureTransform);
     Out.TexCoord = mul(MyTexCoord, MatConstBuffer.TransformInformation).xy;
-
-    // 法线
+	
+	// 法線
     Out.Normal = WorldNormal;
 
     return Out;
@@ -86,5 +89,6 @@ float4 PixelShaderMain(MeshVertexOut MVOut) :SV_TARGET
 	//return float4(0.f, 0.f, 0.f, 0.f);
 	
 	// 新描边
+	// 新しいアウトライン
     return float4(1.f, 1.f, 0.f, 1.f); 
 }

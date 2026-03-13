@@ -1,5 +1,6 @@
 ﻿#pragma once
 // 采样缓冲区
+// サンプルバッファ
 #include "Core/RenderBuffer.h"
 
 struct FSampleVolumeBuffer

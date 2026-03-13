@@ -25,18 +25,22 @@ MeshVertexOut VertexShaderMain(MeshVertexIn MV)
 
 
 	// 世界坐标
+    // ワールド座標
 	Out.WorldPosition = mul(float4(MV.Position, 1.f), WorldMatrix);
 
 	// 变换到齐次空间
+    // 同次空間に変換
 	Out.Position = mul(Out.WorldPosition, ViewProjectionMatrix);
 
 	// 法线
+    // 法線
 	Out.Normal = mul(MV.Normal, (float3x3)WorldMatrix);
 
 	// 切线
+    // 接線
 	Out.UTangent = mul(MV.UTangent, (float3x3)WorldMatrix);
-
-	// UI坐标
+    
+    // UI座標
     float4 MyTexCoord = mul(float4(MV.TexCoord, 0.0f, 1.f), ObjectTextureTransform);
     Out.TexCoord = mul(MyTexCoord, MatConstBuffer.TransformInformation).xy;
 

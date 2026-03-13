@@ -1,8 +1,8 @@
-﻿//25.6.25 李
-#pragma once
+﻿#pragma once
 #include "Core/RenderTarget.h"
 
-//提供渲染内容的接口
+// 提供渲染内容的接口
+// 描画内容を提供するインターフェース
 class FShadowMapRenderTarget :public FRenderTarget
 {
 	typedef FRenderTarget Super;
@@ -22,5 +22,7 @@ protected:
 	void BuildShadowConstantBuffer();
 
 protected:
-	CD3DX12_CPU_DESCRIPTOR_HANDLE DSVDes;//深度模板描述
+	// 深度模板描述
+	// デプスステンシル記述
+	CD3DX12_CPU_DESCRIPTOR_HANDLE DSVDes;
 };

@@ -8,6 +8,7 @@
 class CCoreMinimalObject;
 class CComponent;
 // 创建对象结构
+// オブジェクト構造を作成
 struct RI_ENGINECOREOBJECT_API FCreateObjectParam
 {
 	FCreateObjectParam()
@@ -24,6 +25,7 @@ template<class T>
 T* CreateObject(const FCreateObjectParam& InObjectParam, CCoreMinimalObject* NewObject)
 {
 	// 检测是不是组件 是组件则按照组件规则注册
+	// コンポーネントかどうかを検出し、コンポーネントであればコンポーネントルールに従って登録
 	ConstructionComponent::ConstructionComponents(InObjectParam.Outer, NewObject);
 
 	T* Obj = dynamic_cast<T*>(NewObject);

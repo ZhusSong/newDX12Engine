@@ -16,7 +16,8 @@ void FOperationHandleRotPlaneRenderLayer::Draw(float DeltaTime)
 
 void FOperationHandleRotPlaneRenderLayer::BuildShader()
 {
-	//构建Shader
+	// 构建Shader
+	// シェーダーを構築する
 	//HLSL
 	vector<ShaderType::FShaderMacro> ShaderMacro;
 	BuildShaderMacro(ShaderMacro);
@@ -29,7 +30,8 @@ void FOperationHandleRotPlaneRenderLayer::BuildShader()
 	PixelShader.BuildShaders(ShaderPath, "PixelShaderMain", "ps_5_1", D3DShaderMacro.data());
 	DirectXPipelineState->BindShader(VertexShader, PixelShader);
 
-	//输入布局
+	// shader输入格式
+	// シェーダー入力フォーマット
 	InputElementDesc =
 	{
 		{"POSITION",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},
@@ -64,9 +66,10 @@ void FOperationHandleRotPlaneRenderLayer::BuildPSO()
 	DirectXPipelineState->SetRenderTarget(0, RenderTargetBlendDesc);
 
 	// 渲染
+	// 描画
 	CD3DX12_RASTERIZER_DESC RasterizerDesc(D3D12_DEFAULT);
 	RasterizerDesc.FillMode = D3D12_FILL_MODE_SOLID;
-	RasterizerDesc.CullMode = D3D12_CULL_MODE_NONE;//双面
+	RasterizerDesc.CullMode = D3D12_CULL_MODE_NONE;
 
 	DirectXPipelineState->SetRasterizerState(RasterizerDesc);
 

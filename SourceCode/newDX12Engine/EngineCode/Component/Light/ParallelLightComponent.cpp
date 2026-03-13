@@ -1,5 +1,5 @@
 ﻿// 平行光组件
-// 平行光コンポーネント
+// コリメート光のコンポーネント
 #include "ParallelLightComponent.h"
 #include "../../Mesh/Core/MeshManager.h"
 #include "../../Component/Mesh/Core/MeshComponent.h"

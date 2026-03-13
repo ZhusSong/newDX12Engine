@@ -64,6 +64,7 @@ void FShadowMapRenderTarget::BuildDSVDescriptors()
 
 
 // 构建常量缓冲区
+// 定数バッファを構築する
 void FShadowMapRenderTarget::BuildShadowConstantBuffer()
 {
 	D3D12_SHADER_RESOURCE_VIEW_DESC SRVDesc = {};

@@ -1,4 +1,4 @@
-﻿// 25.7.6 李
+﻿
 #include "../../../../../Interface/DirectXDeviceInterface.h"
 
 struct FIMGUIPipeline :public IDirectXDeviceInterface_Struct

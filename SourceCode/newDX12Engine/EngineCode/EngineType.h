@@ -10,7 +10,7 @@ struct FCollisionResult
 {
 	FCollisionResult();
 
-	bool bHit;//是否命中
+	bool bHit;
 
 	fvector_3d Location;
 	fvector_3d Normal;

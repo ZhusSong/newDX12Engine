@@ -1,5 +1,4 @@
-﻿//25.7.2 李
-#pragma once
+﻿#pragma once
 #include "DynamicMap.h"
 #include "../../RenderTarget/CubeMapRenderTarget.h"
 
@@ -40,10 +39,13 @@ protected:
 		virtual void BuildRenderTargetSRV() {}
 
 protected:
+	// 深度模板描述
+	// デプスステンシル記述
+	CD3DX12_CPU_DESCRIPTOR_HANDLE DSVDes;
 
-	CD3DX12_CPU_DESCRIPTOR_HANDLE DSVDes;//深度模板描述
-
-	std::vector<GClientViewport*> CubeMapViewport;//6个视口
+	// 6个视口
+	// 6つのビューポート
+	std::vector<GClientViewport*> CubeMapViewport;
 
 	ComPtr<ID3D12Resource> DepthStencilBuffer;
 };

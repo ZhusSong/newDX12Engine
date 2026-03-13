@@ -10,13 +10,15 @@ FOpaqueRenderLayer::FOpaqueRenderLayer()
 void FOpaqueRenderLayer::Draw(float DeltaTime)
 {
 	// 重置PSO
+	// 現在のPSOをリセットする
 	ResetPSO();
 
 	Super::Draw(DeltaTime);
 }
 void FOpaqueRenderLayer::BuildShader()
 {
-	//构建Shader
+	//　构建Shader
+	// シェーダーを構築する
 	//HLSL
 	vector<ShaderType::FShaderMacro> ShaderMacro;
 	BuildShaderMacro(ShaderMacro);
@@ -37,7 +39,9 @@ void FOpaqueRenderLayer::BuildShader()
 
 	
 
-	// 输入布局
+
+	// shader输入格式
+	// シェーダー入力フォーマット
 	InputElementDesc =
 	{
 		{"POSITION",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},
@@ -53,10 +57,14 @@ void FOpaqueRenderLayer::BuildPSO()
 {
 	Super::BuildPSO();
 	// 构建管线
+	// パイプラインを構築する
+
 	// 构建固体模式
+	// ソリッドモードを構築する
 	DirectXPipelineState->Build(GrayModel);
 
 	// 构建线框
+	// ワイヤーフレームを構築する
 	DirectXPipelineState->SetFillMode(true);
 	DirectXPipelineState->Build(Wireframe);
 }

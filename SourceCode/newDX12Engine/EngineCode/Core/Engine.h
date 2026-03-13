@@ -13,6 +13,7 @@ enum CurrentGPU
 	UNKNOWN,
 };
 // 引擎框架定义
+// エンジンフレームワークの定義
 class CEngine:public CCoreMinimalObject
 {
 public:

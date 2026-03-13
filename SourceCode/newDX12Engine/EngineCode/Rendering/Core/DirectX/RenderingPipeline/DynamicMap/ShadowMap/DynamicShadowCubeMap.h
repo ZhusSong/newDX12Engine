@@ -1,5 +1,4 @@
-﻿//25.7.2 李
-#pragma once
+﻿#pragma once
 #include "../Core/DynamicCubeMap.h"
 
 
@@ -28,8 +27,10 @@ public:
 
 protected:
 	// 构建RTV
+	// RTVを構築
 	virtual void BuildRenderTargetRTV();
 
 	// 构建SRV
+	// SRVを構築
 	virtual void BuildRenderTargetSRV();
 };

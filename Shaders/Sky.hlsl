@@ -1,4 +1,3 @@
-//25.6.13 李
 #include "ShaderCommon.hlsli"
 #include "Fog.hlsli"
 
@@ -23,9 +22,11 @@ MeshVertexOut VertexShaderMain(MeshVertexIn MV)
 	Out.PositionH = float4(MV.Position, 1.f);
 
 	// 世界坐标
+	// ワールド座標
 	float4 WorldPosition = mul(Out.PositionH, WorldMatrix);
 
 	// 变换到齐次剪裁空间
+	// 同次クリップ空間に変換
 	Out.PositionL = mul(WorldPosition, ViewProjectionMatrix);
 
 	return Out;

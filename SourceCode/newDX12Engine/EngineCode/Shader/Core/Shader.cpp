@@ -41,6 +41,7 @@ void FShader::BuildShaders(
 	}
 
 	// 失败则奔溃
+	// 失敗した場合はクラッシュ
 	ANALYSIS_HRESULT(R);
 }
 //

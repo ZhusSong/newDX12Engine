@@ -5,8 +5,8 @@
 FDirectXPipelineState::FDirectXPipelineState()
     :PipelineState(EPipelineState::GrayModel)
 {
-    PSO.insert(pair<int, ComPtr<ID3D12PipelineState>>(4, ComPtr<ID3D12PipelineState>()));//线框
-    PSO.insert(pair<int, ComPtr<ID3D12PipelineState>>(5, ComPtr<ID3D12PipelineState>()));//Shader
+    PSO.insert(pair<int, ComPtr<ID3D12PipelineState>>(4, ComPtr<ID3D12PipelineState>()));
+    PSO.insert(pair<int, ComPtr<ID3D12PipelineState>>(5, ComPtr<ID3D12PipelineState>()));
 }
 
 void FDirectXPipelineState::PreDraw(float DeltaTime)
@@ -17,6 +17,7 @@ void FDirectXPipelineState::PreDraw(float DeltaTime)
 void FDirectXPipelineState::Draw(float DeltaTime)
 {
     //捕获键盘按键
+    // キーボード入力をキャプチャする
     CaptureKeyboardKeys();
 }
 
@@ -33,6 +34,7 @@ void FDirectXPipelineState::ResetGPSDesc()
 void FDirectXPipelineState::BindInputLayout(const D3D12_INPUT_ELEMENT_DESC* InInputElementDescs, UINT InSize)
 {
     // 绑定输入布局
+    // 入力レイアウトをバインドする
     GPSDesc.InputLayout.pInputElementDescs = InInputElementDescs;
     GPSDesc.InputLayout.NumElements = InSize;
 }
@@ -40,12 +42,14 @@ void FDirectXPipelineState::BindInputLayout(const D3D12_INPUT_ELEMENT_DESC* InIn
 void FDirectXPipelineState::BindRootSignature(ID3D12RootSignature* InRootSignature)
 {
     // 绑定根签名
+    // ルートシグネチャをバインドする
     GPSDesc.pRootSignature = InRootSignature;
 }
 
 void FDirectXPipelineState::BindShader(const FShader& InVertexShader, const FShader& InPixelShader)
 {
     // 绑定顶点着色器代码
+    // 頂点シェーダーコードをバインドする
     GPSDesc.VS.pShaderBytecode = reinterpret_cast<BYTE*>(InVertexShader.GetBufferPointer());
     GPSDesc.VS.BytecodeLength = InVertexShader.GetBufferSize();
 
@@ -66,10 +70,12 @@ void FDirectXPipelineState::Build(int InPSOType)
     }
 
     // 线框模型注册
+    // ワイヤーフレームモデルを登録する
     ANALYSIS_HRESULT(GetD3dDevice()->CreateGraphicsPipelineState(&GPSDesc, IID_PPV_ARGS(&PSO[InPSOType])))
 
         ////实体模型注册
-        //GPSDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;//以实体方式显示
+        //// 実体モデルの登録
+        //GPSDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;//以实体方式显示   // 立体表示モードで描画
         //ANALYSIS_HRESULT(GetD3dDevice()->CreateGraphicsPipelineState(&GPSDesc, IID_PPV_ARGS(&PSO[(int)GrayModel])))
 }
 
@@ -106,8 +112,11 @@ void FDirectXPipelineState::SetDepthStencilState(const CD3DX12_DEPTH_STENCIL_DES
 void FDirectXPipelineState::SaveGPSDescAsDefault()
 {
     // 配置光栅化状态
+    // ラスタライザステートを設定する
     GPSDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
-    GPSDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;//以固体方式显示
+    //以固体方式显示
+    // ソリッドモードで表示
+    GPSDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;
 
     GPSDesc.SampleMask = UINT_MAX;
 
@@ -121,6 +130,7 @@ void FDirectXPipelineState::SaveGPSDescAsDefault()
     GPSDesc.SampleDesc.Quality = GetEngine()->GetRenderingEngine()->GetDXGISampleQuality();
 
     // RTV 和 DSV格式
+    // RTVおよびDSVのフォーマット
     GPSDesc.RTVFormats[0] = GetEngine()->GetRenderingEngine()->GetBackBufferFormat();
     GPSDesc.DSVFormat = GetEngine()->GetRenderingEngine()->GetDepthStencilFormat();
 

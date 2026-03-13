@@ -78,6 +78,7 @@ void FRenderLayerManager::BuildPSO()
 
 
 // 高亮选择物体
+// 選択オブジェクトをハイライト表示
 void FRenderLayerManager::HighlightDisplayObject(GActorObject* InObject)
 {
 	FGeometry::FindRenderingDatas(
@@ -100,13 +101,16 @@ void FRenderLayerManager::HighlightDisplayObject(GActorObject* InObject)
 extern int ActorSelected;
 void FRenderLayerManager::HighlightDisplayObject(std::weak_ptr<FRenderingData> RenderingData)
 {
-	//清除旧的物体
+	// 清除旧的物体
+	// 古いオブジェクトをクリアする
 	Clear(EMeshRenderLayerType::RENDERLAYER_SELECT);
 
-	//设置新的
+	// 设置新的
+	// 新しいオブジェクトを設定する
 	Add(EMeshRenderLayerType::RENDERLAYER_SELECT, RenderingData);
 
-	//记录index
+	// 记录index
+	// インデックスを記録する
 #if EDITOR_ENGINE
 	if (GActorObject* InActor = dynamic_cast<GActorObject*>(RenderingData.lock()->Mesh->GetOuter()))
 	{

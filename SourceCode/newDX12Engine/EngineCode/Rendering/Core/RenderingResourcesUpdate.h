@@ -1,5 +1,4 @@
-﻿// 2025.4.李
-#pragma once
+﻿#pragma once
 #include "../../EngineMinimal.h"
 
 class FRenderingResourcesUpdate :public enable_shared_from_this<FRenderingResourcesUpdate>

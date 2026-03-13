@@ -1,5 +1,5 @@
 ﻿// 平行光组件
-// 平行光コンポーネント
+// コリメート光のコンポーネント
 #pragma once
 #include "Core/LightComponent.h"
 

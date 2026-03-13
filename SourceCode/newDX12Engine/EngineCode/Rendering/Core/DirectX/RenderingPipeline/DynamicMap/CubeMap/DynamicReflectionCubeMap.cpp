@@ -37,8 +37,8 @@ void FDynamicReflectionCubeMap::UpdateCalculations(float DeltaTime, const FViewp
 				MyViewportInfo.ProjectMatrix = CubeMapViewport[j]->ProjectMatrix;
 
 				GeometryMap->UpdateCalculationsViewport(DeltaTime, MyViewportInfo,
-					j + i * 6 +//给动态摄像机
-					1);//给主视口
+					j + i * 6 +//给动态摄像机     // 動的カメラ用
+					1);//主视口用                 // メインビュー用
 			}
 		}
 	}
@@ -59,7 +59,8 @@ void FDynamicReflectionCubeMap::PreDraw(float DeltaTime)
 	{
 		for (int j = 0; j < GeometryMap->GetDynamicReflectionMeshComponentsSize(); j++)
 		{
-			// 指向哪个资源 转换其状态
+			// 转换资源状态
+			// リソース状態を変換
 			CD3DX12_RESOURCE_BARRIER ResourceBarrierPresent = CD3DX12_RESOURCE_BARRIER::Transition(
 				InRenderTarget->GetRenderTarget(),
 				D3D12_RESOURCE_STATE_GENERIC_READ, D3D12_RESOURCE_STATE_RENDER_TARGET);
@@ -68,6 +69,8 @@ void FDynamicReflectionCubeMap::PreDraw(float DeltaTime)
 
 			// 需要每帧执行
 			// 绑定矩形框
+			// 毎フレーム実行が必要
+			// 矩形ボックスをバインド
 			auto RenderTargetViewport = InRenderTarget->GetViewport();
 			auto RenderTargetScissorRect = InRenderTarget->GetScissorRect();
 			GetGraphicsCommandList()->RSSetViewports(1, &RenderTargetViewport);
@@ -77,33 +80,38 @@ void FDynamicReflectionCubeMap::PreDraw(float DeltaTime)
 			for (size_t i = 0; i < 6; i++)
 			{
 				// 清除画布
+				// キャンバスをクリア
 				GetGraphicsCommandList()->ClearRenderTargetView(
 					InRenderTarget->GetCPURenderTargetView(i),
 					DirectX::Colors::Black,
 					0, nullptr);
 
 				// 清除深度模板缓冲区
+				// 深度バッファーをクリア
 				GetGraphicsCommandList()->ClearDepthStencilView(
 					DSVDes,
 					D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL,
 					1.f, 0, 0, NULL);
 
 				// 输出的合并阶段
+				// 出力のマージフェーズ
 				GetGraphicsCommandList()->OMSetRenderTargets(1,
 					&InRenderTarget->GetCPURenderTargetView(i),
 					true,
 					&DSVDes);
 
 				// 更新6个摄像机 绑定6个摄像机
+				// 6つのカメラを更新し、6つのカメラをバインド
 				auto ViewprotAddr = GeometryMap->ViewportGPUVirtualAddress();
 				ViewprotAddr += (
-					1 + //主摄像机
-					i + j * 6 //
+					1 + //主摄像机      // メインカメラ
+					i + j * 6 
 					) * CBVSize;
 
 				GetGraphicsCommandList()->SetGraphicsRootConstantBufferView(1, ViewprotAddr);
 
 				// 各类层级渲染
+				// 各レイヤーのレンダリング
 				RenderLayer->Draw(RENDERLAYER_BACKGROUND, DeltaTime);
 				RenderLayer->Draw(RENDERLAYER_OPAQUE, DeltaTime);
 				RenderLayer->Draw(RENDERLAYER_TRANSPARENT, DeltaTime);
@@ -118,9 +126,11 @@ void FDynamicReflectionCubeMap::PreDraw(float DeltaTime)
 			StartSetMainViewportRenderTarget();
 
 			// 主视口
+			// メインビュー
 			GeometryMap->DrawViewport(DeltaTime);
 
 			// 更新CubeMap
+			// CubeMapを更新
 			GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(6, InRenderTarget->GetGPUSRVOffset());
 
 			Draw(DeltaTime);
@@ -131,6 +141,7 @@ void FDynamicReflectionCubeMap::PreDraw(float DeltaTime)
 				GeometryMap->GetDynamicReflectionMeshComponents(j));
 
 			// 重置CubeMap
+			// CubeMapをリセット
 			GeometryMap->DrawCubeMapTexture(DeltaTime);
 
 			// End
@@ -164,11 +175,13 @@ void FDynamicReflectionCubeMap::BuildRenderTargetRTV()
 	UINT RTVDescriptorSize = GetDescriptorHandleIncrementSizeByRTV();
 
 	// RTV的起始
+	// RTVの開始
 	auto RTVDesHeapStart = GetRTVHeap()->GetCPUDescriptorHandleForHeapStart();
 
 	if (FCubeMapRenderTarget* InRenderTarget = dynamic_cast<FCubeMapRenderTarget*>(RenderTarget.get()))
 	{
 		// 偏移的地址记录
+		// オフセットアドレスを記録
 		for (size_t i = 0; i < 6; i++)
 		{
 			InRenderTarget->GetCPURenderTargetView(i) = CD3DX12_CPU_DESCRIPTOR_HANDLE(

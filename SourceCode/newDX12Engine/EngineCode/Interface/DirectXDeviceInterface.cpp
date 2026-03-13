@@ -23,6 +23,7 @@ void IDirectXDeviceInterface::ClearMainSwapChainCanvas()
 }
 
 // 得到当前围栏值
+// 現在のフェンス値を取得
 ComPtr<ID3D12Fence> IDirectXDeviceInterface::GetFence() const
 {
 	if (CWindowsEngine* InEngine = GetEngine())
@@ -37,6 +38,7 @@ ComPtr<ID3D12Fence> IDirectXDeviceInterface::GetFence() const
 }
 
 // 得到d3d设备
+// D3Dデバイスを取得
 ComPtr<ID3D12Device> IDirectXDeviceInterface::GetD3dDevice() const
 {
 	if (CWindowsEngine* InEngine = GetEngine())
@@ -90,6 +92,7 @@ GCamera* IDirectXDeviceInterface::GetCamera() const
 }
 
 // 得到图形命令列表
+// グラフィックスコマンドリストを取得
 ComPtr<ID3D12GraphicsCommandList> IDirectXDeviceInterface::GetGraphicsCommandList() const
 {
 	if (CWindowsEngine* InEngine = GetEngine())
@@ -104,6 +107,7 @@ ComPtr<ID3D12GraphicsCommandList> IDirectXDeviceInterface::GetGraphicsCommandLis
 }
 
 // 得到命令分配器
+// コマンドアロケータを取得
 ComPtr<ID3D12CommandAllocator> IDirectXDeviceInterface::GetCommandAllocator() const
 {
 	if (CWindowsEngine* InEngine = GetEngine())
@@ -116,8 +120,8 @@ ComPtr<ID3D12CommandAllocator> IDirectXDeviceInterface::GetCommandAllocator() co
 
 	return NULL;
 }
-
 // 得到命令队列
+// コマンドキューを取得
 ComPtr<ID3D12CommandQueue> IDirectXDeviceInterface::GetCommandQueue() const
 {
 	if (CWindowsEngine* InEngine = GetEngine())
@@ -192,8 +196,8 @@ UINT IDirectXDeviceInterface::GetDescriptorHandleIncrementSizeByCBV_SRV_UAV() co
 {
 	return GetD3dDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 }
-
 // 得到围栏序列
+// フェンスシーケンスを取得
 UINT64 IDirectXDeviceInterface::GetCurrentFenceIndex() const
 {
 	if (CWindowsEngine* InEngine = GetEngine())
@@ -208,6 +212,7 @@ UINT64 IDirectXDeviceInterface::GetCurrentFenceIndex() const
 }
 
 // 得到窗口句柄
+// ウィンドウハンドルを取得
 HWND IDirectXDeviceInterface::GetMainWindowsHandle() const
 {
 	if (CWindowsEngine* InEngine = GetEngine())

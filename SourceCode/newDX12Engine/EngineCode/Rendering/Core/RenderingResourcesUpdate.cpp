@@ -13,13 +13,17 @@ FRenderingResourcesUpdate::~FRenderingResourcesUpdate()
 		UploadBuffer = nullptr;
 	}
 }
-
 /// <summary>
 /// 初始化对象所对应的常量缓冲区
+/// オブジェクトに対応する定数バッファを初期化する
 /// </summary>
 /// <param name="InDevice">当前D3D设备</param>
 /// <param name="InElemetSize">对象内存空间</param>
 /// <param name="InElemetCount">对象数</param>
+/// 
+/// <param name="InDevice">現在のD3Dデバイス</param>
+/// <param name="InElemetSize">オブジェクトのメモリサイズ</param>
+/// <param name="InElemetCount">オブジェクトの数</param>
 void FRenderingResourcesUpdate::Init(ID3D12Device* InDevice, UINT InElemetSize, UINT InElemetCount, bool bConstBuffer)
 {
 	assert(InDevice);

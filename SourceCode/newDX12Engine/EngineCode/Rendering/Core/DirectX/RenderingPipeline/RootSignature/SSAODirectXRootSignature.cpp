@@ -8,13 +8,16 @@ FSSAODirectXRootSignature::FSSAODirectXRootSignature()
 void FSSAODirectXRootSignature::BuildRootSignature(UINT InTextureNum)
 {
     // 构建根签名
+    // ルートシグネチャを構築する
     CD3DX12_ROOT_PARAMETER RootParam[7];
 
     // texture描述表
+    // テクスチャ記述テーブル
     CD3DX12_DESCRIPTOR_RANGE DescriptorNormalTextureSRV;
     DescriptorNormalTextureSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0);
 
     // 深度描述
+    // デプス記述
     CD3DX12_DESCRIPTOR_RANGE DescriptorDepthTextureSRV;
     DescriptorDepthTextureSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 1);
 
@@ -25,12 +28,17 @@ void FSSAODirectXRootSignature::BuildRootSignature(UINT InTextureNum)
     // Accept 
     CD3DX12_DESCRIPTOR_RANGE DescriptorAcceptTextureSRV;
     DescriptorAcceptTextureSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 3);
+    // SSAOView对象
+    // SSAOViewオブジェクト
+    RootParam[0].InitAsConstantBufferView(0);
 
-    RootParam[0].InitAsConstantBufferView(0);//SSAOView对象
+    // 通过常数直接控制
+    // 定数を通じて直接制御
+    RootParam[1].InitAsConstants(1, 1);
 
-    RootParam[1].InitAsConstants(1, 1);//通过常数直接控制
-
-    RootParam[2].InitAsConstantBufferView(2);//Blur对象
+    // Blur对象
+    // ブラーオブジェクト
+    RootParam[2].InitAsConstantBufferView(2);
 
     // Normal
     RootParam[3].InitAsDescriptorTable(1, &DescriptorNormalTextureSRV, D3D12_SHADER_VISIBILITY_PIXEL);
@@ -45,16 +53,16 @@ void FSSAODirectXRootSignature::BuildRootSignature(UINT InTextureNum)
     RootParam[6].InitAsDescriptorTable(1, &DescriptorAcceptTextureSRV, D3D12_SHADER_VISIBILITY_PIXEL);
 
     // 构建静态采样
+    // 静的サンプラーを構築する
     StaticSamplerObject.BuildStaticSampler();
 
     CD3DX12_ROOT_SIGNATURE_DESC RootSignatureDesc(
         7,
         RootParam,
-        StaticSamplerObject.GetSize(),//采样数量
-        StaticSamplerObject.GetData(),//采样PTR
+        StaticSamplerObject.GetSize(),//采样数量  // サンプル数
+        StaticSamplerObject.GetData(),//采样PTR   // サンプラーPTR
         D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 
-    // 创建
     ComPtr<ID3DBlob> SerializeRootSignature;
     ComPtr<ID3DBlob> ErrorBlob;
     D3D12SerializeRootSignature(
@@ -69,7 +77,6 @@ void FSSAODirectXRootSignature::BuildRootSignature(UINT InTextureNum)
         Engine_Log_Error("%s", p);
     }
 
-    // 创建
     GetD3dDevice()->CreateRootSignature(
         0,
         SerializeRootSignature->GetBufferPointer(),

@@ -4,6 +4,7 @@
 #include "../EngineMinimal.h"
 
 // 定义Windows环境下所需参数
+// Windows環境で必要なパラメータを定義
 class FWinMainCommandParameters
 {
 public:

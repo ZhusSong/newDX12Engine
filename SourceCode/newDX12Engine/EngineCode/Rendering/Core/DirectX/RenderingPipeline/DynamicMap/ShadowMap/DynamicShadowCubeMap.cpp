@@ -43,11 +43,11 @@ void FDynamicShadowCubeMap::UpdateCalculations(float DeltaTime, const FViewportI
 					MyViewportInfo.ProjectMatrix = CubeMapViewport[j]->ProjectMatrix;
 
 					GeometryMap->UpdateCalculationsViewport(DeltaTime, MyViewportInfo,
-						1 +//给主视口
-						GeometryMap->GetDynamicReflectionViewportNum() + //给Shadow动态摄像机
-						1 +//给Shadow摄像机
-						j + Index * 6 //给动态摄像机
-					);
+						1 +//给主视口                        	// メインビュー用
+						GeometryMap->GetDynamicReflectionViewportNum() + //给Shadow动态摄像机  // Shadow用の動的カメラ
+						1 +//给Shadow摄像机                     // Shadow用カメラ
+						j + Index * 6 //给动态摄像机            // 動的カメラ用
+					); 
 				}
 
 				Index++;
@@ -76,6 +76,7 @@ void FDynamicShadowCubeMap::PreDraw(float DeltaTime)
 			if (Tmp->GetLightType() == ELightType::PointLight)
 			{
 				// 转换资源状态
+				// リソース状態を変換
 				CD3DX12_RESOURCE_BARRIER ResourceBarrierPresent = CD3DX12_RESOURCE_BARRIER::Transition(
 					InRenderTarget->GetRenderTarget(),
 					D3D12_RESOURCE_STATE_GENERIC_READ, D3D12_RESOURCE_STATE_RENDER_TARGET);
@@ -84,6 +85,8 @@ void FDynamicShadowCubeMap::PreDraw(float DeltaTime)
 
 				// 需要每帧执行
 				// 绑定矩形框
+				// 毎フレーム実行が必要
+				// 矩形ボックスをバインド
 				auto RenderTargetViewport = InRenderTarget->GetViewport();
 				auto RenderTargetScissorRect = InRenderTarget->GetScissorRect();
 				GetGraphicsCommandList()->RSSetViewports(1, &RenderTargetViewport);
@@ -93,29 +96,33 @@ void FDynamicShadowCubeMap::PreDraw(float DeltaTime)
 				for (size_t i = 0; i < 6; i++)
 				{
 					// 清除画布
+					// 描画内容をクリア
 					GetGraphicsCommandList()->ClearRenderTargetView(
 						InRenderTarget->GetCPURenderTargetView(i),
 						DirectX::Colors::White,
 						0, nullptr);
 
 					// 清除深度模板缓冲区
+					// 深度バッファーをクリア
 					GetGraphicsCommandList()->ClearDepthStencilView(
 						DSVDes,
 						D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL,
 						1.f, 0, 0, NULL);
 
 					// 输出的合并阶段
+					// 出力のマージフェーズ
 					GetGraphicsCommandList()->OMSetRenderTargets(1,
 						&InRenderTarget->GetCPURenderTargetView(i),
 						true,
 						&DSVDes);
 
 					// 更新6个摄像机 绑定6个摄像机
+					// 6つのカメラを更新し、6つのカメラをバインド
 					auto ViewprotAddr = GeometryMap->ViewportGPUVirtualAddress();
 					ViewprotAddr += (
-						1 + //主摄像机
+						1 + //主摄像机                // メインカメラ
 						GeometryMap->GetDynamicReflectionViewportNum() + //CubeMap 反射
-						1 + //Shadow 平行光 聚光灯
+						1 + //Shadow 平行光 聚光灯    //シャドウ 平行光 スポットライト 
 						i + Index * 6 //
 						) * CBVSize;
 
@@ -124,6 +131,7 @@ void FDynamicShadowCubeMap::PreDraw(float DeltaTime)
 					RenderLayer->ResetPSO(RENDERLAYER_SHADOW_RENDER, EPipelineState::OmnidirectionalShadow);
 
 					// 各类层级渲染
+					// 各レイヤーのレンダリング
 					RenderLayer->DrawMesh(DeltaTime, RENDERLAYER_OPAQUE, ERenderingConditions::RC_Shadow);
 					RenderLayer->DrawMesh(DeltaTime, RENDERLAYER_TRANSPARENT, ERenderingConditions::RC_Shadow);
 					RenderLayer->DrawMesh(DeltaTime, RENDERLAYER_OPAQUE_REFLECTOR, ERenderingConditions::RC_Shadow);
@@ -137,6 +145,7 @@ void FDynamicShadowCubeMap::PreDraw(float DeltaTime)
 
 			
 				// 绘制到ShadowCubeMap
+				// ShadowCubeMapに描画
 				GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(8, InRenderTarget->GetGPUSRVOffset());
 
 				Index++;
@@ -151,6 +160,7 @@ void FDynamicShadowCubeMap::Draw(float DeltaTime)
 }
 
 // 设置DSV偏移
+// DSVオフセットを設定
 void FDynamicShadowCubeMap::BuildDepthStencilDescriptor()
 {
 	UINT DescriptorHandleIncrementSize = GetD3dDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV);
@@ -162,23 +172,25 @@ void FDynamicShadowCubeMap::BuildDepthStencilDescriptor()
 }
 
 
-// RenderTarget 偏移不一样
+// RenderTarget 
 void FDynamicShadowCubeMap::BuildRenderTargetRTV()
 {
 	UINT RTVDescriptorSize = GetDescriptorHandleIncrementSizeByRTV();
 
 	// RTV的起始
+	// RTVの開始
 	auto RTVDesHeapStart = GetRTVHeap()->GetCPUDescriptorHandleForHeapStart();
 
 	if (FCubeMapRenderTarget* InRenderTarget = dynamic_cast<FCubeMapRenderTarget*>(RenderTarget.get()))
 	{
 		// 偏移的地址记录
+		// オフセットアドレスの記録
 		for (size_t i = 0; i < 6; i++)
 		{
 			InRenderTarget->GetCPURenderTargetView(i) = CD3DX12_CPU_DESCRIPTOR_HANDLE(
 				RTVDesHeapStart,
 				FEngineRenderConfig::GetRenderConfig()->SwapChainCount
-				+ 6  //反射 CubeMap的摄像机
+				+ 6  //反射 CubeMap的摄像机   //反射用CubeMapのカメラ
 				+ i,
 				RTVDescriptorSize);
 		}
@@ -195,8 +207,8 @@ void FDynamicShadowCubeMap::BuildRenderTargetSRV()
 	int Offset =
 		GeometryMap->GetDrawTexture2DResourcesNumber() +
 		GeometryMap->GetDrawCubeMapResourcesNumber() +
-		1 + //反射cubemap
-		1;//shadop
+		1 + //反射cubemap          //反射用CubeMap
+		1;//shadow
 
 	if (FCubeMapRenderTarget* InRenderTarget = dynamic_cast<FCubeMapRenderTarget*>(RenderTarget.get()))
 	{

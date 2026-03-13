@@ -9,14 +9,16 @@ FSSAOBilateralRenderLayer::FSSAOBilateralRenderLayer()
 
 void FSSAOBilateralRenderLayer::BuildShader()
 {
-	//构建Shader
+	// 构建Shader
+	// シェーダーを構築する
 	//HLSL
 	std::wstring ShaderPath = BuildShadersPaths(L"AO/SSAOBilateralBlur");
 	VertexShader.BuildShaders(ShaderPath, "VertexShaderMain", "vs_5_1", NULL);
 	PixelShader.BuildShaders(ShaderPath, "PixelShaderMain", "ps_5_1", NULL);
 	DirectXPipelineState->BindShader(VertexShader, PixelShader);
 
-	//输入布局
+	// shader输入格式
+	// シェーダー入力フォーマット
 	InputElementDesc.clear();
 	DirectXPipelineState->BindInputLayout(InputElementDesc.data(), InputElementDesc.size());
 }

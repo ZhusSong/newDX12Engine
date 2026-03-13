@@ -3,6 +3,7 @@
 #include "Core/Mesh.h"
 
 // 盒子网格
+// ボックスメッシュ
 class GBoxMesh :public GMesh
 {
 	typedef GMesh Super;

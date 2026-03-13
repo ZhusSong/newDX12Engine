@@ -3,6 +3,7 @@
 #include "../StaticSampler/StaticSamplerObject.h"
 
 // SSAO根签名
+// SSAOルートシグネチャ
 struct FSSAODirectXRootSignature :public FDirectXRootSignature
 {
 private:

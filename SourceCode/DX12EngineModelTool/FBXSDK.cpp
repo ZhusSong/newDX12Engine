@@ -47,17 +47,17 @@ bool LoadScene(FbxManager* InManager, FbxDocument* InScene, const char* InFilena
 
 	if (FBXImporterPtr->IsFBX())
 	{
-		//打印数据
+		
 	}
 
 	bReturn = FBXImporterPtr->Import(InScene);
 	if (bReturn &&
 		FBXImporterPtr->GetStatus().GetCode() == FbxStatus::ePasswordError)
 	{
-		//秘钥
+	
 	}
 
-	//销毁
+	
 	FBXImporterPtr->Destroy();
 
 	return true;
@@ -69,7 +69,7 @@ void GetPolygons(FbxMesh* InMesh, FFBXMesh& OutData)
 	FbxVector4* ControlPoints = InMesh->GetControlPoints();
 
 	int VertexID = 0;
-	for (int i = 0; i < PolygonCount; i++)//图元
+	for (int i = 0; i < PolygonCount; i++)//Get Polygon
 	{
 		OutData.VertexData.push_back(FFBXTriangle());
 		FFBXTriangle& InTriangle = OutData.VertexData[OutData.VertexData.size() - 1];
@@ -80,11 +80,11 @@ void GetPolygons(FbxMesh* InMesh, FFBXMesh& OutData)
 			int ControlPointIndex = InMesh->GetPolygonVertex(i, j);
 
 			// Coordinates
-			// 获取顶点位置
 			// FbxVector4 Coordinates;
-			// 获取位置
+			// Get Pos
 			{
 				// 缩放
+				// スケーリング
 				FbxDouble3 Scaling = InMesh->GetNode()->LclScaling;
 
 				InTriangle.Vertexs[j].Position.X = ControlPoints[ControlPointIndex].mData[0] * Scaling[0];
@@ -93,6 +93,7 @@ void GetPolygons(FbxMesh* InMesh, FFBXMesh& OutData)
 			}
 
 			// 顶点颜色
+			// 頂点カラー
 			for (int l = 0; l < InMesh->GetElementVertexColorCount(); l++) {}
 
 			//UV
@@ -109,7 +110,7 @@ void GetPolygons(FbxMesh* InMesh, FFBXMesh& OutData)
 						FbxVector2 UV = TextureUV->GetDirectArray().GetAt(ControlPointIndex);
 
 						InTriangle.Vertexs[j].UV.X = UV.mData[0];
-						InTriangle.Vertexs[j].UV.Y = 1.f - UV.mData[1];//UV取反
+						InTriangle.Vertexs[j].UV.Y = 1.f - UV.mData[1];//UV取反 //UVを反転
 					}
 					else if (ReferenceMode == fbxsdk::FbxLayerElement::eIndexToDirect)
 					{
@@ -117,7 +118,7 @@ void GetPolygons(FbxMesh* InMesh, FFBXMesh& OutData)
 
 						FbxVector2 UV = TextureUV->GetDirectArray().GetAt(ID);
 						InTriangle.Vertexs[j].UV.X = UV.mData[0];
-						InTriangle.Vertexs[j].UV.Y = 1.f - UV.mData[1];//UV取反
+						InTriangle.Vertexs[j].UV.Y = 1.f - UV.mData[1];//UV取反 //UVを反転
 					}
 				}
 				else if (ModeType == fbxsdk::FbxLayerElement::eByPolygonVertex)
@@ -132,14 +133,14 @@ void GetPolygons(FbxMesh* InMesh, FFBXMesh& OutData)
 						FbxVector2 UV = TextureUV->GetDirectArray().GetAt(ControlPointIndex);
 
 						InTriangle.Vertexs[j].UV.X = UV.mData[0];
-						InTriangle.Vertexs[j].UV.Y = 1.f - UV.mData[1];//UV取反
+						InTriangle.Vertexs[j].UV.Y = 1.f - UV.mData[1];//UV取反 //UVを反転
 						break;
 					}
 					}
 				}
 			}
 
-			//法线
+			// 法線
 			for (int l = 0; l < InMesh->GetElementNormalCount(); ++l)
 			{
 				FbxGeometryElementNormal* Normal = InMesh->GetElementNormal(l);
@@ -196,6 +197,7 @@ void GetPolygons(FbxMesh* InMesh, FFBXMesh& OutData)
 			}
 
 			//切线
+			//接線
 			for (int l = 0; l < InMesh->GetElementTangentCount(); ++l)
 			{
 				FbxGeometryElementTangent* Tangent = InMesh->GetElementTangent(l);
@@ -228,6 +230,7 @@ void GetPolygons(FbxMesh* InMesh, FFBXMesh& OutData)
 			}
 
 			// 副法线
+			// 従法線
 			for (int l = 0; l < InMesh->GetElementBinormalCount(); ++l)
 			{
 				FbxGeometryElementBinormal* Binormal = InMesh->GetElementBinormal(l);
@@ -317,19 +320,23 @@ void DestroySdkObjects(FbxManager* InManager)
 void FFBXAssetImport::LoadMeshData(const char* InPath, FFBXRenderData& OutData)
 {
 	// 创建Manager与场景
+	// マネージャーとシーンを作成
 	FbxManager* SdkManager = NULL;
 	FbxScene* Scene = NULL;
 
 	// 初始化场景对象
+	// シーンオブジェクトを初期化
 	InitializeSdkObjects(SdkManager, Scene);
 
 	// 读取模型
+	// モデルを読み込む
 	FbxString FBXPath(InPath);
 	bool bResult = LoadScene(SdkManager, Scene, FBXPath.Buffer());
 
 	//FbxAxisSystem::DirectX.ConvertScene(Scene);
 
 	// 解析FBX数据
+	// FBXデータを解析
 	if (FbxNode* Node = Scene->GetRootNode())
 	{
 		for (int i = 0; i < Node->GetChildCount(); i++)
@@ -338,7 +345,6 @@ void FFBXAssetImport::LoadMeshData(const char* InPath, FFBXRenderData& OutData)
 		}
 	}
 
-	// 销毁
 	DestroySdkObjects(SdkManager);
 }
 

@@ -30,7 +30,8 @@ void FNormalBuffer::Draw(float DeltaTime)
 		GetGraphicsCommandList()->RSSetViewports(1, &RenderTargetViewport);
 		GetGraphicsCommandList()->RSSetScissorRects(1, &RenderTargetScissorRect);
 
-		// 指向哪个资源 转换其状态
+		// 转换资源状态
+		// リソースステートを変換する
 		CD3DX12_RESOURCE_BARRIER ResourceBarrierPresent = CD3DX12_RESOURCE_BARRIER::Transition(
 			InRenderTarget->GetRenderTarget(),
 			D3D12_RESOURCE_STATE_GENERIC_READ, D3D12_RESOURCE_STATE_RENDER_TARGET);
@@ -54,9 +55,11 @@ void FNormalBuffer::Draw(float DeltaTime)
 			true, &DepthStencilView);
 
 		//从主视口渲染
+		// メインビューポートから描画
 		GeometryMap->DrawViewport(DeltaTime);
 
 		//设置NorPSO
+		// NorPSOを設定する
 		RenderLayer->ResetPSO(EMeshRenderLayerType::RENDERLAYER_NORMAL);
 
 		RenderLayer->DrawMesh(DeltaTime, RENDERLAYER_OPAQUE, ERenderingConditions::RC_Shadow);
@@ -75,7 +78,6 @@ void FNormalBuffer::BuildDescriptors()
 	BuildSRVOffset();
 }
 
-// 偏移
 void FNormalBuffer::BuildRenderTargetRTV()
 {
 	BuildRTVOffset();

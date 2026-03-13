@@ -1,8 +1,8 @@
-﻿//25.6.21 李
-#pragma once
+﻿#pragma once
 #include "Core/RenderTarget.h"
 
 // 提供渲染目标的接口
+// レンダーターゲットを提供するインターフェース
 class FCubeMapRenderTarget :public FRenderTarget
 {
 	typedef FRenderTarget Super;
@@ -13,6 +13,7 @@ public:
 	void Init(UINT InWidth, UINT InHeight, DXGI_FORMAT InFormat);
 public:
 	// 获取cpu渲染目标视图
+	// CPUレンダーターゲットビューを取得する
 	CD3DX12_CPU_DESCRIPTOR_HANDLE& GetCPURenderTargetView(int Index);
 
 

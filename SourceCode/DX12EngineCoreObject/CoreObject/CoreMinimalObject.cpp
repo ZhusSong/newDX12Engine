@@ -4,6 +4,7 @@
 #include "../CodeReflection/Frame.h"
 
 // 全局对象池
+// グローバルオブジェクトプール
 vector<CCoreMinimalObject*> GObjects;
 
 
@@ -31,6 +32,7 @@ CCoreMinimalObject::~CCoreMinimalObject()
 void CCoreMinimalObject::CallFunction(FFrame& Stack, void const* Data, CFunctionObject* Function)
 {
 	// 收集函数的参数
+	// 関数のパラメータを収集
 	CPropertyObject* PropertyPtr = Function->Property;
 	while (PropertyPtr)
 	{
@@ -41,6 +43,7 @@ void CCoreMinimalObject::CallFunction(FFrame& Stack, void const* Data, CFunction
 
 
 	// 执行字节码对应的命令
+	// バイトコードに対応するコマンドを実行
 	Stack.Step(NULL, Data);
 }
 

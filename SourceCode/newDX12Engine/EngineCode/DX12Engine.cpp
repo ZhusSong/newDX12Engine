@@ -78,10 +78,10 @@ int Exit(CEngine* InEngine)
 
 
 CEngine* Engine = NULL;
-//hInstance 当前实例
-//prevInstance 上次的实例
-//cmdLine 传递命令
-//showCmd 多少条cmd
+//hInstance 当前实例       現在のインスタンス
+//prevInstance 上次的实例  前回のインスタンス
+//cmdLine 传递命令         コマンドライン
+//showCmd 多少条cmd        cmd状態
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, int showCmd)
 {
 	int ReturnValue = 0;
@@ -90,22 +90,24 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, in
 
 	if (Engine)
 	{
-		//初始化
+		// 初始化
+		// 初期化
 		Init(Engine, hInstance, prevInstance, cmdLine, showCmd);
 
 		MSG EngineMsg = { 0 };
 
-		//渲染出图
+		// 渲染出图
+		// レンダリング出力
 		while (EngineMsg.message != WM_QUIT)
 		{
-			//PM_NOREMOVE 消息不从队列里除掉。
-			//PM_REMOVE   消息从队列里除掉。
-			//PM_NOYIELD  此标志使系统不释放等待调用程序空闲的线程
+			//PM_NOREMOVE 消息不从队列里除掉。                           メッセージをキューから削除しない。
+			//PM_REMOVE   消息从队列里除掉。                             メッセージをキューから削除する。
+			//PM_NOYIELD  此标志使系统不释放等待调用程序空闲的线程       このフラグは、呼び出し元がアイドル状態になるのを待っているスレッドをシステムが解放しないようにする。
 			// 
-			//PM_QS_INPUT 处理鼠标和键盘消息。
-			//PM_QS_PAINT 处理画图消息。
-			//PM_QS_POSTMESSAGE 处理所有被寄送的消息，包括计时器和热键。
-			//PM_QS_SENDMESSAGE 处理所有发送消息。
+			//PM_QS_INPUT 处理鼠标和键盘消息。                           マウスとキーボードのメッセージを処理する。
+			//PM_QS_PAINT 处理画图消息。                                 描画メッセージを処理する。
+			//PM_QS_POSTMESSAGE 处理所有被寄送的消息，包括计时器和热键。 タイマーやホットキーを含む、ポストされたすべてのメッセージを処理する。
+			//PM_QS_SENDMESSAGE 处理所有发送消息。                       送信されたすべてのメッセージを処理する。
 			if (PeekMessage(&EngineMsg, 0, 0, 0, PM_REMOVE))
 			{
 				TranslateMessage(&EngineMsg);
@@ -117,7 +119,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, in
 			}
 		}
 
-		//退出
 		ReturnValue = Exit(Engine);
 	}
 	else

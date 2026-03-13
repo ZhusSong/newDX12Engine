@@ -32,7 +32,7 @@ CWindowsEngine::CWindowsEngine()
 	:RenderingEngine(new CDirectX12RenderingEngine())
 #if EDITOR_ENGINE
 	, EditorEngine(new CEditorEngine())
-#endif // 0
+#endif 
 {
 
 }
@@ -44,12 +44,14 @@ CWindowsEngine::~CWindowsEngine()
 int CWindowsEngine::PreInit(FWinMainCommandParameters InParameters)
 {
 	// 自适应屏幕大小绑定
+	// 画面サイズに適応したバインド
 	OnResetSizeDelegate.AddFunction(this, &CWindowsEngine::OnResetSize);
 
 
 	InitPath();
 
 	// 日志系统初始化
+	// ログシステムの初期化
 	std::string LogPath =
 		FEnginePathHelper::RelativeToAbsolutePath(
 			FEnginePathHelper::GetEngineLogsPath());
@@ -57,12 +59,12 @@ int CWindowsEngine::PreInit(FWinMainCommandParameters InParameters)
 	init_log_system(LogPath.c_str());
 	Engine_Log("Log Init.");
 
-	//处理命令
 
 
 	Engine_Log("Engine pre initialization complete.");
 
-	//渲染引擎初始化
+	// 渲染引擎初始化
+	// レンダリングエンジンの初期化
 	RenderingEngine->PreInit(InParameters);
 
 	return 0;
@@ -77,6 +79,7 @@ int CWindowsEngine::Init(FWinMainCommandParameters InParameters)
 	RenderingEngine->Init(InParameters);
 
 	// 注册对应的world对象
+	// 対応するワールドオブジェクトを登録
 	BUILD_OBJECT_PARAMETERS_BY_NO_COMPONENT(, this);
 	World = CreateObject<CWorld>(Param, new CWorld());
 	RenderingEngine->World = World;
@@ -91,6 +94,7 @@ int CWindowsEngine::PostInit()
 	Engine_Log("Engine post initialization complete.");
 
 	// 先初始化渲染引擎
+	// まずレンダリングエンジンを初期化
 	RenderingEngine->PostInit();
 
 	for (auto& Tmp : GObjects)
@@ -171,14 +175,15 @@ void CWindowsEngine::InitPath()
 			std::string LogPath =
 				FEnginePathHelper::RelativeToAbsolutePath(
 					InPath);
-			//创建路径
+			// 创建路径
+			// パスを作成
 			create_file_directory(LogPath.c_str());
 		};
 
-	//日志系统初始化
+	// 日志系统初始化
+	// ログシステムの初期化
 	CreateFileDirectory(FEnginePathHelper::GetEngineLogsPath());
 
-	//Content
 	CreateFileDirectory(FEnginePathHelper::GetEngineAssetPath());
 
 	wstring ShadersPathW = FEnginePathHelper::GetEngineShadersPath();
@@ -197,22 +202,24 @@ CMeshManager* CWindowsEngine::GetMeshManager()const
 
 bool CWindowsEngine::InitWindows(FWinMainCommandParameters InParameters)
 {
-	//注册窗口
+	// 注册窗口
+	// ウィンドウを登録
 	WNDCLASSEX WindowsClass;
-	WindowsClass.cbSize = sizeof(WNDCLASSEX);//该对象实际占用多大内存
-	WindowsClass.cbClsExtra = 0;//是否需要额外空间
-	WindowsClass.cbWndExtra = 0;//是否需要额外内存
-	WindowsClass.hbrBackground = nullptr;//如果有设置哪就是GDI擦除
-	WindowsClass.hCursor = LoadCursor(NULL, IDC_ARROW);//设置一个箭头光标
-	WindowsClass.hIcon = nullptr; //应用程序放在磁盘上显示的图标
-	WindowsClass.hIconSm = NULL;//应用程序显示在左上角的图标
-	WindowsClass.hInstance = InParameters.HInstance; //窗口实例
-	WindowsClass.lpszClassName = L"DX12Engine";//窗口名字
+	WindowsClass.cbSize = sizeof(WNDCLASSEX);//该对象实际占用多大内存            // このオブジェクトが実際に占有するメモリサイズ
+	WindowsClass.cbClsExtra = 0;//是否需要额外空间                               // 追加スペースが必要かどうか
+	WindowsClass.cbWndExtra = 0;//是否需要额外内存                               // 追加メモリが必要かどうか
+	WindowsClass.hbrBackground = nullptr;//如果有设置哪就是GDI擦除               // 設定されている場合はGDI消去 
+	WindowsClass.hCursor = LoadCursor(NULL, IDC_ARROW);//设置一个箭头光标        // 矢印カーソルを設定
+	WindowsClass.hIcon = nullptr; //应用程序放在磁盘上显示的图标                 // アプリケーションがディスク上に表示するアイコン
+	WindowsClass.hIconSm = NULL;//应用程序显示在左上角的图标                     // アプリケーションが左上隅に表示するアイコン
+	WindowsClass.hInstance = InParameters.HInstance; //窗口实例                  // ウィンドウインスタンス
+	WindowsClass.lpszClassName = L"DX12Engine";//窗口名字                        // ウィンドウ名
 	WindowsClass.lpszMenuName = nullptr;//
-	WindowsClass.style = CS_VREDRAW | CS_HREDRAW;//怎么绘制窗口 垂直和水平重绘
-	WindowsClass.lpfnWndProc = EngineWindowProc;//消息处理函数
+	WindowsClass.style = CS_VREDRAW | CS_HREDRAW;//怎么绘制窗口 垂直和水平重绘   // ウィンドウの描画方法 垂直および水平方向の再描画
+	WindowsClass.lpfnWndProc = EngineWindowProc;//消息处理函数                   // メッセージ処理関数
 
-	//注册窗口
+	// 注册窗口
+	// ウィンドウを登録
 	ATOM RegisterAtom = RegisterClassEx(&WindowsClass);
 	if (!RegisterAtom)
 	{
@@ -222,24 +229,24 @@ bool CWindowsEngine::InitWindows(FWinMainCommandParameters InParameters)
 
 	RECT Rect = { 0,0,FEngineRenderConfig::GetRenderConfig()->ScreenWidth,FEngineRenderConfig::GetRenderConfig()->ScreenHight };
 
-	//@rect 适口
-	//WS_OVERLAPPEDWINDOW 适口风格
-	//NULL 没有菜单
+	//@rect 
+	//WS_OVERLAPPEDWINDOW 
+	//NULL 
 	AdjustWindowRect(&Rect, WS_OVERLAPPEDWINDOW, NULL);
 
 	int WindowWidth = Rect.right - Rect.left;
 	int WindowHight = Rect.bottom - Rect.top;
 
 	MainWindowsHandle = CreateWindowEx(
-		NULL,//窗口额外的风格
-		L"DX12Engine", // 窗口名称
-		L"DX12 Engine",//会显示在窗口的标题栏上去
-		WS_OVERLAPPEDWINDOW, //窗口风格
-		WINDOWS_LOCATION_X, WINDOWS_LOCATION_Y,//窗口的坐标
+		NULL,//窗口额外的风格                                  // ウィンドウの追加スタイル
+		L"DX12Engine", // 窗口名称                             // ウィンドウ名
+		L"DX12 Engine",//会显示在窗口的标题栏上去              // ウィンドウのタイトルバーに表示される
+		WS_OVERLAPPEDWINDOW, //窗口风格                        // ウィンドウスタイル
+		WINDOWS_LOCATION_X, WINDOWS_LOCATION_Y,//窗口的坐标    // ウィンドウスタイル
 		WindowWidth, WindowHight,//
-		NULL, //副窗口句柄
-		nullptr, //菜单句柄
-		InParameters.HInstance,//窗口实例
+		NULL, //副窗口句柄                                     // 子ウィンドウハンドル
+		nullptr, //菜单句柄                                    // メニューハンドル
+		InParameters.HInstance,//窗口实例                      // ウィンドウインスタンス
 		NULL);//
 	if (!MainWindowsHandle)
 	{
@@ -248,10 +255,10 @@ bool CWindowsEngine::InitWindows(FWinMainCommandParameters InParameters)
 		return false;
 	}
 
-	//显示窗口
+	// 显示窗口
+	// ウィンドウを表示
 	ShowWindow(MainWindowsHandle, SW_SHOW);
 
-	//窗口是脏的，刷新一下
 	UpdateWindow(MainWindowsHandle);
 
 	Engine_Log("InitWindows complete.");

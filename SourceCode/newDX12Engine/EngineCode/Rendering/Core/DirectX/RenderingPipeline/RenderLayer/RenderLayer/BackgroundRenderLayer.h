@@ -1,6 +1,5 @@
 ﻿#pragma once
 #include "../Core/RenderLayer.h"
-//25.6.13 李
 
 class FBackgroundRenderLayer :public FRenderLayer
 {

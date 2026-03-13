@@ -1,6 +1,7 @@
 ﻿#include "DirectXDescriptorHeap.h"
 
 // 构建CBV栈描述
+// CBVスタックディスクリプタを構築
 void FDirectXDescriptorHeap::Build(UINT InNumDescriptor)
 {
     D3D12_DESCRIPTOR_HEAP_DESC HeapDesc;

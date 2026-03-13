@@ -3,6 +3,7 @@
 #include "Core/Mesh.h"
 
 // 圆锥网格
+// コーンサーフェスメッシュ
 class GConeMesh :public GMesh
 {
 	typedef GMesh Super;

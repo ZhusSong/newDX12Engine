@@ -1,5 +1,4 @@
-﻿//25.6.25 李
-#pragma once
+﻿#pragma once
 #include "../Core/DynamicMap.h"
 
 class GClientViewport;
@@ -32,12 +31,14 @@ public:
 	void BuildViewMatrix(float DeltaTime);
 
 	// 构建平行光阴影矩阵
+	// 平行光シャドウ行列を構築
 	void BuildParallelLightMatrix(
 		const fvector_3d& InDirection,
 		const fvector_3d& InTargetPosition,
 		float InRadius = 100.f);
 
 	// 构建聚光灯阴影矩阵
+	// スポットライトシャドウ行列を構築
 	void BuildSpotLightMatrix(
 		const fvector_3d& InDirection,
 		const fvector_3d& InPosition,
@@ -53,5 +54,6 @@ protected:
 	virtual void BuildRenderTargetSRV();
 
 	// 阴影视口
+	// シャドウビューポート
 	GClientViewport* ShadowViewport;
 };

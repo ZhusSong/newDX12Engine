@@ -1,5 +1,4 @@
-﻿// 2025.4.李
-#include "MeshType.h"
+﻿#include "MeshType.h"
 #include "MeshManager.h"
 
 FVertex::FVertex()

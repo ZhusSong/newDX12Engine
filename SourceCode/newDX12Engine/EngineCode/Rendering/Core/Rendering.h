@@ -7,6 +7,7 @@
 #endif
 
 // 提供渲染内容的接口
+// レンダリング内容を提供するインターフェース
 class IRenderingInterface 
 {
 	friend class CDirectXRenderingEngine;

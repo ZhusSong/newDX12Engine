@@ -2,6 +2,7 @@
 #include "../../../../../Interface/DirectXDeviceInterface.h"
 
 // 描述符结构体
+// ディスクリプタ構造体
 struct FDirectXDescriptorHeap :public IDirectXDeviceInterface_Struct
 {
 	void Build(UINT InNumDescriptor);

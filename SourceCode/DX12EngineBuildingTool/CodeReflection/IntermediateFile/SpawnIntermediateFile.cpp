@@ -60,13 +60,12 @@ namespace IntermediateFile
 				MClassName.c_str(),
 				string((ClassAnalysis.Function.size() > 0) ? "\\" : "").c_str()));
 
-		// 类名
+		// クラス名
 		std::string ClearClassName = ClassAnalysis.ClassName;
 		{
 			char* ClearClassNamePtr = const_cast<char*>(ClearClassName.c_str());
 			trim_start_and_end_inline(ClearClassNamePtr);
 
-			// 移除头部C开头或者G开头
 			remove_char_start(ClearClassNamePtr, 'C');
 			remove_char_start(ClearClassNamePtr, 'G');
 		}
@@ -91,7 +90,8 @@ namespace IntermediateFile
 					AnalysisRaw.push_back("{ \\");
 					{
 						std::string VariableAdd;
-						// 先拼接函数的参数
+						// 拼接函数的参数
+						// 関数のパラメータを連結
 						for (const FParamElement& Variable : Function.ParamArray)
 						{
 							std::string StackString = " Stack.GetParmAddr(); \\";
@@ -115,11 +115,13 @@ namespace IntermediateFile
 							// ,Z_Context_Name, Z_A_Name, Z_b_Name, Z_C_Name
 							VariableAdd += ("," + VariableName);
 						}
-						//移除最前面的字符串
+						//　移除最前面的字符串
+						//　先頭の文字列を削除
 						char* VariableAddPtr = const_cast<char*>(VariableAdd.c_str());
 						remove_char_start(VariableAddPtr, ',');
 
-						//处理函数
+						//　处理函数
+						//　関数を処理
 						if (Function.bStatic)
 						{
 							if (Function.Return.Type == "void")
@@ -145,14 +147,15 @@ namespace IntermediateFile
 										VariableAdd.c_str()));
 							}
 						}
-						else //处理成员函数
+						else //处理成员函数　//メンバ関数を処理
 						{
 
 						}
 					}
 					AnalysisRaw.push_back("} \\");
 
-					//收集静态注册
+					//　收集静态注册
+					// 静的登録を収集
 					//FFuntionManage::SetNativeFuncPtr(FFuntionID(("ActorObject"),("Hello1"),GActorObject::Script_Hello1));
 					StaticRegistration.push_back(
 						simple_cpp_string_algorithm::printf(
@@ -164,7 +167,8 @@ namespace IntermediateFile
 				}
 			}
 
-			//移除函数拼接的 "\"
+			//　移除函数拼接的 "\"
+			// 関数連結の "\" を削除
 			if (simple_cpp_string_algorithm::index_valid(
 				AnalysisRaw.size(),
 				AnalysisRaw.size() - 1))
@@ -210,6 +214,7 @@ namespace IntermediateFile
 		std::vector<std::string>& StaticRegistration)
 	{
 		// 获取当前时间戳
+		// 現在のタイムスタンプを取得
 		std::time_t now = std::time(nullptr);
 		std::tm local_time{};
 		localtime_s(&local_time, &now);   
@@ -223,11 +228,12 @@ namespace IntermediateFile
 		AnalysisRaw.push_back("===========================================================================*/");
 		
 		// 文件的绝对路径
+		// ファイルの絶対パス
 		AnalysisRaw.push_back(simple_cpp_string_algorithm::printf(
 			"#include \"%s\"",
 			ClassAnalysis.Filename.c_str()));
 
-		// 反射的.h
+		// 反射用.h
 		AnalysisRaw.push_back(simple_cpp_string_algorithm::printf(
 			"#include \"%s.CodeReflection.h\"",
 			ClassAnalysis.CodeCPPName.c_str()));
@@ -242,8 +248,10 @@ namespace IntermediateFile
 		AnalysisRaw.push_back("PRAGMA_DISABLE_DEPRECATION_WARNINGS");
 		AnalysisRaw.push_back("");
 		//代码定义区
+		//コード定義
 		{
-			//处理函数
+			//　处理函数
+			//　関数を処理
 			if (ClassAnalysis.Function.size() > 0)
 			{
 				for (const FFunctionAnalysis& Function : ClassAnalysis.Function)
@@ -307,7 +315,7 @@ namespace IntermediateFile
 										StructName.c_str(),
 										StructName.c_str()));
 
-								//赋值
+							
 								{
 									//Parm_Hello123.c = c;
 									for (auto& Param : Function.ParamArray)
@@ -348,7 +356,8 @@ namespace IntermediateFile
 				simple_cpp_string_algorithm::printf("int %s", Register_Func.c_str()));
 			AnalysisRaw.push_back(("{"));
 			{
-				//合并两个vector
+				// 合并两个vector
+				// 2つのベクターを統合
 				AnalysisRaw.insert(
 					AnalysisRaw.end(),
 					StaticRegistration.begin(),
@@ -382,7 +391,8 @@ namespace IntermediateFile
 	{
 		vector<string> StaticRegistration;
 
-		//生成反射数据
+		// 生成反射数据
+		// リフレクションデータを生成
 		GeneratePointH(OutAnalysisRawH, InClassAnalysis, StaticRegistration);
 		GeneratePointCpp(OutAnalysisRawCPP, InClassAnalysis, StaticRegistration);
 

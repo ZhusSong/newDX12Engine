@@ -1,4 +1,5 @@
 ﻿// 屏幕空间AO
+// スクリーン空間AO
 #pragma once
 #include "../../../../../../Interface/DirectXDeviceInterface.h"
 #include "../../RenderBuffer/NormalBuffer.h"
@@ -43,6 +44,7 @@ public:
 
 protected:	
 	//渲染双边模糊
+	// バイラテラルブラーを描画
 	virtual void DrawBlur(float DeltaTime, bool bHorizontal);
 	virtual void DrawBlurHorizontal(float DeltaTime);
 	virtual void DrawBlurVertical(float DeltaTime);
@@ -87,6 +89,7 @@ protected:
 	FNoiseBuffer NoiseBuffer;
 
 	// SSAO常量缓冲区视图
+	// SSAO定数バッファビュー
 	FConstantBufferViews SSAOViewConstantBufferViews;
 	FConstantBufferViews SSAOBlurConstantBufferParam;
 

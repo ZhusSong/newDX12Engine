@@ -1,5 +1,4 @@
-﻿// 2025.4.李
-#include "Mesh.h"
+﻿#include "Mesh.h"
 #include "../../Config/EngineRenderConfig.h"
 #include "../../Component/TransformComponent.h"
 #include "Material/Material.h"
@@ -37,6 +36,7 @@ void GMesh::SetPosition(const XMFLOAT3& InNewPosition)
 	Super::SetPosition(InNewPosition);
 
 	// 通过mesh组件设置位置
+	// Meshコンポーネントを通して位置を設定
 	GetMeshComponent()->SetPosition(InNewPosition);
 }
 
@@ -45,6 +45,7 @@ void GMesh::SetRotation(const fvector_3d& InRotation)
 	Super::SetRotation(InRotation);
 
 	// 通过mesh组件设置旋转
+	// Meshコンポーネントを通して回転を設定
 	GetMeshComponent()->SetRotation(InRotation);
 }
 
@@ -53,6 +54,7 @@ void GMesh::SetScale(const fvector_3d& InNewScale)
 	Super::SetScale(InNewScale);
 
 	// 通过mesh组件设置大小
+	// Meshコンポーネントを通してスケールを設定
 	GetMeshComponent()->SetScale(InNewScale);
 }
 

@@ -2,6 +2,7 @@
 #include "../../../../../../EngineMinimal.h"
 
 // SSAO常量缓冲区数据
+// SSAO定数バッファデータ
 struct FSSAOViewportTransformation
 {
 	FSSAOViewportTransformation();
@@ -11,6 +12,7 @@ struct FSSAOViewportTransformation
 	XMFLOAT4X4 TexProjectionMatrix;
 
 	// 设置遮蔽属性
+	// 遮蔽属性を設定
 	float OcclusionRadius;
 	float OcclusionStart;
 	float OcclusionEnd;

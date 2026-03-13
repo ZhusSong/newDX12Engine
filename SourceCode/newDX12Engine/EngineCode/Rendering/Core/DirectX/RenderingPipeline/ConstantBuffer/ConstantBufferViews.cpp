@@ -1,6 +1,7 @@
 ﻿#include "ConstantBufferViews.h"
 
 // 创建常量缓冲区
+// 定数バッファを作成
 void FConstantBufferViews::CreateConstant(UINT ObjectSize, UINT ObjectCount, bool bConstBuffer)
 {
     Constant = make_shared<FRenderingResourcesUpdate>();
@@ -23,6 +24,7 @@ void FConstantBufferViews::BuildConstantBuffer(
     for (UINT i = 0; i < InConstantBufferNum; i++)
     {
         //每一帧都是起始地址
+        // 各フレームは開始アドレスから
         CD3DX12_CPU_DESCRIPTOR_HANDLE Handle = InHandle;
 
         D3D12_CONSTANT_BUFFER_VIEW_DESC CBVDesc;

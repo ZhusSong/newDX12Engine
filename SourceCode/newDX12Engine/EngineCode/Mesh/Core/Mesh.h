@@ -11,6 +11,7 @@ class CMaterial;
 enum EMeshRenderLayerType;
 
 // 游戏对象网格接口
+// ゲームオブジェクトのメッシュインターフェース
 class GMesh :
 	public GActorObject, 
 	public IRenderingInterface,

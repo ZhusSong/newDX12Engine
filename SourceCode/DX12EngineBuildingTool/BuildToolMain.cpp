@@ -3,6 +3,7 @@
 #include "CodeReflection/IntermediateFile/SpawnIntermediateFile.h"
 
 //注:需为BuildingTool解决方案在连接器->系统中分配100000000内存
+//注: BuildingToolソリューションのリンカー->システムで100000000のメモリを割り当てる必要があります
 int main()
 {
 	/*if (0)
@@ -22,12 +23,15 @@ int main()
 		simple_cpp_helper_file::save_file_to_strings(PathCPP, OutAnalysisRawCPP);
 	}
 	else*/
-		//生成反射代码的位置
+		// 生成反射代码的位置
+		// リフレクションコードを生成する場所
 		string CodeReflectionPath = FEnginePathHelper::RelativeToAbsolutePath(FEnginePathHelper::GetEngineCodeReflectionPath());
-		//要遍历的源文件位置
+		// 要遍历的源文件位置
+		// 走査するソースファイルの場所
 		string SourcePath = FEnginePathHelper::RelativeToAbsolutePath(FEnginePathHelper::GetEngineSourcePath());
 
-		//先移除所有反射代码
+		// 先移除所有反射代码
+		// まずすべてのリフレクションコードを削除
 		remove_dir_all_files(CodeReflectionPath.c_str());
 
 		def_c_paths Paths;
@@ -39,7 +43,8 @@ int main()
 		{
 			if (find_string(Paths.paths[i], ".h", 0) != -1)
 			{
-				//单位化路径
+				// 单位化路径
+				// パスを正規化
 				normalization_path(Paths.paths[i]);
 
 				std::vector<std::string> StringArray;
@@ -47,11 +52,13 @@ int main()
 
 				if (IsCheckAllowCodeReflection(StringArray))
 				{
-					//收集类型
+					// 收集类型
+					// タイプを収集
 					FClassAnalysis ClassAnalysis;
 					CollectClassInfo::Collection(Paths.paths[i], ClassAnalysis);
 
-					//构建.h和.cpp代码
+					// 构建.h和.cpp代码
+					// .hと.cppのコードを構築
 					std::vector<std::string> OutAnalysisRawH;
 					std::vector<std::string> OutAnalysisRawCPP;
 					IntermediateFile::Builder(ClassAnalysis, OutAnalysisRawH, OutAnalysisRawCPP);

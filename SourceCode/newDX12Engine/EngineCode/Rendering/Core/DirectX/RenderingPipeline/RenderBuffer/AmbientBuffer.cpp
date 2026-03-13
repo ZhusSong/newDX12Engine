@@ -26,12 +26,14 @@ void FAmbientBuffer::Draw(float DeltaTime)
 }
 
 // 创建描述符
+// ディスクリプタを作成する
 void FAmbientBuffer::BuildDescriptors()
 {
 	BuildSRVOffset();
 }
 
 // 构建RTV
+// RTVを構築する
 void FAmbientBuffer::BuildRenderTargetRTV()
 {
 	BuildRTVOffset();

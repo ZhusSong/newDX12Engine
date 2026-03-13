@@ -1,5 +1,4 @@
 ﻿#pragma once 
-//25.6.16 李
 #include "../../EngineMinimal.h"
 
 namespace ShaderType

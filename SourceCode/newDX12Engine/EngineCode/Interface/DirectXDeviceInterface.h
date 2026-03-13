@@ -16,11 +16,13 @@ class FRenderLayerManager;
 struct FRenderingPipeline;
 
 // 提供渲染设备内容的接口
+// レンダリングデバイスの内容を提供するインターフェース
 class IDirectXDeviceInterface
 {
 	friend struct IDirectXDeviceInterface_Struct;
 public:
 	// 得到视口RenderTarget
+	// ビューポートのRenderTargetを取得
 	void StartSetMainViewportRenderTarget();
 	void EndSetMainViewportRenderTarget();
 	void ClearMainSwapChainCanvas();
@@ -65,12 +67,14 @@ public:
 #endif
 
 	// 添加编辑器引擎
+	// エディタエンジンを追加
 #if EDITOR_ENGINE
 	class CEditorEngine* GetEditorEngine() const;
 #endif // 0
 };
 
 // 提供渲染设备接口的结构体
+// レンダリングデバイスインターフェースを提供する構造体
 struct IDirectXDeviceInterface_Struct
 {
 public:
@@ -115,5 +119,6 @@ protected:
 
 private:
 	// 创建接口的实例
+	// インターフェースのインスタンスを作成
 	IDirectXDeviceInterface Interface;
 };

@@ -3,6 +3,7 @@
 #include "../CoreObject/CoreMinimalObject.h"
 
 // 设置根组件关系
+// ルートコンポーネントの関係を設定
 class RI_ENGINECOREOBJECT_API CComponent :public CCoreMinimalObject
 {
 public:

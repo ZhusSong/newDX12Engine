@@ -1,4 +1,3 @@
-//25.6.16 李
 #ifndef Fog
 #define Fog
 

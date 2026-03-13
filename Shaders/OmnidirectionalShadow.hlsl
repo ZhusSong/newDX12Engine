@@ -1,4 +1,3 @@
-//25.7.2 李
 #include "ShaderCommon.hlsli"
 #include "Material.hlsli"
 
@@ -24,6 +23,7 @@ MeshVertexOut VertexShaderMain(MeshVertexIn MV)
     Out.PositionH = mul(PositionWorld, ViewProjectionMatrix);
 
 	// uv坐标
+    // UI座標
     float4 MyTexCoord = mul(float4(MV.TexCoord, 0.0f, 1.f), ObjectTextureTransform);
     Out.TexCoord = mul(MyTexCoord, MatConstBuffer.TransformInformation).xy;
 
@@ -33,6 +33,7 @@ MeshVertexOut VertexShaderMain(MeshVertexIn MV)
 float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
 {
 	// 采集深度图
+    // 深度マップをサンプリング
     float Depth = (1.f - (MVOut.PositionH.z / MVOut.PositionH.w));
 
     Depth = pow(Depth, 5);

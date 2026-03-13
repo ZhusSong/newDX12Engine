@@ -4,6 +4,7 @@
 #define CDIAPER(...) 
 
 // 代码反射宏
+// コードリフレクションマクロ定義
 #define CODE_REFLECTOR_MACRO_INNER(A,B,C,D) A##B##C##D
 #define CODE_REFLECTOR_MACRO(A,B,C,D) CODE_REFLECTOR_MACRO_INNER(A,B,C,D)
 

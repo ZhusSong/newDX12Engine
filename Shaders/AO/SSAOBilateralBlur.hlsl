@@ -12,7 +12,7 @@ MeshVertexOut VertexShaderMain(uint VertexID : SV_VertexID)
 
     Out.TexCoord = TextureCoordinates[VertexID];
 
-	// 0-1  NDC空间 
+    // 0-1 NDC空間
     Out.Position = float4(2.f * Out.TexCoord.x - 1.f, 1.f - 2.f * Out.TexCoord.y, 0.f, 1.f);
 
     return Out;
@@ -38,6 +38,7 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
     }
 
 	// 中间的权重对应的法线和深度颜色
+    // 中央の重みに対応する法線と深度の色
     float Weights = BlurWeights[BlurRadius];
     float4 Color = Weights * SampleAcceptMap.SampleLevel(TextureSampler, MVOut.TexCoord, 0.0f);
 	

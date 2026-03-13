@@ -1,5 +1,4 @@
-﻿// 2025.4.李
-#pragma once
+﻿#pragma once
 
 #include "CoreObject/CoreMinimalObject.h"
 #include "CodeReflection/CodeReflectionMacroTag.h"
@@ -19,6 +18,7 @@ public:
 	GCamera* GetCamera() const { return Camera; }
 
 	// 创建Actor对象
+	// Actorオブジェクトを作成
 	template<class T>
 	T* CreateActorObject()
 	{
@@ -37,8 +37,8 @@ public:
 	}
 public:
 	// 射线检测
+	// レイキャスト判定
 	bool LineTraceBySingle(FCollisionResult& OutResult, const fvector_3d& InStart, const fvector_3d& InEnd);
-
 
 	const vector<GActorObject*>& GetActors() const { return ActorObjects; }
 protected:
@@ -46,6 +46,7 @@ protected:
 		GCamera* Camera;
 
 	// Actor对象池
+	// Actorオブジェクトプール
 	CVARIABLE()
 		vector<GActorObject*> ActorObjects;
 };

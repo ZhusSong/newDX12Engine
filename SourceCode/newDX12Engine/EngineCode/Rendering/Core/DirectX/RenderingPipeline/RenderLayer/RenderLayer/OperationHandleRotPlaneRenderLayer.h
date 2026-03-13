@@ -1,8 +1,8 @@
 ﻿#pragma once
-//25.8.19  李
 #include "../Core/RenderLayer.h"
 
 // 平面旋转指示器
+// 平面回転インジケーター
 
 class FOperationHandleRotPlaneRenderLayer :public FRenderLayer
 {

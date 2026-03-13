@@ -9,7 +9,8 @@ FOpaqueReflectorRenderLayer::FOpaqueReflectorRenderLayer()
 
 void FOpaqueReflectorRenderLayer::Draw(float DeltaTime)
 {
-	//重置当前的PSO
+	//　重置当前的PSO
+	// 現在のPSOをリセットする
 	ResetPSO();
 
 	Super::Draw(DeltaTime);
@@ -18,6 +19,7 @@ void FOpaqueReflectorRenderLayer::Draw(float DeltaTime)
 void FOpaqueReflectorRenderLayer::BuildShader()
 {
 	//构建Shader
+	// シェーダーを構築する
 	//HLSL
 	vector<ShaderType::FShaderMacro> ShaderMacro;
 	BuildShaderMacro(ShaderMacro);
@@ -34,7 +36,8 @@ void FOpaqueReflectorRenderLayer::BuildShader()
 
 	DirectXPipelineState->BindShader(VertexShader, PixelShader);
 
-	//输入布局
+	// shader输入格式
+	// シェーダー入力フォーマット
 	InputElementDesc =
 	{
 		{"POSITION",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},
@@ -50,7 +53,6 @@ void FOpaqueReflectorRenderLayer::BuildPSO()
 {
 	Super::BuildPSO();
 
-	//构建固体
 	DirectXPipelineState->Build(Reflector);
 
 }

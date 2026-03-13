@@ -2,6 +2,7 @@
 #include "../../../../../Mesh/Core/MeshType.h"
 
 // 渲染数据描述
+// レンダリングデータの説明
 FRenderingData::FRenderingData()
 	: IndexSize(0)
 	, VertexSize(0)

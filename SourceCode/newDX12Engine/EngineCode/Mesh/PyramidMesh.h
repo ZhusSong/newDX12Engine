@@ -1,5 +1,4 @@
 ﻿#pragma once
-// 2025.6.8 李
 
 #include "Core/Mesh.h"
 #include "Core/MeshType.h"

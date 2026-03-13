@@ -6,6 +6,7 @@ class CMeshComponent;
 struct FMeshRenderingData;
 
 // 渲染所需数据结构体
+// レンダリングに必要なデータ構造体
 struct FRenderingData
 	:public IDirectXDeviceInterface_Struct
 	, public std::enable_shared_from_this<FRenderingData>
@@ -14,10 +15,12 @@ public:
 	FRenderingData();
 
 	// 渲染物体索引与顶点数据所需空间
+	// 描画オブジェクトのインデックスおよび頂点データに必要な領域
 	UINT IndexSize;
 	UINT VertexSize;
 
 	// 索引与顶点偏移
+	// インデックスおよび頂点のオフセット
 	UINT IndexOffsetPosition;
 	UINT VertexOffsetPosition;
 
@@ -27,6 +30,7 @@ public:
 
 public:
 	// AABB包围盒
+	// AABBバウンディングボックス
 	BoundingBox Bounds;
 
 
@@ -45,6 +49,7 @@ public:
 	XMFLOAT4X4 WorldMatrix;
 
 	// 纹理数据
+	// テクスチャデータ
 	XMFLOAT4X4 TextureTransform;
 
 	CMeshComponent* Mesh;

@@ -10,7 +10,6 @@ void FRenderBuffer::Init(FGeometryMap* InGeometryMap, FDirectXPipelineState* InD
 {
 	Super::Init(InGeometryMap, InDirectXPipelineState, InRenderLayer);
 
-	// 绑定代理
 	if (FBufferRenderTarget* InRenderTarget = dynamic_cast<FBufferRenderTarget*>(RenderTarget.get()))
 	{
 		InRenderTarget->RenderTargetDelegate.Bind(this, &FRenderBuffer::BuildRenderTargetBuffer);

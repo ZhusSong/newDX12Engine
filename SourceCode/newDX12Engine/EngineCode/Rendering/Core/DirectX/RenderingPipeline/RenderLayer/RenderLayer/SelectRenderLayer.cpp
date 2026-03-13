@@ -10,6 +10,7 @@ FSelectRenderLayer::FSelectRenderLayer()
 void FSelectRenderLayer::BuildShader()
 {
 	// 构建Shader
+	// シェーダーを構築する
 	// HLSL
 	vector<ShaderType::FShaderMacro> ShaderMacro;
 	BuildShaderMacro(ShaderMacro);
@@ -21,7 +22,9 @@ void FSelectRenderLayer::BuildShader()
 	PixelShader.BuildShaders(ShaderPath, "PixelShaderMain", "ps_5_1", D3DShaderMacro.data());
 
 	DirectXPipelineState->BindShader(VertexShader, PixelShader);
-	// 输入布局
+
+	// shader输入格式
+	// シェーダー入力フォーマット
 	InputElementDesc =
 	{
 		{"POSITION",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},
@@ -56,23 +59,28 @@ void FSelectRenderLayer::BuildPSO()
 	DirectXPipelineState->SetRenderTarget(0, RenderTargetBlendDesc);
 
 	//// 不进行遮挡剔除
+	//// オクルージョンカリングを行わない
 	//CD3DX12_DEPTH_STENCIL_DESC DepthStencilDesc = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
 	//DepthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_ALWAYS;
 	//DirectXPipelineState->SetDepthStencilState(DepthStencilDesc);
 	
 	// 双pass描边
+	// ダブルパスのアウトライン描画
+
 	// 关闭深度写入，但保留深度测试
+	// 深度書き込みを無効にするが、深度テストは維持する
 	CD3DX12_DEPTH_STENCIL_DESC DepthStencilDesc = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
-	DepthStencilDesc.DepthEnable = TRUE;                        // 启用深度测试
-	DepthStencilDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO; // 不写入深度缓冲
-	DepthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS;    // 使用正常的深度比较
+	DepthStencilDesc.DepthEnable = TRUE;                        // 启用深度测试         // 深度テストを有効にする
+	DepthStencilDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO; // 不写入深度缓冲    // 深度バッファには書き込まない
+	DepthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS;    // 使用正常的深度比较   // 通常の深度比較を使用する
 	DirectXPipelineState->SetDepthStencilState(DepthStencilDesc);
 
 	// 渲染背面
+	// 背面を描画する
 	CD3DX12_RASTERIZER_DESC RasterizerDesc = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
-	RasterizerDesc.CullMode = D3D12_CULL_MODE_FRONT;  // 剔除正面，只渲染背面
+	RasterizerDesc.CullMode = D3D12_CULL_MODE_FRONT;  // 剔除正面，只渲染背面  // 前面をカリングし、背面のみ描画する
 	RasterizerDesc.FillMode = D3D12_FILL_MODE_SOLID;
-	RasterizerDesc.FrontCounterClockwise = FALSE;     // 确保正确的正面定义
+	RasterizerDesc.FrontCounterClockwise = FALSE;     // 确保正确的正面定义    // 正しい表面の定義を確保する
 	DirectXPipelineState->SetRasterizerState(RasterizerDesc);
 
 

@@ -1,5 +1,4 @@
-﻿// 2025.4.李
-#pragma once
+﻿#pragma once
 #include "CoreObject/CoreMinimalObject.h"
 #include "../../Shader/Core/Shader.h"
 #include "MeshType.h"

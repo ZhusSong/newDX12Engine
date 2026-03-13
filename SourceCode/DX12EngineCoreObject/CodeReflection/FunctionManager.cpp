@@ -22,8 +22,8 @@ FNativeFuntionPtr& FFuntionManager::GetNativeFuncPtr(CFunctionObject* Function)
 {
 	for (auto& Func : FunctionList)
 	{
-		if (Function->GetName() == Func.FuncName && //函数名
-			Function->GetOuter()->GetName() == Func.ClassName) //类名
+		if (Function->GetName() == Func.FuncName && 
+			Function->GetOuter()->GetName() == Func.ClassName) 
 		{
 			return Func.NativeFuncPtr;
 		}

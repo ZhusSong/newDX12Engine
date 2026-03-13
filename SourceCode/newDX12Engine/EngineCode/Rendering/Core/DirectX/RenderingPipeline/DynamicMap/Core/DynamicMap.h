@@ -1,5 +1,4 @@
-﻿//25.6.25 李
-#pragma once
+﻿#pragma once
 #include "../../../../../../Interface/DirectXDeviceInterface.h"
 #include "../../RenderTarget/Core/RenderTarget.h"
 
@@ -19,6 +18,7 @@ public:
 	virtual void Init(FGeometryMap* InGeometryMap, FDirectXPipelineState* InDirectXPipelineState, FRenderLayerManager* InRenderLayer);
 	
 	// 根据屏幕宽高进行初始化
+	// 画面の幅と高さに基づいて初期化
 	virtual void Init(int InWidth, int InHeight);
 	virtual void PreDraw(float DeltaTime);
 	virtual void Draw(float DeltaTime);
@@ -45,18 +45,32 @@ public:
 	UINT GetHeight()const { return Height; }
 
 protected:
-	FGeometryMap* GeometryMap;//几何Map
-	FDirectXPipelineState* DirectXPipelineState;//管线对象 用于绑定
+	// 几何Map
+	// ジオメトリマップ
+	FGeometryMap* GeometryMap;
 
-	FRenderLayerManager* RenderLayer;//渲染层级
+	// 管线对象 用于绑定
+	// パイプラインオブジェクト（バインド用）
+	FDirectXPipelineState* DirectXPipelineState;
+
+	// 渲染层级
+	// レンダリングレイヤー
+	FRenderLayerManager* RenderLayer;
 
 	UINT Width;
 	UINT Height;
 
-	UINT SRVOffset;//Shader寄存器
-	UINT RTVOffset;//渲染目标的偏移
+	// Shader寄存器
+	// シェーダーレジスタ
+	UINT SRVOffset;
 
-	std::shared_ptr<FRenderTarget> RenderTarget;//渲染目标
+	// 渲染目标的偏移
+	// レンダーターゲットのオフセット
+	UINT RTVOffset;
+
+	// 渲染目标
+	// レンダーターゲット
+	std::shared_ptr<FRenderTarget> RenderTarget;
 };
 
 template<class T>

@@ -30,7 +30,6 @@ void FNoiseBuffer::BuildDescriptors()
 	BuildSRVOffset();
 }
 
-// 偏移
 void FNoiseBuffer::BuildRenderTargetRTV()
 {
 
@@ -79,6 +78,7 @@ void FNoiseBuffer::BuildUploadBuffer(
 	D3D12_SUBRESOURCE_DATA SubResourceData = GetSubResourceData(ColorBuffer, 256, 256);
 
 	// 将资源更新到默认buffer
+	// リソースをデフォルトバッファに更新する
 	UpdateToDefaultResource(SubNum, SubResourceData, InResource);
 }
 
@@ -154,5 +154,6 @@ void FNoiseBuffer::BuildRenderTargetBuffer(ComPtr<ID3D12Resource>& OutResource)
 		IID_PPV_ARGS(OutResource.GetAddressOf())));
 
 	// 构建上传buffer
+	// アップロードバッファを構築する
 	BuildUploadBuffer(ResourceDesc, OutResource);
 }

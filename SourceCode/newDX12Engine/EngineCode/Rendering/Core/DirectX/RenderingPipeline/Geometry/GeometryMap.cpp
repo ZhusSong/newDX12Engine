@@ -48,18 +48,23 @@ void FGeometryMap::PreDraw(float DeltaTime)
 void FGeometryMap::Draw(float DeltaTime)
 {
 	// 绘制灯光
+	// ライトを描画
 	DrawLight(DeltaTime);
 
 	// 绘制贴图
+	// テクスチャを描画
 	Draw2DTexture(DeltaTime);
 
 	//绘制立方体贴图
+	// キューブマップテクスチャを描画
 	DrawCubeMapTexture(DeltaTime);
 
 	// 绘制材质
+	// マテリアルを描画
 	DrawMaterial(DeltaTime);
 
 	// 绘制雾
+	// フォグを描画
 	DrawFog(DeltaTime);
 }
 
@@ -78,14 +83,19 @@ void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& View
 	UpdateMaterialShaderResourceView(DeltaTime, ViewportInfo);
 
 	// 更新灯
+	// ライトを更新
 	UpdateLight(DeltaTime, ViewportInfo);
 
 	// 更新视口
+	// ビューポートを更新
 	UpdateCalculationsViewport(DeltaTime, ViewportInfo, 0);
 
+	// 更新雾
+	// フォグを更新
 	UpdateFog(DeltaTime, ViewportInfo);
 
 	// 更新视口
+	// ビューポートを更新
 	DynamicShadowMap.UpdateCalculations(DeltaTime, ViewportInfo);
 
 }
@@ -110,6 +120,7 @@ void FGeometryMap::UpdateCalculationsViewport(float DeltaTime, const FViewportIn
 	XMStoreFloat4x4(&ViewportTransformation.TexViewProjectionMatrix, XMMatrixTranspose(TexViewProjectionMatrix));
 
 	// 拿到视口位置
+	// ビューポート位置を取得
 	ViewportTransformation.ViewportPosition = ViewportInfo.ViewPosition;
 
 	ViewportConstantBufferViews.Update(InConstantBufferOffset, &ViewportTransformation);
@@ -123,6 +134,7 @@ void FGeometryMap::UpdateMaterialShaderResourceView(float DeltaTime, const FView
 	for (size_t i = 0; i < Materials.size(); i++)
 	{
 		// 变换材质
+		// マテリアルを変換
 		if (CMaterial* InMaterial = Materials[i])
 		{
 			if (InMaterial->IsDirty())
@@ -131,18 +143,23 @@ void FGeometryMap::UpdateMaterialShaderResourceView(float DeltaTime, const FView
 				MaterialConstantBuffer.BaseColor = EngineMath::ToFloat4(InMaterial->GetBaseColor());
 
 				// 高光颜色
+				// スペキュラカラー
 				MaterialConstantBuffer.SpecularColor = EngineMath::ToFloat3(InMaterial->GetSpecularColor());
 
 				// 粗糙度
+				// 粗さ
 				MaterialConstantBuffer.Roughness = InMaterial->GetRoughness();
 
 				// 折射率
+				// 屈折率
 				MaterialConstantBuffer.Refraction = InMaterial->GetRefractiveValue();
 
 				// 类型输入
+				// タイプ入力
 				MaterialConstantBuffer.MaterialType = InMaterial->GetMaterialType();
 
 				// F0输入
+				// F0入力
 				fvector_3d F0 = InMaterial->GetFresnelF0();
 				MaterialConstantBuffer.FresnelF0 = XMFLOAT3(F0.x, F0.y, F0.z);
 
@@ -150,11 +167,13 @@ void FGeometryMap::UpdateMaterialShaderResourceView(float DeltaTime, const FView
 				MaterialConstantBuffer.Transparency = InMaterial->GetTransparency();
 
 				// 金属度
+				// メタリック度
 				MaterialConstantBuffer.Metallicity = EngineMath::ToFloat3(InMaterial->GetMetallicity());
 
 				// 外部资源导入
+				// 外部リソースのインポート
 				{
-					// 这个是BaseColor
+					// BaseColor
 					if (auto BaseColorTextureResourcesPtr = FindRenderingTexture(InMaterial->GetBaseColorIndexKey()))
 					{
 						MaterialConstantBuffer.BaseColorIndex = (*BaseColorTextureResourcesPtr)->RenderingTextureID;
@@ -165,6 +184,7 @@ void FGeometryMap::UpdateMaterialShaderResourceView(float DeltaTime, const FView
 					}
 
 					// 法线
+					// 法線
 					if (auto NormalTextureResourcesPtr = FindRenderingTexture(InMaterial->GetNormalIndexKey()))
 					{
 						MaterialConstantBuffer.NormalIndex = (*NormalTextureResourcesPtr)->RenderingTextureID;
@@ -176,6 +196,7 @@ void FGeometryMap::UpdateMaterialShaderResourceView(float DeltaTime, const FView
 
 
 					// 高光
+					// ハイライト
 					if (auto SpecularTextureResourcesPtr = FindRenderingTexture(InMaterial->GetSpecularKey()))
 					{
 						MaterialConstantBuffer.SpecularIndex = (*SpecularTextureResourcesPtr)->RenderingTextureID;
@@ -187,6 +208,7 @@ void FGeometryMap::UpdateMaterialShaderResourceView(float DeltaTime, const FView
 				}
 
 				// 材质矩阵
+				// マテリアル行列
 				XMMATRIX MaterialTransform = XMLoadFloat4x4(&InMaterial->GetMaterialTransform());
 				XMStoreFloat4x4(&MaterialConstantBuffer.TransformInformation,
 					XMMatrixTranspose(MaterialTransform));
@@ -194,6 +216,7 @@ void FGeometryMap::UpdateMaterialShaderResourceView(float DeltaTime, const FView
 				InMaterial->SetDirty(false);
 
 				// 自定义项
+				// 後で追加
 				// float
 				MaterialConstantBuffer.Param0 = InMaterial->GetFloatParam(0);
 				MaterialConstantBuffer.Param1 = InMaterial->GetFloatParam(1);
@@ -208,6 +231,7 @@ void FGeometryMap::UpdateMaterialShaderResourceView(float DeltaTime, const FView
 void FGeometryMap::UpdateLight(float DeltaTime, const FViewportInfo& ViewportInfo)
 {
 	// 更新灯光
+	// ライトを更新
 	FLightConstantBuffer LightConstantBuffer;
 	for (size_t i = 0; i < GetLightManager()->Lights.size(); i++)
 	{
@@ -225,6 +249,7 @@ void FGeometryMap::UpdateLight(float DeltaTime, const FViewportInfo& ViewportInf
 				case ELightType::DirectionalLight:
 				{
 					// 正交矩阵
+					// 正投影行列
 					XMFLOAT3 ForwardVector = InLightComponent->GetForwardVector();
 
 					DynamicShadowMap.BuildParallelLightMatrix(
@@ -239,6 +264,7 @@ void FGeometryMap::UpdateLight(float DeltaTime, const FViewportInfo& ViewportInf
 
 					// NDC [-1,1]; = >[0,1]
 					// 半兰伯特
+					// ハーフランバート
 					XMMATRIX Transform =
 					{
 						0.5f, 0.0f, 0.0f, 0.0f,
@@ -251,6 +277,7 @@ void FGeometryMap::UpdateLight(float DeltaTime, const FViewportInfo& ViewportInf
 						ShadowViewMatrixRTX * ShadowProjectMatrixRTX * Transform;
 
 					//存储Shadow变换信息
+					//シャドウ変換情報を格納
 					XMStoreFloat4x4(&LightConstantBuffer.SceneLights[i].ShadowTransform, XMMatrixTranspose(ShadowViewProjectMatrixRTX));
 
 					break;
@@ -297,6 +324,7 @@ void FGeometryMap::UpdateLight(float DeltaTime, const FViewportInfo& ViewportInf
 
 					// NDC [-1,1]; = >[0,1]
 					// 半兰伯特
+					// ハーフランバート
 					XMMATRIX Transform =
 					{
 						0.5f, 0.0f, 0.0f, 0.0f,
@@ -309,6 +337,7 @@ void FGeometryMap::UpdateLight(float DeltaTime, const FViewportInfo& ViewportInf
 						ShadowViewMatrixRTX * ShadowProjectMatrixRTX * Transform;
 
 					// 存储Shadow变换信息
+					// シャドウ変換情報を格納
 					XMStoreFloat4x4(&LightConstantBuffer.SceneLights[i].ShadowTransform, XMMatrixTranspose(ShadowViewProjectMatrixRTX));
 
 					break;
@@ -322,6 +351,7 @@ void FGeometryMap::UpdateLight(float DeltaTime, const FViewportInfo& ViewportInf
 void FGeometryMap::UpdateFog(float DeltaTime, const FViewportInfo& ViewportInfo)
 {
 	// 更新雾
+	// フォグを更新
 	if (Fog)
 	{
 		if (Fog->IsDirty())
@@ -359,6 +389,7 @@ void FGeometryMap::BuildFog()
 void FGeometryMap::BuildShadow()
 {
 	// 构建普通阴影
+	// 通常シャドウを構築
 	DynamicShadowMap.Init(2048, 2048);
 
 	DynamicShadowMap.BuildViewport(fvector_3d(0.f, 0.f, 0.f));
@@ -368,6 +399,7 @@ void FGeometryMap::BuildShadow()
 	DynamicShadowMap.BuildRenderTargetDescriptor();
 
 	// 构建点光源阴影
+	// 点光源シャドウを構築
 	DynamicShadowCubeMap.BuildViewport(fvector_3d(0.f, 0.f, 0.f));
 	DynamicShadowCubeMap.BuildDepthStencilDescriptor();
 	DynamicShadowCubeMap.BuildRenderTargetDescriptor();
@@ -422,6 +454,7 @@ void FGeometryMap::LoadTexture()
 	init_def_c_paths(&Paths);
 
 	// 获取资源路径
+	// リソースパスを取得
 	std::string AssetPath =
 		FEnginePathHelper::RelativeToAbsolutePath(
 			FEnginePathHelper::GetEngineAssetPath());
@@ -437,6 +470,7 @@ void FGeometryMap::LoadTexture()
 		if (find_string(Paths.paths[i], ".dds", 0) != -1)
 		{
 			//单位化路径
+			//パスを正規化
 			normalization_path(Paths.paths[i]);
 
 			wchar_t TexturePath[1024] = { 0 };
@@ -460,6 +494,7 @@ void FGeometryMap::LoadTexture()
 void FGeometryMap::Build()
 {
 	//构建模型
+	//モデルを構築
 	for (auto& Tmp : Geometrys)
 	{
 		Tmp.second.Build();
@@ -469,23 +504,25 @@ void FGeometryMap::Build()
 void FGeometryMap::BuildDescriptorHeap()
 {
 	// 构建贴图描述符表
+	// テクスチャ記述子テーブルを構築
 	DescriptorHeap.Build(
 		GetDrawTexture2DResourcesNumber() + //Texture2D
-		GetDrawCubeMapResourcesNumber() + //静态Cube贴图 背景 天空球
-		1 + //动态Cube贴图 反射
-		1 + //Shadow 直射灯 聚光灯 Shadow
-		1 + //ShadowCubeMap 点光源的 Shadow
+		GetDrawCubeMapResourcesNumber() + //静态Cube贴图 背景 天空球   // 静的Cubeマップ 背景 スカイボックス
+		1 + //动态Cube贴图 反射                     // 動的Cubeマップ 反射
+		1 + //Shadow 直射灯 聚光灯               	// シャドウ 直射光 スポットライト
+		1 + //ShadowCubeMap 点光源的                // ShadowCubeMap 点光源のシャドウ
 		1 + //UI
-		1 + //法线
-		1 + //深度
-		1 + //Noise 噪声图
+		1 + //法线                                  // 法線
+		1 + //Depth
+		1 + //Noise 
 		1 + //SSAO
-		1); //双边模糊
+		1); //双边模糊                              // 両方向ブラー
 }
 
 void FGeometryMap::BuildMeshConstantBuffer()
 {
 	//创建常量缓冲区
+	//定数バッファを作成
 	MeshConstantBufferViews.CreateConstant(sizeof(FObjectTransform), GetDrawMeshObjectNumber());
 
 }
@@ -493,6 +530,7 @@ void FGeometryMap::BuildMeshConstantBuffer()
 void FGeometryMap::BuildFogConstantBuffer()
 {
 	// 创建雾常量缓冲区视图
+    // フォグの定数バッファビューを作成
 	FogConstantBufferViews.CreateConstant(sizeof(FFogConstantBuffer), 1);
 }
 
@@ -500,6 +538,8 @@ void FGeometryMap::BuildMaterialShaderResourceView()
 {
 	// 收集材质
 	// 更新Shader-Index
+	// マテリアルを収集
+	// シェーダーインデックスを更新
 	for (auto& Tmp : FRenderLayerManager::RenderLayers)
 	{
 		for (auto& InData : Tmp->RenderDatas)
@@ -510,7 +550,6 @@ void FGeometryMap::BuildMaterialShaderResourceView()
 				{
 					for (size_t j = 0; j < InMaterials->size(); j++)
 					{
-						//做ShaderIndex所有
 						(*InMaterials)[j]->SetMaterialIndex(Materials.size());
 
 						Materials.push_back((*InMaterials)[j]);
@@ -520,7 +559,8 @@ void FGeometryMap::BuildMaterialShaderResourceView()
 		}
 	}
 
-	//创建常量缓冲区
+	// 创建常量缓冲区
+	// 定数バッファを作成
 	MaterialConstantBufferViews.CreateConstant(
 		sizeof(FMaterialConstantBuffer),
 		GetDrawMaterialObjectNumber(),
@@ -531,6 +571,7 @@ void FGeometryMap::BuildMaterialShaderResourceView()
 void FGeometryMap::BuildLightConstantBuffer()
 {
 	// 创建常量缓冲区
+	// 定数バッファを作成
 	LightConstantBufferViews.CreateConstant(sizeof(FLightConstantBuffer), GetDrawLightObjectNumber());
 
 }
@@ -567,24 +608,29 @@ UINT FGeometryMap::GetDynamicReflectionViewportNum()
 void FGeometryMap::BuildTextureConstantBuffer()
 {
 	// 构建2D贴图
+	// 2Dテクスチャを構築
 	RenderingTexture2DResources->BuildTextureConstantBuffer(
-		DescriptorHeap.GetHeap(), 0);//视口
+		DescriptorHeap.GetHeap(), 0);//视口     //ビューポート
 
 	// 构建CubeMap贴图
+	// CubeMapテクスチャを構築
 	RenderingCubeMapResources->BuildTextureConstantBuffer(
 		DescriptorHeap.GetHeap(),
-		GetDrawTexture2DResourcesNumber());//加上2D贴图地址偏移
+		GetDrawTexture2DResourcesNumber());//加上2D贴图地址偏移 //2Dテクスチャのアドレスオフセットを追加
 }
 
 void FGeometryMap::BuildViewportConstantBufferView(UINT InViewportOffset)
 {
 	//****************!!!!新增视口时需检查此处常量缓冲区设置!!!*******************
+	//!!!!新規ビューポート追加時はここで定数バッファ設定を確認すること!!!***
+	
 	//创建常量缓冲区
+	// 定数バッファを作成
 	ViewportConstantBufferViews.CreateConstant(sizeof(FViewportTransformation),
-		1 + //主视口 摄像机
-		GetDynamicReflectionViewportNum() + //这个是动态反射的视口
-		1 + //阴影视口
-		6 + //ShadowCubeMap(用于点光源阴影)
+		1 + //主视口 摄像机                                         // メインビューポート カメラ
+		GetDynamicReflectionViewportNum() + //动态反射的视口        // 動的反射用のビューポート
+		1 + //阴影视口                                              // シャドウビューポート
+		6 + //ShadowCubeMap(用于点光源阴影)                         //ShadowCubeMap（点光源用シャドウ）
 		InViewportOffset);
 }
 
@@ -693,6 +739,7 @@ void FGeometry::BuildMesh(
 	int InKey)
 {
 	//找到对应层级
+	//対応する階層を見つける
 	if (std::shared_ptr<FRenderLayer> InRenderLayer = FRenderLayerManager::FindByRenderLayer((int)InMesh->GetRenderLayerType()))
 	{
 		UniqueRenderingDatas.insert(std::make_pair(InMeshHash, std::make_shared<FRenderingData>()));
@@ -702,6 +749,7 @@ void FGeometry::BuildMesh(
 		InRenderLayer->RenderDatas.push_back(InRenderingData);
 
 		// 计算AABB包围盒
+		// AABBバウンディングボックスを計算
 		{
 			//XMFLOAT4X4 WorldMatrix = InRenderingData->GetWorldMatrix();
 
@@ -730,6 +778,7 @@ void FGeometry::BuildMesh(
 		}
 
 		// 基础渲染数据注册
+		// 基本レンダリングデータを登録
 		InRenderingData->MeshObjectIndex = MeshObjectCount++;
 		InRenderingData->Mesh = InMesh;
 		InRenderingData->MeshHash = InMeshHash;
@@ -742,9 +791,11 @@ void FGeometry::BuildMesh(
 		InRenderingData->VertexOffsetPosition = MeshRenderingData.VertexData.size();
 
 		// 指向三角形和索引
+		// 三角形とインデックスを指す
 		InRenderingData->MeshRenderingData = &MeshRenderingData;
 
 		// 唯一数据的注册
+		// データの登録
 		UniqueRenderingDatas[InMeshHash]->MeshObjectIndex = InRenderingData->MeshObjectIndex;
 		UniqueRenderingDatas[InMeshHash]->Mesh = InRenderingData->Mesh;
 		UniqueRenderingDatas[InMeshHash]->MeshHash = InRenderingData->MeshHash;
@@ -762,12 +813,14 @@ void FGeometry::BuildMesh(
 
 		
 		// 合并索引
+		// インデックスを統合
 		MeshRenderingData.IndexData.insert(
 			MeshRenderingData.IndexData.end(),
 			MeshData.IndexData.begin(),
 			MeshData.IndexData.end());
 
 		// 合并顶点
+		// 頂点を統合
 		MeshRenderingData.VertexData.insert(
 			MeshRenderingData.VertexData.end(),
 			MeshData.VertexData.begin(),
@@ -785,7 +838,8 @@ void FGeometry::DuplicateMesh(CMeshComponent* InMesh, std::shared_ptr<FRendering
 
 		InRenderLayer->RenderDatas.push_back(InRenderingData);
 
-		//基础注册
+		// 注册
+		// 登録
 		InRenderingData->Mesh = InMesh;
 		InRenderingData->MeshObjectIndex = MeshObjectCount++;
 		InRenderingData->GeometryKey = InKey;
@@ -799,6 +853,7 @@ void FGeometry::DuplicateMesh(CMeshComponent* InMesh, std::shared_ptr<FRendering
 		InRenderingData->VertexOffsetPosition = MeshData->VertexOffsetPosition;
 
 		// 指向三角形和索引
+		// 三角形とインデックスを指す
 		InRenderingData->MeshRenderingData = &MeshRenderingData;
 
 		// AABB

@@ -1,8 +1,8 @@
 ﻿#pragma once
-// 2025.4.李
 
 #include "Core/Mesh.h"
 
+// 円柱メッシュ
 class GCylinderMesh :public GMesh
 {
 	typedef GMesh Super;

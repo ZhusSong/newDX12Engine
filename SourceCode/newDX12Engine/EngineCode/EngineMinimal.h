@@ -5,21 +5,26 @@
 #define CLOSE_DISABLE_DEBUG_INFOR 
 
 // 是否使用第三方库(FBX)
+// サードパーティライブラリ(FBX)を使用するかどうか
 #define THIRD_PARTY_LIBRARY 1
 
 // 是否使用编辑器引擎
+// エディターエンジンを使用するかどうか
 #define EDITOR_ENGINE 1
 
 // 定义窗口坐标
+// ウィンドウ座標を定義
 #define WINDOWS_LOCATION_X 0
 #define WINDOWS_LOCATION_Y 0
 
 
 // 定义了需要加载的头文件
+// ロードする必要のあるヘッダーファイルを定義
 #include "simple_library/public/simple_library.h"
 #pragma comment(lib, "EngineSimpleLibrary.lib")
 
 // 链接EngineGeneralSetting与EngineCoreObject
+// EngineGeneralSettingとEngineCoreObjectをリンク
 #include "Core/Path/EnginePath.h"
 #pragma comment(lib, "DX12EngineGeneralSetting.lib")
 #pragma comment(lib, "DX12EngineCoreObject.lib")

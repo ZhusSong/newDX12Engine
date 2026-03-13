@@ -121,16 +121,16 @@ namespace CollectClassInfo
 		std::vector<std::string> StringArray;
 		simple_cpp_helper_file::load_file_to_strings(Paths, StringArray);
 
-		//收集filname
+		// filname
 		ClassAnalysis.Filename = Paths;
 
-		//遍历每一行代码
+		// 遍历每一行代码
+		// コードの各行を反復処理
 		for (int i = 0; i < StringArray.size(); i++)
 		{
 			string& Row = StringArray[i];
 			char* RowPtr = const_cast<char*>(Row.c_str());
 
-			//包含
 			auto Contain = [&](const char* InSubString)->bool
 				{
 					return simple_cpp_string_algorithm::string_contain(Row, InSubString);
@@ -141,7 +141,8 @@ namespace CollectClassInfo
 				ClassAnalysis.CodeLine = i + 1;
 			}
 
-			//获取类名和继承名
+			// 获取类名和继承名
+			// クラス名と継承名を取得
 			if ((Contain("\tclass") || Contain("class")) &&
 				Contain(":") &&
 				(Contain("protected") || Contain("private") || Contain("public")))
@@ -162,7 +163,7 @@ namespace CollectClassInfo
 
 					split(RowPtr, SpaceString, L, R, false);
 
-					//API名称
+					//API
 					ClassAnalysis.APIName = L;
 
 					Row = R;
@@ -172,6 +173,7 @@ namespace CollectClassInfo
 				simple_cpp_string_algorithm::parse_into_vector_array(RowPtr, ElementStr, ColonString);
 
 				// 如果前后有空格 就进行修剪
+				// 前後にスペースがある場合はトリミング
 				trim_start_and_end_inline(const_cast<char*>(ElementStr[0].c_str()));
 
 				ClassAnalysis.ClassName = ElementStr[0];
@@ -183,11 +185,11 @@ namespace CollectClassInfo
 					trim_start_and_end_inline(ClearClassNamePtr);
 
 					// 移除头部C开头或者G开头
+					// CとGのプレフィックスを除去
 					remove_char_start(ClearClassNamePtr, 'C');
 					remove_char_start(ClearClassNamePtr, 'G');
 				}
 
-				//考虑到多继承问题
 				//public GObject ,public Interxx
 				if (ElementStr.size() >= 2)
 				{
@@ -212,7 +214,8 @@ namespace CollectClassInfo
 				}
 			}
 
-			//获取标记的成员函数
+			// 获取标记的成员函数
+			// マークされたメンバ関数を取得
 			if (Contain("CDIAPER"))
 			{
 				FFunctionAnalysis FunctionAnalysis;
@@ -245,7 +248,8 @@ namespace CollectClassInfo
 						Row = L;
 					}
 
-					//确定我们函数的返回类型
+					// 确定函数的返回类型
+					// 関数の戻り値の型を特定
 					char Tmp[1024] = { 0 };
 					{
 						//Row =  void Hello1(GObject *Context, int32 &A,float b,bool C);
@@ -273,10 +277,12 @@ namespace CollectClassInfo
 
 						split(Tmp, LeftParenthesisString, RStr, LStr, false);
 
-						//函数名
+						// 函数名
+						// 関数名
 						FunctionAnalysis.FunctionName = RStr;
 
-						//解析参数和参数名
+						// 解析参数和参数名
+						// パラメータとパラメータ名を解析
 						vector<string> ElementStr;
 						simple_cpp_string_algorithm::parse_into_vector_array(LStr, ElementStr, CommaString);
 
@@ -285,7 +291,8 @@ namespace CollectClassInfo
 						//float b
 						//bool C
 
-						//收集变量
+						// 收集变量
+						// 変数を収集
 						for (std::string& Ele : ElementStr)
 						{
 							char* ElePtr = const_cast<char*>(Ele.c_str());
@@ -296,7 +303,8 @@ namespace CollectClassInfo
 							}
 
 							//int32 &A
-							//移除前后空格
+							// 移除前后空格
+							// 前後のスペースを削除
 							trim_start_and_end_inline(ElePtr);
 
 							FParamElement ParamElement;
@@ -344,7 +352,8 @@ namespace CollectClassInfo
 				}
 			}
 
-			////获取标记的成员变量
+			// 获取标记的成员变量
+			// マークされたメンバ変数を取得
 			if (Contain("CVARIABLE"))
 			{
 				if (Contain("CodeType"))

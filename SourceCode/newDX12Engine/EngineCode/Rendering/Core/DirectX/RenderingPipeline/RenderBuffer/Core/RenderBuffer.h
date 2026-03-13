@@ -1,4 +1,5 @@
 ﻿// 后处理渲染缓冲区基类
+// ポストプロセス描画バッファ基底クラス
 #pragma once
 #include "../../DynamicMap/Core/DynamicMap.h"
 #include "../../RenderTarget/Core/RenderTarget.h"

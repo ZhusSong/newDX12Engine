@@ -37,14 +37,16 @@ void GCamera::BeginInit()
 {
 	//ViewportInit();
 	// 初始化投影矩阵
+	// 射影行列を初期化
 	float AspectRatio = (float)FEngineRenderConfig::GetRenderConfig()->ScreenWidth / (float)FEngineRenderConfig::GetRenderConfig()->ScreenHight;
-	////(1,1,0) (-1,1,0) (-1,-1,0) (1,-1,0) (1,1,1) (-1,1,1) (-1,-1,1) (1,-1,1)
-	////基于视野构建左手透视投影矩阵
+	// (1,1,0) (-1,1,0) (-1,-1,0) (1,-1,0) (1,1,1) (-1,1,1) (-1,-1,1) (1,-1,1)
+	// 基于视野构建左手透视投影矩阵
+	// 視野角に基づいて左手系の透視投影行列を構築
 	SetFrustum(
-		0.25f * XM_PI,//以弧度为单位的自上而下的视场角。
-		AspectRatio,//视图空间 X:Y 的纵横比。
-		1.0f,//到近剪裁平面的距离。必须大于零。
-		10000.f);//到远剪裁平面的距离。必须大于零。
+		0.25f * XM_PI,//以弧度为单位的自上而下的视场角。  // ラジアン単位の上下方向の視野角。
+		AspectRatio,//视图空间 X:Y 的纵横比。             // ビュー空間 X:Y のアスペクト比。
+		1.0f,//到近剪裁平面的距离。必须大于零。           // ニアクリップ平面までの距離。0より大きい必要がある
+		10000.f);//到远剪裁平面的距离。必须大于零。       // ファークリップ平面までの距離。0より大きい必要がある。
 
 	// 绑定代理
 	InputComponent->CaptureKeyboardInforDelegate.Bind(this, &GCamera::ExecuteKeyboard);
@@ -110,6 +112,7 @@ void GCamera::ExecuteKeyboard(const FInputKey& InputKey)
 	}
 
 	// 观察模式
+	// 観察モード
 	//if (InputKey.KeyName == "alt")
 	//{
 	//	CmeraType = ECmeraType::ObservationObject;
@@ -230,6 +233,7 @@ void GCamera::OnMouseWheel(int X, int Y, float InDelta)
 		Radius += (InDelta / 100.f);
 
 		// 限制在一定的范围内
+		// 一定の範囲内に制限する
 		Radius = math_libray::Clamp(Radius, 7.f, 40.f);
 	}
 
@@ -237,6 +241,7 @@ void GCamera::OnMouseWheel(int X, int Y, float InDelta)
 }
 
 // 移动
+// 移動
 void GCamera::MoveForward(float InValue)
 {
 	if (CmeraType == ECmeraType::CameraRoaming)
@@ -291,12 +296,15 @@ void GCamera::OnClickedScreen(int X, int Y)
 
 #if EDITOR_ENGINE
 			// 设置选择对象
+			// 選択オブジェクトを設定
 			FOperationHandleSelectManager::Get()->SetNewSelectedObject(CollisionResult.Actor);
 
 			// 显示操作手柄
+			// 操作用ハンドルを表示
 			FOperationHandleSelectManager::Get()->DisplaySelectedOperationHandle();
 
 			// 设置是否点击到物体
+			// オブジェクトをクリックしたかどうかを設定
 			FOperationHandleSelectManager::Get()->SetHitObject(true);
 #endif
 		}
@@ -310,11 +318,15 @@ void GCamera::OnClickedScreen(int X, int Y)
 
 #if EDITOR_ENGINE
 			// 设置选择对象
+			// 選択オブジェクトを設定
 			FOperationHandleSelectManager::Get()->SetNewSelectedObject(nullptr);
 
 			// 隐藏操作手柄
+			// 操作用ハンドルを非表示
 			FOperationHandleSelectManager::Get()->HideSelectedOperationHandle();
+
 			// 设置是否点击到物体
+			// オブジェクトをクリックしたかどうかを設定
 			FOperationHandleSelectManager::Get()->SetHitObject(false);
 #endif
 		}
@@ -328,14 +340,17 @@ void GCamera::OnClickedScreen(int X, int Y)
 void GCamera::RotateAroundXAxis(float InRotateDegrees)
 {
 	// 拿到相机的方向
+	// カメラの各方向ベクトルを取得
 	XMFLOAT3 RightVector = GetRootComponent()->GetRightVector();
 	XMFLOAT3 UPVector = GetRootComponent()->GetUPVector();
 	XMFLOAT3 ForwardVector = GetRootComponent()->GetForwardVector();
 
 	// 拿到关于Y的旋转矩阵
+	// 指定軸に関する回転行列を取得
 	XMMATRIX RotationX = XMMatrixRotationAxis(XMLoadFloat3(&GetRootComponent()->GetRightVector()), InRotateDegrees);
 
 	// 计算各个方向和按照Z轴旋转后的最终效果
+	// 各方向ベクトルを回転させ、最終的な結果を計算
 	XMStoreFloat3(&GetRootComponent()->GetUPVector(), XMVector3TransformNormal(XMLoadFloat3(&UPVector), RotationX));
 	XMStoreFloat3(&GetRootComponent()->GetForwardVector(), XMVector3TransformNormal(XMLoadFloat3(&ForwardVector), RotationX));
 }
@@ -343,14 +358,17 @@ void GCamera::RotateAroundXAxis(float InRotateDegrees)
 void GCamera::RotateAroundYAxis(float InRotateDegrees)
 {
 	// 拿到相机的方向
+	// カメラの各方向ベクトルを取得
 	XMFLOAT3 RightVector = GetRootComponent()->GetRightVector();
 	XMFLOAT3 UPVector = GetRootComponent()->GetUPVector();
 	XMFLOAT3 ForwardVector = GetRootComponent()->GetForwardVector();
 
 	// 拿到关于Z的旋转矩阵
+	// Z軸に関する回転行列を取得
 	XMMATRIX RotationY = XMMatrixRotationY(InRotateDegrees);
 
 	// 计算各个方向和按照Z轴旋转后的最终效果
+	// 各方向ベクトルをZ軸回転させた後の最終結果を計算
 	XMStoreFloat3(&GetRootComponent()->GetRightVector(), XMVector3TransformNormal(XMLoadFloat3(&RightVector), RotationY));
 	XMStoreFloat3(&GetRootComponent()->GetUPVector(), XMVector3TransformNormal(XMLoadFloat3(&UPVector), RotationY));
 	XMStoreFloat3(&GetRootComponent()->GetForwardVector(), XMVector3TransformNormal(XMLoadFloat3(&ForwardVector), RotationY));
@@ -366,6 +384,7 @@ void GCamera::LookAtAndMoveToSelectedObject(float InTime, float InDeltaTime)
 		fvector_3d Extents = EngineMath::ToVector3d(SelectAABB.Extents);
 
 		// 离选择对象的距离
+		// 選択オブジェクトまでの距離
 		float R = Extents.len();
 		float H = 5.f;
 		float FOV = GetFOV();
@@ -386,6 +405,7 @@ void GCamera::LookAtAndMoveToSelectedObject(float InTime, float InDeltaTime)
 		SetPosition(EngineMath::ToFloat3(CurrentCameraPosition));
 
 		// 是否启用四元数
+		// クォータニオンを使用するかどうか
 		float LerpSpeed = 4.f / InTime;
 		if (true)
 		{
@@ -397,6 +417,7 @@ void GCamera::LookAtAndMoveToSelectedObject(float InTime, float InDeltaTime)
 			SetRotationQuat(CurrentQ);
 		}
 		// 欧拉角做插值
+		// オイラー角で補間を行う
 		else
 		{
 			frotator Rotator1 = GetRotation();

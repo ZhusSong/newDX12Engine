@@ -9,52 +9,68 @@ public:
 	  CMaterial();
 
 	  // 设置材质显示状态
+	  // マテリアル表示状態を設定
 	  void SetMaterialDisplayStatus(EMaterialDisplayStatusType InDisplayStatus);
-	 
+
 	  // 设置基础颜色
+	  // ベースカラーを設定
 	  void SetBaseColor(const fvector_4d& InBaseColor);
 	  // 贴图方式
+	  // テクスチャ方式
 	  void SetBaseColor(const std::string& InAssetFilename);
 
 	  // 设置基材质种类
+	  // ベースマテリアルの種類を設定
 	  void SetMaterialType(const EMaterialType& InMaterialType);
 
 	  // 设置光滑度
+	  // ラフネス（粗さ）を設定
 	  void SetRoughness(const float InNewRoughness);
 
 	  // 设置反射度
+	  // スペキュラー（反射度）を設定
 	  void SetSpecular(const std::string& InAssetFilename);
 	  void SetSpecular(const fvector_3d& InVector);
 
 	  // 设置Fresnel参数
+	  // Fresnelパラメータを設定
 	  void SetFresnelF0(const fvector_3d& InF0Vector);
 
 	  // 设置透明度
+	  // 透明度を設定
 	  void SetTransparency(float InTransparency);
 
 	  // 设置法线贴图
+	  // 法線マップを設定
 	  void SetNormal(const std::string& InAssetFilename);
 
 	  // 设置脏标志
+	  // ダーティフラグを設定
 	  void SetDirty(bool bNewDirty);
 
 	  // 设置材质索引
+	  // マテリアルインデックスを設定
 	  void SetMaterialIndex(int InNewIndex);
 
 	  // 设置动态反射
+	  // 動的反射を設定
 	  void SetDynamicReflection(bool InDynamicReflection);
 	  // 设置折射率
-	  void SetRefractiveValue(float InRefractiveValue); 
+	  // 屈折率を設定
+	  void SetRefractiveValue(float InRefractiveValue);
 	  // 设置金属度
+	  // メタリック値を設定
 	  void SetMetallicity(float InMetallicity);
 
-	  //自定义参数
+	  // 自定义参数
+	  // カスタムパラメータ
 public:
 	void SetFloatParam(int ParamIndex, float InValue);
 	float GetFloatParam(int ParamIndex) const;
 
 public:
-	  // 动态反射
+	// 动态反射
+	// 動的反射
 	  FORCEINLINE float IsDynamicReflection() const {
 		  return bDynamicReflection &&
 			  (MaterialType == EMaterialType::Back ||
@@ -77,6 +93,7 @@ public:
 	  FORCEINLINE float GetRefractiveValue()const { return Refractive; }
 	  FORCEINLINE fvector_3d GetMetallicity()const { return Metallicity; }
 	  // 得到渲染模板
+	  // レンダリングテンプレートを取得
 	  FORCEINLINE D3D_PRIMITIVE_TOPOLOGY GetMaterialDisplayStatus()const {
 		  switch (MaterialDisplayStatus){
 
@@ -121,18 +138,18 @@ private:
 	EMaterialDisplayStatusType MaterialDisplayStatus;
 	XMFLOAT4X4 MaterialTransform;
 
-	float Transparency;			//透明度
+	float Transparency;			// 透明度     // 透明度
 
-	bool bDynamicReflection;  	//动态反射
+	bool bDynamicReflection;	// 动态反射   // 動的反射
 
-	fvector_3d Metallicity;		//金属度
+	fvector_3d Metallicity;		// 金属度	  // メタリック値
 
-	
-	float Refractive;			//折射率
+	float Refractive;			// 折射率     // 屈折率
 
-	//自定义参数
+// 自定义参数
+// カスタムパラメータ
 private:
-	float Param0;//自定义
-	float Param1;//自定义
-	float Param2;//自定义
+	float Param0;
+	float Param1;
+	float Param2;
 };

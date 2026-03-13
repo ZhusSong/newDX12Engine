@@ -20,7 +20,8 @@ void FDynamicCubeMap::Init(FGeometryMap* InGeometryMap, FDirectXPipelineState* I
 
 void FDynamicCubeMap::SetViewportPosition(const fvector_3d& InCenterPoint)
 {
-	//捕获摄像机四个面
+	// 捕获摄像机四个面
+	// カメラの四面をキャプチャ
 	FTmpViewportCapture Capture(InCenterPoint);
 
 	for (size_t i = 0; i < 6; i++)
@@ -33,7 +34,8 @@ void FDynamicCubeMap::SetViewportPosition(const fvector_3d& InCenterPoint)
 
 void FDynamicCubeMap::BuildViewport(const fvector_3d& InCenterPoint)
 {
-	//捕获摄像机四个面
+	// 捕获摄像机四个面
+	// カメラの四面をキャプチャ
 	FTmpViewportCapture Capture(InCenterPoint);
 
 	for (size_t i = 0; i < 6; i++)
@@ -90,19 +92,23 @@ void FDynamicCubeMap::BuildDepthStencil()
 
 void FDynamicCubeMap::BuildRenderTargetDescriptor()
 {
-	//视图
+	// 视图
+	// ビュー
 	BuildRenderTargetRTV();
 
-	//给Shader
+	// 给Shader
+	// シェーダーに渡す
 	BuildRenderTargetSRV();
 
-	//初始化Target
+	// 初始化Target
+	// ターゲットを初期化
 	RenderTarget->Init(Width, Height, DXGI_FORMAT_R8G8B8A8_UNORM);
 }
 
 void FDynamicCubeMap::FTmpViewportCapture::BuildViewportCapture(const fvector_3d& InCenterPoint)
 {
-	//捕获摄像机四个面
+	// 捕获摄像机四个面
+	// カメラの四面をキャプチャ
 	TargetPoint[0] = fvector_3d(InCenterPoint.x + 1.0f, InCenterPoint.y, InCenterPoint.z);
 	TargetPoint[1] = fvector_3d(InCenterPoint.x - 1.0f, InCenterPoint.y, InCenterPoint.z);
 	TargetPoint[2] = fvector_3d(InCenterPoint.x, InCenterPoint.y + 1.0f, InCenterPoint.z);

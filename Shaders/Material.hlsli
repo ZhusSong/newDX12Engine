@@ -1,4 +1,3 @@
-//25.6.18 李
 #ifndef MATERIAL_HLSL
 #define MATERIAL_HLSL
 
@@ -7,7 +6,8 @@
 
 struct FMaterial
 {
-	//通用材质
+	// 通用材质
+    // 汎用マテリアル
     float4 BaseColor;
 };
 
@@ -40,9 +40,11 @@ float3 GetMaterialNormals(
         float3 NormalsInTangentSpace = 2.0f * SampleNormal.rgb - 1.f;
 
 		// 拿到世界TBN
+        // ワールドTBNを取得
         float3x3 TBN = GetBuildTBNMatrix(InUnitWorldNormal, InWorldTangent);
 
 		// 把切线空间下的采样法线转为世界的法线
+        // タンジェント空間でサンプリングされた法線をワールド法線に変換
         return mul(NormalsInTangentSpace, TBN);
     }
 
@@ -60,12 +62,14 @@ float4 GetMaterialSpecular(MaterialConstBuffer MatConstBuffer, float2 InTexCoord
 }
 
 // 获取反射方向
+// 反射方向を取得
 float3 GetReflect(float3 InUnitWorldNormal, float3 WorldPosition)
 {
     float3 ViewDirection = normalize(ViewportPosition.xyz - WorldPosition);
     return reflect(-ViewDirection, InUnitWorldNormal);
 }
 // 获取折射
+// 屈折を取得
 float3 GetRefract(float3 InUnitWorldNormal, float3 WorldPosition, float InRefractiveValue)
 {
     float3 ViewDirection = normalize(ViewportPosition.xyz - WorldPosition);
@@ -74,18 +78,21 @@ float3 GetRefract(float3 InUnitWorldNormal, float3 WorldPosition, float InRefrac
 
 
 // 获取反射采样
+// 反射サンプリングを取得
 float3 GetReflectionSampleColor(float3 InUnitWorldNormal, float3 NewReflect)
 {
     return SimpleCubeMap.Sample(TextureSampler, NewReflect);
 }
 
 // 得到反射强度(光泽度)
+// 反射強度（光沢度）を取得
 float GetShininess(MaterialConstBuffer MatConstBuffer)
 {
     return 1.f - MatConstBuffer.MaterialRoughness;
 }
 
 // 获取菲尼尔参数
+// フレネルパラメータを取得
 float3 FresnelSchlickFactor(MaterialConstBuffer MatConstBuffer, float3 InUnitWorldNormal, float3 InReflect)
 {
     return FresnelSchlickMethod(MatConstBuffer.FresnelF0, InUnitWorldNormal, InReflect, 5);
@@ -95,6 +102,7 @@ float3 FresnelSchlickRoughness(float NV, float3 F0, float Roughness)
     return F0 + (max(float3(1.0 - Roughness, 1.0 - Roughness, 1.0 - Roughness), F0) - F0) * pow(1.0 - NV, 5.0);
 }
 // 得到最终反射颜色
+// 最終反射色を取得
 float3 GetReflectionColor(MaterialConstBuffer MatConstBuffer, float3 InUnitWorldNormal, float3 WorldPosition)
 {
     float3 NewReflect = GetReflect(InUnitWorldNormal, WorldPosition);
@@ -105,7 +113,8 @@ float3 GetReflectionColor(MaterialConstBuffer MatConstBuffer, float3 InUnitWorld
     return SampleReflectionColor * FresnelFactor * Shininess;
 }
 
-//获取折射的颜色 
+// 获取折射的颜色 
+// 屈折の色を取得
 float3 GetRefractColor(MaterialConstBuffer MatConstBuffer, float InRefractiveIndex, float3 InUnitWorldNormal, float3 WorldPosition)
 {
     float3 NewRefract = GetRefract(InUnitWorldNormal, WorldPosition, MatConstBuffer.Refraction);

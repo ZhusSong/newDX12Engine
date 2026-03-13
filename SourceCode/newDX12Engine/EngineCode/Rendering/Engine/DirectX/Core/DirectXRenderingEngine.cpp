@@ -21,13 +21,16 @@
 #include "../../../../Component/Mesh/Core/MeshComponent.h"
 
 // 视口
+// ビューポート
 #include "../../../../Core/World.h"
 #include "../../../../Core/Camera.h"
 // 天空
+//空
 #include "../../../../Actor/Sky/Fog.h"
 #include "../../../../Actor/Sky/Sky.h"
 
 // 灯光相关
+// ライト
 #include "../../../../Manager/LightManager.h"
 #include "../../../../Actor/Light/ParallelLight.h"
 #include "../../../../Actor/Light/SpotLight.h"
@@ -40,6 +43,7 @@
 #include "../../../../Core/WinMainCommandParameters.h"
 
 // 添加编辑器界面移动箭头支持
+// エディターUIを追加
 #if EDITOR_ENGINE
 
 #include "../../../../../EditorEngine/SelectEditor/OperationHandle/MoveArrow.h"
@@ -49,6 +53,7 @@
 
 
 // 声明控制手柄
+// エディターハンドル
 extern GMoveArrow* MoveArrow;
 extern GScalingArrow* ScalingArrow;
 extern GRotatorArrow* RotatorArrow;
@@ -107,6 +112,7 @@ int CDirectXRenderingEngine::PostInit()
 	ANALYSIS_HRESULT(GraphicsCommandList->Reset(CommandAllocator.Get(), NULL));
 	{
 		// 创建控制手柄
+		// エディターハンドルを作成
 #if EDITOR_ENGINE
 		if (GMoveArrow* InMoveArrow = World->CreateActorObject<GMoveArrow>())
 		{
@@ -129,8 +135,10 @@ int CDirectXRenderingEngine::PostInit()
 		}
 #endif
 		// 创建灯光
+		// ライトを作成
 		
 		////  聚光灯
+		// スポットライト
 		//if (GSpotLight* SpotLight = World->CreateActorObject<GSpotLight>())
 		//{
 		//	SpotLight->SetPosition(XMFLOAT3(0.f, 0.f, 20.f));
@@ -163,6 +171,7 @@ int CDirectXRenderingEngine::PostInit()
 		}
 	
 		// 地板
+		// 床
 		if (GPlaneMesh* InPlaneMesh = World->CreateActorObject<GPlaneMesh>())
 		{
 			InPlaneMesh->CreateMesh(4.f, 3.f, 20, 20);
@@ -170,6 +179,7 @@ int CDirectXRenderingEngine::PostInit()
 			InPlaneMesh->SetPosition(XMFLOAT3(0.f, -12.f, 0.f));
 			InPlaneMesh->SetScale(fvector_3d(50.f, 1.f, 50.f));
 			// 地面不显示阴影
+			// 地面はシャドウを表示しない
 			InPlaneMesh->SetCastShadow(false);
 			InPlaneMesh->SetPickup(false);
 			if (CMaterial* InMaterial = (*InPlaneMesh->GetMaterials())[0])
@@ -179,7 +189,8 @@ int CDirectXRenderingEngine::PostInit()
 
 		}
 
-		//甜甜圈
+		//　甜甜圈
+		// ドーナツ
 		if (GTorusMesh* InTorusMesh = World->CreateActorObject<GTorusMesh>())
 		{
 			InTorusMesh->CreateMesh(6.f, 2.f, 40.f, 40.f);
@@ -194,7 +205,8 @@ int CDirectXRenderingEngine::PostInit()
 			}
 		}
 
-		//棱锥
+		//　棱锥
+		// 角錐
 		if (GPyramidMesh* InPyramidMesh = World->CreateActorObject<GPyramidMesh>())
 		{
 			InPyramidMesh->CreateMesh(EPyramidNumberSides::Pyramid_3, 1);
@@ -207,7 +219,8 @@ int CDirectXRenderingEngine::PostInit()
 			}
 		}
 
-		//Pipe模型
+		//　Pipe模型
+		// パイプモデル
 		if (GPipeMesh* InPipeMesh = World->CreateActorObject<GPipeMesh>())
 		{
 			InPipeMesh->CreateMesh(3.f, 3.f, 6.f, 1.f, 20.f, 20.f);
@@ -224,7 +237,8 @@ int CDirectXRenderingEngine::PostInit()
 			}
 		}
 
-		//锥形
+		//　锥形
+		// 円錐形
 		if (GConeMesh* InConeMesh = World->CreateActorObject<GConeMesh>())
 		{
 			InConeMesh->CreateMesh(2.f, 3.f, 20, 20);
@@ -269,7 +283,8 @@ int CDirectXRenderingEngine::PostInit()
 		}
 
 	
-		//兰伯特
+		//　兰伯特
+		// ランバート
 		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 		{
 			SphereMesh->CreateMesh(2.f, 50, 50);
@@ -280,7 +295,8 @@ int CDirectXRenderingEngine::PostInit()
 			}
 		}
 
-		//半兰伯特
+		//　半兰伯特
+		// ハーフランバート
 		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 		{
 			SphereMesh->CreateMesh(2.f, 50, 50);
@@ -381,7 +397,7 @@ int CDirectXRenderingEngine::PostInit()
 			SphereMesh->SetPosition(XMFLOAT3(9.f, 2, 0.f));
 			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
 			{
-				//模拟黄铜
+				
 				InMaterial->SetBaseColor(fvector_4d(
 					191.f / 255.f,
 					173.f / 255.f,
@@ -432,6 +448,7 @@ int CDirectXRenderingEngine::PostInit()
 		}
 
 		// back 透射材质
+		// バック透過マテリアル
 		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 		{
 			SphereMesh->CreateMesh(2.f, 50, 50);
@@ -449,6 +466,7 @@ int CDirectXRenderingEngine::PostInit()
 			}
 		}
 		// 各向异性 Kajiya-Kay Shading Model（卡吉雅模型）
+		// 異方性 Kajiya-Kay シェーディングモデル（カジヤモデル）
 		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 		{
 			SphereMesh->CreateMesh(2.f, 50, 50);
@@ -474,14 +492,13 @@ int CDirectXRenderingEngine::PostInit()
 					1.4f, 1.f));
 				InMaterial->SetMaterialType(EMaterialType::OrenNayar);
 
-				InMaterial->SetRoughness(0.7f);//如果是0 就是兰伯特
+				InMaterial->SetRoughness(0.7f);
 
 			}
 		}
 	
 	/*	if (GetCurrentGPU() == NVIDIA)
 		{*/
-			////以线框显示
 			//if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 			//{
 			//	SphereMesh->CreateMesh(2.f, 50, 50);
@@ -494,7 +511,6 @@ int CDirectXRenderingEngine::PostInit()
 			//	}
 			//}
 
-			////以点显示
 			//if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 			//{
 			//	SphereMesh->SetMeshRenderLayerType(EMeshRenderLayerType::RENDERLAYER_WIREFRAME);
@@ -511,6 +527,7 @@ int CDirectXRenderingEngine::PostInit()
 		//}
 		
 		// 以法线显示
+		// 法線を表示
 		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 		{
 			SphereMesh->CreateMesh(2.f, 50, 50);
@@ -521,6 +538,7 @@ int CDirectXRenderingEngine::PostInit()
 			}
 		}
 		// 以世界法线显示
+		// ワールド法線を表示
 		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 		{
 			SphereMesh->CreateMesh(2.f, 50, 50);
@@ -531,6 +549,7 @@ int CDirectXRenderingEngine::PostInit()
 			}
 		}
 		// 法线木材
+		// ワールド法線を表示
 		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 		{
 			SphereMesh->CreateMesh(2.f, 50, 50);
@@ -547,6 +566,7 @@ int CDirectXRenderingEngine::PostInit()
 		}
 
 		// 法线地面效果
+		// 法線による地面効果
 		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 		{
 			SphereMesh->CreateMesh(2.f, 50, 50);
@@ -561,6 +581,7 @@ int CDirectXRenderingEngine::PostInit()
 		}
 
 		// 贴图反射
+		// テクスチャ反射
 		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 		{
 			SphereMesh->SetMeshRenderLayerType(EMeshRenderLayerType::RENDERLAYER_OPAQUE_REFLECTOR);
@@ -582,6 +603,7 @@ int CDirectXRenderingEngine::PostInit()
 			}
 		}
 		// 单独法线贴图
+		// 単独の法線テクスチャ
 		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 		{
 			SphereMesh->CreateMesh(2.f, 100, 100);
@@ -595,6 +617,7 @@ int CDirectXRenderingEngine::PostInit()
 			}
 		}
 		// 单独法线贴图+反射贴图
+		// 単独の法線テクスチャ + 反射テクスチャ
 		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 		{
 			SphereMesh->CreateMesh(2.f, 100, 100);
@@ -609,6 +632,7 @@ int CDirectXRenderingEngine::PostInit()
 			}
 		}
 		// PBR模型
+		// PBRモデル
 		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 		{
 			SphereMesh->CreateMesh(2.f, 100, 100);
@@ -677,9 +701,9 @@ int CDirectXRenderingEngine::PostInit()
 		}
 
 		////PBR模型组
+		//  PBRモデルグループ
 		//{
-		//	//自由设定
-		//	if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())//PBR模型
+		//	if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 		//	{
 		//		SphereMesh->CreateMesh(2.f, 30, 30);
 		//		SphereMesh->SetPosition(XMFLOAT3(15.f, 2, 0.f));
@@ -701,7 +725,7 @@ int CDirectXRenderingEngine::PostInit()
 		//			PBRPosition.y += i * 5.f;
 		//			PBRPosition.z += j * 5.f;
 
-		//			if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())//PBR模型
+		//			if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 		//			{
 		//				SphereMesh->CreateMesh(2.f, 30, 30);
 		//				SphereMesh->SetPosition(XMFLOAT3(PBRPosition.x, PBRPosition.y, PBRPosition.z));
@@ -720,6 +744,7 @@ int CDirectXRenderingEngine::PostInit()
 		//}
 
 		// 阴影shader单独显示
+		// シャドウシェーダーを単独で表示
 		if (GPlaneMesh* InPlaneMesh = World->CreateActorObject<GPlaneMesh>())
 		{
 			InPlaneMesh->CreateMesh(7.f, 7.f, 2, 2);
@@ -731,7 +756,8 @@ int CDirectXRenderingEngine::PostInit()
 			}
 		}
 		// 外部FBX模型
-		if (GCustomMesh* CustomMesh = World->CreateActorObject<GCustomMesh>())//反射球
+		// 外部FBXモデル
+		if (GCustomMesh* CustomMesh = World->CreateActorObject<GCustomMesh>())
 		{
 			string MeshPath = FEnginePathHelper::GetEngineAssetPath() + "/SK_Mannequin.FBX";
 			CustomMesh->CreateMesh(MeshPath);
@@ -739,6 +765,7 @@ int CDirectXRenderingEngine::PostInit()
 			CustomMesh->SetPosition(XMFLOAT3(0.f, 0, 40.f));
 			CustomMesh->SetRotation(fvector_3d(0.f, 180.f, 0.f));
 			// 是否渲染ShadowMap
+			// ShadowMapをレンダリングするかどうか
 			CustomMesh->SetCastShadow(false);
 			if (CMaterial* InMaterial = (*CustomMesh->GetMaterials())[0])
 			{
@@ -778,19 +805,21 @@ int CDirectXRenderingEngine::PostInit()
 
 
 		// 天空
-		if (GSky* InSky = World->CreateActorObject<GSky>())//ﾌ・ﾕ
+		// 空
+		if (GSky* InSky = World->CreateActorObject<GSky>())
 		{
 			InSky->SetPosition(XMFLOAT3(0.f, 0.f, 0.f));
 		}
 
 		// 雾
+		// フォグ
 		if (GFog* Fog = World->CreateActorObject<GFog>())
 		{
 			Fog->SetFogColor(fvector_color(0.7f, 0.7f, 0.9f, 1.f));
 			Fog->SetFogStart(10.f);
 			Fog->SetFogRange(500.f);
 
-			Fog->SetFogHeight(5000.f);
+			Fog->SetFogHeight(2000.f);
 			Fog->SetFogTransparentCoefficient(0.00f);
 
 		}
@@ -815,7 +844,8 @@ void CDirectXRenderingEngine::UpdateCalculations(float DeltaTime, const FViewpor
 
 void CDirectXRenderingEngine::Tick(float DeltaTime)
 {
-	//重置录制相关的内存，为下一帧做准备
+	//　重置录制相关的内存，为下一帧做准备
+	// 記録関連のメモリをリセットし、次のフレームに備える
 	ANALYSIS_HRESULT(CommandAllocator->Reset());
 
 	MeshManager->PreDraw(DeltaTime);
@@ -827,19 +857,23 @@ void CDirectXRenderingEngine::Tick(float DeltaTime)
 
 	EndSetMainViewportRenderTarget();
 
-	//录入完成
+	// 录入完成
+	// 記録完了
 	ANALYSIS_HRESULT(GraphicsCommandList->Close());
 
 
-	//提交命令
+	// 提交命令
+	// コマンドを送信
 	ID3D12CommandList* CommandList[] = { GraphicsCommandList.Get() };
 	CommandQueue->ExecuteCommandLists(_countof(CommandList), CommandList);
 
-	//交换两个buff缓冲区
+	// 交换两个buff缓冲区
+	// 2つのバッファを入れ替える
 	ANALYSIS_HRESULT(SwapChain->Present(0, 0));
 	CurrentSwapBuffIndex = !(bool)CurrentSwapBuffIndex;
 
-	//CPU等GPU
+	// CPU等GPU
+	// 同期
 	WaitGPUCommandQueueComplete();
 }
 
@@ -847,7 +881,7 @@ void CDirectXRenderingEngine::OnResetSize(int InWidth, int InHeight)
 {
 	if (D3dDevice)
 	{
-		//同步
+		// 同期
 		WaitGPUCommandQueueComplete();
 
 		ANALYSIS_HRESULT(GraphicsCommandList->Reset(CommandAllocator.Get(), NULL));
@@ -858,14 +892,16 @@ void CDirectXRenderingEngine::OnResetSize(int InWidth, int InHeight)
 		}
 		DepthStencilBuffer.Reset();
 
-		//自适应屏幕变大
+		//　自适应屏幕变大
+		//  画面サイズに自動適応して拡大
 		SwapChain->ResizeBuffers(
 			FEngineRenderConfig::GetRenderConfig()->SwapChainCount,
 			InWidth,
 			InHeight,
 			BackBufferFormat, DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH);
 
-		//拿到描述size
+		// 拿到描述size
+		// ディスクリプタのサイズを取得
 		RTVDescriptorSize = D3dDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 
 		CD3DX12_CPU_DESCRIPTOR_HANDLE HeapHandle(RTVHeap->GetCPUDescriptorHandleForHeapStart());
@@ -923,6 +959,7 @@ void CDirectXRenderingEngine::OnResetSize(int InWidth, int InHeight)
 		WaitGPUCommandQueueComplete();
 
 		// 摄像机自适应
+		// カメラを自動調整
 		if (World &&
 			World->GetCamera())
 		{
@@ -930,6 +967,7 @@ void CDirectXRenderingEngine::OnResetSize(int InWidth, int InHeight)
 		}
 
 		// 模型自适应
+		// モデルを自動調整
 		MeshManager->OnResetSize(InWidth, InHeight);
 	}
 }
@@ -953,6 +991,7 @@ int CDirectXRenderingEngine::PostExit()
 
 
 	// 退出前检查是否有未释放的资源
+	// 終了前に解放されていないリソースがあるか確認
 	ComPtr<ID3D12DebugDevice> debugDevice;
 	if (SUCCEEDED(D3dDevice->QueryInterface(IID_PPV_ARGS(&debugDevice))))
 	{
@@ -966,6 +1005,7 @@ int CDirectXRenderingEngine::PostExit()
 void CDirectXRenderingEngine::StartSetMainViewportRenderTarget()
 {
 	// 转换资源状态
+	// リソースの状態を変換
 	CD3DX12_RESOURCE_BARRIER ResourceBarrierPresent = CD3DX12_RESOURCE_BARRIER::Transition(GetCurrentSwapBuff(),
 		D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
 
@@ -973,10 +1013,13 @@ void CDirectXRenderingEngine::StartSetMainViewportRenderTarget()
 
 	// 需要每帧执行
 	// 绑定矩形框
+	// 毎フレーム実行する必要がある
+	// 矩形ボックスをバインド
 	GraphicsCommandList->RSSetViewports(1, &World->GetCamera()->ViewprotInfo);
 	GraphicsCommandList->RSSetScissorRects(1, &World->GetCamera()->ViewprotRect);
 
 	// 输出的合并阶段
+	// 出力のマージフェーズ
 	D3D12_CPU_DESCRIPTOR_HANDLE SwapBufferView = GetCurrentSwapBufferView();
 	D3D12_CPU_DESCRIPTOR_HANDLE DepthStencilView = GetCurrentDepthStencilView();
 	GraphicsCommandList->OMSetRenderTargets(1, &SwapBufferView,
@@ -992,12 +1035,14 @@ void CDirectXRenderingEngine::EndSetMainViewportRenderTarget()
 
 void CDirectXRenderingEngine::ClearMainSwapChainCanvas()
 {
-	//清除画布
+	// 清除画布
+	// Canvasをクリア
 	GraphicsCommandList->ClearRenderTargetView(GetCurrentSwapBufferView(),
 		DirectX::Colors::Black,
 		0, nullptr);
 
-	//清除深度模板缓冲区
+	// 清除深度模板缓冲区
+	// 深度ステンシルバッファをクリア
 	GraphicsCommandList->ClearDepthStencilView(GetCurrentDepthStencilView(),
 		D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL,
 		1.f, 0, 0, NULL);
@@ -1028,6 +1073,7 @@ CurrentGPU CDirectXRenderingEngine::GetCurrentGPU()
 			//std::wcout << L"GPU #" << i << ": " << desc.Description << std::endl;
 
 			// 检查厂商 ID
+			// GPUを検査
 			switch (desc.VendorId) {
 			case 0x10DE: // NVIDIA
 				Engine_Log("Vendor: NVIDIA");
@@ -1063,16 +1109,19 @@ UINT CDirectXRenderingEngine::GetDXGISampleQuality() const
 }
 
 // 等待GPU处理完成
+// GPUの処理完了を待つ
 void CDirectXRenderingEngine::WaitGPUCommandQueueComplete()
 {
 	CurrentFenceIndex++;
 
 	//向GUP设置新的隔离点 等待GPU处理玩信号
+	//GPUに新しいフェンスを設定し、GPUの処理完了を待つ信号
 	ANALYSIS_HRESULT(CommandQueue->Signal(Fence.Get(), CurrentFenceIndex));
 
 	if (Fence->GetCompletedValue() < CurrentFenceIndex)
 	{
 		//创建或打开一个事件内核对象,并返回该内核对象的句柄.
+		//イベントカーネルオブジェクトを作成または開き、そのカーネルオブジェクトのハンドルを返す
 		//SECURITY_ATTRIBUTES
 		//CREATE_EVENT_INITIAL_SET  0x00000002
 		//CREATE_EVENT_MANUAL_RESET 0x00000001
@@ -1080,9 +1129,11 @@ void CDirectXRenderingEngine::WaitGPUCommandQueueComplete()
 		HANDLE EventEX = CreateEventEx(NULL, NULL, 0, EVENT_ALL_ACCESS);
 
 		//GPU完成后会通知我们的Handle
+		//GPUが完了した後、ハンドルに通知される
 		ANALYSIS_HRESULT(Fence->SetEventOnCompletion(CurrentFenceIndex, EventEX));
 
-		//等待GPU,阻塞主线程
+		//等待GPU,阻塞主线程/
+		//GPUを待機し、メインスレッドをブロック
 		WaitForSingleObject(EventEX, INFINITE);
 		CloseHandle(EventEX);
 	}
@@ -1100,25 +1151,25 @@ bool CDirectXRenderingEngine::InitDirect3D()
 	////////////////////////////////////////////////////////////////////////////////////////
 		//HRESULT
 		//S_OK				0x00000000
-		//E_UNEXPECTED		0x8000FFFF 意外的失败
-		//E_NOTIMPL			0x80004001 未实现
-		//E_OUTOFMEMORY		0x8007000E 未能分配所需的内存
-		//E_INVALIDARG		0x80070057 一个或多个参数无效 
-		//E_NOINTERFACE		0x80004002 不支持此接口
-		//E_POINTER			0x80004003 无效指针
-		//E_HANDLE			0x80070006 无效句柄
-		//E_ABORT			0x80004004 操作终止
-		//E_FAIL			0x80004005 错误
-		//E_ACCESSDENIED	0x80070005 一般的访问被拒绝错误
+		//E_UNEXPECTED		0x8000FFFF 意外的失败　　　　　　予期しない失敗
+		//E_NOTIMPL			0x80004001 未实现　　　　　　　　未実装　　　　
+		//E_OUTOFMEMORY		0x8007000E 未能分配所需的内存　　必要なメモリを割り当てられなかった　
+		//E_INVALIDARG		0x80070057 一个或多个参数无效 　　1つ以上の引数が無効
+		//E_NOINTERFACE		0x80004002 不支持此接口　　　　　このインターフェースはサポートされていない
+		//E_POINTER			0x80004003 无效指针　　　　　　　無効なポインタ
+		//E_HANDLE			0x80070006 无效句柄　　　　　　　無効なハンドル
+		//E_ABORT			0x80004004 操作终止　　　　　　　操作中止
+		//E_FAIL			0x80004005 错误　　　　　　　　　エラー
+		//E_ACCESSDENIED	0x80070005 一般的访问被拒绝错误　一般的アクセス拒否エラー　
 	ANALYSIS_HRESULT(CreateDXGIFactory1(IID_PPV_ARGS(&DXGIFactory)));
 
 	/*
-	D3D_FEATURE_LEVEL_9_1  目标功能级别支持Direct3D 9.1包含 shader model 2.
-	D3D_FEATURE_LEVEL_9_2  目标功能级别支持Direct3D 9.2包含 shader model 2.
-	D3D_FEATURE_LEVEL_9_3  目标功能级别支持Direct3D 9.3包含 shader model 3.
-	D3D_FEATURE_LEVEL_10_0 目标功能级别支持Direct3D 10.0包含 shader model 4.
-	D3D_FEATURE_LEVEL_10_1 目标功能级别支持Direct3D 10.1包含 shader model 4.
-	D3D_FEATURE_LEVEL_11_0 目标功能级别支持Direct3D 11.0包含 shader model 5.
+	D3D_FEATURE_LEVEL_9_1  目标功能级别支持Direct3D 9.1包含 shader model 2.　 対象の機能レベルは Direct3D 9.1 をサポートし、Shader Model 2 を含む
+	D3D_FEATURE_LEVEL_9_2  目标功能级别支持Direct3D 9.2包含 shader model 2.　　対象の機能レベルは Direct3D 9.2 をサポートし、Shader Model 2 を含む
+	D3D_FEATURE_LEVEL_9_3  目标功能级别支持Direct3D 9.3包含 shader model 3.　　対象の機能レベルは Direct3D 9.3 をサポートし、Shader Model 3 を含む
+	D3D_FEATURE_LEVEL_10_0 目标功能级别支持Direct3D 10.0包含 shader model 4.　　対象の機能レベルは Direct3D 10.0 をサポートし、Shader Model 4 を含む
+	D3D_FEATURE_LEVEL_10_1 目标功能级别支持Direct3D 10.1包含 shader model 4.　　対象の機能レベルは Direct3D 10.1 をサポートし、Shader Model 4 を含む
+	D3D_FEATURE_LEVEL_11_0 目标功能级别支持Direct3D 11.0包含 shader model 5.　　対象の機能レベルは Direct3D 11.0 をサポートし、Shader Model 5 を含む
 	*/
 
 	HRESULT D3dDeviceResult = D3D12CreateDevice(NULL, D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&D3dDevice));
@@ -1131,27 +1182,30 @@ bool CDirectXRenderingEngine::InitDirect3D()
 	}
 
 	//创建Fence对象 为了CPU和GPU同步作准备
+	// フェンスオブジェクトを作成し、CPUとGPUの同期に備える
 	//D3D12_FENCE_FLAG_NONE 
 	//D3D11_FENCE_FLAG_SHARED
 	//D3D11_FENCE_FLAG_SHARED_CROSS_ADAPTER
 	/*
 	Fence->SetEventOnCompletion
-	执行命令
-	提交呈现
+	执行命令  コマンドを実行
+	提交呈现  レンダリングを送信
 	Queue->Signal
 	wait
 	*/
 	ANALYSIS_HRESULT(D3dDevice->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&Fence)));
 
-	//初始化命令对象
+	// 初始化命令对象
+	// コマンドオブジェクトを初期化
 ////////////////////////////////////////////////////////////////////////////////////////
-	//INT Priority 
-	//D3D12_COMMAND_QUEUE_PRIORITY
-	//D3D12_COMMAND_QUEUE_PRIORITY_NORMAL
-	//D3D12_COMMAND_QUEUE_PRIORITY_HIGH
-	//NodeMask 指示该命令队列应在哪个GPU节点上执行
+	// INT Priority 
+	// D3D12_COMMAND_QUEUE_PRIORITY
+	// D3D12_COMMAND_QUEUE_PRIORITY_NORMAL
+	// D3D12_COMMAND_QUEUE_PRIORITY_HIGH
+	// NodeMask 指示该命令队列应在哪个GPU节点上执行
+	// NodeMask は、このコマンドキューがどの GPU ノードで実行されるかを示す
 	D3D12_COMMAND_QUEUE_DESC QueueDesc = {};
-	QueueDesc.Type = D3D12_COMMAND_LIST_TYPE::D3D12_COMMAND_LIST_TYPE_DIRECT;//直接
+	QueueDesc.Type = D3D12_COMMAND_LIST_TYPE::D3D12_COMMAND_LIST_TYPE_DIRECT;
 	QueueDesc.Flags = D3D12_COMMAND_QUEUE_FLAGS::D3D12_COMMAND_QUEUE_FLAG_NONE;
 	ANALYSIS_HRESULT(D3dDevice->CreateCommandQueue(&QueueDesc, IID_PPV_ARGS(&CommandQueue)));
 
@@ -1161,15 +1215,16 @@ bool CDirectXRenderingEngine::InitDirect3D()
 		IID_PPV_ARGS(CommandAllocator.GetAddressOf())));
 
 	ANALYSIS_HRESULT(D3dDevice->CreateCommandList(
-		0, //默认单个Gpu 
-		D3D12_COMMAND_LIST_TYPE::D3D12_COMMAND_LIST_TYPE_DIRECT,//直接类型
-		CommandAllocator.Get(),//将Commandlist关联到Allocator
+		0, //默认单个Gpu   デフォルトは単一のGPU
+		D3D12_COMMAND_LIST_TYPE::D3D12_COMMAND_LIST_TYPE_DIRECT,//直接类型  直接タイプ
+		CommandAllocator.Get(),//将Commandlist关联到Allocator    CommandlistをAllocatorに関連付ける
 		NULL,//ID3D12PipelineState
 		IID_PPV_ARGS(GraphicsCommandList.GetAddressOf())));
 
 	ANALYSIS_HRESULT(GraphicsCommandList->Close());
 
-	//多重采样
+	// 多重采样
+	// マルチサンプリング
 ////////////////////////////////////////////////////////////////////
 	D3D12_FEATURE_DATA_MULTISAMPLE_QUALITY_LEVELS QualityLevels;
 	QualityLevels.Format = BackBufferFormat;
@@ -1185,6 +1240,7 @@ bool CDirectXRenderingEngine::InitDirect3D()
 	M4XQualityLevels = QualityLevels.NumQualityLevels;
 
 	// 交换链
+	// スワップチェーン
 ////////////////////////////////////////////////////////////////////
 	SwapChain.Reset();
 	DXGI_SWAP_CHAIN_DESC SwapChainDesc;
@@ -1201,14 +1257,15 @@ bool CDirectXRenderingEngine::InitDirect3D()
 	// DXGI_USAGE_SHADER_INPUT
 	// DXGI_USAGE_SHARED
 	// DXGI_USAGE_UNORDERED_ACCESS
-	SwapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;//使用表面或资源作为输出渲染目标。
-	SwapChainDesc.OutputWindow = MainWindowsHandle;//指定windows句柄
-	SwapChainDesc.Windowed = true;//以窗口运行
+	SwapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;//使用表面或资源作为输出渲染目标。 // サーフェスまたはリソースを出力レンダーターゲットとして使用
+	SwapChainDesc.OutputWindow = MainWindowsHandle;//指定windows句柄   //Windowsハンドルを指定
+	SwapChainDesc.Windowed = true;//以窗口运行  //ウィンドウモードで実行
 	SwapChainDesc.SwapEffect = DXGI_SWAP_EFFECT::DXGI_SWAP_EFFECT_FLIP_DISCARD;
 	SwapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG::DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;//IDXGISwapChain::ResizeTarget
-	SwapChainDesc.BufferDesc.Format = BackBufferFormat;//纹理格式
+	SwapChainDesc.BufferDesc.Format = BackBufferFormat;//纹理格式   //テクスチャ形式
 
 	// 多重采样设置
+	// マルチサンプリング設定
 	SwapChainDesc.SampleDesc.Count = GetDXGISampleCount();
 	SwapChainDesc.SampleDesc.Quality = GetDXGISampleQuality();
 
@@ -1217,23 +1274,25 @@ bool CDirectXRenderingEngine::InitDirect3D()
 		&SwapChainDesc, SwapChain.GetAddressOf()));
 
 	// 资源描述符
+	// リソース記述子
 	////////////////////////////////////////////////////////////////////
-	// D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV	//CBV常量缓冲区视图 SRV着色器资源视图 UAV无序访问视图
-	// D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER		//采样器视图
-	// D3D12_DESCRIPTOR_HEAP_TYPE_RTV			//渲染目标视图资源
-	// D3D12_DESCRIPTOR_HEAP_TYPE_DSV			//深度/模板的视图资源
+	// D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV	
+	// D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER		
+	// D3D12_DESCRIPTOR_HEAP_TYPE_RTV			
+	// D3D12_DESCRIPTOR_HEAP_TYPE_DSV			
 	// RTV
 	
 	
 	//************ ！！！每次添加新RTV时需检查此处！！！****************
+	//************ ！！！新しいRTVを追加する際は毎回ここを確認すること！！！****************
 	D3D12_DESCRIPTOR_HEAP_DESC RTVDescriptorHeapDesc;
 	RTVDescriptorHeapDesc.NumDescriptors =
-		FEngineRenderConfig::GetRenderConfig()->SwapChainCount + //交换链
-		6 + //反射的CubeMap RTV
-		6 + //ShadowCubeMap RTV Point Light
-		1 + //屏幕法线
+		FEngineRenderConfig::GetRenderConfig()->SwapChainCount + //交换链 // スワップチェーン
+		6 + //反射的CubeMap RTV              // 反射用CubeMap RTV
+		6 + //ShadowCubeMap RTV Point Light  // ShadowCubeMap RTV 点光源
+		1 + //屏幕法线                       // スクリーン法線
 		1 + //SSAO
-		1;  //双边模糊
+		1;  //双边模糊                       // 両方向ブラー
 
 
 	RTVDescriptorHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
@@ -1244,13 +1303,15 @@ bool CDirectXRenderingEngine::InitDirect3D()
 		IID_PPV_ARGS(RTVHeap.GetAddressOf())));
 
 	//************ !!!!! 每次添加新DSV时需检查此处 !!!!! ****************
+	//************ !!!!! 新しいDSVを追加する際は毎回ここを確認すること !!!!! ****************
 	// 创建DSV
+	// DSVを作成
 	D3D12_DESCRIPTOR_HEAP_DESC DSVDescriptorHeapDesc;
-	DSVDescriptorHeapDesc.NumDescriptors =
-		1	+			//main视口深度
-		1	+			//CubeMap深度 反射
-		1	+			//平行光 聚光灯 阴影深度
-		1;				//点光源 CubeMapShadow深度
+	DSVDescriptorHeapDesc.NumDescriptors =      
+		1	+			//main视口深度            // メインビューポート深度
+		1	+			//CubeMap 反射            // CubeMap 反射
+		1	+			//平行光 聚光灯 阴影深度  // 平行光 スポットライト シャドウ深度
+		1;				//点光源 CubeMapShadow    // 点光源 CubeMapShadow
 
 	DSVDescriptorHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
 	DSVDescriptorHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;

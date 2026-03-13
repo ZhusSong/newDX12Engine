@@ -1,5 +1,4 @@
-﻿//25.6.18 李
-#pragma once
+﻿#pragma once
 #include "../Core/DynamicCubeMap.h"
 #include "../../RenderTarget/CubeMapRenderTarget.h"
 
@@ -11,6 +10,7 @@ struct FGeometryMap;
 struct FDirectXPipelineState;
 
 // 动态反射CubeMap
+// 動的反射用CubeMap
 class FDynamicReflectionCubeMap :public FDynamicCubeMap
 {
 	typedef FDynamicCubeMap Super;

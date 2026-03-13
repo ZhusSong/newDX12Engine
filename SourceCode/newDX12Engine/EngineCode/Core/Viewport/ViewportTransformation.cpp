@@ -1,5 +1,4 @@
 ﻿
-// 2025.4.李
 #include "ViewportTransformation.h"
 
 FViewportTransformation::FViewportTransformation()

@@ -1,9 +1,9 @@
-﻿// 25.6.6 李 纹理资源上传缓冲区
-#pragma once
+﻿#pragma once
 #include "../../EngineMinimal.h"
 #include "../../Interface/DirectXDeviceInterface.h"
 
 // 纹理资源缓冲区结构体
+// テクスチャリソースバッファ構造体
 struct FRenderingTexture
 {
 	FRenderingTexture()
@@ -11,14 +11,14 @@ struct FRenderingTexture
 	{}
 
 	ComPtr<ID3D12Resource> UploadBuffer;
-	ComPtr<ID3D12Resource> Data;// 资源
+	ComPtr<ID3D12Resource> Data;// 资源        // リソース
+	 
+	wstring Name;// 贴图名                    // テクスチャ名
+	wstring Filename;// 路径                  // パス
+	wstring AssetFilename;// 资源文件夹路径 Texture'Asset/Texture/Hello.Hello'   // リソースフォルダのパス Texture'Asset/Texture/Hello.Hello'
+	wstring SimpleAssetFilename;//  简易路径 Asset/Texture/Hello.Hello           // 簡易パス Asset/Texture/Hello.Hello
 
-	wstring Name;// 贴图名
-	wstring Filename;// 路径
-	wstring AssetFilename;// 资源文件夹路径 Texture'Asset/Texture/Hello.Hello'
-	wstring SimpleAssetFilename;//  简易路径 Asset/Texture/Hello.Hello
-
-	UINT RenderingTextureID;  // 贴图ID
+	UINT RenderingTextureID;  // 贴图ID       // テクスチャID
 };
 
 class FRenderingTextureResourcesUpdate

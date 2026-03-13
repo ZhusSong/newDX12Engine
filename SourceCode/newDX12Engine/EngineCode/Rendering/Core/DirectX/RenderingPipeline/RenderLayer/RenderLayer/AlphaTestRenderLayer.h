@@ -1,5 +1,4 @@
 ﻿
-//25.6.10 李
 #pragma once
 #include "../Core/RenderLayer.h"
 

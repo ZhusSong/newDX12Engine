@@ -11,6 +11,7 @@ class CTransformComponent;
 class CInputComponent;
 
 // 相机类
+// カメラクラス
 class GCamera:public GClientViewport
 	, public IDirectXDeviceInterface
 {
@@ -29,6 +30,7 @@ public:
 	virtual void BuildViewMatrix(float DeltaTime);
 public:
 	// 鼠标处理相关
+	// マウス処理関連
 	virtual void OnLeftMouseButtoUP(int X, int Y);
 	virtual void OnLeftMouseButtonDown(int X, int Y);
 	virtual void OnRightMouseButtonDown(int X, int Y);
@@ -41,6 +43,7 @@ public:
 
 public:
 	// 点击屏幕时
+	// 画面をクリックした時
 	virtual void OnClickedScreen(int X, int Y);
 
 
@@ -50,6 +53,7 @@ protected:
 
 protected:
 	// 返回选中目标
+	// 選択対象を返す
 	void LookAtAndMoveToSelectedObject(float InTime, float InDeltaTime);
 
 public:

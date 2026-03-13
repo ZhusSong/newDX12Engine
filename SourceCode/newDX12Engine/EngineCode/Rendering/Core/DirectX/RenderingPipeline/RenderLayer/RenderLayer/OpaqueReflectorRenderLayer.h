@@ -1,5 +1,4 @@
 ﻿#pragma once
-//25.6.18 李
 #include "../Core/RenderLayer.h"
 
 class FOpaqueReflectorRenderLayer :public FRenderLayer

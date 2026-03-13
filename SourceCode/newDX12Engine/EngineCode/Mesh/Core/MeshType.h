@@ -13,7 +13,7 @@ struct FVertex
 	XMFLOAT4 Color;
 	XMFLOAT3 Normal;
 	XMFLOAT3 UTangent;
-	XMFLOAT2 TexCoord; // 纹理坐标
+	XMFLOAT2 TexCoord; // 纹理坐标  // テクスチャ座標
 };
 
 struct FMeshRenderingData
@@ -22,6 +22,7 @@ struct FMeshRenderingData
 	vector<uint16_t> IndexData;
 public:
 	// 得到当前渲染对象顶点与索引size
+	// 現在のレンダリングオブジェクトの頂点およびインデックスサイズを取得
 	UINT GetVertexSizeInBytes() { return  (UINT)VertexData.size() * sizeof(FVertex); }
 	UINT GetIndexSizeInBytes() { return  (UINT)IndexData.size() * sizeof(uint16_t); }
 };

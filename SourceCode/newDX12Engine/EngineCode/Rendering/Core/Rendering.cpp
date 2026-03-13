@@ -29,7 +29,6 @@ void IRenderingInterface::Init()
 
 void IRenderingInterface::PreDraw(float DeltaTime)
 {
-	////重值我们的命令列表
 	//ANALYSIS_HRESULT(GetGraphicsCommandList()->Reset(GetCommandAllocator().Get(), NULL));
 }
 

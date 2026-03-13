@@ -2,6 +2,7 @@
 #include "Core/RenderBuffer.h"
 
 // 创建环境缓冲区
+// 環境バッファを作成する
 class FAmbientBuffer :public FRenderBuffer
 {
 	typedef FRenderBuffer Super;

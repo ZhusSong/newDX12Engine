@@ -3,6 +3,7 @@
 #include "../../../RenderingResourcesUpdate.h"
 
 // 常量缓冲区视图结构体
+// 定数バッファビュー構造体
 struct FConstantBufferViews :public IDirectXDeviceInterface_Struct
 {
 	void CreateConstant(UINT ObjectSize, UINT ObjectCount, bool bConstBuffer = true);

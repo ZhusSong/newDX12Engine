@@ -26,22 +26,22 @@ SamplerComparisonState ShadowSampler : register(s2);
 
 SamplerState DepthSampler : register(s3);
 
-TextureCube SimpleCubeMap : register(t0); //根签名位置6
+TextureCube SimpleCubeMap : register(t0); //根签名位置6  // ルートシグネチャ位置6
 
-TextureCube SimpleShadowCubeMap : register(t1); //点光源 ShadowCubemap 根签名位置8
-Texture2D SimpleShadowMap : register(t2); // 聚光灯和平行光shadowmap 根签名位置7
+TextureCube SimpleShadowCubeMap : register(t1); //点光源 ShadowCubemap 根签名位置8  // 点光源 ShadowCubemap ルートシグネチャ位置8
+Texture2D SimpleShadowMap : register(t2); // 聚光灯和平行光shadowmap 根签名位置7    // 聚光灯和平行光shadowmap 根签名位置7
 
 Texture2D SimpleSSAOMap : register(t3);  //SSAO
 
-Texture2D SimpleTexture2DMap[TEXTURE2D_MAP_NUM] : register(t4);  //贴图
+Texture2D SimpleTexture2DMap[TEXTURE2D_MAP_NUM] : register(t4);  //贴图   //テクスチャ
 
 
 
 cbuffer ObjectConstBuffer : register(b0) 
 {
-    float4x4 WorldMatrix;          //世界矩阵 处理法线不等比缩放 
+    float4x4 WorldMatrix; //世界矩阵 处理法线不等比缩放 　　　　　　　//ワールド行列 法線の不等比スケールを処理
     float4x4 ObjectTextureTransform;
-    float4x4 NormalTransformation;  //法线矩阵 处理法线不等比缩放
+    float4x4 NormalTransformation; //法线矩阵 处理法线不等比缩放　　　//法線行列 法線の不等比スケールを処理
     uint MaterialIndex;
     uint RR1;
     uint RR2;
@@ -80,9 +80,9 @@ struct MaterialConstBuffer
     int NormalIndex;
 
     int SpecularIndex;
-    float Param0; //备用
-    float Param1; //备用
-    float Param2; //备用
+    float Param0; 
+    float Param1; 
+    float Param2; 
 
     float4 BaseColor;
 

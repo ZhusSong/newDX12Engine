@@ -13,7 +13,7 @@ SamplerState DepthSampler : register(s3);
 Texture2D SampleNormalMap : register(t0);
 Texture2D SampleDepthMap : register(t1);
 Texture2D SampleNoiseMap : register(t2);
-Texture2D SampleAcceptMap : register(t3); //传入的是双边模糊还是SSAO噪波图
+Texture2D SampleAcceptMap : register(t3); //传入的是双边模糊还是SSAO噪波图   //渡されているのは両方向ブラーか、SSAOノイズテクスチャか
 
 
 cbuffer CBufferSSAOView : register(b0)
@@ -28,6 +28,7 @@ cbuffer CBufferSSAOView : register(b0)
     float ObscurationThreshold;
     
     // 采样数据
+    // サンプリングデータ
     float4 SampleVolumeBuffer[SAMPLE_VOLUME_NUM];
 }
 
@@ -36,7 +37,8 @@ cbuffer CBufferBlurConstants : register(b1)
     bool bHorizontalBlur;
 }
 
-//模糊的参数 算子
+// 模糊的参数 算子
+// ブラーのパラメータ オペレータ
 cbuffer CBufferSSAOBlurParam : register(b2)
 {
     float4 Float4BlurWeights[3];

@@ -6,11 +6,13 @@ FDefaultDirectXRootSignature::FDefaultDirectXRootSignature()
 }
 
 // 构建根签名
+// ルートシグネチャを構築する
 void FDefaultDirectXRootSignature::BuildRootSignature(UINT InTextureNum)
 {   
     CD3DX12_ROOT_PARAMETER RootParam[10];
 
     // texture描述表(包括cubemap)
+    // テクスチャ記述テーブル（キューブマップを含む）
     CD3DX12_DESCRIPTOR_RANGE DescriptorRangeTextureSRV;
     DescriptorRangeTextureSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV,
         InTextureNum, 4);
@@ -21,6 +23,7 @@ void FDefaultDirectXRootSignature::BuildRootSignature(UINT InTextureNum)
 
 
     // 静态CubeMap
+    // 静的キューブマップ
     CD3DX12_DESCRIPTOR_RANGE DescriptorRangeCubeMapSRV;
     DescriptorRangeCubeMapSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0);
 
@@ -32,16 +35,19 @@ void FDefaultDirectXRootSignature::BuildRootSignature(UINT InTextureNum)
     CD3DX12_DESCRIPTOR_RANGE DescriptorShadowCubeMapSRV;
     DescriptorShadowCubeMapSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 1);
 
-    RootParam[0].InitAsConstantBufferView(0);//对象
-    RootParam[1].InitAsConstantBufferView(1);//视口
-    RootParam[2].InitAsConstantBufferView(2);//灯光
-    RootParam[3].InitAsConstantBufferView(3);//雾
+    RootParam[0].InitAsConstantBufferView(0);//对象  // オブジェクト
+    RootParam[1].InitAsConstantBufferView(1);//视口  // ビューポート
+    RootParam[2].InitAsConstantBufferView(2);//灯光  // ライト
+    RootParam[3].InitAsConstantBufferView(3);//雾    // フォグ
 
     // 材质
+    // マテリアル
     RootParam[4].InitAsShaderResourceView(0, 1);
     // 2D贴图
+    // 2Dテクスチャ
     RootParam[5].InitAsDescriptorTable(1, &DescriptorRangeTextureSRV, D3D12_SHADER_VISIBILITY_PIXEL);
     // CubeMap贴图
+    // キューブマップテクスチャ
     RootParam[6].InitAsDescriptorTable(1, &DescriptorRangeCubeMapSRV, D3D12_SHADER_VISIBILITY_PIXEL);
 
     //ShadowMap
@@ -54,16 +60,18 @@ void FDefaultDirectXRootSignature::BuildRootSignature(UINT InTextureNum)
     RootParam[9].InitAsDescriptorTable(1, &DescriptorSSAOMapSRV, D3D12_SHADER_VISIBILITY_PIXEL);
 
     // 构建静态采样
+    // 静的サンプラーを構築する
     StaticSamplerObject.BuildStaticSampler();
 
     CD3DX12_ROOT_SIGNATURE_DESC RootSignatureDesc(
         10,
         RootParam,
-        StaticSamplerObject.GetSize(),//采样数量
-        StaticSamplerObject.GetData(),//采样PTR
+        StaticSamplerObject.GetSize(),//采样数量  // サンプル数
+        StaticSamplerObject.GetData(),//采样PTR   // サンプラーPTR
         D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 
     // 序列化
+    //  シリアライズ
     ComPtr<ID3DBlob> SerializeRootSignature;
     ComPtr<ID3DBlob> ErrorBlob;
     D3D12SerializeRootSignature(
@@ -77,7 +85,7 @@ void FDefaultDirectXRootSignature::BuildRootSignature(UINT InTextureNum)
         char* p = (char*)ErrorBlob->GetBufferPointer();
         Engine_Log_Error("%s", p);
     }
-    // 创建 
+
     GetD3dDevice()->CreateRootSignature(
         0,
         SerializeRootSignature->GetBufferPointer(),

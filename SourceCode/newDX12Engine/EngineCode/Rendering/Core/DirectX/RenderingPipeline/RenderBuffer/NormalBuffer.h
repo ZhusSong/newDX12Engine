@@ -1,4 +1,5 @@
 ﻿// 法线缓冲区
+// 法線バッファ
 #include "Core/RenderBuffer.h"
 class FNormalBuffer :public FRenderBuffer
 {

@@ -89,10 +89,10 @@ namespace EngineMath
     struct FCubeMapAxialRangeR
     {
         FCubeMapAxialRangeR()
-            :PositiveX(45.f, 135.f, 45.f, -45.f)//fai 属于 0-45  0--45
-            , NegativeX(45.f, 135.f, 135.f, -135.f)//fail 属于 135-180 -135--180
-            , PositiveY(0.f, 45.f, 360.f, -360.f)//theta 属于 0-45
-            , NegativeY(135.f, 180.f, 360.f, -360.f)//theta 属于 135-180
+            :PositiveX(45.f, 135.f, 45.f, -45.f)//fai  0-45  0--45
+            , NegativeX(45.f, 135.f, 135.f, -135.f)//fail  135-180 -135--180
+            , PositiveY(0.f, 45.f, 360.f, -360.f)//theta  0-45
+            , NegativeY(135.f, 180.f, 360.f, -360.f)//theta  135-180
             , PositiveZ(45.f, 135.f, 45.f, 135.f)
             , NegativeZ(45.f, 135.f, -45.f, -135.f)
         {}
@@ -114,7 +114,7 @@ namespace EngineMath
         float InCriticalValue,
         bool bComMin)
     {
-        if (bComMin) //比小
+        if (bComMin)
         {
             if (InAngle > InCriticalValue)
             {
@@ -137,7 +137,7 @@ namespace EngineMath
         }
         else
         {
-            if (InAngle > 0.f) //+
+            if (InAngle > 0.f) 
             {
                 if (InAngle >= max(X, Y))
                 {
@@ -215,11 +215,14 @@ namespace EngineMath
     {
         static FCubeMapAxialRangeR CubeMapAxialRangeRight;
 
-        //确保它已经转为CubeMapViewport下的坐标
-        //转为球面坐标
+        // 确保它已经转为CubeMapViewport下的坐标
+        // 转为球面坐标
+        // CubeMapViewport座標系に変換済みであることを確認
+        // 球面座標に変換
         fvector_3d Point = GetPointSphericalCoordinates(InPointPosition);
 
-        //球面坐标值
+        // 球面坐标值
+        // 球面座標の値
         float PointTheta = Point.y;
         float PointFai = Point.z;
 
@@ -291,6 +294,7 @@ namespace EngineMath
         Rotator.inertia_to_object(RotatorMatrix);
 
         // 转为DirectX的旋转矩阵
+        // DirectXの回転行列に変換
         return EngineMath::ToDXRotator(Rotator);;
     }
 
@@ -369,6 +373,7 @@ namespace EngineMath
         fvector_3d Point = GetPointSphericalCoordinates(InRelativePointPosition);
 
         // 球面坐标值
+        // 球面座標の値
         float PointTheta = Point.y;
         float PointFai = Point.z;
 

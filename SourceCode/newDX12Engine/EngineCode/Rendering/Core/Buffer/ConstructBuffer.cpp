@@ -30,6 +30,7 @@ namespace ConstructBuffer
 		SubResourceData.SlicePitch = SubResourceData.RowPitch;
 
 		// 标记资源为复制目标
+		// リソースをコピー先としてマーク
 		CD3DX12_RESOURCE_BARRIER CopyDestBarrier = CD3DX12_RESOURCE_BARRIER::Transition(Buffer.Get(),
 			D3D12_RESOURCE_STATE_COMMON,
 			D3D12_RESOURCE_STATE_COPY_DEST);
@@ -37,6 +38,7 @@ namespace ConstructBuffer
 		GetGraphicsCommandList()->ResourceBarrier(1, &CopyDestBarrier);
 
 		// 更新子资源，应该填充所有子资源数组
+		// サブリソースを更新。全てのサブリソース配列を埋める必要がある
 		UpdateSubresources<1>(
 			GetGraphicsCommandList().Get(),
 			Buffer.Get(),

@@ -37,6 +37,7 @@ void FCubeMapRenderTarget::BuildRenderTargetMap()
 
 
 	// 定义清除颜色值，防止出现 EXECUTION WARNING #820: CLEARRENDERTARGETVIEW_MISMATCHINGCLEARVA 警告
+	// クリアカラー値を定義し、EXECUTION WARNING #820: CLEARRENDERTARGETVIEW_MISMATCHINGCLEARVA 警告の発生を防ぐ
 	D3D12_CLEAR_VALUE ClearValue = {};
 	ClearValue.Format = Format;
 	ClearValue.Color[0] = 0.0f;

@@ -10,6 +10,7 @@ void FSampleVolumeBuffer::BuildVolumeBuffer()
 	VolumeBuffer.clear();
 
 	// 构造八个角
+	// 八つの角を構築する
 	VolumeBuffer.push_back(fvector_4d(+1.0f, +1.0f, +1.0f, 0.0f));
 	VolumeBuffer.push_back(fvector_4d(-1.0f, -1.0f, -1.0f, 0.0f));
 
@@ -23,6 +24,7 @@ void FSampleVolumeBuffer::BuildVolumeBuffer()
 	VolumeBuffer.push_back(fvector_4d(+1.0f, -1.0f, +1.0f, 0.0f));
 
 	// 构建中心点
+	// 中心点を構築する
 	VolumeBuffer.push_back(fvector_4d(-1.0f, 0.0f, 0.0f, 0.0f));
 	VolumeBuffer.push_back(fvector_4d(+1.0f, 0.0f, 0.0f, 0.0f));
 

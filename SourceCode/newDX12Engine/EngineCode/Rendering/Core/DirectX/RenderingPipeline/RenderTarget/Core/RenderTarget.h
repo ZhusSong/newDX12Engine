@@ -1,5 +1,4 @@
-﻿//25.6.25 李
-#pragma once
+﻿#pragma once
 #include "../../../../../../Interface/DirectXDeviceInterface.h"
 
 class FRenderTarget
@@ -39,7 +38,8 @@ protected:
 	D3D12_VIEWPORT Viewport;
 	D3D12_RECT ScissorRect;
 
-	// 放数据的地方
+	// 渲染目标数据
+	// レンダーターゲットデータ
 	ComPtr<ID3D12Resource> RenderTargetMap;
 
 	// SRV

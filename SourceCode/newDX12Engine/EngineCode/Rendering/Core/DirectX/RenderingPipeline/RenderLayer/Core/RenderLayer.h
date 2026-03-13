@@ -1,6 +1,5 @@
 ﻿#pragma once
 
-//25.6.10 李
 #include "../../../../../../Interface/DirectXDeviceInterface.h"
 #include "../../../../../../Shader/Core/Shader.h"
 #include "../../Geometry/RenderingData.h"
@@ -13,6 +12,7 @@ struct FRenderingData;
 struct FViewportInfo; 
 
 // PSO代理
+// PSOプロキシ
 DEFINITION_SIMPLE_SINGLE_DELEGATE(FBuildPSODelegate, void, D3D12_GRAPHICS_PIPELINE_STATE_DESC&);
 
 
@@ -29,7 +29,6 @@ public:
 public:
 	FRenderLayer();
 
-	//基础注册环节
 	virtual void Init(FGeometryMap* InGeometryMap, FDirectXPipelineState* InDirectXPipelineState);
 
 	virtual void PreDraw(float DeltaTime);
@@ -48,11 +47,14 @@ public:
 	virtual void UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo);
 
 	//单独设置PSO
+	// PSOを個別に設定する
 	virtual void ResetPSO();
 	// 通过流水线状态设置PSO
+	// パイプラインステートを通じてPSOを設定する
 	virtual void ResetPSO(EPipelineState InPipelineState);
 
-	//渲染 不包含设置PSO
+	// 渲染 不包含设置PSO
+	// PSO設定を含まない描画
 	virtual void DrawMesh(float DeltaTime, ERenderingConditions RC = ERenderingConditions::RC_None);
 
 public:
