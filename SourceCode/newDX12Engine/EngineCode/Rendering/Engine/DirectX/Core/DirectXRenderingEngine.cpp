@@ -743,18 +743,19 @@ int CDirectXRenderingEngine::PostInit()
 		//	}
 		//}
 
-		// 阴影shader单独显示
-		// シャドウシェーダーを単独で表示
-		if (GPlaneMesh* InPlaneMesh = World->CreateActorObject<GPlaneMesh>())
-		{
-			InPlaneMesh->CreateMesh(7.f, 7.f, 2, 2);
-			InPlaneMesh->SetPosition(XMFLOAT3(0.f, 0.f, 60.f));
-			InPlaneMesh->SetRotation(fvector_3d(90.f, 0.f, 0.f));
-			if (CMaterial* InMaterial = (*InPlaneMesh->GetMaterials())[0])
-			{
-				InMaterial->SetMaterialType(ShadowTexture);
-			}
-		}
+		//// 阴影shader单独显示
+		//// シャドウシェーダーを単独で表示
+		//if (GPlaneMesh* InPlaneMesh = World->CreateActorObject<GPlaneMesh>())
+		//{
+		//	InPlaneMesh->CreateMesh(7.f, 7.f, 2, 2);
+		//	InPlaneMesh->SetPosition(XMFLOAT3(0.f, 0.f, 60.f));
+		//	InPlaneMesh->SetRotation(fvector_3d(90.f, 0.f, 0.f));
+		//	if (CMaterial* InMaterial = (*InPlaneMesh->GetMaterials())[0])
+		//	{
+		//		InMaterial->SetMaterialType(ShadowTexture);
+		//	}
+		//}
+	
 		// 外部FBX模型
 		// 外部FBXモデル
 		if (GCustomMesh* CustomMesh = World->CreateActorObject<GCustomMesh>())
@@ -774,7 +775,25 @@ int CDirectXRenderingEngine::PostInit()
 		
 			}
 		}
-	
+
+		if (GCustomMesh* CustomMesh = World->CreateActorObject<GCustomMesh>())
+		{
+			string MeshPath = FEnginePathHelper::GetEngineAssetPath() + "/usagi_Believer.fbx";
+			CustomMesh->CreateMesh(MeshPath);
+
+			CustomMesh->SetPosition(XMFLOAT3(40.f, -10, 20.f));
+			CustomMesh->SetScale(fvector_3d(0.03f, 0.03f, 0.03f));
+			CustomMesh->SetRotation(fvector_3d(0.0f,-90.0f,90.0f));
+			// 是否渲染ShadowMap
+			// ShadowMapをレンダリングするかどうか
+			CustomMesh->SetCastShadow(false);
+			if (CMaterial* InMaterial = (*CustomMesh->GetMaterials())[0])
+			{
+				InMaterial->SetBaseColor(fvector_4d(1.f));
+				InMaterial->SetMaterialType(EMaterialType::BinnPhong);
+
+			}
+		}
 		////well
 		//if (GBoxMesh* InBoxMesh = World->CreateActorObject<GBoxMesh>())
 		//{
@@ -980,6 +999,12 @@ int CDirectXRenderingEngine::PreExit()
 
 int CDirectXRenderingEngine::Exit()
 {
+	for (int i = 0; i < 3; i++)
+	{
+		WaitGPUCommandQueueComplete();
+	}
+
+
 
 	Engine_Log("Engine exit complete.");
 	return 0;
@@ -990,14 +1015,7 @@ int CDirectXRenderingEngine::PostExit()
 	FEngineRenderConfig::Destroy();
 
 
-	// 退出前检查是否有未释放的资源
-	// 終了前に解放されていないリソースがあるか確認
-	ComPtr<ID3D12DebugDevice> debugDevice;
-	if (SUCCEEDED(D3dDevice->QueryInterface(IID_PPV_ARGS(&debugDevice))))
-	{
-		debugDevice->ReportLiveDeviceObjects(D3D12_RLDO_DETAIL);
-	}
-
+	ReleaseD3DObjects();
 	Engine_Log("Engine post exit complete.");
 	return 0;
 }
@@ -1329,6 +1347,39 @@ void CDirectXRenderingEngine::PostInitDirect3D()
 		FEngineRenderConfig::GetRenderConfig()->ScreenWidth,
 		FEngineRenderConfig::GetRenderConfig()->ScreenHight);
 	
+}
+
+bool CDirectXRenderingEngine::ReleaseD3DObjects()
+{
+	for (auto& buffer : SwapChainBuffer)
+	{
+		buffer.Reset();
+	}
+	SwapChainBuffer.clear();
+
+	DepthStencilBuffer.Reset();
+
+	GraphicsCommandList.Reset();
+	CommandAllocator.Reset();
+
+	SwapChain.Reset();
+
+
+
+	RTVHeap.Reset();
+	DSVHeap.Reset();
+
+	Fence.Reset();
+	CommandQueue.Reset();
+
+	DXGIFactory.Reset();
+
+
+	D3dDevice.Reset();
+
+
+	Engine_Log("D3D12 Objects Released");
+	return true;
 }
 
 #endif

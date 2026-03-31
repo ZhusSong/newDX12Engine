@@ -4,6 +4,10 @@
 #include <string>
 #include <map>
 
+#include <fstream>
+#include <cstdint>
+#include <functional>
+
 #ifdef FBXSDK_EXPORTS
 #define FBXASSETIMPORT_API __declspec(dllexport)
 #else
@@ -106,5 +110,46 @@ struct FBXASSETIMPORT_API FFBXVersion
 //7.5.0
 struct FFBXAssetImport
 {
+	// FBXファイルからメッシュデータを読み込む
+	// Load mesh data from an FBX file
 	FBXASSETIMPORT_API void LoadMeshData(const char* InPath, FFBXRenderData& OutData);
+
+	// バイナリキャッシュからデータを読み込む
+	// Load mesh data from a binary cache file
+	// Returns false if the cache is missing, outdated, or corrupt
+	FBXASSETIMPORT_API bool LoadFromCache(const char* InCachePath, const char* InOriginalFBXPath, FFBXRenderData& OutData);
+
+	// メッシュデータをバイナリキャッシュに書き出す
+	// Save mesh data to a binary cache file
+	// InOriginalFBXPath is used to record the source file's timestamp
+	FBXASSETIMPORT_API bool SaveToCache(const char* InCachePath, const char* InOriginalFBXPath, const FFBXRenderData& InData);
+
+	// FBXを読み込み、キャッシュがあればそちらを優先する高レベルAPI
+	// High-level helper: loads from cache when valid, otherwise parses FBX and saves cache
+	FBXASSETIMPORT_API void LoadMeshDataCached(const char* InFBXPath, const char* InCachePath, FFBXRenderData& OutData);
+};
+
+// バイナリキャッシュのヘッダー情報
+// Binary cache header information
+// 模型数据缓存
+struct FBXASSETIMPORT_API FFBXCacheHeader
+{
+	// マジックナンバー: "FBXC" = 0x43584246
+	// Magic number: "FBXC" = 0x43584246
+	uint32_t Magic;
+
+	// キャッシュフォーマットバージョン
+	// Cache format version (increment when layout changes)
+	uint32_t Version;
+
+	// 元のFBXファイルの最終更新時刻 (time_t)
+	// Last modified time of the original FBX file (time_t)
+	int64_t SourceFileTime;
+
+	// データチェックサム (単純な合計)
+	// Simple checksum of data payload
+	uint32_t Checksum;
+
+	static constexpr uint32_t MAGIC_VALUE = 0x43584246u; // "FBXC"
+	static constexpr uint32_t CACHE_VERSION = 1u;
 };

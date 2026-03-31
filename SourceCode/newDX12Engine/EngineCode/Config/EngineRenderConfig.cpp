@@ -3,8 +3,8 @@
 FEngineRenderConfig* FEngineRenderConfig::RenderConfig = nullptr;
 
 FEngineRenderConfig::FEngineRenderConfig()
-	:ScreenWidth(1080)
-	, ScreenHight(720)
+	:ScreenWidth(1980)
+	, ScreenHight(1020)
 	, RefreshRate(60)
 	, SwapChainCount(2)
 {

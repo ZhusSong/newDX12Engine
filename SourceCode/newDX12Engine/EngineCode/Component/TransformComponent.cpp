@@ -20,13 +20,13 @@ void CTransformComponent::SetPosition(const XMFLOAT3& InNewPosition)
 
 void CTransformComponent::SetRotation(const fvector_3d& InNewRotation)
 {
-	float RollRadians = XMConvertToRadians(InNewRotation.z);
 	float PithRadians = XMConvertToRadians(InNewRotation.x);
 	float YawRadians = XMConvertToRadians(InNewRotation.y);
+	float RollRadians = XMConvertToRadians(InNewRotation.z);
 	// 旋转矩阵
 	// 回転行列
 	XMMATRIX RotationRollPitchYawMatrix = XMMatrixRotationRollPitchYaw(
-		PithRadians, YawRadians, RollRadians);
+		PithRadians,YawRadians,RollRadians);
 
 	XMVECTOR Right = XMLoadFloat3(&RightVector);
 	XMVECTOR Up = XMLoadFloat3(&UPVector);

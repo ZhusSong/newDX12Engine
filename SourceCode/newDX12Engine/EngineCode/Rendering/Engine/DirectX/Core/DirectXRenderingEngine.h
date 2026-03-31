@@ -71,7 +71,9 @@ protected:
 
 	bool InitDirect3D();
 	void PostInitDirect3D();
-
+	// 资源清理
+	// リソースクリーン
+	bool ReleaseD3DObjects();
 protected:
 	// Manager管理
 	// マネージャー管理
