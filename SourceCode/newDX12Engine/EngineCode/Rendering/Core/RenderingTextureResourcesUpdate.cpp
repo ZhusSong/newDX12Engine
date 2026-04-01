@@ -4,6 +4,28 @@ const wchar_t DDS[] = L".dds";
 const wchar_t Asset[] = L"/Asset/";
 const wchar_t Project[] = L"/Project/";
 
+static bool IsDDSFile(const wchar_t* Filename)
+{
+	if (!Filename)
+	{
+		return false;
+	}
+
+	std::wstring Path = Filename;
+	if (Path.size() < 4)
+	{
+		return false;
+	}
+
+	std::wstring Extension = Path.substr(Path.size() - 4);
+	for (auto& Ch : Extension)
+	{
+		Ch = (wchar_t)towlower(Ch);
+	}
+
+	return Extension == DDS;
+}
+
 FRenderingTextureResourcesUpdate::FRenderingTextureResourcesUpdate()
 {
 	memset(&ShaderResourceViewDesc, 0, sizeof(D3D12_SHADER_RESOURCE_VIEW_DESC));
@@ -13,6 +35,11 @@ FRenderingTextureResourcesUpdate::FRenderingTextureResourcesUpdate()
 
 void FRenderingTextureResourcesUpdate::LoadTextureResources(const wstring& InFilename)
 {
+	if (!IsDDSFile(InFilename.c_str()))
+	{
+		return;
+	}
+
 	unique_ptr<FRenderingTexture> MyTexture = std::make_unique<FRenderingTexture>();
 	MyTexture->Filename = InFilename;
 
@@ -32,7 +59,7 @@ void FRenderingTextureResourcesUpdate::LoadTextureResources(const wstring& InFil
 		MyTexture->Data,
 		MyTexture->UploadBuffer);
 
-	MyTexture->RenderingTextureID = TexturesMapping.size();
+	MyTexture->RenderingTextureID = 0;
 
 	//Texture'/Project/Texture/Hello.Hello'
 	wchar_t AssetFilenameBuff[1024] = { 0 };
@@ -63,6 +90,8 @@ void FRenderingTextureResourcesUpdate::BuildTextureConstantBuffer(ID3D12Descript
 
 	for (auto& Tmp : TexturesMapping)
 	{
+		Tmp.second->RenderingTextureID = Offset;
+
 		// 根据类型初始化对应贴图
 		// タイプに応じて対応するテクスチャを初期化する
 		ResetTextureByType(&Tmp.second);
@@ -72,6 +101,7 @@ void FRenderingTextureResourcesUpdate::BuildTextureConstantBuffer(ID3D12Descript
 			&ShaderResourceViewDesc, Handle);
 
 		Handle.Offset(1, DescriptorOffset);
+		Offset++;
 	}
 }
 

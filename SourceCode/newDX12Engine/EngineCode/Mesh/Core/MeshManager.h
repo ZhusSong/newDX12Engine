@@ -16,6 +16,7 @@ class CMeshManager
 {
 public:
 	CMeshManager();
+	virtual ~CMeshManager();
 
 	virtual void Init();
 
@@ -27,6 +28,7 @@ public:
 	virtual void PreDraw(float DeltaTime);
 	virtual void Draw(float DeltaTime);
 	virtual void PostDraw(float DeltaTime);
+	virtual void Exit();
 
 	/*D3D12_VERTEX_BUFFER_VIEW GetVertexBufferView();
 	D3D12_INDEX_BUFFER_VIEW GetIndexBufferView();*/

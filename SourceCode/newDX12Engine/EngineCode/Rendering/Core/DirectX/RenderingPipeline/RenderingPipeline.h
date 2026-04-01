@@ -21,7 +21,7 @@ class FRenderingPipeline :public IDirectXDeviceInterface
 {
 public:
 	FRenderingPipeline();
-
+	~FRenderingPipeline();
 	// 构建Mesh
 	// メッシュを構築する
 	void BuildMesh(const size_t InMeshHash, CMeshComponent* InMesh, const FMeshRenderingData& MeshData);
@@ -38,7 +38,7 @@ public:
 	virtual void PreDraw(float DeltaTime);
 	virtual void Draw(float DeltaTime);
 	virtual void PostDraw(float DeltaTime);
-
+	void Exit();
 public:
 	FRenderLayerManager* GetRenderLayer() const { return const_cast<FRenderLayerManager*>(&RenderLayer); }
 

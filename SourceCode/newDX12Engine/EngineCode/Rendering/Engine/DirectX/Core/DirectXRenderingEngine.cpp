@@ -203,8 +203,8 @@ int CDirectXRenderingEngine::PostInit()
 			{
 				InMaterial->SetMaterialType(EMaterialType::HalfLambert);
 
-				InMaterial->SetBaseColor("Zhuan");
-				InMaterial->SetNormal("Zhuan_NRM");
+				InMaterial->SetBaseColor("bricks2");
+				//InMaterial->SetNormal("Zhuan_NRM");
 			}
 		}
 

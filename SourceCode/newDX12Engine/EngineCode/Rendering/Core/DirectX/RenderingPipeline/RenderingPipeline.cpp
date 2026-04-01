@@ -7,7 +7,10 @@ FRenderingPipeline::FRenderingPipeline()
 {
 
 }
-
+FRenderingPipeline::~FRenderingPipeline()
+{
+	Exit();
+}
 void FRenderingPipeline::BuildMesh(const size_t InMeshHash, CMeshComponent* InMesh, const FMeshRenderingData& MeshData)
 {
 	GeometryMap.BuildMesh(InMeshHash, InMesh, MeshData);
@@ -273,4 +276,8 @@ void FRenderingPipeline::PostDraw(float DeltaTime)
 	GeometryMap.PostDraw(DeltaTime);
 	RenderLayer.PostDraw(DeltaTime);
 	DirectXPipelineState.PostDraw(DeltaTime);
+}
+void FRenderingPipeline::Exit()
+{
+	//UIPipeline.Exit();
 }

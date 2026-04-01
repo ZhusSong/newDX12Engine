@@ -18,7 +18,7 @@ class CEngine:public CCoreMinimalObject
 {
 public:
 	CEngine();
-
+	virtual ~CEngine() = default;
 	virtual int PreInit(
 #if defined(_WIN32)
 		FWinMainCommandParameters InParameters

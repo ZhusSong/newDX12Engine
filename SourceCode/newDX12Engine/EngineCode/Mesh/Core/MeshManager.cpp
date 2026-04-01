@@ -26,6 +26,11 @@ CMeshManager::CMeshManager()
 
 }
 
+CMeshManager::~CMeshManager()
+{
+	Exit();
+}
+
 void CMeshManager::Init()
 {
    
@@ -54,6 +59,11 @@ void CMeshManager::PostDraw(float DeltaTime)
 {
     RenderingPipeline.PostDraw(DeltaTime);
 
+}
+
+void CMeshManager::Exit()
+{
+	RenderingPipeline.Exit();
 }
 
 void CMeshManager::Draw(float DeltaTime)

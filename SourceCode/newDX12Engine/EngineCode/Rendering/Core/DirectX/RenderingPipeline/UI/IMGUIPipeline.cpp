@@ -10,7 +10,10 @@ FIMGUIPipeline::FIMGUIPipeline()
 {
 
 }
-
+FIMGUIPipeline::~FIMGUIPipeline()
+{
+	Exit();
+}
 void FIMGUIPipeline::Init(ID3D12DescriptorHeap* InHeap, UINT InOffset)
 {
 	IMGUI_CHECKVERSION();
@@ -18,7 +21,7 @@ void FIMGUIPipeline::Init(ID3D12DescriptorHeap* InHeap, UINT InOffset)
 	// 加载ImGUI配置（Ini）相关的操作
 	// ImGUI設定（Ini）関連の操作をロードする
 	ImGui::CreateContext();
-
+	bContextCreated = true;
 	// 元件的颜色初始化
 	// ウィジェットの色を初期化
 	ImGui::StyleColorsDark();
@@ -47,7 +50,7 @@ void FIMGUIPipeline::Init(ID3D12DescriptorHeap* InHeap, UINT InOffset)
 		DXGI_FORMAT_R8G8B8A8_UNORM, InHeap,
 		CPUDescriptor,
 		GPUDescriptor);
-
+	bInitialized = true;
 #if EDITOR_ENGINE
 	GetEditorEngine()->BuildEditor();
 #endif
