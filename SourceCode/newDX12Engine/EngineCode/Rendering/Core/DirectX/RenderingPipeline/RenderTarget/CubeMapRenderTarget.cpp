@@ -51,7 +51,7 @@ void FCubeMapRenderTarget::BuildRenderTargetMap()
 		&BufferProperties,
 		D3D12_HEAP_FLAG_NONE,
 		&ResourceDesc,
-		D3D12_RESOURCE_STATE_COMMON,
+		D3D12_RESOURCE_STATE_GENERIC_READ,
 		&ClearValue,
 		IID_PPV_ARGS(RenderTargetMap.GetAddressOf())));
 }

@@ -11,7 +11,7 @@ FDirectXPipelineState::FDirectXPipelineState()
 
 void FDirectXPipelineState::PreDraw(float DeltaTime)
 {
-    GetGraphicsCommandList()->Reset(GetCommandAllocator().Get(), PSO[(int)PipelineState].Get());
+    GetGraphicsCommandList()->SetPipelineState(PSO[(int)PipelineState].Get());
 }
 
 void FDirectXPipelineState::Draw(float DeltaTime)

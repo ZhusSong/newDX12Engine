@@ -63,6 +63,8 @@ CDirectXRenderingEngine::CDirectXRenderingEngine()
 	:CurrentFenceIndex(0)
 	, M4XQualityLevels(1)
 	, bMSAA4XEnabled(false)
+	, bGraphicsCommandListClosed(true)
+	, MainViewportRenderTargetDepth(0)
 	, BackBufferFormat(DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM)
 	, DepthStencilFormat(DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT)
 	, CurrentSwapBuffIndex(0)
@@ -110,6 +112,7 @@ int CDirectXRenderingEngine::PostInit()
 	Engine_Log("Engine post initialization complete.");
 
 	ANALYSIS_HRESULT(GraphicsCommandList->Reset(CommandAllocator.Get(), NULL));
+	bGraphicsCommandListClosed = false;
 	{
 		// 创建控制手柄
 		// エディターハンドルを作成
@@ -668,9 +671,9 @@ int CDirectXRenderingEngine::PostInit()
 			SphereMesh->SetRotation(fvector_3d(0.f, 0.f, 0.f));
 			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
 			{
+				InMaterial->SetMaterialType(EMaterialType::Phong);
 				InMaterial->SetDynamicReflection(true);
 				InMaterial->SetBaseColor(fvector_4d(1.f));
-				InMaterial->SetMaterialType(EMaterialType::Phong);
 
 				InMaterial->SetRoughness(0.01f);
 				InMaterial->SetFresnelF0(fvector_3d(0.5f));
@@ -847,6 +850,7 @@ int CDirectXRenderingEngine::PostInit()
 	MeshManager->BuildMesh();
 
 	ANALYSIS_HRESULT(GraphicsCommandList->Close());
+	bGraphicsCommandListClosed = true;
 
 	ID3D12CommandList* CommandList[] = { GraphicsCommandList.Get() };
 	CommandQueue->ExecuteCommandLists(_countof(CommandList), CommandList);
@@ -866,10 +870,21 @@ void CDirectXRenderingEngine::Tick(float DeltaTime)
 	//　重置录制相关的内存，为下一帧做准备
 	// 記録関連のメモリをリセットし、次のフレームに備える
 	ANALYSIS_HRESULT(CommandAllocator->Reset());
+	if (!bGraphicsCommandListClosed)
+	{
+		ANALYSIS_HRESULT(GraphicsCommandList->Close());
+		bGraphicsCommandListClosed = true;
+	}
+	ANALYSIS_HRESULT(GraphicsCommandList->Reset(CommandAllocator.Get(), nullptr));
+	bGraphicsCommandListClosed = false;
 
-	MeshManager->PreDraw(DeltaTime);
+	// 新的一帧从主交换链的 PRESENT 状态开始记录。
+	// 新しいフレームはMainSwapChainのPRESENT状態から記録する
+	MainViewportRenderTargetDepth = 0;
 
 	StartSetMainViewportRenderTarget();
+
+	MeshManager->PreDraw(DeltaTime);
 
 	MeshManager->Draw(DeltaTime);
 	MeshManager->PostDraw(DeltaTime);
@@ -879,6 +894,7 @@ void CDirectXRenderingEngine::Tick(float DeltaTime)
 	// 录入完成
 	// 記録完了
 	ANALYSIS_HRESULT(GraphicsCommandList->Close());
+	bGraphicsCommandListClosed = true;
 
 
 	// 提交命令
@@ -903,7 +919,14 @@ void CDirectXRenderingEngine::OnResetSize(int InWidth, int InHeight)
 		// 同期
 		WaitGPUCommandQueueComplete();
 
+		if (!bGraphicsCommandListClosed)
+		{
+			ANALYSIS_HRESULT(GraphicsCommandList->Close());
+			bGraphicsCommandListClosed = true;
+		}
+
 		ANALYSIS_HRESULT(GraphicsCommandList->Reset(CommandAllocator.Get(), NULL));
+		bGraphicsCommandListClosed = false;
 
 		for (int i = 0; i < FEngineRenderConfig::GetRenderConfig()->SwapChainCount; i++)
 		{
@@ -971,6 +994,7 @@ void CDirectXRenderingEngine::OnResetSize(int InWidth, int InHeight)
 		GraphicsCommandList->ResourceBarrier(1, &Barrier);
 
 		GraphicsCommandList->Close();
+		bGraphicsCommandListClosed = true;
 
 		ID3D12CommandList* CommandList[] = { GraphicsCommandList.Get() };
 		CommandQueue->ExecuteCommandLists(_countof(CommandList), CommandList);
@@ -1022,12 +1046,17 @@ int CDirectXRenderingEngine::PostExit()
 
 void CDirectXRenderingEngine::StartSetMainViewportRenderTarget()
 {
-	// 转换资源状态
-	// リソースの状態を変換
-	CD3DX12_RESOURCE_BARRIER ResourceBarrierPresent = CD3DX12_RESOURCE_BARRIER::Transition(GetCurrentSwapBuff(),
-		D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
+	if (MainViewportRenderTargetDepth == 0)
+	{
+		// 转换资源状态
+		// リソースの状態を変換
+		CD3DX12_RESOURCE_BARRIER ResourceBarrierPresent = CD3DX12_RESOURCE_BARRIER::Transition(GetCurrentSwapBuff(),
+			D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
 
-	GraphicsCommandList->ResourceBarrier(1, &ResourceBarrierPresent);
+		GraphicsCommandList->ResourceBarrier(1, &ResourceBarrierPresent);
+	}
+
+	MainViewportRenderTargetDepth++;
 
 	// 需要每帧执行
 	// 绑定矩形框
@@ -1046,9 +1075,20 @@ void CDirectXRenderingEngine::StartSetMainViewportRenderTarget()
 
 void CDirectXRenderingEngine::EndSetMainViewportRenderTarget()
 {
-	CD3DX12_RESOURCE_BARRIER ResourceBarrierPresentRenderTarget = CD3DX12_RESOURCE_BARRIER::Transition(GetCurrentSwapBuff(),
-		D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
-	GraphicsCommandList->ResourceBarrier(1, &ResourceBarrierPresentRenderTarget);
+	if (MainViewportRenderTargetDepth <= 0)
+	{
+		MainViewportRenderTargetDepth = 0;
+		return;
+	}
+
+	MainViewportRenderTargetDepth--;
+
+	if (MainViewportRenderTargetDepth == 0)
+	{
+		CD3DX12_RESOURCE_BARRIER ResourceBarrierPresentRenderTarget = CD3DX12_RESOURCE_BARRIER::Transition(GetCurrentSwapBuff(),
+			D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
+		GraphicsCommandList->ResourceBarrier(1, &ResourceBarrierPresentRenderTarget);
+	}
 }
 
 void CDirectXRenderingEngine::ClearMainSwapChainCanvas()
@@ -1240,6 +1280,7 @@ bool CDirectXRenderingEngine::InitDirect3D()
 		IID_PPV_ARGS(GraphicsCommandList.GetAddressOf())));
 
 	ANALYSIS_HRESULT(GraphicsCommandList->Close());
+	bGraphicsCommandListClosed = true;
 
 	// 多重采样
 	// マルチサンプリング

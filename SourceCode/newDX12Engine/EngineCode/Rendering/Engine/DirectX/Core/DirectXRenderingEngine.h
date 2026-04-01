@@ -124,6 +124,10 @@ protected:
 	// MSAA設定とRTVハンドルサイズ
 	UINT M4XQualityLevels;
 	bool bMSAA4XEnabled;
+	// CommandList是否被关闭
+	// CommandListはは無効になっていますか
+	bool bGraphicsCommandListClosed;
+	int MainViewportRenderTargetDepth;
 	DXGI_FORMAT BackBufferFormat;
 	DXGI_FORMAT DepthStencilFormat;
 	UINT RTVDescriptorSize;
