@@ -150,6 +150,16 @@ struct FBXASSETIMPORT_API FFBXCacheHeader
 	// Simple checksum of data payload
 	uint32_t Checksum;
 
+	// 实际写入文件的 payload 大小
+	// ファイルに書き込まれる実際のペイロードサイズ
+	uint32_t CompressedSize;
+
+	// 圧縮前の元のペイロードサイズ
+	uint32_t UncompressedSize;
+	// 0 = 未压缩, 1 = 已压缩
+	// 0 = 非圧縮、1 = 圧縮
+	uint32_t bCompressed;
+
 	static constexpr uint32_t MAGIC_VALUE = 0x43584246u; // "FBXC"
-	static constexpr uint32_t CACHE_VERSION = 1u;
+	static constexpr uint32_t CACHE_VERSION = 2u;
 };

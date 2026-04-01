@@ -9,6 +9,8 @@
 #include <cstring>     
 #include <numeric>      
 
+#include "miniz.h"
+
 void InitializeSdkObjects(FbxManager*& InManager, FbxScene*& InScene)
 {
 	InManager = FbxManager::Create();
@@ -375,6 +377,70 @@ static uint32_t ComputeChecksum(const std::vector<char>& InBytes)
 	return Sum;
 }
 
+// minizを用いてバッファを圧縮する
+// Compress a raw byte buffer using miniz
+static bool CompressBuffer(const std::vector<char>& InBuffer, std::vector<char>& OutCompressed)
+{
+	if (InBuffer.empty())
+	{
+		OutCompressed.clear();
+		return true;
+	}
+
+	mz_ulong BoundSize = compressBound(static_cast<mz_ulong>(InBuffer.size()));
+	OutCompressed.resize(static_cast<size_t>(BoundSize));
+
+	mz_ulong CompressedSize = BoundSize;
+	int Result = compress2(
+		reinterpret_cast<mz_uint8*>(OutCompressed.data()),
+		&CompressedSize,
+		reinterpret_cast<const mz_uint8*>(InBuffer.data()),
+		static_cast<mz_ulong>(InBuffer.size()),
+		MZ_BEST_COMPRESSION
+	);
+
+	if (Result != MZ_OK)
+	{
+		OutCompressed.clear();
+		return false;
+	}
+
+	OutCompressed.resize(static_cast<size_t>(CompressedSize));
+	return true;
+}
+
+// 圧縮バッファを解凍する
+// Decompress a raw byte buffer using miniz
+static bool DecompressBuffer(
+	const std::vector<char>& InCompressed,
+	uint32_t InUncompressedSize,
+	std::vector<char>& OutBuffer)
+{
+	if (InUncompressedSize == 0)
+	{
+		OutBuffer.clear();
+		return true;
+	}
+
+	OutBuffer.resize(InUncompressedSize);
+
+	mz_ulong DestLen = static_cast<mz_ulong>(InUncompressedSize);
+	int Result = uncompress(
+		reinterpret_cast<mz_uint8*>(OutBuffer.data()),
+		&DestLen,
+		reinterpret_cast<const mz_uint8*>(InCompressed.data()),
+		static_cast<mz_ulong>(InCompressed.size())
+	);
+
+	if (Result != MZ_OK || DestLen != InUncompressedSize)
+	{
+		OutBuffer.clear();
+		return false;
+	}
+
+	return true;
+}
+
 // ---- プリミティブ書き込みヘルパー ----
 // ---- Primitive write helpers ----
 
@@ -592,13 +658,8 @@ void FFBXAssetImport::LoadMeshData(const char* InPath, FFBXRenderData& OutData)
 
 bool FFBXAssetImport::SaveToCache(const char* InCachePath, const char* InOriginalFBXPath, const FFBXRenderData& InData)
 {
-
-	// 簡易実装: 直接ファイルに書き出してチェックサムは省略可能だが、
-	// ここではペイロードを std::vector<char> に溜めて後でチェックサムを計算する
-	// Simple approach: collect payload bytes, compute checksum, then write header + payload
 	std::vector<char> PayloadBuffer;
 	{
-		// vectorへの書き込み用ヘルパー (小さなラムダストリーム)
 		struct VecStream
 		{
 			std::vector<char>& Buf;
@@ -611,8 +672,6 @@ bool FFBXAssetImport::SaveToCache(const char* InCachePath, const char* InOrigina
 			bool good() const { return true; }
 		} VS{ PayloadBuffer };
 
-		// ペイロードを VecStream に書き出す
-		// Serialize render data into the vector
 		auto WriteValueV = [&VS](const auto& V) {
 			VS.write(reinterpret_cast<const char*>(&V), sizeof(V));
 			};
@@ -632,38 +691,80 @@ bool FFBXAssetImport::SaveToCache(const char* InCachePath, const char* InOrigina
 
 		std::function<void(const FFBXMesh&)> WriteMeshV = [&](const FFBXMesh& Mesh) {
 			WriteValueV(Mesh.MaterialID);
+
 			uint32_t TC = static_cast<uint32_t>(Mesh.VertexData.size());
 			WriteValueV(TC);
-			if (TC > 0) { VS.write(reinterpret_cast<const char*>(Mesh.VertexData.data()), TC * sizeof(FFBXTriangle)); }
+			if (TC > 0)
+			{
+				VS.write(reinterpret_cast<const char*>(Mesh.VertexData.data()), TC * sizeof(FFBXTriangle));
+			}
+
 			uint32_t IC = static_cast<uint32_t>(Mesh.IndexData.size());
 			WriteValueV(IC);
-			if (IC > 0) { VS.write(reinterpret_cast<const char*>(Mesh.IndexData.data()), IC * sizeof(uint16_t)); }
+			if (IC > 0)
+			{
+				VS.write(reinterpret_cast<const char*>(Mesh.IndexData.data()), IC * sizeof(uint16_t));
+			}
 			};
 
 		std::function<void(const FFBXModel&)> WriteModelV = [&](const FFBXModel& Model) {
 			uint32_t MC = static_cast<uint32_t>(Model.MeshData.size());
 			WriteValueV(MC);
-			for (const FFBXMesh& M : Model.MeshData) { WriteMeshV(M); }
+			for (const FFBXMesh& M : Model.MeshData)
+			{
+				WriteMeshV(M);
+			}
+
 			uint32_t MatC = static_cast<uint32_t>(Model.MaterialMap.size());
 			WriteValueV(MatC);
-			for (const auto& P : Model.MaterialMap) { WriteValueV(P.first); WriteMatV(P.second); }
+			for (const auto& P : Model.MaterialMap)
+			{
+				WriteValueV(P.first);
+				WriteMatV(P.second);
+			}
 			};
 
 		uint32_t ModelCount = static_cast<uint32_t>(InData.ModelData.size());
 		WriteValueV(ModelCount);
-		for (const FFBXModel& Mdl : InData.ModelData) { WriteModelV(Mdl); }
+		for (const FFBXModel& Mdl : InData.ModelData)
+		{
+			WriteModelV(Mdl);
+		}
 	}
 
-	// ---- ヘッダーを組み立てる ----
-	// ---- Build the cache header ----
+	// 压缩
+	std::vector<char> FinalPayload;
+	bool bUseCompressed = false;
+
+	std::vector<char> CompressedPayload;
+	if (CompressBuffer(PayloadBuffer, CompressedPayload))
+	{
+		// 只有在压缩后真的更小的时候才使用压缩结果
+		if (CompressedPayload.size() < PayloadBuffer.size())
+		{
+			FinalPayload = std::move(CompressedPayload);
+			bUseCompressed = true;
+		}
+		else
+		{
+			FinalPayload = PayloadBuffer;
+		}
+	}
+	else
+	{
+		// 压缩失败时回退为原始数据
+		FinalPayload = PayloadBuffer;
+	}
+
 	FFBXCacheHeader Header;
 	Header.Magic = FFBXCacheHeader::MAGIC_VALUE;
 	Header.Version = FFBXCacheHeader::CACHE_VERSION;
 	Header.SourceFileTime = GetFileModTime(InOriginalFBXPath);
-	Header.Checksum = ComputeChecksum(PayloadBuffer);
+	Header.UncompressedSize = static_cast<uint32_t>(PayloadBuffer.size());
+	Header.CompressedSize = static_cast<uint32_t>(FinalPayload.size());
+	Header.bCompressed = bUseCompressed ? 1u : 0u;
+	Header.Checksum = ComputeChecksum(FinalPayload);
 
-	// ---- ファイルに書き出す ----
-	// ---- Write header + payload to disk ----
 	std::ofstream OutFile(InCachePath, std::ios::binary | std::ios::trunc);
 	if (!OutFile.is_open())
 	{
@@ -671,7 +772,11 @@ bool FFBXAssetImport::SaveToCache(const char* InCachePath, const char* InOrigina
 	}
 
 	OutFile.write(reinterpret_cast<const char*>(&Header), sizeof(FFBXCacheHeader));
-	OutFile.write(PayloadBuffer.data(), static_cast<std::streamsize>(PayloadBuffer.size()));
+
+	if (!FinalPayload.empty())
+	{
+		OutFile.write(FinalPayload.data(), static_cast<std::streamsize>(FinalPayload.size()));
+	}
 
 	return OutFile.good();
 }
@@ -681,12 +786,9 @@ bool FFBXAssetImport::LoadFromCache(const char* InCachePath, const char* InOrigi
 	std::ifstream InFile(InCachePath, std::ios::binary);
 	if (!InFile.is_open())
 	{
-		// キャッシュファイルが存在しない
 		return false;
 	}
 
-	// ---- ヘッダーを検証する ----
-	// ---- Validate the header ----
 	FFBXCacheHeader Header;
 	InFile.read(reinterpret_cast<char*>(&Header), sizeof(FFBXCacheHeader));
 	if (!InFile.good())
@@ -694,56 +796,76 @@ bool FFBXAssetImport::LoadFromCache(const char* InCachePath, const char* InOrigi
 		return false;
 	}
 
-	// マジックナンバーチェック
 	if (Header.Magic != FFBXCacheHeader::MAGIC_VALUE)
 	{
 		return false;
 	}
 
-	// バージョンチェック
 	if (Header.Version != FFBXCacheHeader::CACHE_VERSION)
 	{
 		return false;
 	}
 
-	// タイムスタンプチェック: 元のFBXが更新されていたらキャッシュを無効化
-	// Invalidate cache if the source FBX has been modified
 	int64_t CurrentFileTime = GetFileModTime(InOriginalFBXPath);
 	if (CurrentFileTime != 0 && Header.SourceFileTime != CurrentFileTime)
 	{
 		return false;
 	}
 
-	// ---- ペイロードをメモリに読み込む (チェックサム検証のため) ----
-	// ---- Read entire payload for checksum verification ----
-	std::vector<char> PayloadBuffer(
+	std::vector<char> StoredPayload(
 		(std::istreambuf_iterator<char>(InFile)),
 		std::istreambuf_iterator<char>()
 	);
 
-	if (ComputeChecksum(PayloadBuffer) != Header.Checksum)
+	if (StoredPayload.size() != Header.CompressedSize)
 	{
-		// データ破損
 		return false;
 	}
 
-	// ---- ペイロードをデシリアライズする ----
-	// ---- Deserialize from the buffer ----
+	if (ComputeChecksum(StoredPayload) != Header.Checksum)
+	{
+		return false;
+	}
+
+	std::vector<char> PayloadBuffer;
+	if (Header.bCompressed)
+	{
+		if (!DecompressBuffer(StoredPayload, Header.UncompressedSize, PayloadBuffer))
+		{
+			return false;
+		}
+	}
+	else
+	{
+		PayloadBuffer = std::move(StoredPayload);
+
+		if (PayloadBuffer.size() != Header.UncompressedSize)
+		{
+			return false;
+		}
+	}
+
 	struct ReadStream
 	{
 		const char* Ptr;
-		size_t      Remaining;
+		size_t Remaining;
+		bool bOk = true;
 
 		void read(char* Dst, size_t Len)
 		{
-			if (Len > Remaining) { Len = Remaining; }
+			if (Len > Remaining)
+			{
+				bOk = false;
+				return;
+			}
+
 			memcpy(Dst, Ptr, Len);
 			Ptr += Len;
 			Remaining -= Len;
 		}
 
-		bool good() const { return Remaining < static_cast<size_t>(-1); }
-	} RS{ PayloadBuffer.data(), PayloadBuffer.size() };
+		bool good() const { return bOk; }
+	} RS{ PayloadBuffer.data(), PayloadBuffer.size(), true };
 
 	auto ReadValueRS = [&RS](auto& V) -> bool {
 		RS.read(reinterpret_cast<char*>(&V), sizeof(V));
@@ -753,8 +875,12 @@ bool FFBXAssetImport::LoadFromCache(const char* InCachePath, const char* InOrigi
 	auto ReadStringRS = [&RS, &ReadValueRS](std::string& Str) -> bool {
 		uint32_t Len = 0;
 		if (!ReadValueRS(Len)) { return false; }
+
 		Str.resize(Len);
-		if (Len > 0) { RS.read(&Str[0], Len); }
+		if (Len > 0)
+		{
+			RS.read(&Str[0], Len);
+		}
 		return RS.good();
 		};
 
@@ -767,31 +893,56 @@ bool FFBXAssetImport::LoadFromCache(const char* InCachePath, const char* InOrigi
 
 	std::function<bool(FFBXMesh&)> ReadMeshRS = [&](FFBXMesh& Mesh) -> bool {
 		if (!ReadValueRS(Mesh.MaterialID)) { return false; }
-		uint32_t TC = 0; if (!ReadValueRS(TC)) { return false; }
+
+		uint32_t TC = 0;
+		if (!ReadValueRS(TC)) { return false; }
 		Mesh.VertexData.resize(TC);
-		if (TC > 0) { RS.read(reinterpret_cast<char*>(Mesh.VertexData.data()), TC * sizeof(FFBXTriangle)); }
-		uint32_t IC = 0; if (!ReadValueRS(IC)) { return false; }
+		if (TC > 0)
+		{
+			RS.read(reinterpret_cast<char*>(Mesh.VertexData.data()), TC * sizeof(FFBXTriangle));
+		}
+
+		uint32_t IC = 0;
+		if (!ReadValueRS(IC)) { return false; }
 		Mesh.IndexData.resize(IC);
-		if (IC > 0) { RS.read(reinterpret_cast<char*>(Mesh.IndexData.data()), IC * sizeof(uint16_t)); }
+		if (IC > 0)
+		{
+			RS.read(reinterpret_cast<char*>(Mesh.IndexData.data()), IC * sizeof(uint16_t));
+		}
+
 		return RS.good();
 		};
 
 	std::function<bool(FFBXModel&)> ReadModelRS = [&](FFBXModel& Model) -> bool {
-		uint32_t MC = 0; if (!ReadValueRS(MC)) { return false; }
+		uint32_t MC = 0;
+		if (!ReadValueRS(MC)) { return false; }
+
 		Model.MeshData.resize(MC);
-		for (FFBXMesh& M : Model.MeshData) { if (!ReadMeshRS(M)) { return false; } }
-		uint32_t MatC = 0; if (!ReadValueRS(MatC)) { return false; }
-		for (uint32_t i = 0; i < MatC; ++i) {
-			int Key = 0; if (!ReadValueRS(Key)) { return false; }
+		for (FFBXMesh& M : Model.MeshData)
+		{
+			if (!ReadMeshRS(M)) { return false; }
+		}
+
+		uint32_t MatC = 0;
+		if (!ReadValueRS(MatC)) { return false; }
+
+		for (uint32_t i = 0; i < MatC; ++i)
+		{
+			int Key = 0;
+			if (!ReadValueRS(Key)) { return false; }
+
 			FFBXMaterial Mat;
 			if (!ReadMatRS(Mat)) { return false; }
+
 			Model.MaterialMap[Key] = std::move(Mat);
 		}
+
 		return true;
 		};
 
 	uint32_t ModelCount = 0;
 	if (!ReadValueRS(ModelCount)) { return false; }
+
 	OutData.ModelData.resize(ModelCount);
 	for (FFBXModel& Model : OutData.ModelData)
 	{

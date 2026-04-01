@@ -164,12 +164,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="FBXSDK.cpp" />
+    <ClCompile Include="miniz.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
   <ItemGroup>
     <ClInclude Include="DX12EngineModelTool.h" />
     <ClInclude Include="FBXSDK.h" />
+    <ClInclude Include="miniz.h" />
     <ClInclude Include="ThirdPartyLibrary\FBX\include\fbxsdk\core\arch\fbxalloc.h" />
     <ClInclude Include="ThirdPartyLibrary\FBX\include\fbxsdk\core\arch\fbxarch.h" />
     <ClInclude Include="ThirdPartyLibrary\FBX\include\fbxsdk\core\arch\fbxdebug.h" />

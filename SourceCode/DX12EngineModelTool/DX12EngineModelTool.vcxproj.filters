@@ -79,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FBXSDK.cpp" />
+    <ClCompile Include="miniz.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FBXSDK.h" />
@@ -932,5 +933,6 @@
       <Filter>ThirdPartyLibrary\FBX\include\libxml2\libxml</Filter>
     </ClInclude>
     <ClInclude Include="DX12EngineModelTool.h" />
+    <ClInclude Include="miniz.h" />
   </ItemGroup>
 </Project>
