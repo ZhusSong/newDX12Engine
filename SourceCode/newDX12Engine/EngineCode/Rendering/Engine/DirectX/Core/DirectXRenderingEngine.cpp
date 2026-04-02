@@ -904,8 +904,18 @@ void CDirectXRenderingEngine::Tick(float DeltaTime)
 
 	// 交换两个buff缓冲区
 	// 2つのバッファを入れ替える
-	ANALYSIS_HRESULT(SwapChain->Present(0, 0));
-	CurrentSwapBuffIndex = !(bool)CurrentSwapBuffIndex;
+	HRESULT PresentResult = SwapChain->Present(0, 0);
+	ANALYSIS_HRESULT(PresentResult);
+
+	ComPtr<IDXGISwapChain3> SwapChain3;
+	if (SUCCEEDED(SwapChain.As(&SwapChain3)) && SwapChain3)
+	{
+		CurrentSwapBuffIndex = static_cast<int>(SwapChain3->GetCurrentBackBufferIndex());
+	}
+	else
+	{
+		CurrentSwapBuffIndex = (CurrentSwapBuffIndex + 1) % FEngineRenderConfig::GetRenderConfig()->SwapChainCount;
+	}
 
 	// CPU等GPU
 	// 同期
@@ -916,6 +926,11 @@ void CDirectXRenderingEngine::OnResetSize(int InWidth, int InHeight)
 {
 	if (D3dDevice)
 	{
+		if (InWidth <= 0 || InHeight <= 0)
+		{
+			return;
+		}
+
 		// 同期
 		WaitGPUCommandQueueComplete();
 
@@ -936,11 +951,21 @@ void CDirectXRenderingEngine::OnResetSize(int InWidth, int InHeight)
 
 		//　自适应屏幕变大
 		//  画面サイズに自動適応して拡大
-		SwapChain->ResizeBuffers(
+		ANALYSIS_HRESULT(SwapChain->ResizeBuffers(
 			FEngineRenderConfig::GetRenderConfig()->SwapChainCount,
 			InWidth,
 			InHeight,
-			BackBufferFormat, DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH);
+			BackBufferFormat, DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH));
+
+		ComPtr<IDXGISwapChain3> SwapChain3;
+		if (SUCCEEDED(SwapChain.As(&SwapChain3)) && SwapChain3)
+		{
+			CurrentSwapBuffIndex = static_cast<int>(SwapChain3->GetCurrentBackBufferIndex());
+		}
+		else
+		{
+			CurrentSwapBuffIndex = 0;
+		}
 
 		// 拿到描述size
 		// ディスクリプタのサイズを取得

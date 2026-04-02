@@ -57,10 +57,20 @@ LRESULT CALLBACK EngineWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPa
 		MousesWheelsDelegate.Broadcast(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), (short)HIWORD(wParam));
 		return 0;
 	case WM_SIZE:
+		if (wParam == SIZE_MINIMIZED)
+		{
+			return 0;
+		}
+
 		int ViewportWidth = LOWORD(lParam);
 		int ViewportHeight = HIWORD(lParam);
 
-		OnResetSizeDelegate.Broadcast(ViewportWidth, ViewportHeight);
+		if (ViewportWidth > 0 && ViewportHeight > 0)
+		{
+			OnResetSizeDelegate.Broadcast(ViewportWidth, ViewportHeight);
+		}
+
+		return 0;
 
 	}
 
