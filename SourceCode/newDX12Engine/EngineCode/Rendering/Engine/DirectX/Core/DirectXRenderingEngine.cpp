@@ -140,20 +140,20 @@ int CDirectXRenderingEngine::PostInit()
 		// 创建灯光
 		// ライトを作成
 		
-		////  聚光灯
+		//  聚光灯
 		// スポットライト
-		//if (GSpotLight* SpotLight = World->CreateActorObject<GSpotLight>())
-		//{
-		//	SpotLight->SetPosition(XMFLOAT3(0.f, 0.f, 20.f));
-		//	SpotLight->SetRotation(fvector_3d(0.f, 0.f, 0.f));
+		if (GSpotLight* SpotLight = World->CreateActorObject<GSpotLight>())
+		{
+			SpotLight->SetPosition(XMFLOAT3(0.f, 0.f, 5.f));
+			SpotLight->SetRotation(fvector_3d(0.f, 0.f, 0.f));
 
-		//	SpotLight->SetLightIntensity(fvector_3d(1.3f, 1.3f, 1.3f));
-		//	//SpotLight->SetStartAttenuation(1.f);
-		//	SpotLight->SetEndAttenuation(130.f);
+			SpotLight->SetLightIntensity(fvector_3d(1.3f, 1.3f, 1.3f));
+			//SpotLight->SetStartAttenuation(1.f);
+			SpotLight->SetEndAttenuation(130.f);
 
-		//	SpotLight->SetConicalInnerCorner(40.f);
-		//	SpotLight->SetConicalOuterCorner(60.f);
-		//}
+			SpotLight->SetConicalInnerCorner(40.f);
+			SpotLight->SetConicalOuterCorner(60.f);
+		}
 		//// 点光源
 		//if (GPointLight* PointLight = World->CreateActorObject<GPointLight>())
 		//{
