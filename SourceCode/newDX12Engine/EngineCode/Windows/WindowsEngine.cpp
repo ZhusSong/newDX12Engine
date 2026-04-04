@@ -1,5 +1,6 @@
 ﻿#include "WindowsEngine.h"
 #include "CoreObject/CoreMinimalObject.h"
+#include <Windows.h>
 
 #include "../Debug/EngineDebug.h"
 #include "../Config//EngineRenderConfig.h"
@@ -202,6 +203,22 @@ CMeshManager* CWindowsEngine::GetMeshManager()const
 
 bool CWindowsEngine::InitWindows(FWinMainCommandParameters InParameters)
 {
+	// Avoid OS bitmap upscaling on high-DPI monitors.
+	using SetProcessDpiAwarenessContextFunc = BOOL(WINAPI*)(DPI_AWARENESS_CONTEXT);
+	if (HMODULE User32Module = GetModuleHandleW(L"user32.dll"))
+	{
+		if (SetProcessDpiAwarenessContextFunc SetDpiAwarenessContext =
+			reinterpret_cast<SetProcessDpiAwarenessContextFunc>(
+				GetProcAddress(User32Module, "SetProcessDpiAwarenessContext")))
+		{
+			SetDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
+		}
+		else
+		{
+			SetProcessDPIAware();
+		}
+	}
+
 	// 注册窗口
 	// ウィンドウを登録
 	WNDCLASSEX WindowsClass;

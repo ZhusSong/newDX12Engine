@@ -1,10 +1,10 @@
 ﻿#include "EngineRenderConfig.h"
-
+#include "../EngineMinimal.h"
 FEngineRenderConfig* FEngineRenderConfig::RenderConfig = nullptr;
 
 FEngineRenderConfig::FEngineRenderConfig()
-	:ScreenWidth(1980)
-	, ScreenHight(1020)
+	:ScreenWidth(SCREEN_WIDTH)
+	, ScreenHight(SCREEN_HEIGHT)
 	, RefreshRate(60)
 	, SwapChainCount(2)
 {

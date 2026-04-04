@@ -57,6 +57,7 @@ LRESULT CALLBACK EngineWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPa
 		MousesWheelsDelegate.Broadcast(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), (short)HIWORD(wParam));
 		return 0;
 	case WM_SIZE:
+	{
 		if (wParam == SIZE_MINIMIZED)
 		{
 			return 0;
@@ -71,6 +72,24 @@ LRESULT CALLBACK EngineWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPa
 		}
 
 		return 0;
+	}
+	case WM_DPICHANGED:
+	{
+		const RECT* SuggestedRect = reinterpret_cast<const RECT*>(lParam);
+		if (SuggestedRect)
+		{
+			SetWindowPos(
+				hwnd,
+				NULL,
+				SuggestedRect->left,
+				SuggestedRect->top,
+				SuggestedRect->right - SuggestedRect->left,
+				SuggestedRect->bottom - SuggestedRect->top,
+				SWP_NOZORDER | SWP_NOACTIVATE);
+		}
+
+		return 0;
+	}
 
 	}
 

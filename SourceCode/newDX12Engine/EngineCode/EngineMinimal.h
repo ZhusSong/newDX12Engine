@@ -16,7 +16,9 @@
 // ウィンドウ座標を定義
 #define WINDOWS_LOCATION_X 0
 #define WINDOWS_LOCATION_Y 0
-
+// 定义窗口大小
+#define SCREEN_WIDTH 1980
+#define SCREEN_HEIGHT 1020
 
 // 定义了需要加载的头文件
 // ロードする必要のあるヘッダーファイルを定義
