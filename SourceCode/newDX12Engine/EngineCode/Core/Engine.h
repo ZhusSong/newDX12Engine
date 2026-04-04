@@ -5,17 +5,13 @@
 #include "WinMainCommandParameters.h"
 #endif
 
-enum CurrentGPU
-{
-	NVIDIA,
-	AMD,
-	INTEL,
-	UNKNOWN,
-};
+#include "Engine.CodeReflection.h"
+
 // 引擎框架定义
 // エンジンフレームワークの定義
 class CEngine:public CCoreMinimalObject
 {
+	CODEREFLECTION()
 public:
 	CEngine();
 	virtual ~CEngine() = default;
@@ -40,4 +36,12 @@ public:
 	virtual int PreExit() = 0;
 	virtual int Exit() = 0;
 	virtual int PostExit() = 0;
+};
+
+enum CurrentGPU
+{
+	NVIDIA,
+	AMD,
+	INTEL,
+	UNKNOWN,
 };

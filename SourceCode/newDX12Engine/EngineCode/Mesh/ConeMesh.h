@@ -1,12 +1,13 @@
 ﻿#pragma once
 
 #include "Core/Mesh.h"
+#include "ConeMesh.CodeReflection.h"
 
 // 圆锥网格
 // コーンサーフェスメッシュ
 class GConeMesh :public GMesh
 {
-	typedef GMesh Super;
+	CODEREFLECTION()
 public:
 	GConeMesh();
 	virtual void Init();

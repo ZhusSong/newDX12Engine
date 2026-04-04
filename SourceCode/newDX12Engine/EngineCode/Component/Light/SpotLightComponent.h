@@ -2,10 +2,11 @@
 // //  スポットライトコンポーネント
 #pragma once
 #include "Core/RangeLightComponent.h"
+#include "SpotLightComponent.CodeReflection.h"
 
 class CSpotLightComponent :public CRangeLightComponent
 {
-	typedef CRangeLightComponent Super;
+	CODEREFLECTION()
 public:
 	CSpotLightComponent();
 

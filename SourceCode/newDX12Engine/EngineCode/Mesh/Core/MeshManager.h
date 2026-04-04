@@ -7,13 +7,13 @@
 #include "../../Core/Viewport/ViewportInfo.h"
 #include "../../Rendering/Core/DirectX/RenderingPipeline/RenderingPipeline.h"
 
+#include "MeshManager.CodeReflection.h"
+
 class FRenderingResourcesUpdate;
 class CMeshComponent;
-class CMeshManager
-	:public CCoreMinimalObject
-	, public IRenderingInterface
-	, public IDirectXDeviceInterface
+class CMeshManager:public CCoreMinimalObject,public IRenderingInterface, public IDirectXDeviceInterface
 {
+	CODEREFLECTION()
 public:
 	CMeshManager();
 	virtual ~CMeshManager();

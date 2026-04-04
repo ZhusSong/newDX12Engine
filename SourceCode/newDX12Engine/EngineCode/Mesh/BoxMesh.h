@@ -1,12 +1,13 @@
 ﻿#pragma once
 
 #include "Core/Mesh.h"
+#include "BoxMesh.CodeReflection.h"
 
 // 盒子网格
 // ボックスメッシュ
 class GBoxMesh :public GMesh
 {
-	typedef GMesh Super;
+	CODEREFLECTION()
 public:
 	GBoxMesh();
 	virtual void Init();

@@ -2,6 +2,7 @@
 
 #include "Component/Component.h"
 #include "Input/InputType.h"
+#include "InputComponent.CodeReflection.h"
 
 DEFINITION_SIMPLE_SINGLE_DELEGATE(FCaptureKeyboardInforDelegate, void, const FInputKey&);
 DEFINITION_SIMPLE_SINGLE_DELEGATE(FCaptureOnMouseDelegate, void, int, int);
@@ -10,6 +11,7 @@ DEFINITION_SIMPLE_SINGLE_DELEGATE(FCaptureOnMouseWheelDelegate, void, int, int, 
 
 class CInputComponent :public CComponent
 {
+	CODEREFLECTION()
 	// 绑定代理
 	// デリゲートをバインド
 public:

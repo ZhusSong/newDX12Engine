@@ -1,6 +1,6 @@
 ﻿#include "simple_library/public/simple_core_minimal/simple_c_core/simple_c_string_algorithm/string_algorithm.h"
 
-void remove_char_end(char* str, char sub_str)
+bool remove_char_end(char* str, char sub_str)
 {
 	int len = strlen(str);
 
@@ -9,9 +9,10 @@ void remove_char_end(char* str, char sub_str)
 		if (str[i] == sub_str)
 		{
 			strcpy(&str[i], &str[i + 1]);
-			break;
+			return true;
 		}
 	}
+	return false;
 }
 
 bool c_str_contain(const char* buff_str, const char* sub_str)
@@ -133,7 +134,8 @@ void replace_string_inline(
 	}
 }
 
-void remove_char_start(char* str, char sub_str)
+
+bool remove_char_start(char* str, char sub_str)
 {
 	int len = strlen(str) + 1;
 
@@ -149,11 +151,12 @@ void remove_char_start(char* str, char sub_str)
 			} while (str[i + 1] != '\0');
 			str[i] = '\0';
 
-			break;
+			return true;
 		}
 	}
-}
 
+	return false;
+}
 // "wearwetryy wrwq asdgddawtdgh"
 // "as"
 int find_string(const char* str, char const* sub_str, int start_pos)
@@ -165,7 +168,7 @@ int find_string(const char* str, char const* sub_str, int start_pos)
 		if (sub_str[0] == str[i])
 		{
 			int tmp_index = i;
-			int l = 1;//第一个是成功
+			int l = 1;
 			while (sub_str[l] == str[i + l] && sub_str[l] != '\0')
 			{
 				l++;

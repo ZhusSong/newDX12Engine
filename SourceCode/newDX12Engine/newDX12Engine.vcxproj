@@ -159,6 +159,7 @@
     <ClCompile Include="imgui\imgui_draw.cpp" />
     <ClCompile Include="imgui\imgui_tables.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
+    <ClCompile Include="LinkCodeReflection.build.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common\EngineVariableTable.h" />
@@ -531,7 +532,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LibraryPath>$(SolutionDir)Binaries\Win64;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(ProjectDir);$(IncludePath);$(SolutionDir)SourceCode\EngineSimpleLibrary;$(SolutionDir)SourceCode\DX12EngineGeneralSetting;$(SolutionDir)SourceCode\DX12EngineModelTool;$(SolutionDir)SourceCode\newDX12Engine\imgui</IncludePath>
+    <IncludePath>$(ProjectDir);$(IncludePath);$(SolutionDir)SourceCode\EngineSimpleLibrary;$(SolutionDir)SourceCode\DX12EngineGeneralSetting;$(SolutionDir)SourceCode\DX12EngineModelTool;$(SolutionDir)SourceCode\newDX12Engine\imgui;$(SolutionDir)SourceCode\DX12EngineCoreObject;$(SolutionDir)Intermediate\CodeReflection</IncludePath>
     <OutDir>$(SolutionDir)Binaries\Win64\</OutDir>
     <IntDir>$(SolutionDir)Intermediate\Other\</IntDir>
   </PropertyGroup>

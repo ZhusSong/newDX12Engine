@@ -1,10 +1,13 @@
 ﻿#pragma once
 #include "Component/Component.h"
 #include "../EngineMinimal.h"
+#include "TransformComponent.CodeReflection.h"
 
 
 class CTransformComponent :public CComponent
-{public:
+{
+	CODEREFLECTION()
+public:
 	CTransformComponent();
 
 

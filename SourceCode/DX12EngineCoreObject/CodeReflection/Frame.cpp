@@ -83,3 +83,7 @@ FUNCTION_IMPLEMENTATION(CCoreMinimalObject::Script_Funtion)
 {
 
 }
+void CCoreMinimalObject::InitMinimalObject()
+{
+	InitReflectionContent();
+}

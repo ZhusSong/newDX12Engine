@@ -3,6 +3,7 @@
 #include "../../../../EngineCode/Interface/DirectXDeviceInterface.h"
 #include "../../../../EngineCode/Component/Input/InputType.h"
 
+#include "OperationHandleBase.CodeReflection.h"
 class CCustomMeshComponent;
 class CInputComponent;
 class CComponent;
@@ -11,11 +12,9 @@ enum EMeshRenderLayerType;
 
 // 移动、缩放与旋转手柄基类
 // 移動、拡大縮小、回転ハンドルの基底クラス
-class GOperationHandleBase
-	:public GActorObject
-	, public IDirectXDeviceInterface
+class GOperationHandleBase:public GActorObject, public IDirectXDeviceInterface
 {
-	typedef GActorObject Super;
+	CODEREFLECTION()
 protected:
 	enum ESelectAxisType
 	{

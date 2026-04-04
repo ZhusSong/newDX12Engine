@@ -1,17 +1,17 @@
 ﻿#pragma once
 #include "../../EngineMinimal.h"
 #include "CoreObject/CoreMinimalObject.h"
+#include "ActorObject.CodeReflection.h"
 
 // 反射测试
 // コードリフレクションのテスト
-//#include "ActorObject.CodeReflection.h"
 class CTransformComponent;
 //G -> Game
 class GActorObject :public CCoreMinimalObject
 {
 	//// 反射测试
 	// コードリフレクションのテスト
-	//CODEREFLECTION()
+	CODEREFLECTION()
 
 	CVARIABLE()
 		CTransformComponent* RootComponent;
@@ -56,22 +56,5 @@ public:
 
 
 
-//	// 反射测试
-// 	   コードリフレクションのテスト
-//public:
-//	CVARIABLE(CodeType = Resources)
-//		bool PlayerState;
-//
-//	CDIAPER(CodeType = Event)
-//		static void Hello123(int c, float b);
-//
-//	CDIAPER(CodeType = Event)
-//		static void Hello();
-//
-//	CDIAPER(CodeType = Function)
-//		static void Hello1() {}
-//
-//	CDIAPER(CodeType = PureFunction)
-//		static void Hello2() {}
 
 };

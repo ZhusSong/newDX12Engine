@@ -1,10 +1,11 @@
 ﻿
 #pragma once
 #include "LightComponent.h"
+#include "RangeLightComponent.CodeReflection.h"
 
 class CRangeLightComponent :public CLightComponent
 {
-	typedef CLightComponent Super;
+	CODEREFLECTION()
 public:
 	CRangeLightComponent();
 

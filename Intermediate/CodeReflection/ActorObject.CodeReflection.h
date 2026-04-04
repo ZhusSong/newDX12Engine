@@ -5,17 +5,26 @@
 #include "CodeReflection/ScriptMacro.h"
 
 #define  Z_BT_GActorObject \
-FUNCTION_DEFINITION(Script_Hello1) \
-{ \
-	GActorObject::Hello1(); \
-} \
-FUNCTION_DEFINITION(Script_Hello2) \
-{ \
-	GActorObject::Hello2(); \
-} 
+public: \
+private:
 
-#define GActorObject_12_GENERATED_BODY_BT \
- Z_BT_GActorObject
+#define GActorObject_14_Internal_Fun \
+typedef CCoreMinimalObject Super; \
+protected: \
+virtual void InitReflectionContent(); \
+private: 
+
+#define GActorObject_14_GENERATED_BODY_BT \
+ Z_BT_GActorObject \
+GActorObject_14_Internal_Fun 
+
+#ifdef CURRENT_FILE_ID_BT
+#undef CURRENT_FILE_ID_BT
+#endif // CURRENT_FILE_ID_BT
+
+#ifdef CodeReflectionTagLine
+#undef CodeReflectionTagLine
+#endif // NewLine
 
 #define CURRENT_FILE_ID_BT  GActorObject
-#define NewLine 12
+#define CodeReflectionTagLine 14

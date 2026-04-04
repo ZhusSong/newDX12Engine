@@ -1,13 +1,13 @@
 ﻿#pragma once
 #include "../EngineCode/Core/Engine.h"
 #include "Core/EditorBase.h"
+#include "EditorEngine.CodeReflection.h"
 
 // 编辑器引擎
 // エディタエンジン
-class CEditorEngine
-	:public CEngine
-	, public FEditorBase
+class CEditorEngine:public CEngine, public FEditorBase
 {
+	CODEREFLECTION()
 public:
 	CEditorEngine();
 

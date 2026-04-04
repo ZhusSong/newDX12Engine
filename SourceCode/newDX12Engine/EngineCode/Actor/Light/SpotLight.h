@@ -1,10 +1,11 @@
 ﻿#pragma once
 #include "Core/RangeLight.h"
+#include "SpotLight.CodeReflection.h"
 
 //G -> Game
 class GSpotLight :public GRangeLight
 {
-	typedef GRangeLight Super;
+	CODEREFLECTION()
 
 public:
 	GSpotLight();

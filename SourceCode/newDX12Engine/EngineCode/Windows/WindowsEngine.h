@@ -3,6 +3,7 @@
 #if defined(_WIN32)
 #include "../../EngineCode/Core/Engine.h"
 #include "../Rendering/Engine/Core/RenderingEngine.h"
+#include "WindowsEngine.CodeReflection.h"
 
 class CDirectXRenderingEngine;
 class CWorld;
@@ -10,6 +11,7 @@ class CMeshManager;
 
 class CWindowsEngine:public CEngine
 {
+	CODEREFLECTION()
 	// 设置DirectX渲染接口类为友元，使其能够访问protected对象
 	// DirectXレンダリングインターフェースクラスをフレンドに設定し、protectedオブジェクトにアクセスできるようにする
 	friend class IDirectXDeviceInterface;

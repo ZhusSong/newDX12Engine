@@ -658,6 +658,7 @@
     <ClCompile Include="EngineCode\Manager\ViewportDataManager.cpp">
       <Filter>EngineCode\Manager</Filter>
     </ClCompile>
+    <ClCompile Include="LinkCodeReflection.build.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EngineCode\Config\EngineRenderConfig.h">

@@ -5,6 +5,7 @@
 #include "../../Interface/DirectXDeviceInterface.h"
 #include "../Core/MeshManager.h"
 
+#include "Mesh.CodeReflection.h"
 class CTransformComponent;
 class CMeshComponent;
 class CMaterial;
@@ -12,12 +13,9 @@ enum EMeshRenderLayerType;
 
 // 游戏对象网格接口
 // ゲームオブジェクトのメッシュインターフェース
-class GMesh :
-	public GActorObject, 
-	public IRenderingInterface,
-	public IDirectXDeviceInterface
+class GMesh :public GActorObject, public IRenderingInterface,public IDirectXDeviceInterface
 {
-	typedef GActorObject Super;
+	CODEREFLECTION()
 
 	CVARIABLE()
 		CTransformComponent* TransformComponent;

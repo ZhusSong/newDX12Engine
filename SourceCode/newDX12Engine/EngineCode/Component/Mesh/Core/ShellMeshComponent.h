@@ -1,11 +1,13 @@
 ﻿#pragma once
 #include "MeshComponent.h"
+#include "ShellMeshComponent.CodeReflection.h"
 
 // 壳模型网格组件
 // シェルモデルメッシュコンポーネント
 
 class CShellMeshComponent : public CMeshComponent
 {
+	CODEREFLECTION()
 public:
 	CShellMeshComponent();
 

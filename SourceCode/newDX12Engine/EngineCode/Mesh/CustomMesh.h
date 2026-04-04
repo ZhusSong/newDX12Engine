@@ -1,12 +1,13 @@
 ﻿#pragma once
 
 #include "Core/Mesh.h"
+#include "CustomMesh.CodeReflection.h"
 
 // 读取obj模型mesh
 // objモデルのメッシュを読み込む
 class GCustomMesh :public GMesh
 {
-	typedef GMesh Super;
+	CODEREFLECTION()
 public:
 	GCustomMesh();
 	virtual void Init();

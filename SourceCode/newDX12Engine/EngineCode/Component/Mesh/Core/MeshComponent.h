@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "../../TransformComponent.h"
 #include "MeshComponentType.h"
+#include "MeshComponent.CodeReflection.h"
 // 模型网格组件
 // モデルメッシュコンポーネント
 class CMaterial;
@@ -8,6 +9,8 @@ struct FMeshRenderingData;
 
 class CMeshComponent :public CTransformComponent
 {
+	CODEREFLECTION()
+
 	CVARIABLE()
 		vector<CMaterial*> Materials;
 public:

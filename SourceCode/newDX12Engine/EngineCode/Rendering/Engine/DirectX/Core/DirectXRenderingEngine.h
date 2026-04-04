@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "../../Core/RenderingEngine.h"
 #include "../../../../Core/Viewport/ViewportInfo.h"
+#include "DirectXRenderingEngine.CodeReflection.h"
 
 class CLightManager;
 class CMeshManager;
@@ -10,6 +11,7 @@ class CWorld;
 // DirectXレンダリングエンジン、レンダリングエンジンベースクラスから継承
 class CDirectXRenderingEngine :public CRenderingEngine
 {
+	CODEREFLECTION()
 	// 设置DirectX渲染接口类为友元，使其能够访问protected对象
 	// DirectXレンダリングインターフェースクラスをフレンドに設定し、protectedオブジェクトにアクセスできるようにする
 	friend class IDirectXDeviceInterface;

@@ -18,6 +18,8 @@ struct FFrame;
 class RI_ENGINECOREOBJECT_API CCoreMinimalObject :public IGuidInterface
 {
 public:
+	virtual void InitMinimalObject();
+public:
 	CCoreMinimalObject();
 	virtual ~CCoreMinimalObject();
 
@@ -51,6 +53,9 @@ public:
 	// 该函数可以获取编译后带字节码的函数
 	// この関数はコンパイル後のバイトコード付き関数を取得できます
 	CFunctionObject* FindScriptFuntion(const std::string& FunName);
+	static CFunctionObject* FindScriptStaticFuntion(const std::string& FunName);
+protected:
+	virtual void InitReflectionContent() {};
 protected:
 	bool bTick;
 

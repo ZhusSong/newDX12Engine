@@ -5,6 +5,7 @@
 #include "../Interface/DirectXDeviceInterface.h"
 #include "../Component/TimelineComponent.h"
 
+#include "Camera.CodeReflection.h"
 enum ECmeraType;
 struct FInputKey;
 class CTransformComponent;
@@ -12,10 +13,9 @@ class CInputComponent;
 
 // 相机类
 // カメラクラス
-class GCamera:public GClientViewport
-	, public IDirectXDeviceInterface
+class GCamera:public GClientViewport, public IDirectXDeviceInterface
 {
-	typedef GClientViewport Super;
+	CODEREFLECTION()
 	//CVARIABLE()
 	//CTransformComponent* TransformationComponent;
 

@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "Core/ShellMeshComponent.h"
+#include "CustomMeshComponent.CodeReflection.h"
 
 // 外部资源类型
 // 外部リソースの種類
@@ -11,6 +12,7 @@ enum EMeshLoadAssetType
 
 class CCustomMeshComponent :public CMeshComponent
 {
+	CODEREFLECTION()
 public:
 	CCustomMeshComponent();
 

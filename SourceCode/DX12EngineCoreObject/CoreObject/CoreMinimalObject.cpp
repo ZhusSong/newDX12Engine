@@ -73,3 +73,8 @@ CFunctionObject* CCoreMinimalObject::FindScriptFuntion(const std::string& FunNam
 	return NewFuntion;
 }
 
+CFunctionObject* CCoreMinimalObject::FindScriptStaticFuntion(const std::string& FunName)
+{
+	return nullptr;
+}
+
