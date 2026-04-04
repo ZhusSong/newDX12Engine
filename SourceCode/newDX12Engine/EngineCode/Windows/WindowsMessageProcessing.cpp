@@ -62,7 +62,8 @@ LRESULT CALLBACK EngineWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPa
 		{
 			return 0;
 		}
-
+		// 获取新窗口尺寸
+		// 変化後のウィンドウサイズを得る
 		int ViewportWidth = LOWORD(lParam);
 		int ViewportHeight = HIWORD(lParam);
 
@@ -74,7 +75,9 @@ LRESULT CALLBACK EngineWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPa
 		return 0;
 	}
 	case WM_DPICHANGED:
-	{
+	{	
+		// 根据DPI设置新窗口尺寸，避免UI虚化
+		// DPIを基づいてウインドウサイズを設定すて、UIのぼやけを防ぐ
 		const RECT* SuggestedRect = reinterpret_cast<const RECT*>(lParam);
 		if (SuggestedRect)
 		{
