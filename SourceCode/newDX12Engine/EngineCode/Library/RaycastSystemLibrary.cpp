@@ -80,4 +80,6 @@ bool FRaycastSystemLibrary::HitSpecificObjectsResultByScreen(
 			IgnoreComponents,
 			OriginPoint, Direction, ViewInverseMatrix, OutResult);
 	}
+
+	return false;
 }

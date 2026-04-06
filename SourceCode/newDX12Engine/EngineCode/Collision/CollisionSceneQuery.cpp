@@ -5,6 +5,27 @@
 #include "../Actor/Core/ActorObject.h"
 #include "../Core/Camera.h"
 
+namespace
+{
+	float GetWorldHitDistance(
+		const std::shared_ptr<FRenderingData>& InRenderingData,
+		const XMVECTOR& LocalOriginPoint,
+		const XMVECTOR& LocalDirection,
+		float LocalHitTime,
+		const XMVECTOR& WorldOriginPoint)
+	{
+		const XMVECTOR LocalHitPoint = XMVectorMultiplyAdd(
+			XMVectorReplicate(LocalHitTime),
+			LocalDirection,
+			LocalOriginPoint);
+
+		const XMMATRIX WorldMatrix = XMLoadFloat4x4(&InRenderingData->WorldMatrix);
+		const XMVECTOR WorldHitPoint = XMVector3TransformCoord(LocalHitPoint, WorldMatrix);
+
+		return XMVectorGetX(XMVector3Length(WorldHitPoint - WorldOriginPoint));
+	}
+}
+
 void GetRaycastDataByLocal(
 	std::shared_ptr<FRenderingData>& InRenderingData,
 	const XMVECTOR& OriginPoint,
@@ -55,6 +76,7 @@ bool FCollisionSceneQuery::RaycastSingle(
     FCollisionResult& OutResult)
 {
 	float FinalTime = FLT_MAX;
+	XMVECTOR WorldOriginPoint = XMVector3TransformCoord(OriginPoint, ViewInverseMatrix);
 	for (size_t i = 0; i < FGeometry::RenderingDatas.size(); i++)
 	{
 		std::shared_ptr<FRenderingData>& InRenderingData = FGeometry::RenderingDatas[i];
@@ -81,7 +103,14 @@ bool FCollisionSceneQuery::RaycastSingle(
 			{
 				if (BoundTime > 0.f)
 				{
-					if (BoundTime < FinalTime)
+					const float BoundWorldDistance = GetWorldHitDistance(
+						InRenderingData,
+						LocalOriginPoint,
+						LocalDirection,
+						BoundTime,
+						WorldOriginPoint);
+
+					if (BoundWorldDistance < FinalTime)
 					{
 						if (InRenderingData->MeshRenderingData)
 						{
@@ -95,31 +124,42 @@ bool FCollisionSceneQuery::RaycastSingle(
 								Indices.y = InRenderingData->MeshRenderingData->IndexData[InRenderingData->IndexOffsetPosition + i * 3 + 1];
 								Indices.z = InRenderingData->MeshRenderingData->IndexData[InRenderingData->IndexOffsetPosition + i * 3 + 2];
 
-								XMVECTOR Vertex0 = XMLoadFloat3(&InRenderingData->MeshRenderingData->VertexData[Indices.x].Position);
-								XMVECTOR Vertex1 = XMLoadFloat3(&InRenderingData->MeshRenderingData->VertexData[Indices.y].Position);
-								XMVECTOR Vertex2 = XMLoadFloat3(&InRenderingData->MeshRenderingData->VertexData[Indices.z].Position);
+								XMVECTOR Vertex0 = XMLoadFloat3(&InRenderingData->MeshRenderingData->VertexData[InRenderingData->VertexOffsetPosition + Indices.x].Position);
+								XMVECTOR Vertex1 = XMLoadFloat3(&InRenderingData->MeshRenderingData->VertexData[InRenderingData->VertexOffsetPosition + Indices.y].Position);
+								XMVECTOR Vertex2 = XMLoadFloat3(&InRenderingData->MeshRenderingData->VertexData[InRenderingData->VertexOffsetPosition + Indices.z].Position);
 
 								float TriangleTestsTime = 0.f;
 								if (TriangleTests::Intersects(LocalOriginPoint, LocalDirection, Vertex0, Vertex1, Vertex2, TriangleTestsTime))
 								{
-									FinalTime = BoundTime;
-									if (TriangleTestsTime < TriangleTime)
+									const float WorldHitDistance = GetWorldHitDistance(
+										InRenderingData,
+										LocalOriginPoint,
+										LocalDirection,
+										TriangleTestsTime,
+										WorldOriginPoint);
+
+									if (WorldHitDistance < TriangleTime)
 									{
-										TriangleTime = TriangleTestsTime;
-
-										OutResult.bHit = true;
-										OutResult.Component = InRenderingData->Mesh;
-										OutResult.Time = TriangleTestsTime;
-										if (InRenderingData->Mesh)
-										{
-											OutResult.Actor = dynamic_cast<GActorObject*>(InRenderingData->Mesh->GetOuter());
-										}
-
-										// 拿到渲染数据
-										// レンダリングデータを取得する
-										OutResult.RenderingData = InRenderingData;
+										TriangleTime = WorldHitDistance;
 									}
 								}
+							}
+
+							if (TriangleTime < FinalTime)
+							{
+								FinalTime = TriangleTime;
+
+								OutResult.bHit = true;
+								OutResult.Component = InRenderingData->Mesh;
+								OutResult.Time = TriangleTime;
+								if (InRenderingData->Mesh)
+								{
+									OutResult.Actor = dynamic_cast<GActorObject*>(InRenderingData->Mesh->GetOuter());
+								}
+
+								// 拿到渲染数据
+								// レンダリングデータを取得する
+								OutResult.RenderingData = InRenderingData;
 							}
 						}
 					}
@@ -142,6 +182,8 @@ bool FCollisionSceneQuery::RaycastSingle(
 	const XMMATRIX& ViewInverseMatrix,
 	FCollisionResult& OutResult)
 {
+	float FinalTime = FLT_MAX;
+	XMVECTOR WorldOriginPoint = XMVector3TransformCoord(OriginPoint, ViewInverseMatrix);
 	for (size_t i = 0; i < FGeometry::RenderingDatas.size(); i++)
 	{
 		std::shared_ptr<FRenderingData>& InRenderingData = FGeometry::RenderingDatas[i];
@@ -168,14 +210,26 @@ bool FCollisionSceneQuery::RaycastSingle(
 					{
 						if (InActorObject == InSpecificObjects)
 						{
-							OutResult.bHit = true;
-							OutResult.Component = InRenderingData->Mesh;
-							OutResult.Time = BoundTime;
-							OutResult.Actor = InActorObject;
+							const float WorldHitDistance = GetWorldHitDistance(
+								InRenderingData,
+								LocalOriginPoint,
+								LocalDirection,
+								BoundTime,
+								WorldOriginPoint);
 
-							// 拿到渲染数据
-							// レンダリングデータを取得する
-							OutResult.RenderingData = InRenderingData;
+							if (WorldHitDistance < FinalTime)
+							{
+								FinalTime = WorldHitDistance;
+
+								OutResult.bHit = true;
+								OutResult.Component = InRenderingData->Mesh;
+								OutResult.Time = WorldHitDistance;
+								OutResult.Actor = InActorObject;
+
+								// 拿到渲染数据
+								// レンダリングデータを取得する
+								OutResult.RenderingData = InRenderingData;
+							}
 						}
 					}
 				}
