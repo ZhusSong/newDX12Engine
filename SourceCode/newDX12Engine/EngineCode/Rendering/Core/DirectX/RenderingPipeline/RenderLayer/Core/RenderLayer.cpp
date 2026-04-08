@@ -139,8 +139,11 @@ void FRenderLayer::DrawObject(float DeltaTime, std::weak_ptr<FRenderingData>& In
 
 			// 定义要绘制的图元
 			// 描画するプリミティブを定義する
-			D3D_PRIMITIVE_TOPOLOGY DisplayStatus = (*InRenderingData->Mesh->GetMaterials())[0]->GetMaterialDisplayStatus();
-			GetGraphicsCommandList()->IASetPrimitiveTopology((D3D_PRIMITIVE_TOPOLOGY)DisplayStatus);
+			if (CMaterial* Material = InRenderingData->Mesh->GetMaterialBySlot(InRenderingData->MaterialSlotIndex))
+			{
+				D3D_PRIMITIVE_TOPOLOGY DisplayStatus = Material->GetMaterialDisplayStatus();
+				GetGraphicsCommandList()->IASetPrimitiveTopology((D3D_PRIMITIVE_TOPOLOGY)DisplayStatus);
+			}
 
 			// 每个对象相对首地址的偏移
 			// 各オブジェクトの先頭アドレスに対するオフセット
@@ -172,7 +175,6 @@ void FRenderLayer::FindObjectDraw(float DeltaTime, const CMeshComponent* InKey)
 			if (InRenderingData.lock()->Mesh == InKey)
 			{
 				DrawObject(DeltaTime, InRenderingData);
-				break;
 			}
 		}
 	}
@@ -238,7 +240,7 @@ void FRenderLayer::UpdateCalculations(float DeltaTime, const FViewportInfo& View
 
 				//收集材质Index
 				// マテリアルのインデックスを収集する
-				if (auto& InMater = (*InRenderingData->Mesh->GetMaterials())[0])
+				if (CMaterial* InMater = InRenderingData->Mesh->GetMaterialBySlot(InRenderingData->MaterialSlotIndex))
 				{
 					ObjectTransformation.MaterialIndex = InMater->GetMaterialIndex();
 				}

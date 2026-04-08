@@ -29,6 +29,9 @@ public:
 
 public:
 	UINT GetMaterialNum()const;
+	void SetMaterialCount(UINT InMaterialCount);
+	CMaterial* GetMaterialBySlot(UINT InMaterialSlot) const;
+	virtual void ApplyCachedMeshMetadata(const size_t InMeshHash);
 
 	EMeshRenderLayerType GetRenderLayerType()const { return MeshRenderLayerType; }
 

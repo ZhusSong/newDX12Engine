@@ -161,5 +161,5 @@ struct FBXASSETIMPORT_API FFBXCacheHeader
 	uint32_t bCompressed;
 
 	static constexpr uint32_t MAGIC_VALUE = 0x43584246u; // "FBXC"
-	static constexpr uint32_t CACHE_VERSION = 2u;
+	static constexpr uint32_t CACHE_VERSION = 8u;
 };

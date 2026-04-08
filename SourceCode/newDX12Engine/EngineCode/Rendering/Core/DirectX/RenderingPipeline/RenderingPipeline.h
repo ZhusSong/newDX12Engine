@@ -25,8 +25,8 @@ public:
 	// 构建Mesh
 	// メッシュを構築する
 	void BuildMesh(const size_t InMeshHash, CMeshComponent* InMesh, const FMeshRenderingData& MeshData);
-	void DuplicateMesh(CMeshComponent* InMesh, std::shared_ptr<FRenderingData>& MeshData);
-	bool FindMeshRenderingDataByHash(const size_t& InHash, std::shared_ptr<FRenderingData>& MeshData, int InRenderLayerIndex = -1);
+	void DuplicateMesh(CMeshComponent* InMesh, const std::vector<FRenderingData>& MeshDataGroup);
+	bool FindMeshRenderingDataByHash(const size_t& InHash, std::vector<FRenderingData>& MeshDataGroup, int InRenderLayerIndex = -1);
 
 	virtual void UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo);
 

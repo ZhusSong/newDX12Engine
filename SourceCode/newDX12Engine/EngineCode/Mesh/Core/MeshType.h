@@ -16,15 +16,50 @@ struct FVertex
 	XMFLOAT2 TexCoord; // 纹理坐标  // テクスチャ座標
 };
 
+struct FMeshSection
+{
+	FMeshSection()
+		: VertexOffset(0)
+		, VertexSize(0)
+		, IndexOffset(0)
+		, IndexSize(0)
+		, MaterialSlotIndex(0)
+	{
+	}
+
+	UINT VertexOffset;
+	UINT VertexSize;
+	UINT IndexOffset;
+	UINT IndexSize;
+	UINT MaterialSlotIndex;
+};
+
 struct FMeshRenderingData
 {
 	vector<FVertex> VertexData;
 	vector<uint16_t> IndexData;
+	vector<FMeshSection> Sections;
 public:
 	// 得到当前渲染对象顶点与索引size
 	// 現在のレンダリングオブジェクトの頂点およびインデックスサイズを取得
 	UINT GetVertexSizeInBytes() { return  (UINT)VertexData.size() * sizeof(FVertex); }
 	UINT GetIndexSizeInBytes() { return  (UINT)IndexData.size() * sizeof(uint16_t); }
+
+	void BuildDefaultSectionIfNeeded()
+	{
+		if (!Sections.empty())
+		{
+			return;
+		}
+
+		FMeshSection Section;
+		Section.VertexOffset = 0;
+		Section.VertexSize = (UINT)VertexData.size();
+		Section.IndexOffset = 0;
+		Section.IndexSize = (UINT)IndexData.size();
+		Section.MaterialSlotIndex = 0;
+		Sections.push_back(Section);
+	}
 };
 
 enum EPyramidNumberSides

@@ -771,31 +771,63 @@ int CDirectXRenderingEngine::PostInit()
 			// 是否渲染ShadowMap
 			// ShadowMapをレンダリングするかどうか
 			CustomMesh->SetCastShadow(false);
-			if (CMaterial* InMaterial = (*CustomMesh->GetMaterials())[0])
+			if (vector<CMaterial*>* Materials = CustomMesh->GetMaterials())
 			{
-				InMaterial->SetBaseColor(fvector_4d(1.f));
-				InMaterial->SetMaterialType(EMaterialType::HalfLambert);
-		
+				for (CMaterial* InMaterial : *Materials)
+				{
+					if (InMaterial)
+					{
+						InMaterial->SetMaterialType(EMaterialType::BaseColor);
+						InMaterial->SetBaseColor(fvector_4d(1.f, 1.f, 1.f, 1.f));
+						InMaterial->SetMaterialType(EMaterialType::Lambert);
+					}
+				}
 			}
+		}
+
+		//if (GCustomMesh* CustomMesh = World->CreateActorObject<GCustomMesh>())
+		//{
+		//	string MeshPath = FEnginePathHelper::GetEngineAssetPath() + "/usagi_Believer.fbx";
+		//	CustomMesh->CreateMesh(MeshPath);
+
+		//	CustomMesh->SetPosition(XMFLOAT3(40.f, -10, 20.f));
+		//	CustomMesh->SetScale(fvector_3d(0.03f, 0.03f, 0.03f));
+		//	CustomMesh->SetRotation(fvector_3d(0.0f,-90.0f,90.0f));
+		//	// 是否渲染ShadowMap
+		//	// ShadowMapをレンダリングするかどうか
+		//	CustomMesh->SetCastShadow(false);
+		//	if (CMaterial* InMaterial = (*CustomMesh->GetMaterials())[0])
+		//	{
+		//		InMaterial->SetBaseColor(fvector_4d(1.f));
+		//		InMaterial->SetMaterialType(EMaterialType::BinnPhong);
+
+		//	}
+		//}
+
+		if (GCustomMesh* CustomMesh = World->CreateActorObject<GCustomMesh>())
+		{
+			string MeshPath = FEnginePathHelper::GetEngineAssetPath() + "/american_house_MARK_2.fbx";
+			CustomMesh->CreateMesh(MeshPath);
+
+			CustomMesh->SetPosition(XMFLOAT3(60.f, -10.f, 80.f));
+			CustomMesh->SetScale(fvector_3d(0.05f, 0.05f, 0.05f));
+			CustomMesh->SetRotation(fvector_3d(0.0f, 90.0f,0.0f));
+			CustomMesh->SetCastShadow(false);
+			CustomMesh->SetPickup(false);
 		}
 
 		if (GCustomMesh* CustomMesh = World->CreateActorObject<GCustomMesh>())
 		{
-			string MeshPath = FEnginePathHelper::GetEngineAssetPath() + "/usagi_Believer.fbx";
+			string MeshPath = FEnginePathHelper::GetEngineAssetPath() + "/RustyHouse.fbx";
 			CustomMesh->CreateMesh(MeshPath);
 
-			CustomMesh->SetPosition(XMFLOAT3(40.f, -10, 20.f));
-			CustomMesh->SetScale(fvector_3d(0.03f, 0.03f, 0.03f));
-			CustomMesh->SetRotation(fvector_3d(0.0f,-90.0f,90.0f));
-			// 是否渲染ShadowMap
-			// ShadowMapをレンダリングするかどうか
-			CustomMesh->SetCastShadow(false);
-			if (CMaterial* InMaterial = (*CustomMesh->GetMaterials())[0])
-			{
-				InMaterial->SetBaseColor(fvector_4d(1.f));
-				InMaterial->SetMaterialType(EMaterialType::BinnPhong);
+			CustomMesh->SetPosition(XMFLOAT3(50.f, 10.f, -70.f));
+			CustomMesh->SetScale(fvector_3d(0.05f, 0.05f, 0.05f));
+			CustomMesh->SetRotation(fvector_3d(-90.0f, 0.0f, 0.0f));
+			CustomMesh->SetCastShadow(true);
+			CustomMesh->SetPickup(false);
 
-			}
+
 		}
 		////well
 		//if (GBoxMesh* InBoxMesh = World->CreateActorObject<GBoxMesh>())

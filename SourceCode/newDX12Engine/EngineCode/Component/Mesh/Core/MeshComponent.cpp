@@ -55,6 +55,40 @@ UINT CMeshComponent::GetMaterialNum() const
 	return Materials.size();
 }
 
+void CMeshComponent::SetMaterialCount(UINT InMaterialCount)
+{
+	BUILD_OBJECT_PARAMETERS_BY_COMPONENT(, this);
+
+	while (Materials.size() < InMaterialCount)
+	{
+		Materials.push_back(CreateObject<CMaterial>(Param, new CMaterial()));
+	}
+
+	if (Materials.size() > InMaterialCount)
+	{
+		Materials.resize(InMaterialCount);
+	}
+}
+
+CMaterial* CMeshComponent::GetMaterialBySlot(UINT InMaterialSlot) const
+{
+	if (InMaterialSlot < Materials.size())
+	{
+		return Materials[InMaterialSlot];
+	}
+
+	if (!Materials.empty())
+	{
+		return Materials[0];
+	}
+
+	return nullptr;
+}
+
+void CMeshComponent::ApplyCachedMeshMetadata(const size_t InMeshHash)
+{
+}
+
 
 bool CMeshComponent::IsDynamicReflection() const
 {

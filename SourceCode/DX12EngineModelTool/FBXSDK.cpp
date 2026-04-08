@@ -1,13 +1,21 @@
 ﻿#include "ThirdPartyLibrary/FBX/include/fbxsdk.h"
 #include "FBXSDK.h"
 
-#pragma comment(lib, "libfbxsdk.lib")
+#ifdef _DEBUG
 #pragma comment(lib, "libfbxsdk-md.lib")
-#pragma comment(lib, "libfbxsdk-mt.lib")
+#pragma comment(lib, "libxml2-md.lib")
+#pragma comment(lib, "zlib-md.lib")
+#else
+#pragma comment(lib, "libfbxsdk-md.lib")
+#pragma comment(lib, "libxml2-md.lib")
+#pragma comment(lib, "zlib-md.lib")
+#endif
 
 #include <sys/stat.h>   
 #include <cstring>     
+#include <set>
 #include <numeric>      
+#include <string>
 
 #include "miniz.h"
 
@@ -74,12 +82,32 @@ void GetPolygons(FbxMesh* InMesh, FFBXMesh& OutData)
 {
 	int PolygonCount = InMesh->GetPolygonCount();
 	FbxVector4* ControlPoints = InMesh->GetControlPoints();
+	FbxGeometryElementMaterial* MaterialElement = InMesh->GetElementMaterial();
 
 	int VertexID = 0;
 	for (int i = 0; i < PolygonCount; i++)//Get Polygon
 	{
 		OutData.VertexData.push_back(FFBXTriangle());
 		FFBXTriangle& InTriangle = OutData.VertexData[OutData.VertexData.size() - 1];
+
+		if (MaterialElement)
+		{
+			switch (MaterialElement->GetMappingMode())
+			{
+			case FbxGeometryElement::eByPolygon:
+				if (MaterialElement->GetIndexArray().GetCount() > i)
+				{
+					InTriangle.MaterialID = MaterialElement->GetIndexArray().GetAt(i);
+				}
+				break;
+			case FbxGeometryElement::eAllSame:
+				if (MaterialElement->GetIndexArray().GetCount() > 0)
+				{
+					InTriangle.MaterialID = MaterialElement->GetIndexArray().GetAt(0);
+				}
+				break;
+			}
+		}
 
 		int PolygonSize = InMesh->GetPolygonSize(i);
 		for (int j = 0; j < PolygonSize; j++)
@@ -130,19 +158,54 @@ void GetPolygons(FbxMesh* InMesh, FFBXMesh& OutData)
 				}
 				else if (ModeType == fbxsdk::FbxLayerElement::eByPolygonVertex)
 				{
-					int TextureUVIndex = InMesh->GetTextureUVIndex(i, j);
-					FbxVector2 UV = TextureUV->GetDirectArray().GetAt(TextureUVIndex);
-					switch (ReferenceMode)
+					FbxString UVSetName = TextureUV->GetName();
+					if (UVSetName.IsEmpty())
 					{
-					case fbxsdk::FbxLayerElement::eDirect:
-					case fbxsdk::FbxLayerElement::eIndexToDirect:
-					{
-						FbxVector2 UV = TextureUV->GetDirectArray().GetAt(ControlPointIndex);
+						FbxStringList UVSetNames;
+						InMesh->GetUVSetNames(UVSetNames);
+						if (UVSetNames.GetCount() > l)
+						{
+							UVSetName = UVSetNames[l];
+						}
+						else if (UVSetNames.GetCount() > 0)
+						{
+							UVSetName = UVSetNames[0];
+						}
+					}
 
+					bool bUnmapped = false;
+					FbxVector2 UV;
+					bool bHasPolygonVertexUV = false;
+					if (!UVSetName.IsEmpty())
+					{
+						bHasPolygonVertexUV = InMesh->GetPolygonVertexUV(i, j, UVSetName.Buffer(), UV, bUnmapped) && !bUnmapped;
+					}
+
+					if (!bHasPolygonVertexUV)
+					{
+						int TextureUVIndex = InMesh->GetTextureUVIndex(i, j);
+						switch (ReferenceMode)
+						{
+						case fbxsdk::FbxLayerElement::eDirect:
+						{
+							UV = TextureUV->GetDirectArray().GetAt(TextureUVIndex);
+							bHasPolygonVertexUV = true;
+							break;
+						}
+						case fbxsdk::FbxLayerElement::eIndexToDirect:
+						{
+							int ID = TextureUV->GetIndexArray().GetAt(TextureUVIndex);
+							UV = TextureUV->GetDirectArray().GetAt(ID);
+							bHasPolygonVertexUV = true;
+							break;
+						}
+						}
+					}
+
+					if (bHasPolygonVertexUV)
+					{
 						InTriangle.Vertexs[j].UV.X = UV.mData[0];
 						InTriangle.Vertexs[j].UV.Y = 1.f - UV.mData[1];//UV取反 //UVを反転
-						break;
-					}
 					}
 				}
 			}
@@ -260,7 +323,297 @@ void GetPolygons(FbxMesh* InMesh, FFBXMesh& OutData)
 	}
 }
 
-void GetMaterial() {}
+static bool ReadTexturePathFromProperty(FbxProperty InProperty, std::string& OutPath)
+{
+	if (!InProperty.IsValid())
+	{
+		return false;
+	}
+
+	const int LayeredTextureCount = InProperty.GetSrcObjectCount<FbxLayeredTexture>();
+	for (int LayeredTextureIndex = 0; LayeredTextureIndex < LayeredTextureCount; ++LayeredTextureIndex)
+	{
+		if (FbxLayeredTexture* LayeredTexture = InProperty.GetSrcObject<FbxLayeredTexture>(LayeredTextureIndex))
+		{
+			const int FileTextureCount = LayeredTexture->GetSrcObjectCount<FbxFileTexture>();
+			for (int TextureIndex = 0; TextureIndex < FileTextureCount; ++TextureIndex)
+			{
+				if (FbxFileTexture* FileTexture = LayeredTexture->GetSrcObject<FbxFileTexture>(TextureIndex))
+				{
+					const char* RelativeFileName = FileTexture->GetRelativeFileName();
+					if (RelativeFileName && RelativeFileName[0] != '\0')
+					{
+						OutPath = RelativeFileName;
+						return true;
+					}
+
+					const char* FileName = FileTexture->GetFileName();
+					if (FileName && FileName[0] != '\0')
+					{
+						OutPath = FileName;
+						return true;
+					}
+				}
+			}
+		}
+	}
+
+	const int FileTextureCount = InProperty.GetSrcObjectCount<FbxFileTexture>();
+	for (int TextureIndex = 0; TextureIndex < FileTextureCount; ++TextureIndex)
+	{
+		if (FbxFileTexture* FileTexture = InProperty.GetSrcObject<FbxFileTexture>(TextureIndex))
+		{
+			const char* RelativeFileName = FileTexture->GetRelativeFileName();
+			if (RelativeFileName && RelativeFileName[0] != '\0')
+			{
+				OutPath = RelativeFileName;
+				return true;
+			}
+
+			const char* FileName = FileTexture->GetFileName();
+			if (FileName && FileName[0] != '\0')
+			{
+				OutPath = FileName;
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+static bool ReadSurfaceMaterial(FbxSurfaceMaterial* InMaterial, FFBXMaterial& OutMaterial)
+{
+	if (InMaterial == nullptr)
+	{
+		return false;
+	}
+
+	bool bHasAnyTexture = false;
+	bHasAnyTexture |= ReadTexturePathFromProperty(InMaterial->FindProperty(FbxSurfaceMaterial::sDiffuse), OutMaterial.DiffuseMapFileName);
+	bHasAnyTexture |= ReadTexturePathFromProperty(InMaterial->FindProperty(FbxSurfaceMaterial::sSpecular), OutMaterial.SpecularMapFileName);
+	bHasAnyTexture |= ReadTexturePathFromProperty(InMaterial->FindProperty(FbxSurfaceMaterial::sTransparentColor), OutMaterial.AlphaMapFileName);
+	bHasAnyTexture |= ReadTexturePathFromProperty(InMaterial->FindProperty(FbxSurfaceMaterial::sNormalMap), OutMaterial.BumpMapFileName);
+
+	if (OutMaterial.BumpMapFileName.empty())
+	{
+		bHasAnyTexture |= ReadTexturePathFromProperty(InMaterial->FindProperty(FbxSurfaceMaterial::sBump), OutMaterial.BumpMapFileName);
+	}
+
+	if (!bHasAnyTexture)
+	{
+		for (FbxProperty Property = InMaterial->GetFirstProperty();
+			Property.IsValid();
+			Property = InMaterial->GetNextProperty(Property))
+		{
+			std::string TexturePath;
+			if (!ReadTexturePathFromProperty(Property, TexturePath))
+			{
+				continue;
+			}
+
+			std::string PropertyName = Property.GetNameAsCStr() ? Property.GetNameAsCStr() : "";
+			std::string LowerPropertyName = PropertyName;
+			for (char& Ch : LowerPropertyName)
+			{
+				Ch = (char)tolower((unsigned char)Ch);
+			}
+
+			if (OutMaterial.DiffuseMapFileName.empty() &&
+				(LowerPropertyName.find("diffuse") != std::string::npos ||
+				 LowerPropertyName.find("base") != std::string::npos ||
+				 LowerPropertyName.find("albedo") != std::string::npos ||
+				 LowerPropertyName.find("color") != std::string::npos))
+			{
+				OutMaterial.DiffuseMapFileName = TexturePath;
+				bHasAnyTexture = true;
+				continue;
+			}
+
+			if (OutMaterial.BumpMapFileName.empty() &&
+				(LowerPropertyName.find("normal") != std::string::npos ||
+				 LowerPropertyName.find("bump") != std::string::npos ||
+				 LowerPropertyName.find("ddn") != std::string::npos))
+			{
+				OutMaterial.BumpMapFileName = TexturePath;
+				bHasAnyTexture = true;
+				continue;
+			}
+
+			if (OutMaterial.SpecularMapFileName.empty() &&
+				(LowerPropertyName.find("spec") != std::string::npos ||
+				 LowerPropertyName.find("gloss") != std::string::npos ||
+				 LowerPropertyName.find("rough") != std::string::npos))
+			{
+				OutMaterial.SpecularMapFileName = TexturePath;
+				bHasAnyTexture = true;
+				continue;
+			}
+
+			if (OutMaterial.AlphaMapFileName.empty() &&
+				(LowerPropertyName.find("alpha") != std::string::npos ||
+				 LowerPropertyName.find("opacity") != std::string::npos ||
+				 LowerPropertyName.find("transparency") != std::string::npos))
+			{
+				OutMaterial.AlphaMapFileName = TexturePath;
+				bHasAnyTexture = true;
+				continue;
+			}
+
+			if (OutMaterial.DiffuseMapFileName.empty())
+			{
+				OutMaterial.DiffuseMapFileName = TexturePath;
+				bHasAnyTexture = true;
+			}
+		}
+	}
+
+	if (!bHasAnyTexture)
+	{
+		const int FileTextureCount = InMaterial->GetSrcObjectCount<FbxFileTexture>();
+		for (int TextureIndex = 0; TextureIndex < FileTextureCount; ++TextureIndex)
+		{
+			if (FbxFileTexture* FileTexture = InMaterial->GetSrcObject<FbxFileTexture>(TextureIndex))
+			{
+				std::string TexturePath;
+
+				const char* RelativeFileName = FileTexture->GetRelativeFileName();
+				if (RelativeFileName && RelativeFileName[0] != '\0')
+				{
+					TexturePath = RelativeFileName;
+				}
+				else
+				{
+					const char* FileName = FileTexture->GetFileName();
+					if (FileName && FileName[0] != '\0')
+					{
+						TexturePath = FileName;
+					}
+				}
+
+				if (TexturePath.empty())
+				{
+					continue;
+				}
+
+				std::string TextureName = FileTexture->GetName();
+				std::string LowerTextureName = TextureName;
+				for (char& Ch : LowerTextureName)
+				{
+					Ch = (char)tolower((unsigned char)Ch);
+				}
+
+				if (OutMaterial.DiffuseMapFileName.empty() &&
+					(LowerTextureName.find("diff") != std::string::npos ||
+					 LowerTextureName.find("base") != std::string::npos ||
+					 LowerTextureName.find("albedo") != std::string::npos))
+				{
+					OutMaterial.DiffuseMapFileName = TexturePath;
+					bHasAnyTexture = true;
+					continue;
+				}
+
+				if (OutMaterial.BumpMapFileName.empty() &&
+					(LowerTextureName.find("normal") != std::string::npos ||
+					 LowerTextureName.find("bump") != std::string::npos ||
+					 LowerTextureName.find("ddn") != std::string::npos))
+				{
+					OutMaterial.BumpMapFileName = TexturePath;
+					bHasAnyTexture = true;
+					continue;
+				}
+
+				if (OutMaterial.SpecularMapFileName.empty() &&
+					(LowerTextureName.find("spec") != std::string::npos ||
+					 LowerTextureName.find("gloss") != std::string::npos ||
+					 LowerTextureName.find("rough") != std::string::npos))
+				{
+					OutMaterial.SpecularMapFileName = TexturePath;
+					bHasAnyTexture = true;
+					continue;
+				}
+
+				if (OutMaterial.AlphaMapFileName.empty() &&
+					(LowerTextureName.find("alpha") != std::string::npos ||
+					 LowerTextureName.find("opacity") != std::string::npos ||
+					 LowerTextureName.find("transparency") != std::string::npos))
+				{
+					OutMaterial.AlphaMapFileName = TexturePath;
+					bHasAnyTexture = true;
+					continue;
+				}
+
+				if (OutMaterial.DiffuseMapFileName.empty())
+				{
+					OutMaterial.DiffuseMapFileName = TexturePath;
+					bHasAnyTexture = true;
+				}
+			}
+		}
+	}
+
+	return bHasAnyTexture;
+}
+
+static void GetMaterial(FbxNode* InNode, const std::set<int>& InMaterialIndices, FFBXModel& InModel)
+{
+	if (InNode == nullptr)
+	{
+		return;
+	}
+
+	const int MaterialCount = InNode->GetMaterialCount();
+	for (int MaterialIndex = 0; MaterialIndex < MaterialCount; ++MaterialIndex)
+	{
+		if (FbxSurfaceMaterial* SurfaceMaterial = InNode->GetMaterial(MaterialIndex))
+		{
+			FFBXMaterial MaterialData;
+			if (ReadSurfaceMaterial(SurfaceMaterial, MaterialData))
+			{
+				InModel.MaterialMap[MaterialIndex] = std::move(MaterialData);
+			}
+		}
+	}
+
+	const int ConnectedMaterialCount = InNode->GetSrcObjectCount<FbxSurfaceMaterial>();
+	for (int MaterialIndex = 0; MaterialIndex < ConnectedMaterialCount; ++MaterialIndex)
+	{
+		if (FbxSurfaceMaterial* SurfaceMaterial = InNode->GetSrcObject<FbxSurfaceMaterial>(MaterialIndex))
+		{
+			FFBXMaterial MaterialData;
+			if (ReadSurfaceMaterial(SurfaceMaterial, MaterialData))
+			{
+				InModel.MaterialMap[MaterialIndex] = std::move(MaterialData);
+			}
+		}
+	}
+
+	if (FbxScene* Scene = InNode->GetScene())
+	{
+		const int SceneMaterialCount = Scene->GetMaterialCount();
+		for (int MaterialIndex : InMaterialIndices)
+		{
+			if (MaterialIndex < 0 || MaterialIndex >= SceneMaterialCount)
+			{
+				continue;
+			}
+
+			if (InModel.MaterialMap.find(MaterialIndex) != InModel.MaterialMap.end())
+			{
+				continue;
+			}
+
+			if (FbxSurfaceMaterial* SurfaceMaterial = Scene->GetMaterial(MaterialIndex))
+			{
+				FFBXMaterial MaterialData;
+				if (ReadSurfaceMaterial(SurfaceMaterial, MaterialData))
+				{
+					InModel.MaterialMap[MaterialIndex] = std::move(MaterialData);
+				}
+			}
+		}
+	}
+}
 
 void GetIndex(FFBXMesh& InMesh)
 {
@@ -276,14 +629,26 @@ void GetMesh(FbxNode* InNode, FFBXModel& InModel)
 {
 	FbxMesh* NodeMesh = (FbxMesh*)InNode->GetNodeAttribute();
 
-	InModel.MeshData.push_back(FFBXMesh());
-	FFBXMesh& InMesh = InModel.MeshData[InModel.MeshData.size() - 1];
+	FFBXMesh RawMesh;
+	GetPolygons(NodeMesh, RawMesh);
 
-	GetPolygons(NodeMesh, InMesh);
+	std::set<int> MaterialIndices;
+	std::map<int, FFBXMesh> MeshByMaterial;
+	for (const FFBXTriangle& Triangle : RawMesh.VertexData)
+	{
+		MaterialIndices.insert(Triangle.MaterialID);
+		FFBXMesh& SplitMesh = MeshByMaterial[Triangle.MaterialID];
+		SplitMesh.MaterialID = Triangle.MaterialID;
+		SplitMesh.VertexData.push_back(Triangle);
+	}
 
-	GetIndex(InMesh);
+	for (auto& MeshPair : MeshByMaterial)
+	{
+		GetIndex(MeshPair.second);
+		InModel.MeshData.push_back(std::move(MeshPair.second));
+	}
 
-	//GetMaterial();
+	GetMaterial(InNode, MaterialIndices, InModel);
 }
 
 

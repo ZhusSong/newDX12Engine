@@ -13,10 +13,11 @@ namespace MeshConstruction
             size_t HashKey = 0;
             InMesh->BuildKey(HashKey, forward<ParamTypes>(Params)...);
 
-            std::shared_ptr<FRenderingData> RenderingData;
-            if (InManager->GetRenderingPipeline()->FindMeshRenderingDataByHash(HashKey, RenderingData, (int)InMesh->GetRenderLayerType()))
+            std::vector<FRenderingData> RenderingDataGroup;
+            if (InManager->GetRenderingPipeline()->FindMeshRenderingDataByHash(HashKey, RenderingDataGroup, (int)InMesh->GetRenderLayerType()))
             {
-                InManager->GetRenderingPipeline()->DuplicateMesh(InMesh, RenderingData);
+                InMesh->ApplyCachedMeshMetadata(HashKey);
+                InManager->GetRenderingPipeline()->DuplicateMesh(InMesh, RenderingDataGroup);
             }
             else
             {

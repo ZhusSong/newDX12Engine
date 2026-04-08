@@ -16,14 +16,14 @@ void FRenderingPipeline::BuildMesh(const size_t InMeshHash, CMeshComponent* InMe
 	GeometryMap.BuildMesh(InMeshHash, InMesh, MeshData);
 }
 
-void FRenderingPipeline::DuplicateMesh(CMeshComponent* InMesh, std::shared_ptr<FRenderingData>& MeshData)
+void FRenderingPipeline::DuplicateMesh(CMeshComponent* InMesh, const std::vector<FRenderingData>& MeshDataGroup)
 {
-	GeometryMap.DuplicateMesh(InMesh, MeshData);
+	GeometryMap.DuplicateMesh(InMesh, MeshDataGroup);
 }
 
-bool FRenderingPipeline::FindMeshRenderingDataByHash(const size_t& InHash, std::shared_ptr<FRenderingData>& MeshData, int InRenderLayerIndex)
+bool FRenderingPipeline::FindMeshRenderingDataByHash(const size_t& InHash, std::vector<FRenderingData>& MeshDataGroup, int InRenderLayerIndex)
 {
-	return GeometryMap.FindMeshRenderingDataByHash(InHash, MeshData, InRenderLayerIndex);
+	return GeometryMap.FindMeshRenderingDataByHash(InHash, MeshDataGroup, InRenderLayerIndex);
 }
 
 

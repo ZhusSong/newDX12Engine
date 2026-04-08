@@ -34,11 +34,11 @@ struct FGeometry :public IDirectXDeviceInterface_Struct
 	
 	// 复制模型数据
 	// モデルデータを複製する
-	void DuplicateMesh(CMeshComponent* InMesh, std::shared_ptr<FRenderingData>& MeshData, int InKey);
+	void DuplicateMesh(CMeshComponent* InMesh, const std::vector<FRenderingData>& MeshDataGroup, int InKey);
 
 	// 通过hash值查找渲染数据
 	// ハッシュ値によってレンダリングデータを検索する
-	bool FindMeshRenderingDataByHash(const size_t& InHash, std::shared_ptr<FRenderingData>& MeshData, int InRenderLayerIndex = -1);
+	bool FindMeshRenderingDataByHash(const size_t& InHash, std::vector<FRenderingData>& MeshDataGroup, int InRenderLayerIndex = -1);
 
 	//构建模型
 	// モデルを構築する
@@ -71,7 +71,7 @@ protected:
 protected:
 	// 渲染池单例
 	// レンダリングプールのシングルトン
-	static map<size_t, std::shared_ptr<FRenderingData>> UniqueRenderingDatas;
+	static map<size_t, std::vector<FRenderingData>> UniqueRenderingDatas;
 
 public:
 	// 实际使用的渲染池 里面会有重复的 key (size_t)
@@ -111,11 +111,11 @@ struct FGeometryMap :public IDirectXDeviceInterface_Struct
 	// 更新材质
 	// マテリアルを更新する
 	void UpdateMaterialShaderResourceView(float DeltaTime, const FViewportInfo& ViewportInfo);
-	
+
 	// 更新灯光
 	// ライトを更新する
 	void UpdateLight(float DeltaTime, const FViewportInfo& ViewportInfo);
-	
+
 	// 更新雾
 	// フォグを更新する
 	void UpdateFog(float DeltaTime, const FViewportInfo& ViewportInfo);
@@ -127,8 +127,8 @@ struct FGeometryMap :public IDirectXDeviceInterface_Struct
 	void BuildShadow();
 
 	void BuildMesh(const size_t InMeshHash, CMeshComponent* InMesh, const FMeshRenderingData& MeshData);
-	void DuplicateMesh(CMeshComponent* InMesh, std::shared_ptr<FRenderingData>& MeshData);
-	bool FindMeshRenderingDataByHash(const size_t& InHash, std::shared_ptr<FRenderingData>& MeshData, int InRenderLayerIndex = -1);
+	void DuplicateMesh(CMeshComponent* InMesh, const std::vector<FRenderingData>& MeshDataGroup);
+	bool FindMeshRenderingDataByHash(const size_t& InHash, std::vector<FRenderingData>& MeshDataGroup, int InRenderLayerIndex = -1);
 
 	// 读取Texture
 	// テクスチャを読み込む
@@ -250,7 +250,7 @@ protected:
 
 	// 雾常量缓冲区
 	// フォグ定数バッファ
-	FConstantBufferViews FogConstantBufferViews;		
+	FConstantBufferViews FogConstantBufferViews;
 
 	std::shared_ptr<class FRenderingTextureResourcesUpdate> RenderingTexture2DResources;
 	std::shared_ptr<class FRenderingTextureResourcesUpdate> RenderingCubeMapResources;
