@@ -81,6 +81,11 @@ void GActorObject::SetRotation(const fvector_3d& InRotation)
 	RootComponent->SetRotation(InRotation);
 }
 
+void GActorObject::SetRotation(const fvector_3d& InRotation, bool bAbsoluteRotation)
+{
+	RootComponent->SetRotation(InRotation, bAbsoluteRotation);
+}
+
 void GActorObject::SetRotation(const frotator& InNewRotation)
 {
 	RootComponent->SetRotation(InNewRotation);

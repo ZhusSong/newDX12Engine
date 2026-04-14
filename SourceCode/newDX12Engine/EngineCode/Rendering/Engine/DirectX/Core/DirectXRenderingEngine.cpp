@@ -811,7 +811,7 @@ int CDirectXRenderingEngine::PostInit()
 
 			CustomMesh->SetPosition(XMFLOAT3(60.f, -10.f, 80.f));
 			CustomMesh->SetScale(fvector_3d(0.05f, 0.05f, 0.05f));
-			CustomMesh->SetRotation(fvector_3d(0.0f, 90.0f,0.0f));
+			CustomMesh->SetRotation(fvector_3d(0.0f, 90.0f,0.0f), true);
 			CustomMesh->SetCastShadow(false);
 			CustomMesh->SetPickup(false);
 		}
@@ -823,10 +823,10 @@ int CDirectXRenderingEngine::PostInit()
 
 			CustomMesh->SetPosition(XMFLOAT3(50.f, 10.f, -70.f));
 			CustomMesh->SetScale(fvector_3d(0.05f, 0.05f, 0.05f));
-			CustomMesh->SetRotation(fvector_3d(-90.0f, 0.0f, 0.0f));
+			CustomMesh->SetRotation(fvector_3d(-90.0f, 0.0f, 0.0f), true);
 			CustomMesh->SetCastShadow(true);
 			CustomMesh->SetPickup(false);
-
+			  
 
 		}
 		////well
@@ -869,7 +869,7 @@ int CDirectXRenderingEngine::PostInit()
 		// フォグ
 		if (GFog* Fog = World->CreateActorObject<GFog>())
 		{
-			Fog->SetFogColor(fvector_color(0.7f, 0.7f, 0.9f, 1.f));
+			Fog->SetFogColor(fvector_color(0.7f, 0.7f, 0.7f, 0.2f));
 			Fog->SetFogStart(10.f);
 			Fog->SetFogRange(500.f);
 

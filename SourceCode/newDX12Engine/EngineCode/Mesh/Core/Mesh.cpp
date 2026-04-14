@@ -48,6 +48,15 @@ void GMesh::SetRotation(const fvector_3d& InRotation)
 	// Meshコンポーネントを通して回転を設定
 	GetMeshComponent()->SetRotation(InRotation);
 }
+void GMesh::SetRotation(const fvector_3d& InRotation, bool bAbsoluteRotation)
+{
+	if (bAbsoluteRotation)
+	{
+		Super::SetRotation(InRotation, bAbsoluteRotation);
+		GetMeshComponent()->SetRotation(InRotation, bAbsoluteRotation);
+	}
+
+}
 
 void GMesh::SetScale(const fvector_3d& InNewScale)
 {

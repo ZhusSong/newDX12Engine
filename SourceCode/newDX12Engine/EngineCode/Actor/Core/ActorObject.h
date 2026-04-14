@@ -13,7 +13,7 @@ class GActorObject :public CCoreMinimalObject
 	// コードリフレクションのテスト
 	CODEREFLECTION()
 
-	CVARIABLE()
+		CVARIABLE()
 		CTransformComponent* RootComponent;
 
 public:
@@ -28,8 +28,14 @@ public:
 	BoundingBox GetBoundingBox();
 public:
 	virtual void SetPosition(const XMFLOAT3& InNewPosition);
+	// 在当前基础上进行旋转
+	// 現在の位置を基点として回転させる
 	virtual void SetRotation(const fvector_3d& InRotation);
-
+	// 设置世界坐标下的绝对旋转
+	// 世界座標系における絶対回転の設定
+	virtual void SetRotation(const fvector_3d& InRotation, bool bAbsoluteRotation);
+	// 设置世界坐标下的绝对旋转
+	// 世界座標系における絶対回転の設定
 	virtual void SetRotation(const frotator& InNewRotation);
 	// 设置四元数旋转
 	// クォータニオン回転を設定する
@@ -53,7 +59,6 @@ public:
 	XMFLOAT3& GetForwardVector();
 	XMFLOAT3& GetRightVector();
 	XMFLOAT3& GetUPVector();
-
 
 
 

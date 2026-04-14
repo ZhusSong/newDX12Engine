@@ -32,9 +32,32 @@ void CTransformComponent::SetRotation(const fvector_3d& InNewRotation)
 	XMVECTOR Up = XMLoadFloat3(&UPVector);
 	XMVECTOR Forward = XMLoadFloat3(&ForwardVector);
 
-	XMStoreFloat3(&RightVector, XMVector3TransformNormal(XMLoadFloat3(&RightVector), RotationRollPitchYawMatrix));
-	XMStoreFloat3(&UPVector, XMVector3TransformNormal(XMLoadFloat3(&UPVector), RotationRollPitchYawMatrix));
-	XMStoreFloat3(&ForwardVector, XMVector3TransformNormal(XMLoadFloat3(&ForwardVector), RotationRollPitchYawMatrix));
+	XMStoreFloat3(&RightVector, XMVector3TransformNormal(Right, RotationRollPitchYawMatrix));
+	XMStoreFloat3(&UPVector, XMVector3TransformNormal(Up, RotationRollPitchYawMatrix));
+	XMStoreFloat3(&ForwardVector, XMVector3TransformNormal(Forward, RotationRollPitchYawMatrix));
+}
+
+void CTransformComponent::SetRotation(const fvector_3d& InNewRotation, bool bAbsoluteRotation)
+{
+	if (!bAbsoluteRotation)
+	{
+		SetRotation(InNewRotation);
+		return;
+	}
+
+	float PithRadians = XMConvertToRadians(InNewRotation.x);
+	float YawRadians = XMConvertToRadians(InNewRotation.y);
+	float RollRadians = XMConvertToRadians(InNewRotation.z);
+	XMMATRIX RotationRollPitchYawMatrix = XMMatrixRotationRollPitchYaw(
+		PithRadians, YawRadians, RollRadians);
+
+	XMVECTOR Right = XMVectorSet(1.f, 0.f, 0.f, 0.f);
+	XMVECTOR Up = XMVectorSet(0.f, 1.f, 0.f, 0.f);
+	XMVECTOR Forward = XMVectorSet(0.f, 0.f, 1.f, 0.f);
+
+	XMStoreFloat3(&RightVector, XMVector3TransformNormal(Right, RotationRollPitchYawMatrix));
+	XMStoreFloat3(&UPVector, XMVector3TransformNormal(Up, RotationRollPitchYawMatrix));
+	XMStoreFloat3(&ForwardVector, XMVector3TransformNormal(Forward, RotationRollPitchYawMatrix));
 }
 
 void CTransformComponent::SetRotation(const frotator& InNewRotation)

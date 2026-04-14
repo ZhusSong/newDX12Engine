@@ -37,6 +37,7 @@ public:
 public:
 	virtual void SetPosition(const XMFLOAT3& InNewPosition);
 	virtual void SetRotation(const fvector_3d& InRotation);
+	virtual void SetRotation(const fvector_3d& InRotation,bool bAbsoluteRotation);
 	virtual void SetScale(const fvector_3d& InNewScale);
 public:
 	virtual CMeshComponent* GetMeshComponent() { return MeshComponent; }
