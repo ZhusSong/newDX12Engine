@@ -13,7 +13,7 @@ public:
 	FOutParm();
 
 	CPropertyObject* PropAddr;
-	std::shared_ptr<FOutParm> Nest;
+	std::shared_ptr<FOutParm> Next;
 };
 
 struct FFrame

@@ -1104,7 +1104,6 @@ bool FFBXAssetImport::SaveToCache(const char* InCachePath, const char* InOrigina
 	std::vector<char> CompressedPayload;
 	if (CompressBuffer(PayloadBuffer, CompressedPayload))
 	{
-		// 只有在压缩后真的更小的时候才使用压缩结果
 		if (CompressedPayload.size() < PayloadBuffer.size())
 		{
 			FinalPayload = std::move(CompressedPayload);
@@ -1117,7 +1116,6 @@ bool FFBXAssetImport::SaveToCache(const char* InCachePath, const char* InOrigina
 	}
 	else
 	{
-		// 压缩失败时回退为原始数据
 		FinalPayload = PayloadBuffer;
 	}
 

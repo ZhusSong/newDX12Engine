@@ -814,6 +814,17 @@ int CDirectXRenderingEngine::PostInit()
 			CustomMesh->SetRotation(fvector_3d(0.0f, 90.0f,0.0f), true);
 			CustomMesh->SetCastShadow(false);
 			CustomMesh->SetPickup(false);
+
+			if (vector<CMaterial*>* Materials = CustomMesh->GetMaterials())
+			{
+				for (CMaterial* InMaterial : *Materials)
+				{
+					if (InMaterial)
+					{
+						InMaterial->SetMaterialType(EMaterialType::HalfLambert);
+					}
+				}
+			}
 		}
 
 		if (GCustomMesh* CustomMesh = World->CreateActorObject<GCustomMesh>())

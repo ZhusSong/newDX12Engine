@@ -34,13 +34,13 @@ void FFrame::AddParm(CPropertyObject* Addr)
 	}
 	else
 	{
-		while (ListParm->Nest.get())
+		while (ListParm->Next.get())
 		{
-			ListParm = ListParm->Nest;
+			ListParm = ListParm->Next;
 		}
 
-		ListParm->Nest = std::make_shared<FOutParm>();
-		ListParm->Nest->PropAddr = Addr;
+		ListParm->Next = std::make_shared<FOutParm>();
+		ListParm->Next->PropAddr = Addr;
 	}
 }
 
@@ -52,7 +52,7 @@ void FFrame::Step(CCoreMinimalObject* Context, void const* RefData)
 unsigned char* FFrame::GetParmAddr()
 {
 	CPropertyObject* Proper = OutParm->PropAddr;
-	OutParm = OutParm->Nest;
+	OutParm = OutParm->Next;
 
 
 
