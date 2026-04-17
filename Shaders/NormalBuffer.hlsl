@@ -11,10 +11,17 @@ struct MeshVertexIn
 struct MeshVertexOut
 {
     float4 WorldPosition : POSITION;
+    float4 ClipPosition : POSITION1;
     float4 Position : SV_POSITION;
     float3 Normal : NORMAL;
     float3 UTangent : TANGENT;
     float2 TexCoord : TEXCOORD;
+};
+
+struct NormalDepthOut
+{
+    float4 Normal : SV_TARGET0;
+    float4 Depth : SV_TARGET1;
 };
 
 MeshVertexOut VertexShaderMain(MeshVertexIn MV)
@@ -30,7 +37,8 @@ MeshVertexOut VertexShaderMain(MeshVertexIn MV)
 
 	// 变换到齐次空间
     // 同次空間に変換
-	Out.Position = mul(Out.WorldPosition, ViewProjectionMatrix);
+	Out.ClipPosition = mul(Out.WorldPosition, ViewProjectionMatrix);
+	Out.Position = Out.ClipPosition;
 
 	// 法线
     // 法線
@@ -47,11 +55,15 @@ MeshVertexOut VertexShaderMain(MeshVertexIn MV)
 	return Out;
 }
 
-float4 PixelShaderMain(MeshVertexOut MVOut) :SV_TARGET
+NormalDepthOut PixelShaderMain(MeshVertexOut MVOut)
 {
+    NormalDepthOut Out = (NormalDepthOut)0.0f;
     float3 NormalizeWorldNormal = normalize(MVOut.Normal);
+    // 独立深度输入：写入投影后的 NDC 深度，供 SSAO 在视空间内重建位置。
+    float DepthNDC = saturate(MVOut.ClipPosition.z / max(MVOut.ClipPosition.w, 1e-4f));
 
-    float3 NormalizeViewNormal = mul(NormalizeWorldNormal, (float3x3) ViewProjectionMatrix);
-
-    return float4(NormalizeViewNormal, 0.f);
+    float3 EncodedNormal = NormalizeWorldNormal * 0.5f + 0.5f;
+    Out.Normal = float4(EncodedNormal, 1.0f);
+    Out.Depth = float4(DepthNDC, 1.0f, 1.0f, 1.0f);
+    return Out;
 }

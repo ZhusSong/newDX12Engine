@@ -39,7 +39,6 @@ public:
 
 	void SaveToSSAOBuffer();
 
-	void BuildDepthBuffer();
 	void BuildBlurWeights(float InSigma, bool bReBuildBlurWeights = false);
 
 protected:	
@@ -61,6 +60,7 @@ public:
 
 public:
 	UINT GetDepthBufferSRVOffset() const;
+	UINT GetDepthBufferRTVOffset() const;
 
 	UINT GetNormalBufferSRVOffset() const;
 	UINT GetNormalBufferRTVOffset() const;

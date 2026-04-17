@@ -1,5 +1,9 @@
 ﻿#include "Shader.h"
 
+#if defined(_WIN32)
+#include <Windows.h>
+#endif
+
 LPVOID FShader::GetBufferPointer() const
 {
 	return ShaderCode->GetBufferPointer();
@@ -14,29 +18,37 @@ void FShader::BuildShaders(
 	const wstring& InFileName,
 	const string& InEntryFunName,
 	const string& InShadersVersion,
-	const D3D_SHADER_MACRO* InShaderMacro)
+	const D3D_SHADER_MACRO* InShaderMacro,
+	UINT InCompileFlags)
 {
+	UINT CompileFlags = InCompileFlags;
+	if (CompileFlags == UINT(-1))
+	{
+#if _DEBUG
+		CompileFlags = D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION;
+#else
+		CompileFlags = 0;
+#endif
+	}
+
 	ComPtr<ID3DBlob> ErrorShaderMsg;
 	HRESULT R = D3DCompileFromFile(InFileName.c_str(),
 		InShaderMacro, D3D_COMPILE_STANDARD_FILE_INCLUDE,
 		InEntryFunName.c_str(), InShadersVersion.c_str(),
-#if _DEBUG
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION
-#else
-		0
-#endif
+		CompileFlags
 		, 0, &ShaderCode, &ErrorShaderMsg);
 
 	if (ErrorShaderMsg)
 	{
 		char* p = (char*)ErrorShaderMsg->GetBufferPointer();
-		if (SUCCEEDED(R))
+		if (FAILED(R))
 		{
-			Engine_Log_Warning("%s", p);
-		}
-		else
-		{
-			Engine_Log_Error("%s", p);
+#if defined(_WIN32)
+			OutputDebugStringA("Shader compile message:\n");
+			OutputDebugStringA(p);
+			OutputDebugStringA("\n");
+#endif
+			Engine_Log_Error("%s", "Shader compile failed. See debug output for full message.");
 		}
 	}
 

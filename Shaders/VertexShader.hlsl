@@ -391,11 +391,15 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
             FinalColor += ShadowFactor * (saturate((Diffuse + Specular) * LightStrength * DotValue));
         }
     }
-    float4 Ambient = (AmbientAccessibility + 0.1f) * AmbientLight * Material.BaseColor;
+    float AOVisibility = saturate(AmbientAccessibility);
+    float GroundReceiver = pow(saturate(ModelNormal.y), 3.0f);
+    float AOAmbientFactor = lerp(1.0f, lerp(0.08f, 1.0f, AOVisibility), GroundReceiver);
+    float AOSurfaceFactor = lerp(1.0f, lerp(0.28f, 1.0f, pow(AOVisibility, 1.08f)), GroundReceiver);
+    float4 Ambient = AOAmbientFactor * AmbientLight * Material.BaseColor;
 
     // 最终颜色
     // 最終色
-    MVOut.Color = FinalColor + Ambient; 
+    MVOut.Color = (FinalColor + Ambient) * AOSurfaceFactor; 
 	
     
     switch (MatConstBuffer.MaterialType)

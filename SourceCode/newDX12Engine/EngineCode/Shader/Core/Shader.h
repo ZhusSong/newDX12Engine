@@ -13,7 +13,8 @@ public:
 		const wstring& InFileName,
 		const string& InEntryFunName,
 		const string& InShadersVersion,
-		const D3D_SHADER_MACRO* InShaderMacro = NULL);
+		const D3D_SHADER_MACRO* InShaderMacro = NULL,
+		UINT InCompileFlags = UINT(-1));
 
 	// 通过shader文件名获取shader(弃用)
 	// シェーダーファイル名からシェーダーを取得（非推奨）

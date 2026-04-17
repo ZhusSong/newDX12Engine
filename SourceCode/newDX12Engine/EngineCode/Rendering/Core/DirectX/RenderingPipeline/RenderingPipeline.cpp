@@ -2,7 +2,6 @@
 #include "../../../../Component/Mesh/Core/MeshComponentType.h"
 #include "../../../../Config/EngineRenderConfig.h"
 
-
 FRenderingPipeline::FRenderingPipeline()
 {
 
@@ -39,7 +38,7 @@ void FRenderingPipeline::UpdateCalculations(float DeltaTime, const FViewportInfo
 
 void FRenderingPipeline::OnResetSize(int InWidth, int InHeight)
 {
-	//SSAO.OnResetSize(InWidth, InHeight);
+	SSAO.OnResetSize(InWidth, InHeight);
 	DynamicCubeMap.OnResetSize(InWidth, InHeight);
 	GeometryMap.OnResetSize(InWidth, InHeight);
 	RenderLayer.OnResetSize(InWidth, InHeight);
@@ -75,7 +74,7 @@ void FRenderingPipeline::BuildPipeline()
 		&DirectXPipelineState,
 		&RenderLayer);
 
-	//// 构建SSAO
+	// 构建SSAO
 	// SSAOを構築する
 	SSAO.Init(
 		&GeometryMap,
@@ -172,7 +171,7 @@ void FRenderingPipeline::BuildPipeline()
 	GeometryMap.BuildTextureConstantBuffer();
 
 	// 构建雾气常量缓冲区
-	// テクスチャを構築する
+	// フォグ定数バッファを構築する
 	GeometryMap.BuildFogConstantBuffer();
 
 	//构建SSAO
@@ -203,8 +202,24 @@ void FRenderingPipeline::PreDraw(float DeltaTime)
 
 	// 渲染SSAO
 	// SSAOを描画する
-	//SSAO.Draw(DeltaTime);
+	SSAO.Draw(DeltaTime);
+
+	// SSAO pass 会切换到自己的 RT，这里只重新绑定主视口 RT/DSV，
+	// 不改变外层的 PRESENT/RENDER_TARGET 状态计数。
+	// SSAO pass は独自の RT に切り替わるため、ここではメインビューポートの RT/DSV だけを再バインドし、
+	// 外側の PRESENT/RENDER_TARGET の状態管理カウントは変更しない。
+	StartSetMainViewportRenderTarget();
+	EndSetMainViewportRenderTarget();
+
 	RootSignature.PreDraw(DeltaTime);
+
+	// SSAO 在自己的根签名里会覆写一部分 root 参数。
+	// 切回默认根签名后，这里把主流程依赖的资源重新绑定一遍，
+	// 避免背景层继续吃到 SSAO 留下的 descriptor table。
+	// SSAO は独自のルートシグネチャ内で一部の root パラメータを上書きするため、
+	// デフォルトのルートシグネチャへ戻した後に主描画で使うリソースを再バインドし、
+	// 背景レイヤーが SSAO の descriptor table を誤って参照し続けるのを防ぐ。
+	GeometryMap.Draw(DeltaTime);
 
 	// 存储SSAO到指定的buffer
 	// SSAOを指定のバッファに保存する
@@ -214,9 +229,12 @@ void FRenderingPipeline::PreDraw(float DeltaTime)
 	// メインビューのCanvasをクリアする
 	ClearMainSwapChainCanvas();
 
-	//重新绑定贴图
-	// テクスチャを再バインドする
-	GeometryMap.Draw2DTexture(DeltaTime);
+	// 背景层需要先于动态反射物体绘制到主视口，
+	// 否则 DynamicCubeMap.PreDraw 里先画出来的反射物体会被后续背景整块覆盖掉。
+	// 背景レイヤーは動的反射オブジェクトより先にメインビューポートへ描画する必要があり、
+	// そうしないと DynamicCubeMap.PreDraw で先に描かれた反射オブジェクトが後続の背景に丸ごと覆われてしまう。
+	GeometryMap.DrawViewport(DeltaTime);
+	RenderLayer.Draw(RENDERLAYER_BACKGROUND, DeltaTime);
 
 	// 渲染shadowCubeMap
 	// shadowCubeMapを描画する
@@ -233,6 +251,13 @@ void FRenderingPipeline::PreDraw(float DeltaTime)
 		DynamicCubeMap.PreDraw(DeltaTime);
 	}
 
+	// 阴影/反射等离屏 pass 会改掉当前 OM 绑定，
+	// 这里统一把主视口 RT/DSV 重新绑回主流程。
+	// シャドウや反射のオフスクリーン pass は現在の OM バインドを変更するため、
+	// ここでメインビューポートの RT/DSV を主描画フローへ再バインドする。
+	StartSetMainViewportRenderTarget();
+	EndSetMainViewportRenderTarget();
+
 	RenderLayer.PreDraw(DeltaTime);
 }
 
@@ -248,7 +273,6 @@ void FRenderingPipeline::Draw(float DeltaTime)
 
 	// 各类层级
 	// 各レイヤー
-	RenderLayer.Draw(RENDERLAYER_BACKGROUND, DeltaTime);
 	RenderLayer.Draw(RENDERLAYER_OPAQUE, DeltaTime);
 	RenderLayer.Draw(RENDERLAYER_TRANSPARENT, DeltaTime);
 

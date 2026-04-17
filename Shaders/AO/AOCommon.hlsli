@@ -34,7 +34,7 @@ cbuffer CBufferSSAOView : register(b0)
 
 cbuffer CBufferBlurConstants : register(b1)
 {
-    bool bHorizontalBlur;
+    uint bHorizontalBlur;
 }
 
 // 模糊的参数 算子

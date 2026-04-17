@@ -8,11 +8,9 @@ struct MeshVertexOut
 
 MeshVertexOut VertexShaderMain(uint VertexID : SV_VertexID)
 {
-    MeshVertexOut Out = (MeshVertexOut) 0.f;
+    MeshVertexOut Out = (MeshVertexOut)0.f;
 
     Out.TexCoord = TextureCoordinates[VertexID];
-
-    // 0-1 NDC空間
     Out.Position = float4(2.f * Out.TexCoord.x - 1.f, 1.f - 2.f * Out.TexCoord.y, 0.f, 1.f);
 
     return Out;
@@ -23,29 +21,23 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
     float BlurWeights[12] =
     {
         Float4BlurWeights[0].x, Float4BlurWeights[0].y, Float4BlurWeights[0].z, Float4BlurWeights[0].w,
-		 Float4BlurWeights[1].x, Float4BlurWeights[1].y, Float4BlurWeights[1].z, Float4BlurWeights[1].w,
-		 Float4BlurWeights[2].x, Float4BlurWeights[2].y, Float4BlurWeights[2].z, Float4BlurWeights[2].w,
+        Float4BlurWeights[1].x, Float4BlurWeights[1].y, Float4BlurWeights[1].z, Float4BlurWeights[1].w,
+        Float4BlurWeights[2].x, Float4BlurWeights[2].y, Float4BlurWeights[2].z, Float4BlurWeights[2].w,
     };
 
-    float2 TexOffset;
-    if (bHorizontalBlur)
-    {
-        TexOffset = float2(InversionSize.x, 0.f);
-    }
-    else
-    {
-        TexOffset = float2(0.f, InversionSize.y);
-    }
+    float2 TexOffset = (bHorizontalBlur != 0u)
+        ? float2(InversionSize.x, 0.f)
+        : float2(0.f, InversionSize.y);
 
-	// 中间的权重对应的法线和深度颜色
-    // 中央の重みに対応する法線と深度の色
-    float Weights = BlurWeights[BlurRadius];
+    int Radius = (int)BlurRadius;
+    float Weights = BlurWeights[Radius];
     float4 Color = Weights * SampleAcceptMap.SampleLevel(TextureSampler, MVOut.TexCoord, 0.0f);
-	
-    float3 MatchingNormal = SampleNormalMap.SampleLevel(TextureSampler, MVOut.TexCoord, 0.0f).xyz;
-    float MatchingViewDepth = DepthNdcSpaceToViewSpace(SampleDepthMap.SampleLevel(DepthSampler, MVOut.TexCoord, 0.0f).r);
-	
-    for (float i = -BlurRadius; i <= BlurRadius; i++)
+
+    float4 MatchingNormalDepth = SampleNormalMap.SampleLevel(TextureSampler, MVOut.TexCoord, 0.0f);
+    float3 MatchingNormal = MatchingNormalDepth.xyz;
+    float MatchingViewDepth = DepthNdcSpaceToViewSpace(MatchingNormalDepth.w);
+
+    for (int i = -Radius; i <= Radius; ++i)
     {
         if (i == 0)
         {
@@ -53,17 +45,17 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
         }
 
         float2 TexCoord = MVOut.TexCoord + i * TexOffset;
-        float3 Normal = SampleNormalMap.SampleLevel(TextureSampler, TexCoord, 0.0f).xyz;
-        float ViewDepth = DepthNdcSpaceToViewSpace(SampleDepthMap.SampleLevel(DepthSampler, TexCoord, 0.0f).r);
+        float4 NormalDepth = SampleNormalMap.SampleLevel(TextureSampler, TexCoord, 0.0f);
+        float3 Normal = NormalDepth.xyz;
+        float ViewDepth = DepthNdcSpaceToViewSpace(NormalDepth.w);
 
         if (dot(Normal, MatchingNormal) >= 0.8f && abs(ViewDepth - MatchingViewDepth) <= 0.2f)
         {
-            float Weight = BlurWeights[BlurRadius + i];
+            float Weight = BlurWeights[Radius + i];
             Color += Weight * SampleAcceptMap.SampleLevel(TextureSampler, TexCoord, 0.0f);
-		
             Weights += Weight;
         }
     }
-	
-    return Color / Weights;
+
+    return Color / max(Weights, 0.0001f);
 }

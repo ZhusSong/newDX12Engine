@@ -18,5 +18,6 @@ public:
 private:
 	ComPtr<ID3D12Resource> UploadBuffer;
 	UINT ElementSize;
+	UINT ElementDataSize;
 	BYTE* Data;
 };

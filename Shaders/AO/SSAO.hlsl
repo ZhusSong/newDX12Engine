@@ -1,95 +1,88 @@
 #include "AOFunctionLibrary.hlsli"
 
+static const float GContactStrength = 1.68f;
+static const float GContactBias = 0.022f;
+
 struct MeshVertexOut
 {
-    float4 ViewPosition : POSITION;
     float4 Position : SV_POSITION;
     float2 TexCoord : TEXCOORD;
 };
 
 MeshVertexOut VertexShaderMain(uint VertexID : SV_VertexID)
 {
-    MeshVertexOut Out = (MeshVertexOut) 0.f;
+    MeshVertexOut Out = (MeshVertexOut)0.f;
 
     Out.TexCoord = TextureCoordinates[VertexID];
-
-	// 映射到NDC空间
-    // NDC空間にマッピング
     Out.Position = float4(2.f * Out.TexCoord.x - 1.f, 1.f - 2.f * Out.TexCoord.y, 0.f, 1.f);
-	
-    float4 PositionH = mul(Out.Position, InversiveProjectionMatrix); //视口空间 //ビューポート空間
-    Out.ViewPosition.xyz = PositionH.xyz / PositionH.w; //近剪裁面  //近クリップ面
 
     return Out;
 }
+
 float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
 {
-	// 获取当前像素的法线
-    // 現在のピクセルの法線を取得
-    float3 N = SampleNormalMap.SampleLevel(TextureSampler, MVOut.TexCoord, 0.0).xyz;
-    float DepthNDC = SampleDepthMap.SampleLevel(DepthSampler, MVOut.TexCoord, 0.0).r;
-	// 把深度从NDC空间转换到视口空间深度
-    // 深度をNDC空間からビューポート空間深度に変換
-    float AViewSpaceDepth = DepthNdcSpaceToViewSpace(DepthNDC);
+    float3 CenterNormal = normalize(SampleNormalMap.SampleLevel(TextureSampler, MVOut.TexCoord, 0.0f).xyz * 2.0f - 1.0f);
+    float CenterDepth = SampleDepthMap.SampleLevel(TextureSampler, MVOut.TexCoord, 0.0f).r;
+    float4 CenterClip = float4(2.0f * MVOut.TexCoord.x - 1.0f, 1.0f - 2.0f * MVOut.TexCoord.y, CenterDepth, 1.0f);
+    float4 CenterView = mul(CenterClip, InversiveProjectionMatrix);
+    CenterView /= max(CenterView.w, 1e-4f);
+    float3 CenterViewPosition = CenterView.xyz;
 
-	// 视口空间下当前像素的位置
-    // ビューポート空間における現在のピクセルの位置
-    float3 AViewSpacePosition = (AViewSpaceDepth / MVOut.ViewPosition.z) * MVOut.ViewPosition;
+    float3 NoiseValue = SampleNoiseMap.SampleLevel(TextureSampler, MVOut.TexCoord * 4.0f, 0.0f).xyz * 2.0f - 1.0f;
+    float3 Tangent = normalize(NoiseValue - CenterNormal * dot(NoiseValue, CenterNormal));
+    float3 Bitangent = normalize(cross(CenterNormal, Tangent));
+    float3x3 TBN = float3x3(Tangent, Bitangent, CenterNormal);
 
-	// 环境光方向，计算颗粒度
-    // 環境光の方向、粒度を計算
-    float3 AmbientLightDirection = SampleNoiseMap.SampleLevel(TextureSampler, 4.f * MVOut.TexCoord, 0.0f);
-	
-    AmbientLightDirection = AmbientLightDirection.rgb * 2.f - 1.f;
-    
-    float OcclusionValue = 0.f;
-	// 遍历采样体积中的多个方向
-    // サンプリングボリューム内の複数の方向を反復処理
-    for (int i = 0; i < SAMPLE_VOLUME_NUM; i++)
+    float Occlusion = 0.0f;
+    float ValidSamples = 0.0f;
+
+    [unroll]
+    for (int i = 0; i < SAMPLE_VOLUME_NUM; ++i)
     {
-		// 环境光反射
-        // 環境光反射
-        float3 AmbientLightReflect = reflect(SampleVolumeBuffer[i].xyz, AmbientLightDirection);
+        float3 SampleKernel = normalize(SampleVolumeBuffer[i].xyz);
+        float RadiusScale = lerp(0.15f, 1.0f, SampleVolumeBuffer[i].w);
+        float3 SampleOffset = mul(SampleKernel, TBN) * (OcclusionRadius * RadiusScale);
+        float3 SampleViewPosition = CenterViewPosition + SampleOffset;
 
-		// 当前采样点在发现的哪一侧
-        // 現在のサンプルポイントが法線のどちら側にあるか
-        float SignValue = sign(dot(AmbientLightReflect, N));
+        float4 SampleClip = mul(float4(SampleViewPosition, 1.0f), ProjectionMatrix);
+        if (abs(SampleClip.w) < 1e-4f)
+        {
+            continue;
+        }
 
-		// 沿着方向在OcclusionRadius半径内找到一个采样点
-        // 方向に沿ってOcclusionRadius半径内のサンプルポイントを見つける
-        float3 BViewSpacePosition = AViewSpacePosition + SignValue * AmbientLightReflect * OcclusionRadius;
-		
-		// 将找到的采样点转到投影空间，并计算出NDC坐标
-        // 見つかったサンプルポイントを投影空間に変換し、NDC座標を計算
-        float4 CTexProjectionSpace = mul(float4(BViewSpacePosition, 1.0f), TexProjectionMatrix);
-        CTexProjectionSpace /= CTexProjectionSpace.w;
+        SampleClip.xyz /= SampleClip.w;
+        float2 SampleUV = float2(SampleClip.x * 0.5f + 0.5f, 0.5f - SampleClip.y * 0.5f);
 
-        float CDepthNDC = SampleDepthMap.SampleLevel(DepthSampler, CTexProjectionSpace.xy, 0.0).r;
-	
-		// 转为视口空间深度
-        // ビューポート空間深度に変換
-        float CViewDepth = DepthNdcSpaceToViewSpace(CDepthNDC);
+        if (any(SampleUV < 0.0f) || any(SampleUV > 1.0f))
+        {
+            continue;
+        }
 
-		// 得到遮挡物在视口空间中的位置
-        // 遮蔽物のビューポート空間における位置を取得
-        float3 CViewSpacePosition = (CViewDepth / BViewSpacePosition.z) * BViewSpacePosition;
+        float SceneDepth = SampleDepthMap.SampleLevel(TextureSampler, SampleUV, 0.0f).r;
+        float4 SceneClip = float4(2.0f * SampleUV.x - 1.0f, 1.0f - 2.0f * SampleUV.y, SceneDepth, 1.0f);
+        float4 SceneView = mul(SceneClip, InversiveProjectionMatrix);
+        SceneView /= max(SceneView.w, 1e-4f);
+        float3 SceneViewPosition = SceneView.xyz;
 
-		// 点和遮挡物的距离
-        // 点と遮蔽物の距離
-        float DepthDistance = AViewSpacePosition.z - CViewSpacePosition.z;
-        
-        float NoAC = max(dot(N, normalize(CViewSpacePosition - AViewSpacePosition)), 0.f);
+        float DepthDelta = SceneViewPosition.z - SampleViewPosition.z;
+        float SceneIsCloser = step(GContactBias, DepthDelta);
+        float RangeWeight = smoothstep(1.0f, 0.0f, length(SceneViewPosition - CenterViewPosition) / max(OcclusionRadius * 1.10f, 1e-4f));
+        float3 SampleNormal = normalize(SampleNormalMap.SampleLevel(TextureSampler, SampleUV, 0.0f).xyz * 2.0f - 1.0f);
+        float NormalDifference = 1.0f - saturate(dot(CenterNormal, SampleNormal));
+        float NormalWeight = smoothstep(0.04f, 0.28f, NormalDifference);
+        float HemisphereWeight = saturate(dot(CenterNormal, normalize(SceneViewPosition - CenterViewPosition)) * 0.5f + 0.5f);
+        float ContactDepthWeight = smoothstep(GContactBias, GContactBias + 0.04f, DepthDelta);
 
-		// 根据深度差计算遮蔽强度
-        // 深度差に基づいて遮蔽強度を計算
-        OcclusionValue += NoAC * OcclusionFunction(DepthDistance);
+        Occlusion += SceneIsCloser * ContactDepthWeight * RangeWeight * max(NormalWeight, HemisphereWeight * 0.35f);
+        ValidSamples += 1.0f;
     }
-	// 求平均
-    // 平均を求める
-    OcclusionValue /= SAMPLE_VOLUME_NUM;
-	// 最终可见性计算
-    // 最終可視性の計算
-    float Accessibility = 1.f - OcclusionValue;
-    
-    return saturate(pow(Accessibility, 6.0f));
+
+    Occlusion = saturate(Occlusion / max(ValidSamples, 1.0f));
+    Occlusion = pow(saturate(Occlusion), 1.25f);
+    Occlusion = saturate(Occlusion * GContactStrength);
+
+    float Accessibility = 1.0f - Occlusion * 0.82f;
+    Accessibility = saturate(max(Accessibility, 0.60f));
+
+    return float4(Accessibility, Accessibility, Accessibility, 1.0f);
 }

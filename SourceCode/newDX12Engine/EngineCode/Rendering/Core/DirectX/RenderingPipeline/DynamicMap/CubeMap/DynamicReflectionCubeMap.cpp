@@ -67,6 +67,13 @@ void FDynamicReflectionCubeMap::PreDraw(float DeltaTime)
 
 			GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrierPresent);
 
+			CD3DX12_RESOURCE_BARRIER DepthStencilToWrite = CD3DX12_RESOURCE_BARRIER::Transition(
+				DepthStencilBuffer.Get(),
+				D3D12_RESOURCE_STATE_GENERIC_READ,
+				D3D12_RESOURCE_STATE_DEPTH_WRITE);
+
+			GetGraphicsCommandList()->ResourceBarrier(1, &DepthStencilToWrite);
+
 			// 需要每帧执行
 			// 绑定矩形框
 			// 毎フレーム実行が必要
@@ -122,6 +129,13 @@ void FDynamicReflectionCubeMap::PreDraw(float DeltaTime)
 				D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_GENERIC_READ);
 
 			GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrierPresentRenderTarget);
+
+			CD3DX12_RESOURCE_BARRIER DepthStencilToRead = CD3DX12_RESOURCE_BARRIER::Transition(
+				DepthStencilBuffer.Get(),
+				D3D12_RESOURCE_STATE_DEPTH_WRITE,
+				D3D12_RESOURCE_STATE_GENERIC_READ);
+
+			GetGraphicsCommandList()->ResourceBarrier(1, &DepthStencilToRead);
 
 			StartSetMainViewportRenderTarget();
 

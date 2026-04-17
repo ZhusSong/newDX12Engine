@@ -88,6 +88,17 @@ void FDynamicCubeMap::BuildDepthStencil()
 		D3D12_RESOURCE_STATE_DEPTH_WRITE);
 
 	GetGraphicsCommandList()->ResourceBarrier(1, &Barrier);
+
+	// 运行时各个 CubeMap pass 都按“读取态 -> 深度写入态”切换，
+	// 这里初始化完成后也统一回到 GENERIC_READ，避免首帧 barrier 的 BeforeState 与实际状态不一致。
+	// 実行時の各 CubeMap pass は「読み取り状態 -> 深度書き込み状態」で遷移するため、
+	// 初期化終了後も GENERIC_READ に戻して、初回フレームの BeforeState 不一致を防ぐ。
+	CD3DX12_RESOURCE_BARRIER BarrierToRead = CD3DX12_RESOURCE_BARRIER::Transition(
+		DepthStencilBuffer.Get(),
+		D3D12_RESOURCE_STATE_DEPTH_WRITE,
+		D3D12_RESOURCE_STATE_GENERIC_READ);
+
+	GetGraphicsCommandList()->ResourceBarrier(1, &BarrierToRead);
 }
 
 void FDynamicCubeMap::BuildRenderTargetDescriptor()

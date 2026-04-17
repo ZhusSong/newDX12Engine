@@ -2,6 +2,22 @@
 #include "../../Geometry/GeometryMap.h"
 #include "../../PipelineState/DirectXPipelineState.h"
 
+namespace
+{
+	// 仅用于调试 SSAO shader 的快速编译开关
+	// SSAO シェーダーをデバッグする際の高速コンパイル用フラグ
+	constexpr bool GSSAOFastDebugMode = true;
+
+	UINT GetSSAOShaderCompileFlags()
+	{
+#if _DEBUG
+		return GSSAOFastDebugMode ? 0u : (D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION);
+#else
+		return 0u;
+#endif
+	}
+}
+
 FSSAORenderLayer::FSSAORenderLayer()
 {
 	RenderPriority = 99999;
@@ -9,11 +25,13 @@ FSSAORenderLayer::FSSAORenderLayer()
 
 void FSSAORenderLayer::BuildShader()
 {
-	
+	// 构建Shader
+	// シェーダーを構築する
 	// HLSL
 	std::wstring ShaderPath = BuildShadersPaths(L"AO/SSAO");
-	VertexShader.BuildShaders(ShaderPath, "VertexShaderMain", "vs_5_1", NULL);
-	PixelShader.BuildShaders(ShaderPath, "PixelShaderMain", "ps_5_1", NULL);
+	UINT CompileFlags = GetSSAOShaderCompileFlags();
+	VertexShader.BuildShaders(ShaderPath, "VertexShaderMain", "vs_5_1", NULL, CompileFlags);
+	PixelShader.BuildShaders(ShaderPath, "PixelShaderMain", "ps_5_1", NULL, CompileFlags);
 	DirectXPipelineState->BindShader(VertexShader, PixelShader);
 
 	// shader输入格式

@@ -35,8 +35,8 @@ FRenderLayerManager::FRenderLayerManager()
 
 	CreateRenderLayer<FOperationHandleRotPlaneRenderLayer>();
 
-	//CreateRenderLayer<FSSAOBilateralRenderLayer>();
-	//CreateRenderLayer<FSSAORenderLayer>();
+	CreateRenderLayer<FSSAOBilateralRenderLayer>();
+	CreateRenderLayer<FSSAORenderLayer>();
 	CreateRenderLayer<FNormalBufferRenderLayer>();
 	CreateRenderLayer<FSelectRenderLayer>();
 	CreateRenderLayer<FOpaqueShadowRenderLayer>();

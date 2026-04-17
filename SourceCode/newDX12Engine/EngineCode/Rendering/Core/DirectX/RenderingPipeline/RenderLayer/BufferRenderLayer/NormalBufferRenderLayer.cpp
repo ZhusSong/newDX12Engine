@@ -48,7 +48,9 @@ void FNormalBufferRenderLayer::BuildPSO()
 	Super::BuildPSO();
 
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC& GPSDesc = DirectXPipelineState->GetGPSDesc();
+	GPSDesc.NumRenderTargets = 2;
 	GPSDesc.RTVFormats[0] = DXGI_FORMAT_R16G16B16A16_FLOAT;
+	GPSDesc.RTVFormats[1] = DXGI_FORMAT_R16_UNORM;
 	GPSDesc.SampleDesc.Count = 1;
 	GPSDesc.SampleDesc.Quality = 0;
 	GPSDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;

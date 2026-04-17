@@ -173,24 +173,11 @@ int CDirectXRenderingEngine::PostInit()
 
 		}
 	
-		// 地板
-		// 床
-		if (GPlaneMesh* InPlaneMesh = World->CreateActorObject<GPlaneMesh>())
-		{
-			InPlaneMesh->CreateMesh(4.f, 3.f, 20, 20);
+		// 旧演示物体组
+		// 旧デモオブジェクト群
 
-			InPlaneMesh->SetPosition(XMFLOAT3(0.f, -12.f, 0.f));
-			InPlaneMesh->SetScale(fvector_3d(50.f, 1.f, 50.f));
-			// 地面不显示阴影
-			// 地面はシャドウを表示しない
-			InPlaneMesh->SetCastShadow(false);
-			InPlaneMesh->SetPickup(false);
-			if (CMaterial* InMaterial = (*InPlaneMesh->GetMaterials())[0])
-			{
-				InMaterial->SetMaterialType(EMaterialType::Lambert);
-			}
 
-		}
+//  0
 
 		//　甜甜圈
 		// ドーナツ
@@ -276,6 +263,7 @@ int CDirectXRenderingEngine::PostInit()
 
 			InCylinderMesh->SetPosition(XMFLOAT3(14.f, -10.f, 20.f));
 			InCylinderMesh->SetScale(fvector_3d(1.f));
+			InCylinderMesh->SetCastShadow(false);
 			if (CMaterial* InMaterial = (*InCylinderMesh->GetMaterials())[0])
 			{
 				InMaterial->SetBaseColor("Zhuan");
@@ -661,7 +649,9 @@ int CDirectXRenderingEngine::PostInit()
 				InMaterial->SetMaterialType(EMaterialType::HalfLambert);
 			}
 		}
-	
+
+
+
 		// 反射球
 		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 		{
@@ -700,6 +690,26 @@ int CDirectXRenderingEngine::PostInit()
 
 				InMaterial->SetSpecular(fvector_3d(1.f));
 				InMaterial->SetRefractiveValue(1.11f);
+			}
+		}
+
+		// 地板
+		// 床
+		if (GPlaneMesh* InPlaneMesh = World->CreateActorObject<GPlaneMesh>())
+		{
+			InPlaneMesh->CreateMesh(4.f, 3.f, 20, 20);
+
+			InPlaneMesh->SetPosition(XMFLOAT3(0.f, -12.f, 0.f));
+			InPlaneMesh->SetScale(fvector_3d(50.f, 1.f, 50.f));
+			
+			// 地面不显示阴影
+			// 地面はシャドウを表示しない
+			InPlaneMesh->SetCastShadow(false);
+			InPlaneMesh->SetPickup(false);
+			if (CMaterial* InMaterial = (*InPlaneMesh->GetMaterials())[0])
+			{
+				InMaterial->SetBaseColor(fvector_4d(1, 1, 1, 1));
+				InMaterial->SetMaterialType(EMaterialType::Lambert);
 			}
 		}
 
@@ -746,63 +756,6 @@ int CDirectXRenderingEngine::PostInit()
 		//	}
 		//}
 
-		//// 阴影shader单独显示
-		//// シャドウシェーダーを単独で表示
-		//if (GPlaneMesh* InPlaneMesh = World->CreateActorObject<GPlaneMesh>())
-		//{
-		//	InPlaneMesh->CreateMesh(7.f, 7.f, 2, 2);
-		//	InPlaneMesh->SetPosition(XMFLOAT3(0.f, 0.f, 60.f));
-		//	InPlaneMesh->SetRotation(fvector_3d(90.f, 0.f, 0.f));
-		//	if (CMaterial* InMaterial = (*InPlaneMesh->GetMaterials())[0])
-		//	{
-		//		InMaterial->SetMaterialType(ShadowTexture);
-		//	}
-		//}
-	
-		// 外部FBX模型
-		// 外部FBXモデル
-		if (GCustomMesh* CustomMesh = World->CreateActorObject<GCustomMesh>())
-		{
-			string MeshPath = FEnginePathHelper::GetEngineAssetPath() + "/SK_Mannequin.FBX";
-			CustomMesh->CreateMesh(MeshPath);
-		
-			CustomMesh->SetPosition(XMFLOAT3(0.f, 0, 40.f));
-			CustomMesh->SetRotation(fvector_3d(0.f, 180.f, 0.f));
-			// 是否渲染ShadowMap
-			// ShadowMapをレンダリングするかどうか
-			CustomMesh->SetCastShadow(false);
-			if (vector<CMaterial*>* Materials = CustomMesh->GetMaterials())
-			{
-				for (CMaterial* InMaterial : *Materials)
-				{
-					if (InMaterial)
-					{
-						InMaterial->SetMaterialType(EMaterialType::BaseColor);
-						InMaterial->SetBaseColor(fvector_4d(1.f, 1.f, 1.f, 1.f));
-						InMaterial->SetMaterialType(EMaterialType::Lambert);
-					}
-				}
-			}
-		}
-
-		//if (GCustomMesh* CustomMesh = World->CreateActorObject<GCustomMesh>())
-		//{
-		//	string MeshPath = FEnginePathHelper::GetEngineAssetPath() + "/usagi_Believer.fbx";
-		//	CustomMesh->CreateMesh(MeshPath);
-
-		//	CustomMesh->SetPosition(XMFLOAT3(40.f, -10, 20.f));
-		//	CustomMesh->SetScale(fvector_3d(0.03f, 0.03f, 0.03f));
-		//	CustomMesh->SetRotation(fvector_3d(0.0f,-90.0f,90.0f));
-		//	// 是否渲染ShadowMap
-		//	// ShadowMapをレンダリングするかどうか
-		//	CustomMesh->SetCastShadow(false);
-		//	if (CMaterial* InMaterial = (*CustomMesh->GetMaterials())[0])
-		//	{
-		//		InMaterial->SetBaseColor(fvector_4d(1.f));
-		//		InMaterial->SetMaterialType(EMaterialType::BinnPhong);
-
-		//	}
-		//}
 
 		if (GCustomMesh* CustomMesh = World->CreateActorObject<GCustomMesh>())
 		{
@@ -811,7 +764,7 @@ int CDirectXRenderingEngine::PostInit()
 
 			CustomMesh->SetPosition(XMFLOAT3(60.f, -10.f, 80.f));
 			CustomMesh->SetScale(fvector_3d(0.05f, 0.05f, 0.05f));
-			CustomMesh->SetRotation(fvector_3d(0.0f, 90.0f,0.0f), true);
+			CustomMesh->SetRotation(fvector_3d(0.0f, 90.0f, 0.0f), true);
 			CustomMesh->SetCastShadow(false);
 			CustomMesh->SetPickup(false);
 
@@ -837,9 +790,11 @@ int CDirectXRenderingEngine::PostInit()
 			CustomMesh->SetRotation(fvector_3d(-90.0f, 0.0f, 0.0f), true);
 			CustomMesh->SetCastShadow(true);
 			CustomMesh->SetPickup(false);
-			  
+
+
 
 		}
+
 		////well
 		//if (GBoxMesh* InBoxMesh = World->CreateActorObject<GBoxMesh>())
 		//{
@@ -1163,8 +1118,9 @@ void CDirectXRenderingEngine::ClearMainSwapChainCanvas()
 {
 	// 清除画布
 	// Canvasをクリア
+	const float ClearColor[] = { 0.70f, 0.70f, 0.70f, 1.0f };
 	GraphicsCommandList->ClearRenderTargetView(GetCurrentSwapBufferView(),
-		DirectX::Colors::Black,
+		ClearColor,
 		0, nullptr);
 
 	// 清除深度模板缓冲区
@@ -1417,7 +1373,7 @@ bool CDirectXRenderingEngine::InitDirect3D()
 		FEngineRenderConfig::GetRenderConfig()->SwapChainCount + //交换链 // スワップチェーン
 		6 + //反射的CubeMap RTV              // 反射用CubeMap RTV
 		6 + //ShadowCubeMap RTV Point Light  // ShadowCubeMap RTV 点光源
-		1 + //屏幕法线                       // スクリーン法線
+		2 + //屏幕法线 + SSAO深度输入        // スクリーン法線 + SSAO depth input
 		1 + //SSAO
 		1;  //双边模糊                       // 両方向ブラー
 

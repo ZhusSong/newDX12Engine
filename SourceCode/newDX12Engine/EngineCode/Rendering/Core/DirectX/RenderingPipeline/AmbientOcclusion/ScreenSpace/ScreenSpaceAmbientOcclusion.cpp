@@ -4,7 +4,6 @@
 #include "../../RenderLayer/RenderLayerManager.h"
 #include "../../../../../../Component/Mesh/Core/MeshComponentType.h"
 #include "../../RenderTarget/BufferRenderTarget.h"
-#include "../../RenderBuffer/DepthBuffer.h"
 #include "../../Geometry/GeometryMap.h"
 #include "../../../../../../Config/EngineRenderConfig.h"
 
@@ -50,24 +49,11 @@ void FScreenSpaceAmbientOcclusion::Draw(float DeltaTime)
 	NoiseBuffer.Draw(DeltaTime);
 	BilateralBlur.Draw(DeltaTime);
 
-	// 构建SSAO
-	// SSAOを構築
-
-	// 设置根签名
-	// ルートシグネチャを設定
 	DirectXRootSignature.PreDraw(DeltaTime);
 
-	// 渲染资源
-	// リソースを描画
 	DrawResources(DeltaTime);
 
-	// 渲染SSAO
-	// SSAOを描画
 	DrawSSAO(DeltaTime);
-
-	// 渲染模糊
-	// ブラーを描画
-	DrawBilateralBlur(DeltaTime);
 }
 
 void FScreenSpaceAmbientOcclusion::DrawSSAO(float DeltaTime)
@@ -156,19 +142,11 @@ void FScreenSpaceAmbientOcclusion::SetRoot32BitConstant(bool bHorizontal)
 
 void FScreenSpaceAmbientOcclusion::DrawResources(float DeltaTime)
 {
-	// 绑定SSAO常量缓冲区
-	// SSAO定数バッファをバインド
 	GetGraphicsCommandList()->SetGraphicsRootConstantBufferView(
 		0,
 		SSAOViewConstantBufferViews.GetBuffer()->GetGPUVirtualAddress());
 
-	GetGraphicsCommandList()->SetGraphicsRoot32BitConstant(1, 0, 0);
-
-	GetGraphicsCommandList()->SetGraphicsRootConstantBufferView(
-		2,
-		SSAOBlurConstantBufferParam.GetBuffer()->GetGPUVirtualAddress());
-
-	// Nor
+	// Nor + packed depth
 	if (std::shared_ptr<FRenderTarget> NormalRenderTarget = NormalBuffer.GetRenderTarget())
 	{
 		GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(
@@ -176,12 +154,13 @@ void FScreenSpaceAmbientOcclusion::DrawResources(float DeltaTime)
 			NormalRenderTarget->GetGPUSRVOffset());
 	}
 
-	// Depth
-	GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(
-		4,
-		DepthBufferRenderTarget->GetGPUSRVOffset());
+	if (std::shared_ptr<FRenderTarget> DepthRenderTarget = NormalBuffer.GetDepthRenderTarget())
+	{
+		GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(
+			4,
+			DepthRenderTarget->GetGPUSRVOffset());
+	}
 
-	// Noise
 	if (std::shared_ptr<FRenderTarget> NoiseRenderTarget = NoiseBuffer.GetRenderTarget())
 	{
 		GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(
@@ -274,11 +253,29 @@ void FScreenSpaceAmbientOcclusion::DrawViewConstantBufferViews(float DeltaTime, 
 
 void FScreenSpaceAmbientOcclusion::DrawBlurConstantBufferViews(float DeltaTime, const FViewportInfo& ViewportInfo)
 {
-	FSSAOBlurParam SSAOBlurParam;
-	//memcpy(SSAOBlurParam.BlurWeights,BlurWeights.data(), BlurWeights.size() * sizeof(float));
-	SSAOBlurParam.BlurWeights[0] = XMFLOAT4(&BlurWeights[0]);
-	SSAOBlurParam.BlurWeights[1] = XMFLOAT4(&BlurWeights[4]);
-	SSAOBlurParam.BlurWeights[2] = XMFLOAT4(&BlurWeights[8]);
+	FSSAOBlurParam SSAOBlurParam = {};
+
+	// 打包到 3 个 float4 中，末尾不足的权重补 0，避免越界读取。
+	// 3 個の float4 にパックし、末尾が不足する重みは 0 で埋めて範囲外読み取りを防ぐ。
+	for (int GroupIndex = 0; GroupIndex < 3; ++GroupIndex)
+	{
+		float PackedWeights[4] = { 0.f, 0.f, 0.f, 0.f };
+
+		for (int WeightIndex = 0; WeightIndex < 4; ++WeightIndex)
+		{
+			int SourceIndex = GroupIndex * 4 + WeightIndex;
+			if (SourceIndex < (int)BlurWeights.size())
+			{
+				PackedWeights[WeightIndex] = BlurWeights[SourceIndex];
+			}
+		}
+
+		SSAOBlurParam.BlurWeights[GroupIndex] = XMFLOAT4(
+			PackedWeights[0],
+			PackedWeights[1],
+			PackedWeights[2],
+			PackedWeights[3]);
+	}
 
 	SSAOBlurParam.InversionSize = XMFLOAT2(1.f / BilateralBlur.GetWidth(), 1.f / BilateralBlur.GetHeight());
 	SSAOBlurParam.BlurRadius = BlurRadius;
@@ -290,10 +287,10 @@ void FScreenSpaceAmbientOcclusion::BuildDescriptors()
 {
 	if (GeometryMap && RenderLayer)
 	{
-		BuildDepthBuffer();
-
 		NormalBuffer.SetSRVOffset(GetNormalBufferSRVOffset());
 		NormalBuffer.SetRTVOffset(GetNormalBufferRTVOffset());
+		NormalBuffer.SetDepthSRVOffset(GetDepthBufferSRVOffset());
+		NormalBuffer.SetDepthRTVOffset(GetDepthBufferRTVOffset());
 		NormalBuffer.BuildDescriptors();
 		NormalBuffer.BuildRenderTargetRTV();
 		NormalBuffer.BuildSRVDescriptors();
@@ -377,41 +374,18 @@ void FScreenSpaceAmbientOcclusion::BuildSSAOViewConstantBuffer()
 
 void FScreenSpaceAmbientOcclusion::BuildSSAOBlurParamConstantBuffer()
 {
+	// 构建双边模糊常量缓冲区
+	// バイラテラルブラー用の定数バッファを構築
 	SSAOBlurConstantBufferParam.CreateConstant(sizeof(FSSAOBlurParam), 1);
 }
 
 void FScreenSpaceAmbientOcclusion::SaveToSSAOBuffer()
 {
-	//// 检查Normal
-	//Normalを確認
-	//GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(
-	//	9,
-	//	NormalBuffer.GetRenderTarget()->GetGPUSRVOffset());
-
-	//// 检查深度
-	//デプスを確認
-	//GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(
-	//	9,
-	//	DepthBufferRenderTarget->GetGPUSRVOffset());
-
-	// SSAO渲染到buffer
-	// SSAOをバッファに描画
+	// 将 SSAO 结果写回默认管线使用的贴图槽位
+	// SSAO の結果をデフォルトパイプラインが参照するテクスチャスロットへ書き戻す
 	GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(
 		9,
 		AmbientBuffer.GetRenderTarget()->GetGPUSRVOffset());
-}
-
-void FScreenSpaceAmbientOcclusion::BuildDepthBuffer()
-{
-	DepthBuffer::BuildDepthBufferDescriptors(
-		GeometryMap->GetHeap()->GetCPUDescriptorHandleForHeapStart(),
-		GeometryMap->GetHeap()->GetGPUDescriptorHandleForHeapStart(),
-		GetDescriptorHandleIncrementSizeByCBV_SRV_UAV(),
-		GetDepthBufferSRVOffset());
-
-	DepthBuffer::CreateDepthBufferSRV(
-		GetD3dDevice().Get(),
-		GetDepthStencilBuffer());
 }
 
 void FScreenSpaceAmbientOcclusion::DrawBlur(float DeltaTime, bool bHorizontal)
@@ -470,6 +444,14 @@ UINT FScreenSpaceAmbientOcclusion::GetDepthBufferSRVOffset() const
 		1;  //Nor
 }
 
+UINT FScreenSpaceAmbientOcclusion::GetDepthBufferRTVOffset() const
+{
+	return	FEngineRenderConfig::GetRenderConfig()->SwapChainCount +
+		6 +
+		6 +
+		1;
+}
+
 UINT FScreenSpaceAmbientOcclusion::GetNormalBufferSRVOffset() const
 {
 	return  GeometryMap->GetDrawTexture2DResourcesNumber() + //Texture2D
@@ -517,7 +499,7 @@ UINT FScreenSpaceAmbientOcclusion::GetAmbientBufferRTVOffset() const
 	return  FEngineRenderConfig::GetRenderConfig()->SwapChainCount +//交换链    // スワップチェーン
 		6 +//反射的CubeMap RTV                     // 反射用CubeMap RTV                       
 		6 +//ShadowCubeMap RTV Point Light
-		1; //法线                                  // 法線
+		2; //法线 + 深度                            // 法線 + Depth
 }
 
 UINT FScreenSpaceAmbientOcclusion::GetBilateralBlurSRVOffset() const
@@ -539,6 +521,6 @@ UINT FScreenSpaceAmbientOcclusion::GetBilateralBlurRTVOffset() const
 	return  FEngineRenderConfig::GetRenderConfig()->SwapChainCount +//交换链    // スワップチェーン
 		6 +//反射的CubeMap RTV                        // 反射用CubeMap RTV             
 		6 +//ShadowCubeMap RTV Point Light
-		1 +//法线                                     // 法線
+		2 +//法线 + 深度                              // 法線 + Depth
 		1; //SSAO
 }

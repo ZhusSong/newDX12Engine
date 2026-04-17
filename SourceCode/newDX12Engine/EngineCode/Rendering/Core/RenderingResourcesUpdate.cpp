@@ -1,6 +1,9 @@
 ﻿#include "RenderingResourcesUpdate.h"
 
 FRenderingResourcesUpdate::FRenderingResourcesUpdate()
+	: ElementSize(0)
+	, ElementDataSize(0)
+	, Data(nullptr)
 {
 
 }
@@ -28,6 +31,8 @@ void FRenderingResourcesUpdate::Init(ID3D12Device* InDevice, UINT InElemetSize, 
 {
 	assert(InDevice);
 
+	ElementDataSize = InElemetSize;
+
 	if (bConstBuffer)
 	{
 		ElementSize = GetConstantBufferByteSize(InElemetSize);
@@ -53,7 +58,14 @@ void FRenderingResourcesUpdate::Init(ID3D12Device* InDevice, UINT InElemetSize, 
 
 void FRenderingResourcesUpdate::Update(int Index, const void* InData)
 {
-	memcpy(&Data[Index * ElementSize], InData, ElementSize);
+	// 常量缓冲区按 256 字节对齐时，先清零整块再复制真实数据大小，
+	// 以避免结构体比对齐尺寸更小时发生越界读取。
+	// 定数バッファが 256 バイト境界に揃えられる場合は、
+	// 先にブロック全体を 0 で埋めてから実データサイズだけをコピーし、
+	// 構造体サイズが整列サイズより小さいときの範囲外読み取りを防ぐ。
+	BYTE* Dest = &Data[Index * ElementSize];
+	memset(Dest, 0, ElementSize);
+	memcpy(Dest, InData, ElementDataSize);
 }
 
 UINT FRenderingResourcesUpdate::GetConstantBufferByteSize(UINT InTypeSzie)
