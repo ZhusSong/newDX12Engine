@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="dora01.png" width="240" height="256">
+  <SubTexture name="dora01_00" x="0" y="0" width="80" height="64" />
+  <SubTexture name="dora01_01" x="80" y="0" width="80" height="64" />
+  <SubTexture name="dora01_02" x="160" y="0" width="80" height="64" />
+  <SubTexture name="dora01_03" x="0" y="64" width="80" height="64" />
+  <SubTexture name="dora01_04" x="80" y="64" width="80" height="64" />
+  <SubTexture name="dora01_05" x="160" y="64" width="80" height="64" />
+  <SubTexture name="dora01_06" x="0" y="128" width="80" height="64" />
+  <SubTexture name="dora01_07" x="80" y="128" width="80" height="64" />
+  <SubTexture name="dora01_08" x="160" y="128" width="80" height="64" />
+  <SubTexture name="dora01_09" x="0" y="192" width="80" height="64" />
+  <SubTexture name="dora01_10" x="80" y="192" width="80" height="64" />
+  <SubTexture name="dora01_11" x="160" y="192" width="80" height="64" />
+</TextureAtlas>

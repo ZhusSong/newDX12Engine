@@ -14,11 +14,15 @@
 #include "../../../../Mesh/PyramidMesh.h"
 #include "../../../../Mesh/PipeMesh.h"
 #include "../../../../Mesh/TorusMesh.h"
+#include "../../../../Mesh/SpriteQuadMesh.h"
 
 #include "../../../../Core/World.h"
 #include "../../../../Mesh/Core/MeshManager.h"
 #include "../../../../Mesh/Core/Material/Material.h"
 #include "../../../../Component/Mesh/Core/MeshComponent.h"
+#include "../../../../Component/Sprite/SpriteComponent.h"
+#include "../../../../Component/Sprite/SpriteAnimationComponent.h"
+#include "../../../../Rendering/Core/Sprite/SpriteAtlasManager.h"
 
 // 视口
 // ビューポート
@@ -710,6 +714,56 @@ int CDirectXRenderingEngine::PostInit()
 			{
 				InMaterial->SetBaseColor(fvector_4d(1, 1, 1, 1));
 				InMaterial->SetMaterialType(EMaterialType::Lambert);
+			}
+		}
+
+		if (GSpriteQuadMesh* SpriteMesh = World->CreateActorObject<GSpriteQuadMesh>())
+		{
+			SpriteMesh->CreateMesh(1.f, 1.f);
+			SpriteMesh->SetPosition(XMFLOAT3(-15.f, -2.f, 18.f));
+			SpriteMesh->SetScale(fvector_3d(1.f, 1.f, 1.f));
+			SpriteMesh->SetRotation(fvector_3d(0.f, 0.f, 0.f));
+			SpriteMesh->SetCastShadow(false);
+			SpriteMesh->SetPickup(false);
+
+			if (CSpriteComponent* SpriteComponent = SpriteMesh->GetSpriteComponent())
+			{
+				const int CatFrameCount = 16;
+
+				SpriteComponent->SetPixelsPerUnit(64.f);
+				SpriteComponent->SetAutoSizeToFrame(true);
+				SpriteComponent->SetOpacity(1.f);
+				if (CSpriteAtlasManager::GenerateGridAtlasXML(
+					"Sprite/Cat.png",
+					"Sprite/Cat.xml",
+					4,
+					4,
+					"Cat01",
+					CatFrameCount))
+				{
+					SpriteComponent->LoadAtlas("Cat01", "Sprite/Cat.xml");
+				}
+
+				BUILD_OBJECT_PARAMETERS_BY_COMPONENT(SpriteAnimation, SpriteComponent);
+				if (CSpriteAnimationComponent* SpriteAnimation = CreateObject<CSpriteAnimationComponent>(ParamSpriteAnimation, new CSpriteAnimationComponent()))
+				{
+					SpriteAnimation->SetSpriteComponent(SpriteComponent);
+
+					CSpriteAnimationClip ShootClip;
+					ShootClip.SetName("Shoot");
+					ShootClip.SetFramesPerSecond(2.f);
+					ShootClip.SetLoop(true);
+
+					for (int FrameIndex = 0; FrameIndex < CatFrameCount; ++FrameIndex)
+					{
+						char FrameName[64] = { 0 };
+						sprintf(FrameName, "Cat01_%02d", FrameIndex);
+						ShootClip.AddFrame(FrameName);
+					}
+
+					SpriteAnimation->AddClip(ShootClip);
+					SpriteAnimation->Play("Shoot");
+				}
 			}
 		}
 

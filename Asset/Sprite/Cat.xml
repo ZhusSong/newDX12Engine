@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="Cat.png" width="1024" height="1024">
+  <SubTexture name="Cat01_00" x="0" y="0" width="256" height="256" />
+  <SubTexture name="Cat01_01" x="256" y="0" width="256" height="256" />
+  <SubTexture name="Cat01_02" x="512" y="0" width="256" height="256" />
+  <SubTexture name="Cat01_03" x="768" y="0" width="256" height="256" />
+  <SubTexture name="Cat01_04" x="0" y="256" width="256" height="256" />
+  <SubTexture name="Cat01_05" x="256" y="256" width="256" height="256" />
+  <SubTexture name="Cat01_06" x="512" y="256" width="256" height="256" />
+  <SubTexture name="Cat01_07" x="768" y="256" width="256" height="256" />
+  <SubTexture name="Cat01_08" x="0" y="512" width="256" height="256" />
+  <SubTexture name="Cat01_09" x="256" y="512" width="256" height="256" />
+  <SubTexture name="Cat01_10" x="512" y="512" width="256" height="256" />
+  <SubTexture name="Cat01_11" x="768" y="512" width="256" height="256" />
+  <SubTexture name="Cat01_12" x="0" y="768" width="256" height="256" />
+  <SubTexture name="Cat01_13" x="256" y="768" width="256" height="256" />
+  <SubTexture name="Cat01_14" x="512" y="768" width="256" height="256" />
+  <SubTexture name="Cat01_15" x="768" y="768" width="256" height="256" />
+</TextureAtlas>

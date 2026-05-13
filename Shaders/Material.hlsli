@@ -61,6 +61,28 @@ float4 GetMaterialSpecular(MaterialConstBuffer MatConstBuffer, float2 InTexCoord
     return float4(MatConstBuffer.SpecularColor, 1.f);
 }
 
+float3 GetOrthonormalizedTangent(float3 InWorldTangent, float3 InUnitWorldNormal)
+{
+    return normalize(InWorldTangent - dot(InWorldTangent, InUnitWorldNormal) * InUnitWorldNormal);
+}
+
+float3 ShiftAnisotropyDirection(float3 InUnitWorldTangent, float3 InUnitWorldNormal, float InShift)
+{
+    return normalize(InUnitWorldTangent + InShift * InUnitWorldNormal);
+}
+
+float GetKajiyaKayDiffuse(float3 InUnitWorldTangent, float3 InUnitLightDirection)
+{
+    float TangentLight = dot(InUnitWorldTangent, InUnitLightDirection);
+    return sqrt(saturate(1.0f - TangentLight * TangentLight));
+}
+
+float GetKajiyaKaySpecular(float3 InUnitWorldTangent, float3 InHalfDirection, float InExponent)
+{
+    float TangentHalf = dot(InUnitWorldTangent, InHalfDirection);
+    return pow(sqrt(saturate(1.0f - TangentHalf * TangentHalf)), max(InExponent, 1.0f));
+}
+
 // 获取反射方向
 // 反射方向を取得
 float3 GetReflect(float3 InUnitWorldNormal, float3 WorldPosition)

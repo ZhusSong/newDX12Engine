@@ -38,6 +38,9 @@
     <Filter Include="EngineCode\Rendering\Core">
       <UniqueIdentifier>{90576393-c62f-4f5a-ac65-0f4f328b7656}</UniqueIdentifier>
     </Filter>
+    <Filter Include="EngineCode\Rendering\Core\Sprite">
+      <UniqueIdentifier>{1ed4a68f-92bc-4a10-a05e-df6478ae592e}</UniqueIdentifier>
+    </Filter>
     <Filter Include="EngineCode\Mesh\Core">
       <UniqueIdentifier>{ce55ecb1-0c7a-4ddf-8bd5-5b75b3ee7a77}</UniqueIdentifier>
     </Filter>
@@ -115,6 +118,9 @@
     </Filter>
     <Filter Include="EngineCode\Component\Mesh\Core">
       <UniqueIdentifier>{b296f8c3-32a0-494b-a0ff-e758fe123f79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Component\Sprite">
+      <UniqueIdentifier>{f7df6738-0d57-4da8-8f5b-84784119f2be}</UniqueIdentifier>
     </Filter>
     <Filter Include="EngineCode\Actor\Light\Core">
       <UniqueIdentifier>{4338979b-2caa-4fe8-8e33-3bbc4971a389}</UniqueIdentifier>
@@ -310,6 +316,9 @@
     <ClCompile Include="EngineCode\Mesh\PlaneMesh.cpp">
       <Filter>EngineCode\Mesh</Filter>
     </ClCompile>
+    <ClCompile Include="EngineCode\Mesh\SpriteQuadMesh.cpp">
+      <Filter>EngineCode\Mesh</Filter>
+    </ClCompile>
     <ClCompile Include="EngineCode\Mesh\SphereMesh.cpp">
       <Filter>EngineCode\Mesh</Filter>
     </ClCompile>
@@ -403,6 +412,12 @@
     <ClCompile Include="EngineCode\Component\Mesh\PlaneMeshComponent.cpp">
       <Filter>EngineCode\Component\Mesh</Filter>
     </ClCompile>
+    <ClCompile Include="EngineCode\Component\Sprite\SpriteAnimationComponent.cpp">
+      <Filter>EngineCode\Component\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Component\Sprite\SpriteComponent.cpp">
+      <Filter>EngineCode\Component\Sprite</Filter>
+    </ClCompile>
     <ClCompile Include="EngineCode\Component\Mesh\SphereMeshComponent.cpp">
       <Filter>EngineCode\Component\Mesh</Filter>
     </ClCompile>
@@ -435,6 +450,15 @@
     </ClCompile>
     <ClCompile Include="EngineCode\Rendering\Core\RenderingTextureResourcesUpdate.cpp">
       <Filter>EngineCode\Rendering\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\Sprite\SpriteAnimationClip.cpp">
+      <Filter>EngineCode\Rendering\Core\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\Sprite\SpriteAtlas.cpp">
+      <Filter>EngineCode\Rendering\Core\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\Sprite\SpriteAtlasManager.cpp">
+      <Filter>EngineCode\Rendering\Core\Sprite</Filter>
     </ClCompile>
     <ClCompile Include="EngineCode\Component\Mesh\Core\ShellMeshComponent.cpp">
       <Filter>EngineCode\Component\Mesh\Core</Filter>
@@ -736,6 +760,9 @@
     <ClInclude Include="EngineCode\Mesh\PlaneMesh.h">
       <Filter>EngineCode\Mesh</Filter>
     </ClInclude>
+    <ClInclude Include="EngineCode\Mesh\SpriteQuadMesh.h">
+      <Filter>EngineCode\Mesh</Filter>
+    </ClInclude>
     <ClInclude Include="EngineCode\Mesh\SphereMesh.h">
       <Filter>EngineCode\Mesh</Filter>
     </ClInclude>
@@ -838,6 +865,12 @@
     <ClInclude Include="EngineCode\Component\Mesh\PlaneMeshComponent.h">
       <Filter>EngineCode\Component\Mesh</Filter>
     </ClInclude>
+    <ClInclude Include="EngineCode\Component\Sprite\SpriteAnimationComponent.h">
+      <Filter>EngineCode\Component\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Component\Sprite\SpriteComponent.h">
+      <Filter>EngineCode\Component\Sprite</Filter>
+    </ClInclude>
     <ClInclude Include="EngineCode\Component\Mesh\SphereMeshComponent.h">
       <Filter>EngineCode\Component\Mesh</Filter>
     </ClInclude>
@@ -876,6 +909,15 @@
     </ClInclude>
     <ClInclude Include="EngineCode\Rendering\Core\RenderingTextureResourcesUpdate.h">
       <Filter>EngineCode\Rendering\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\Sprite\SpriteAnimationClip.h">
+      <Filter>EngineCode\Rendering\Core\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\Sprite\SpriteAtlas.h">
+      <Filter>EngineCode\Rendering\Core\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\Sprite\SpriteAtlasManager.h">
+      <Filter>EngineCode\Rendering\Core\Sprite</Filter>
     </ClInclude>
     <ClInclude Include="EngineCode\Component\Mesh\Core\ShellMeshComponent.h">
       <Filter>EngineCode\Component\Mesh\Core</Filter>

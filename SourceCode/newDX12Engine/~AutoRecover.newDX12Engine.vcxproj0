@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -59,10 +59,10 @@
     <ClCompile Include="EngineCode\Component\Mesh\PyramidMeshComponent.cpp" />
     <ClCompile Include="EngineCode\Component\Mesh\SphereMeshComponent.cpp" />
     <ClCompile Include="EngineCode\Component\Mesh\TorusMeshComponent.cpp" />
-    <ClCompile Include="EngineCode\Component\Sprite\SpriteAnimationComponent.cpp" />
-    <ClCompile Include="EngineCode\Component\Sprite\SpriteComponent.cpp" />
     <ClCompile Include="EngineCode\Component\Sky\FogComponent.cpp" />
     <ClCompile Include="EngineCode\Component\Sky\SkyConstantBuffer.cpp" />
+    <ClCompile Include="EngineCode\Component\Sprite\SpriteAnimationComponent.cpp" />
+    <ClCompile Include="EngineCode\Component\Sprite\SpriteComponent.cpp" />
     <ClCompile Include="EngineCode\Component\TimelineComponent.cpp" />
     <ClCompile Include="EngineCode\Component\TransformComponent.cpp" />
     <ClCompile Include="EngineCode\Config\EngineRenderConfig.cpp" />
@@ -98,8 +98,8 @@
     <ClCompile Include="EngineCode\Mesh\PipeMesh.cpp" />
     <ClCompile Include="EngineCode\Mesh\PlaneMesh.cpp" />
     <ClCompile Include="EngineCode\Mesh\PyramidMesh.cpp" />
-    <ClCompile Include="EngineCode\Mesh\SpriteQuadMesh.cpp" />
     <ClCompile Include="EngineCode\Mesh\SphereMesh.cpp" />
+    <ClCompile Include="EngineCode\Mesh\SpriteQuadMesh.cpp" />
     <ClCompile Include="EngineCode\Mesh\TorusMesh.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\Buffer\ConstructBuffer.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\AmbientOcclusion\ScreenSpace\ScreenSpaceAmbientOcclusion.cpp" />
@@ -211,10 +211,10 @@
     <ClInclude Include="EngineCode\Component\Mesh\PyramidMeshComponent.h" />
     <ClInclude Include="EngineCode\Component\Mesh\SphereMeshComponent.h" />
     <ClInclude Include="EngineCode\Component\Mesh\TorusMeshComponent.h" />
-    <ClInclude Include="EngineCode\Component\Sprite\SpriteAnimationComponent.h" />
-    <ClInclude Include="EngineCode\Component\Sprite\SpriteComponent.h" />
     <ClInclude Include="EngineCode\Component\Sky\FogComponent.h" />
     <ClInclude Include="EngineCode\Component\Sky\SkyConstantBuffer.h" />
+    <ClInclude Include="EngineCode\Component\Sprite\SpriteAnimationComponent.h" />
+    <ClInclude Include="EngineCode\Component\Sprite\SpriteComponent.h" />
     <ClInclude Include="EngineCode\Component\TimelineComponent.h" />
     <ClInclude Include="EngineCode\Component\TransformComponent.h" />
     <ClInclude Include="EngineCode\Config\EngineRenderConfig.h" />
@@ -254,13 +254,10 @@
     <ClInclude Include="EngineCode\Mesh\PipeMesh.h" />
     <ClInclude Include="EngineCode\Mesh\PlaneMesh.h" />
     <ClInclude Include="EngineCode\Mesh\PyramidMesh.h" />
-    <ClInclude Include="EngineCode\Mesh\SpriteQuadMesh.h" />
     <ClInclude Include="EngineCode\Mesh\SphereMesh.h" />
+    <ClInclude Include="EngineCode\Mesh\SpriteQuadMesh.h" />
     <ClInclude Include="EngineCode\Mesh\TorusMesh.h" />
     <ClInclude Include="EngineCode\Rendering\Core\Buffer\ConstructBuffer.h" />
-    <ClInclude Include="EngineCode\Rendering\Core\Sprite\SpriteAnimationClip.h" />
-    <ClInclude Include="EngineCode\Rendering\Core\Sprite\SpriteAtlas.h" />
-    <ClInclude Include="EngineCode\Rendering\Core\Sprite\SpriteAtlasManager.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\AmbientOcclusion\ScreenSpace\ScreenSpaceAmbientOcclusion.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\AmbientOcclusion\ScreenSpace\SSAOType.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\ConstantBuffer\ConstantBufferViews.h" />
@@ -307,6 +304,9 @@
     <ClInclude Include="EngineCode\Rendering\Core\Rendering.h" />
     <ClInclude Include="EngineCode\Rendering\Core\RenderingResourcesUpdate.h" />
     <ClInclude Include="EngineCode\Rendering\Core\RenderingTextureResourcesUpdate.h" />
+    <ClInclude Include="EngineCode\Rendering\Core\Sprite\SpriteAnimationClip.h" />
+    <ClInclude Include="EngineCode\Rendering\Core\Sprite\SpriteAtlas.h" />
+    <ClInclude Include="EngineCode\Rendering\Core\Sprite\SpriteAtlasManager.h" />
     <ClInclude Include="EngineCode\Rendering\DirectX12\d3dx12.h" />
     <ClInclude Include="EngineCode\Rendering\DirectX12\DDSTextureLoader.h" />
     <ClInclude Include="EngineCode\Rendering\Engine\Core\RenderingEngine.h" />

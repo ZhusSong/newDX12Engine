@@ -218,7 +218,8 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
                     Material.BaseColor = lerp(Color2, Material.BaseColor, LightDotValue);
                 }
             }
-            else if (MatConstBuffer.MaterialType == 8)//最終Banded 
+            //最終Banded 
+            else if (MatConstBuffer.MaterialType == 8)//鏈€绲侭anded 
             {
                 if (i == 0)
                 {
@@ -279,8 +280,39 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
             }
             else if (MatConstBuffer.MaterialType == 10)// kajiya-kay
             {
-				
-				
+                float3 ViewDirection = normalize(ViewportPosition.xyz - MVOut.WorldPosition.xyz);
+                float3 HalfDirection = normalize(ViewDirection + NormalizeLightDirection);
+
+                float3 StrandTangent = GetOrthonormalizedTangent(MVOut.UTangent, ModelNormal);
+
+                // Param0: tangent shift, Param1: primary lobe strength, Param2: secondary lobe strength.
+                float TangentShift = abs(MatConstBuffer.Param0) > 0.0001f ? MatConstBuffer.Param0 : -0.2f;
+                float PrimarySpecularStrength = MatConstBuffer.Param1 > 0.0001f ? MatConstBuffer.Param1 : 1.0f;
+                float SecondarySpecularStrength = MatConstBuffer.Param2 > 0.0001f ? MatConstBuffer.Param2 : 0.35f;
+
+                float MaterialShininess = 1.f - saturate(MatConstBuffer.MaterialRoughness);
+                float PrimaryExponent = lerp(18.0f, 128.0f, MaterialShininess);
+                float SecondaryExponent = max(PrimaryExponent * 0.35f, 6.0f);
+
+                float3 PrimaryTangent = ShiftAnisotropyDirection(StrandTangent, ModelNormal, TangentShift);
+                float3 SecondaryTangent = ShiftAnisotropyDirection(StrandTangent, ModelNormal, -TangentShift * 0.5f);
+
+                float FiberDiffuse = GetKajiyaKayDiffuse(StrandTangent, NormalizeLightDirection);
+                float LightFacing = saturate(dot(ModelNormal, NormalizeLightDirection));
+                DotValue = FiberDiffuse * LightFacing;
+
+                float PrimarySpecular = GetKajiyaKaySpecular(PrimaryTangent, HalfDirection, PrimaryExponent);
+                float SecondarySpecular = GetKajiyaKaySpecular(SecondaryTangent, HalfDirection, SecondaryExponent);
+                float ViewFacing = saturate(dot(ModelNormal, ViewDirection));
+                float HalfAlignment = saturate(dot(ViewDirection, NormalizeLightDirection) * 0.5f + 0.5f);
+
+                float AnisotropicSpecular =
+                    (PrimarySpecularStrength * PrimarySpecular + SecondarySpecularStrength * SecondarySpecular) *
+                    LightFacing *
+                    ViewFacing *
+                    HalfAlignment;
+
+                Specular *= AnisotropicSpecular;
             }
             else if (MatConstBuffer.MaterialType == 11)//OrenNayar
             {
