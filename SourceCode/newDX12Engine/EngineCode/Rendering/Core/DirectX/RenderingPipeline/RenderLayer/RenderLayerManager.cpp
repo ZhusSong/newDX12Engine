@@ -190,6 +190,11 @@ std::shared_ptr<FRenderLayer> FRenderLayerManager::FindByRenderLayer(int InRende
 	return NULL;
 }
 
+const std::vector<std::shared_ptr<FRenderLayer>>& FRenderLayerManager::GetRenderLayers()
+{
+	return RenderLayers;
+}
+
 void FRenderLayerManager::Add(int InLayer, std::weak_ptr<FRenderingData> InRenderingData)
 {
 	if (auto Layer = FindByRenderLayer(InLayer))

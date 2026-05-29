@@ -229,10 +229,8 @@ void FRenderingPipeline::PreDraw(float DeltaTime)
 	// メインビューのCanvasをクリアする
 	ClearMainSwapChainCanvas();
 
-	// 背景层需要先于动态反射物体绘制到主视口，
-	// 否则 DynamicCubeMap.PreDraw 里先画出来的反射物体会被后续背景整块覆盖掉。
-	// 背景レイヤーは動的反射オブジェクトより先にメインビューポートへ描画する必要があり、
-	// そうしないと DynamicCubeMap.PreDraw で先に描かれた反射オブジェクトが後続の背景に丸ごと覆われてしまう。
+	// 背景层先写入主视口，后续的不透明/动态反射/透明通道都以它为底。
+	// 背景レイヤーは先にメインビューポートへ描画し、その後の不透明/動的反射/透明パスの土台にする。
 	GeometryMap.DrawViewport(DeltaTime);
 	RenderLayer.Draw(RENDERLAYER_BACKGROUND, DeltaTime);
 
@@ -244,17 +242,10 @@ void FRenderingPipeline::PreDraw(float DeltaTime)
 	// シャドウを描画する
 	GeometryMap.DrawShadow(DeltaTime);
 
-	// 动态反射
-	// 動的反射
-	if (DynamicCubeMap.IsExitDynamicReflectionMesh())
-	{
-		DynamicCubeMap.PreDraw(DeltaTime);
-	}
-
-	// 阴影/反射等离屏 pass 会改掉当前 OM 绑定，
-	// 这里统一把主视口 RT/DSV 重新绑回主流程。
-	// シャドウや反射のオフスクリーン pass は現在の OM バインドを変更するため、
-	// ここでメインビューポートの RT/DSV を主描画フローへ再バインドする。
+	// 阴影等离屏 pass 会改掉当前 OM 绑定，
+	// 在进入主绘制前先把主视口 RT/DSV 重新绑回去。
+	// シャドウなどのオフスクリーン pass は現在の OM バインドを変更するため、
+	// 主描画へ入る前にメインビューポートの RT/DSV を再バインドする。
 	StartSetMainViewportRenderTarget();
 	EndSetMainViewportRenderTarget();
 
@@ -274,6 +265,23 @@ void FRenderingPipeline::Draw(float DeltaTime)
 	// 各类层级
 	// 各レイヤー
 	RenderLayer.Draw(RENDERLAYER_OPAQUE, DeltaTime);
+
+	// 动态反射对象需要在不透明物体之后、常规透明物体之前绘制：
+	// 这样玻璃可以看到背后的不透明场景，同时仍然使用当前对象对应的动态 CubeMap。
+	// 動的反射オブジェクトは不透明物体の後、通常の透明物体の前に描画する。
+	// これによりガラスは背後の不透明シーンを参照でき、かつ各オブジェクト専用の動的 CubeMap を使い続けられる。
+	if (DynamicCubeMap.IsExitDynamicReflectionMesh())
+	{
+		DynamicCubeMap.PreDraw(DeltaTime);
+
+		// 动态 CubeMap pass 会临时切换 RTV/DSV，回到主流程前重新绑定主视口。
+		// 動的 CubeMap pass は一時的に RTV/DSV を切り替えるため、主描画へ戻る前に再バインドする。
+		StartSetMainViewportRenderTarget();
+		EndSetMainViewportRenderTarget();
+		GeometryMap.DrawViewport(DeltaTime);
+		GeometryMap.DrawCubeMapTexture(DeltaTime);
+	}
+
 	RenderLayer.Draw(RENDERLAYER_TRANSPARENT, DeltaTime);
 
 	// 渲染选择箭头

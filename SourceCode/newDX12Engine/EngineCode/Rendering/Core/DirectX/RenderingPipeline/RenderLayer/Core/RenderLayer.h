@@ -10,6 +10,7 @@ struct FDirectXPipelineState;
 struct FGeometryMap;
 struct FRenderingData;
 struct FViewportInfo; 
+class CMaterial;
 
 // PSO代理
 // PSOプロキシ
@@ -61,6 +62,7 @@ public:
 	std::wstring BuildShadersPaths(const std::wstring& InShadersHLSLName);
 public:
 	const UINT GetRenderPriority()const { return RenderPriority; }
+	const std::vector<std::weak_ptr<FRenderingData>>& GetRenderDatas() const { return RenderDatas; }
 
 	void Add(std::weak_ptr<FRenderingData> InRenderingData);
 	void Remove(std::weak_ptr<FRenderingData> InRenderingData);
@@ -69,6 +71,7 @@ public:
 public:
 	virtual void BuildShader() {};
 	virtual int GetRenderLayerType()const = 0;
+	virtual bool ShouldDrawInCurrentLayer(const FRenderingData& InRenderingData, const CMaterial* InMaterial) const;
 protected:
 	UINT RenderPriority;
 

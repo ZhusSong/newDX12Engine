@@ -11,6 +11,7 @@ CMaterial::CMaterial()
 	, MaterialDisplayStatus(EMaterialDisplayStatusType::TriangleDisplay)
 	, MaterialTransform(EngineMath::IdentityMatrix4x4())
 	, Transparency(1.f)
+	, bUseGlass(false)
 	, bDynamicReflection(false)
 	, Refractive(1.1f)
 {
@@ -71,6 +72,12 @@ void CMaterial::SetFresnelF0(const fvector_3d& InF0Vector)
 void CMaterial::SetTransparency(float InTransparency)
 {
 	Transparency = InTransparency;
+
+	SetDirty(true);
+}
+void CMaterial::SetUseGlass(bool bInUseGlass)
+{
+	bUseGlass = bInUseGlass;
 
 	SetDirty(true);
 }

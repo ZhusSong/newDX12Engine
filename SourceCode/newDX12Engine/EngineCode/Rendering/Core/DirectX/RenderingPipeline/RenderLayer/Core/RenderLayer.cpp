@@ -121,6 +121,12 @@ void FRenderLayer::DrawObject(float DeltaTime, std::weak_ptr<FRenderingData>& In
 
 		if (GetRenderingConditions())
 		{
+			CMaterial* Material = InRenderingData->Mesh->GetMaterialBySlot(InRenderingData->MaterialSlotIndex);
+			if (!ShouldDrawInCurrentLayer(*InRenderingData, Material))
+			{
+				return;
+			}
+
 			UINT MeshOffset = GeometryMap->MeshConstantBufferViews.GetConstantBufferByteSize();
 
 			D3D12_VERTEX_BUFFER_VIEW VBV = GeometryMap->Geometrys[InRenderingData->GeometryKey].GetVertexBufferView();
@@ -139,7 +145,7 @@ void FRenderLayer::DrawObject(float DeltaTime, std::weak_ptr<FRenderingData>& In
 
 			// 定义要绘制的图元
 			// 描画するプリミティブを定義する
-			if (CMaterial* Material = InRenderingData->Mesh->GetMaterialBySlot(InRenderingData->MaterialSlotIndex))
+			if (Material)
 			{
 				D3D_PRIMITIVE_TOPOLOGY DisplayStatus = Material->GetMaterialDisplayStatus();
 				GetGraphicsCommandList()->IASetPrimitiveTopology((D3D_PRIMITIVE_TOPOLOGY)DisplayStatus);
@@ -162,6 +168,24 @@ void FRenderLayer::DrawObject(float DeltaTime, std::weak_ptr<FRenderingData>& In
 				0);//在从顶点缓冲区读取每个实例数据之前添加到每个索引的值。                        // 頂点バッファから各インスタンスデータを読み取る前に各インデックスに加算する値
 		}
 	}
+}
+
+bool FRenderLayer::ShouldDrawInCurrentLayer(const FRenderingData& InRenderingData, const CMaterial* InMaterial) const
+{
+	const int CurrentLayerType = GetRenderLayerType();
+	const int MeshLayerType = (int)InRenderingData.Mesh->GetRenderLayerType();
+
+	if (InMaterial == nullptr)
+	{
+		return CurrentLayerType == MeshLayerType;
+	}
+
+	if (InMaterial->IsUseGlass())
+	{
+		return CurrentLayerType == (int)EMeshRenderLayerType::RENDERLAYER_TRANSPARENT;
+	}
+
+	return CurrentLayerType == MeshLayerType;
 }
 
 void FRenderLayer::FindObjectDraw(float DeltaTime, const CMeshComponent* InKey)

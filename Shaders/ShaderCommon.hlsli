@@ -94,7 +94,7 @@ struct MaterialConstBuffer
     float4x4 TransformInformation;
 
     float3 Metallicity;
-    float XXX5;
+    float UseGlass;
     
 };
 

@@ -626,19 +626,19 @@ int CDirectXRenderingEngine::PostInit()
 				InMaterial->SetMaterialType(EMaterialType::BinnPhong);
 			}
 		}
-		// PBR模型
-		// PBRモデル
-		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
-		{
-			SphereMesh->CreateMesh(2.f, 100, 100);
-			SphereMesh->SetPosition(XMFLOAT3(21.f, 2, 0.f));
-			SphereMesh->SetRotation(fvector_3d(0.f, 0.f, 0.f));
-			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
-			{
-				InMaterial->SetBaseColor(fvector_4d(1.f));
-				InMaterial->SetMaterialType(EMaterialType::PBR);
-			}
-		}
+		//// PBR模型
+		//// PBRモデル
+		//if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
+		//{
+		//	SphereMesh->CreateMesh(2.f, 100, 100);
+		//	SphereMesh->SetPosition(XMFLOAT3(27.f, 2, 0.f));
+		//	SphereMesh->SetRotation(fvector_3d(0.f, 0.f, 0.f));
+		//	if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
+		//	{
+		//		InMaterial->SetBaseColor(fvector_4d(1.f));
+		//		InMaterial->SetMaterialType(EMaterialType::PBR);
+		//	}
+		//}
 		// 透明
 		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 		{
@@ -687,13 +687,39 @@ int CDirectXRenderingEngine::PostInit()
 				InMaterial->SetBaseColor(fvector_4d(0.f));
 				InMaterial->SetMaterialType(EMaterialType::Transparency);
 
-				InMaterial->SetRoughness(0.01f);
-				InMaterial->SetFresnelF0(fvector_3d(0.5f));
-				InMaterial->SetTransparency(1.f);
+				InMaterial->SetRoughness(0.02f);
+				InMaterial->SetFresnelF0(fvector_3d(0.04f));
+				InMaterial->SetTransparency(1.0f);
+				InMaterial->SetUseGlass(true);
 				InMaterial->SetDynamicReflection(true);
 
 				InMaterial->SetSpecular(fvector_3d(1.f));
-				InMaterial->SetRefractiveValue(1.11f);
+				InMaterial->SetRefractiveValue(0.1f);
+			}
+		}
+
+
+		// グラス
+		if (GBoxMesh* BoxMesh = World->CreateActorObject<GBoxMesh>())
+		{
+			BoxMesh->SetMeshRenderLayerType(EMeshRenderLayerType::RENDERLAYER_OPAQUE_REFLECTOR);
+			BoxMesh->CreateMesh(5.f, 5, 0.5);
+			BoxMesh->SetPosition(XMFLOAT3(5.f, 9, 10.f));
+			//SphereMesh->SetPosition(XMFLOAT3(15.f, 18, 0.f));
+			BoxMesh->SetRotation(fvector_3d(0.f, 0.f, 0.f));
+			if (CMaterial* InMaterial = (*BoxMesh->GetMaterials())[0])
+			{
+				InMaterial->SetBaseColor(fvector_4d(0.f));
+				InMaterial->SetMaterialType(EMaterialType::Transparency);
+
+				InMaterial->SetRoughness(0.08f);
+				InMaterial->SetFresnelF0(fvector_3d(0.04f));
+				InMaterial->SetTransparency(0.5f);
+				InMaterial->SetUseGlass(true);
+				InMaterial->SetDynamicReflection(true);
+
+				InMaterial->SetSpecular(fvector_3d(1.f));
+				InMaterial->SetRefractiveValue(0.f);
 			}
 		}
 
@@ -701,10 +727,10 @@ int CDirectXRenderingEngine::PostInit()
 		// 床
 		if (GPlaneMesh* InPlaneMesh = World->CreateActorObject<GPlaneMesh>())
 		{
-			InPlaneMesh->CreateMesh(4.f, 3.f, 20, 20);
+			InPlaneMesh->CreateMesh(150.f, 150.f, 20, 20);
 
 			InPlaneMesh->SetPosition(XMFLOAT3(0.f, -12.f, 0.f));
-			InPlaneMesh->SetScale(fvector_3d(50.f, 1.f, 50.f));
+			InPlaneMesh->SetScale(fvector_3d(1.f, 1.f, 1.f));
 			
 			// 地面不显示阴影
 			// 地面はシャドウを表示しない
@@ -816,7 +842,7 @@ int CDirectXRenderingEngine::PostInit()
 			string MeshPath = FEnginePathHelper::GetEngineAssetPath() + "/american_house_MARK_2.fbx";
 			CustomMesh->CreateMesh(MeshPath);
 
-			CustomMesh->SetPosition(XMFLOAT3(60.f, -10.f, 80.f));
+			CustomMesh->SetPosition(XMFLOAT3(60.f, -12.f, 80.f));
 			CustomMesh->SetScale(fvector_3d(0.05f, 0.05f, 0.05f));
 			CustomMesh->SetRotation(fvector_3d(0.0f, 90.0f, 0.0f), true);
 			CustomMesh->SetCastShadow(false);
@@ -839,7 +865,7 @@ int CDirectXRenderingEngine::PostInit()
 			string MeshPath = FEnginePathHelper::GetEngineAssetPath() + "/RustyHouse.fbx";
 			CustomMesh->CreateMesh(MeshPath);
 
-			CustomMesh->SetPosition(XMFLOAT3(50.f, 10.f, -70.f));
+			CustomMesh->SetPosition(XMFLOAT3(50.f, 15.f, -70.f));
 			CustomMesh->SetScale(fvector_3d(0.05f, 0.05f, 0.05f));
 			CustomMesh->SetRotation(fvector_3d(-90.0f, 0.0f, 0.0f), true);
 			CustomMesh->SetCastShadow(true);

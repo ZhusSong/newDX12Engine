@@ -69,7 +69,7 @@ MeshVertexOut VertexShaderMain(MeshVertexIn MV)
 float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
 {
     MaterialConstBuffer MatConstBuffer = Materials[MaterialIndex];
-
+    bool UseGlass = MatConstBuffer.UseGlass > 0.5f;
     MVOut.TexPositionHome /= MVOut.TexPositionHome.w;
     float AmbientAccessibility = SimpleSSAOMap.Sample(TextureSampler, MVOut.TexPositionHome.xy, 0.0f).r;
 	
@@ -472,7 +472,7 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
             }
     }
 
-    if (MatConstBuffer.MaterialType == 15)
+    if (UseGlass || MatConstBuffer.MaterialType == 15)
     {
 		// 透明
         MVOut.Color.a = MatConstBuffer.Transparency;

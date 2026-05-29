@@ -42,6 +42,10 @@ public:
 	  // 透明度を設定
 	  void SetTransparency(float InTransparency);
 
+	  // 设置是否启用玻璃透明化处理
+	  // ガラス用の透明処理を設定
+	  void SetUseGlass(bool bInUseGlass);
+
 	  // 设置法线贴图
 	  // 法線マップを設定
 	  void SetNormal(const std::string& InAssetFilename);
@@ -90,6 +94,7 @@ public:
 
 	  FORCEINLINE float GetTransparency()const { return Transparency; }
 	  FORCEINLINE fvector_3d GetFresnelF0()const { return FresnelF0; }
+	  FORCEINLINE bool IsUseGlass()const { return bUseGlass; }
 	  
 	  FORCEINLINE EMaterialType GetMaterialType()const { return MaterialType; }
 	  FORCEINLINE float GetRefractiveValue()const { return Refractive; }
@@ -141,6 +146,7 @@ private:
 	XMFLOAT4X4 MaterialTransform;
 
 	float Transparency;			// 透明度     // 透明度
+	bool bUseGlass;			// 玻璃透明化处理 // ガラス透明処理
 
 	bool bDynamicReflection;	// 动态反射   // 動的反射
 

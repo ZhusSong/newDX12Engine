@@ -17,5 +17,6 @@ FMaterialConstantBuffer::FMaterialConstantBuffer()
 	, TransformInformation(EngineMath::IdentityMatrix4x4())
 	, Refraction(1.1f)
 	, Metallicity(0.2f, 0.2f, 0.2f)
+	, UseGlass(0.f)
 {
 }

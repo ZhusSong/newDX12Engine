@@ -171,6 +171,7 @@ void FGeometryMap::UpdateMaterialShaderResourceView(float DeltaTime, const FView
 				// 金属度
 				// メタリック度
 				MaterialConstantBuffer.Metallicity = EngineMath::ToFloat3(InMaterial->GetMetallicity());
+				MaterialConstantBuffer.UseGlass = InMaterial->IsUseGlass() ? 1.0f : 0.0f;
 
 				// 外部资源导入
 				// 外部リソースのインポート

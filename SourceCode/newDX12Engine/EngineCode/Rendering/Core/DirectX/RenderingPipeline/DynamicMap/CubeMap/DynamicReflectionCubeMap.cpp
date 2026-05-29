@@ -6,6 +6,7 @@
 #include "../../../../../../Config/EngineRenderConfig.h"
 #include "../../../../../../Component/Mesh/Core/MeshComponentType.h"
 #include "../../../../../../Component/Mesh/Core/MeshComponent.h"
+#include "../../../../../../Mesh/Core/Material/Material.h"
 
 FDynamicReflectionCubeMap::FDynamicReflectionCubeMap()
 	:Super()
@@ -149,10 +150,42 @@ void FDynamicReflectionCubeMap::PreDraw(float DeltaTime)
 
 			Draw(DeltaTime);
 
-			RenderLayer->FindObjectDraw(
-				DeltaTime,
-				RENDERLAYER_OPAQUE_REFLECTOR,
-				GeometryMap->GetDynamicReflectionMeshComponents(j));
+			CMeshComponent* ReflectionMesh = GeometryMap->GetDynamicReflectionMeshComponents(j);
+			bool bDrawAsGlass = false;
+			if (ReflectionMesh)
+			{
+				if (CMaterial* Material = ReflectionMesh->GetMaterialBySlot(0))
+				{
+					bDrawAsGlass = Material->IsUseGlass();
+				}
+			}
+
+			if (bDrawAsGlass)
+			{
+				if (std::shared_ptr<FRenderLayer> TransparentRenderLayer =
+					FRenderLayerManager::FindByRenderLayer((int)EMeshRenderLayerType::RENDERLAYER_TRANSPARENT))
+				{
+					TransparentRenderLayer->ResetPSO();
+					FGeometry::FindRenderingDatas(
+						[&](std::shared_ptr<FRenderingData>& InRenderingData)->EFindValueType
+						{
+							if (InRenderingData && InRenderingData->Mesh == ReflectionMesh)
+							{
+								std::weak_ptr<FRenderingData> WeakRenderingData = InRenderingData;
+								TransparentRenderLayer->DrawObject(DeltaTime, WeakRenderingData);
+							}
+
+							return EFindValueType::TYPE_IN_PROGRAM;
+						});
+				}
+			}
+			else
+			{
+				RenderLayer->FindObjectDraw(
+					DeltaTime,
+					RENDERLAYER_OPAQUE_REFLECTOR,
+					ReflectionMesh);
+			}
 
 			// 重置CubeMap
 			// CubeMapをリセット

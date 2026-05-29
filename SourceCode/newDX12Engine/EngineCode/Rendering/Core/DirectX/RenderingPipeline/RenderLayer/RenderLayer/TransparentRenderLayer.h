@@ -9,9 +9,13 @@ public:
 	FTransparentRenderLayer();
 
 	virtual void Draw(float DeltaTime);
+	virtual void UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo);
 	virtual void BuildShader();
 	virtual void BuildPSO();
 
 	virtual int GetRenderLayerType() const { return 1; }
 	virtual void ResetPSO();
+
+private:
+	XMFLOAT4 CachedViewPosition;
 };
