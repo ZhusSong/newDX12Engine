@@ -148,7 +148,6 @@ void FDynamicReflectionCubeMap::PreDraw(float DeltaTime)
 			// CubeMapを更新
 			GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(6, InRenderTarget->GetGPUSRVOffset());
 
-			Draw(DeltaTime);
 
 			CMeshComponent* ReflectionMesh = GeometryMap->GetDynamicReflectionMeshComponents(j);
 			bool bDrawAsGlass = false;

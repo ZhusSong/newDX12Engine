@@ -47,7 +47,7 @@ public:
 
 	virtual void UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo);
 
-	//单独设置PSO
+	// 单独设置PSO
 	// PSOを個別に設定する
 	virtual void ResetPSO();
 	// 通过流水线状态设置PSO

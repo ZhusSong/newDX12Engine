@@ -2,8 +2,28 @@
 #include "../../../../Component/Mesh/Core/MeshComponentType.h"
 #include "../../../../Config/EngineRenderConfig.h"
 
+#if EDITOR_ENGINE
+#include"../../../../../../../Program Files/RenderDoc/renderdoc_app.h"
+
+#endif
+
 FRenderingPipeline::FRenderingPipeline()
 {
+#if EDITOR_ENGINE
+	RENDERDOC_API_1_6_0* RenderDocAPI = nullptr;
+
+	if (HMODULE Mod = GetModuleHandleA("renderdoc.dll"))
+	{
+		auto GetAPI =
+			(pRENDERDOC_GetAPI)GetProcAddress(
+				Mod,
+				"RENDERDOC_GetAPI");
+
+		GetAPI(
+			eRENDERDOC_API_Version_1_6_0,
+			(void**)&RenderDocAPI);
+	}
+#endif
 
 }
 FRenderingPipeline::~FRenderingPipeline()
@@ -229,9 +249,8 @@ void FRenderingPipeline::PreDraw(float DeltaTime)
 	// メインビューのCanvasをクリアする
 	ClearMainSwapChainCanvas();
 
-	// 背景层先写入主视口，后续的不透明/动态反射/透明通道都以它为底。
-	// 背景レイヤーは先にメインビューポートへ描画し、その後の不透明/動的反射/透明パスの土台にする。
-	GeometryMap.DrawViewport(DeltaTime);
+	// 背景。
+	// 背景を描画する。
 	RenderLayer.Draw(RENDERLAYER_BACKGROUND, DeltaTime);
 
 	// 渲染shadowCubeMap
@@ -260,7 +279,7 @@ void FRenderingPipeline::Draw(float DeltaTime)
 
 	// 绘制抓取到的ShadowCubeMap贴图
 	// 取得したShadowCubeMapのテクスチャを描画する
-	GeometryMap.DrawCubeMapTexture(DeltaTime);
+	//GeometryMap.DrawCubeMapTexture(DeltaTime);
 
 	// 各类层级
 	// 各レイヤー
@@ -274,8 +293,8 @@ void FRenderingPipeline::Draw(float DeltaTime)
 	{
 		DynamicCubeMap.PreDraw(DeltaTime);
 
-		// 动态 CubeMap pass 会临时切换 RTV/DSV，回到主流程前重新绑定主视口。
-		// 動的 CubeMap pass は一時的に RTV/DSV を切り替えるため、主描画へ戻る前に再バインドする。
+		// 动态 CubeMap 会临时切换 RTV/DSV，回到主流程前重新绑定主视口。
+		// 動的 CubeMap は一時的に RTV/DSV を切り替えるため、主描画へ戻る前に再バインドする。
 		StartSetMainViewportRenderTarget();
 		EndSetMainViewportRenderTarget();
 		GeometryMap.DrawViewport(DeltaTime);

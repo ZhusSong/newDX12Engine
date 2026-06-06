@@ -73,10 +73,7 @@ void FDirectXPipelineState::Build(int InPSOType)
     // ワイヤーフレームモデルを登録する
     ANALYSIS_HRESULT(GetD3dDevice()->CreateGraphicsPipelineState(&GPSDesc, IID_PPV_ARGS(&PSO[InPSOType])))
 
-        ////实体模型注册
-        //// 実体モデルの登録
-        //GPSDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;//以实体方式显示   // 立体表示モードで描画
-        //ANALYSIS_HRESULT(GetD3dDevice()->CreateGraphicsPipelineState(&GPSDesc, IID_PPV_ARGS(&PSO[(int)GrayModel])))
+       
 }
 
 void FDirectXPipelineState::ResetPSO(int InPSOType)
