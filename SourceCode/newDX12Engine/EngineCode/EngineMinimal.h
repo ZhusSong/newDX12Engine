@@ -15,6 +15,7 @@
 // 是否使用RenderDoc调用
 // RenderDoc使用するかどうか
 #define IF_RENDER_DOC 1
+
 // 定义窗口坐标
 // ウィンドウ座標を定義
 #define WINDOWS_LOCATION_X 0

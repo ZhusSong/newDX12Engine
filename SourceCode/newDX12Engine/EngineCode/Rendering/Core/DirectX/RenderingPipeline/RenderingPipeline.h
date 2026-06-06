@@ -43,6 +43,12 @@ public:
 	FRenderLayerManager* GetRenderLayer() const { return const_cast<FRenderLayerManager*>(&RenderLayer); }
 
 protected:
+#if IF_RENDER_DOC
+	void InitializeRenderDoc();
+	void BindRenderDocActiveWindow();
+	void BeginRenderDocEvent(const char* EventName);
+	void EndRenderDocEvent();
+#endif
 
 	// 渲染层级
 	// レンダリングレイヤー
@@ -67,5 +73,10 @@ protected:
 
 	// SSAO
 	FScreenSpaceAmbientOcclusion SSAO;
+
+#if IF_RENDER_DOC
+	void* RenderDocAPIHandle = nullptr;
+	bool bRenderDocActiveWindowBound = false;
+#endif
 
 };

@@ -317,6 +317,7 @@
     <ClInclude Include="EngineCode\Windows\WindowsEngine.h" />
     <ClInclude Include="EngineCode\Windows\WindowsMessageProcessing.h" />
     <ClInclude Include="EngineCode\Windows\WindowsPlatform.h" />
+    <ClInclude Include="ThirdParty\RenderDoc\renderdoc_app.h" />
     <ClInclude Include="imgui\backends\imgui_impl_dx12.h" />
     <ClInclude Include="imgui\backends\imgui_impl_win32.h" />
     <ClInclude Include="imgui\imconfig.h" />

@@ -455,5 +455,6 @@
     <ClInclude Include="ThirdPartyLibrary\FBX\include\libxml2\libxml\xpath.h" />
     <ClInclude Include="ThirdPartyLibrary\FBX\include\libxml2\libxml\xpathInternals.h" />
     <ClInclude Include="ThirdPartyLibrary\FBX\include\libxml2\libxml\xpointer.h" />
+    <ClInclude Include="ThirdPartyLibrary\RenderDoc\renderdoc_app.h" />
   </ItemGroup>
 </Project>

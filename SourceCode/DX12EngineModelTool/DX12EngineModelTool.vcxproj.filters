@@ -76,6 +76,9 @@
     <Filter Include="x64">
       <UniqueIdentifier>{CB80F969-74BF-4B2B-92BA-E7B4E37445EC}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ThirdPartyLibrary\Renderdoc">
+      <UniqueIdentifier>{717e6a6b-ecd1-4ca8-b5dc-4bd9c5f10045}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FBXSDK.cpp" />
@@ -934,5 +937,8 @@
     </ClInclude>
     <ClInclude Include="DX12EngineModelTool.h" />
     <ClInclude Include="miniz.h" />
+    <ClInclude Include="ThirdPartyLibrary\RenderDoc\renderdoc_app.h">
+      <Filter>ThirdPartyLibrary\Renderdoc</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

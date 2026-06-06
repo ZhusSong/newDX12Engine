@@ -1,35 +1,108 @@
-﻿#include "RenderingPipeline.h"
+#include "RenderingPipeline.h"
 #include "../../../../Component/Mesh/Core/MeshComponentType.h"
 #include "../../../../Config/EngineRenderConfig.h"
+#include <cstring>
 
-#if EDITOR_ENGINE
-#include"../../../../../../../Program Files/RenderDoc/renderdoc_app.h"
-
+#if IF_RENDER_DOC
+#include "../../DX12EngineModelTool/ThirdPartyLibrary/RenderDoc/renderdoc_app.h"
 #endif
 
 FRenderingPipeline::FRenderingPipeline()
 {
-#if EDITOR_ENGINE
-	RENDERDOC_API_1_6_0* RenderDocAPI = nullptr;
-
-	if (HMODULE Mod = GetModuleHandleA("renderdoc.dll"))
-	{
-		auto GetAPI =
-			(pRENDERDOC_GetAPI)GetProcAddress(
-				Mod,
-				"RENDERDOC_GetAPI");
-
-		GetAPI(
-			eRENDERDOC_API_Version_1_6_0,
-			(void**)&RenderDocAPI);
-	}
+#if IF_RENDER_DOC
+	InitializeRenderDoc();
 #endif
-
 }
+
 FRenderingPipeline::~FRenderingPipeline()
 {
 	Exit();
 }
+
+#if IF_RENDER_DOC
+void FRenderingPipeline::InitializeRenderDoc()
+{
+	if (RenderDocAPIHandle != nullptr)
+	{
+		return;
+	}
+
+	HMODULE renderDocModule = GetModuleHandleA("renderdoc.dll");
+	if (renderDocModule == nullptr)
+	{
+		return;
+	}
+
+	auto getApi = reinterpret_cast<pRENDERDOC_GetAPI>(
+		GetProcAddress(renderDocModule, "RENDERDOC_GetAPI"));
+	if (getApi == nullptr)
+	{
+		return;
+	}
+
+	RENDERDOC_API_1_6_0* renderDocAPI = nullptr;
+	if (getApi(
+		eRENDERDOC_API_Version_1_6_0,
+		reinterpret_cast<void**>(&renderDocAPI)) != 1)
+	{
+		return;
+	}
+
+	RenderDocAPIHandle = renderDocAPI;
+}
+
+void FRenderingPipeline::BindRenderDocActiveWindow()
+{
+	if (bRenderDocActiveWindowBound)
+	{
+		return;
+	}
+
+	InitializeRenderDoc();
+
+	RENDERDOC_API_1_6_0* renderDocAPI = reinterpret_cast<RENDERDOC_API_1_6_0*>(RenderDocAPIHandle);
+	if (renderDocAPI == nullptr)
+	{
+		return;
+	}
+
+	ComPtr<ID3D12Device> d3dDevice = GetD3dDevice();
+	HWND mainWindowHandle = GetMainWindowsHandle();
+	if (d3dDevice == nullptr || mainWindowHandle == nullptr)
+	{
+		return;
+	}
+
+	renderDocAPI->SetActiveWindow(d3dDevice.Get(), mainWindowHandle);
+	bRenderDocActiveWindowBound = true;
+}
+
+void FRenderingPipeline::BeginRenderDocEvent(const char* EventName)
+{
+	BindRenderDocActiveWindow();
+
+	ComPtr<ID3D12GraphicsCommandList> graphicsCommandList = GetGraphicsCommandList();
+	if (graphicsCommandList == nullptr || EventName == nullptr || EventName[0] == '\0')
+	{
+		return;
+	}
+
+	const UINT eventNameLength = static_cast<UINT>(std::strlen(EventName) + 1);
+	graphicsCommandList->BeginEvent(1, EventName, eventNameLength);
+}
+
+void FRenderingPipeline::EndRenderDocEvent()
+{
+	ComPtr<ID3D12GraphicsCommandList> graphicsCommandList = GetGraphicsCommandList();
+	if (graphicsCommandList == nullptr)
+	{
+		return;
+	}
+
+	graphicsCommandList->EndEvent();
+}
+#endif
+
 void FRenderingPipeline::BuildMesh(const size_t InMeshHash, CMeshComponent* InMesh, const FMeshRenderingData& MeshData)
 {
 	GeometryMap.BuildMesh(InMeshHash, InMesh, MeshData);
@@ -44,7 +117,6 @@ bool FRenderingPipeline::FindMeshRenderingDataByHash(const size_t& InHash, std::
 {
 	return GeometryMap.FindMeshRenderingDataByHash(InHash, MeshDataGroup, InRenderLayerIndex);
 }
-
 
 void FRenderingPipeline::UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo)
 {
@@ -66,7 +138,6 @@ void FRenderingPipeline::OnResetSize(int InWidth, int InHeight)
 
 void FRenderingPipeline::BuildPipeline()
 {
-
 	// 初始化GPS描述
 	// GPS記述を初期化する
 	DirectXPipelineState.ResetGPSDesc();
@@ -86,7 +157,7 @@ void FRenderingPipeline::BuildPipeline()
 	// 构建雾
 	// フォグを構築する
 	GeometryMap.BuildFog();
-	
+
 	// 构建动态的CubeMap
 	// 動的キューブマップを構築する
 	DynamicCubeMap.Init(
@@ -102,8 +173,6 @@ void FRenderingPipeline::BuildPipeline()
 		&RenderLayer);
 
 	SSAO.Init(GetViewportWidth(), GetViewportHeight());
-
-
 
 	// 构建普通阴影map
 	// 通常のシャドウマップを構築する
@@ -145,10 +214,10 @@ void FRenderingPipeline::BuildPipeline()
 	UIPipeline.Init(
 		GeometryMap.GetHeap(),
 		GeometryMap.GetDrawTexture2DResourcesNumber() + //Texture2D
-		GeometryMap.GetDrawCubeMapResourcesNumber() + //静态Cube贴图 // 静的Cubeマップ  
-		1 + //动态Cube贴图 // 動的Cubeマップ  
+		GeometryMap.GetDrawCubeMapResourcesNumber() + //静态Cube贴图 // 静的Cubeマップ
+		1 + //动态Cube贴图 // 動的Cubeマップ
 		1 + //Shadow
-		1);//ShadowCubeMap
+		1); //ShadowCubeMap
 
 	// 初始化CubeMap 摄像机
 	// キューブマップ用カメラを初期化する
@@ -209,25 +278,35 @@ void FRenderingPipeline::BuildPipeline()
 
 void FRenderingPipeline::PreDraw(float DeltaTime)
 {
+#if IF_RENDER_DOC
+	BeginRenderDocEvent("RenderingPipeline::PreDraw");
+#endif
 
 	DirectXPipelineState.PreDraw(DeltaTime);
 
 	GeometryMap.PreDraw(DeltaTime);
 	RootSignature.PreDraw(DeltaTime);
 
-	
 	// 渲染灯光材质贴图等
 	// ライトやマテリアルのテクスチャなどを描画する
+#if IF_RENDER_DOC
+	BeginRenderDocEvent("GeometryMap.Draw (PreDraw)");
+#endif
 	GeometryMap.Draw(DeltaTime);
+#if IF_RENDER_DOC
+	EndRenderDocEvent();
+#endif
 
 	// 渲染SSAO
 	// SSAOを描画する
+#if IF_RENDER_DOC
+	BeginRenderDocEvent("SSAO.Draw");
+#endif
 	SSAO.Draw(DeltaTime);
+#if IF_RENDER_DOC
+	EndRenderDocEvent();
+#endif
 
-	// SSAO pass 会切换到自己的 RT，这里只重新绑定主视口 RT/DSV，
-	// 不改变外层的 PRESENT/RENDER_TARGET 状态计数。
-	// SSAO pass は独自の RT に切り替わるため、ここではメインビューポートの RT/DSV だけを再バインドし、
-	// 外側の PRESENT/RENDER_TARGET の状態管理カウントは変更しない。
 	StartSetMainViewportRenderTarget();
 	EndSetMainViewportRenderTarget();
 
@@ -239,27 +318,63 @@ void FRenderingPipeline::PreDraw(float DeltaTime)
 	// SSAO は独自のルートシグネチャ内で一部の root パラメータを上書きするため、
 	// デフォルトのルートシグネチャへ戻した後に主描画で使うリソースを再バインドし、
 	// 背景レイヤーが SSAO の descriptor table を誤って参照し続けるのを防ぐ。
+#if IF_RENDER_DOC
+	BeginRenderDocEvent("GeometryMap.Draw (Rebind Main Resources)");
+#endif
 	GeometryMap.Draw(DeltaTime);
+#if IF_RENDER_DOC
+	EndRenderDocEvent();
+#endif
 
 	// 存储SSAO到指定的buffer
 	// SSAOを指定のバッファに保存する
+#if IF_RENDER_DOC
+	BeginRenderDocEvent("SSAO.SaveToSSAOBuffer");
+#endif
 	SSAO.SaveToSSAOBuffer();
+#if IF_RENDER_DOC
+	EndRenderDocEvent();
+#endif
 
 	// 主视口清除画布
 	// メインビューのCanvasをクリアする
+#if IF_RENDER_DOC
+	BeginRenderDocEvent("ClearMainSwapChainCanvas");
+#endif
 	ClearMainSwapChainCanvas();
+#if IF_RENDER_DOC
+	EndRenderDocEvent();
+#endif
 
 	// 背景。
 	// 背景を描画する。
+#if IF_RENDER_DOC
+	BeginRenderDocEvent("RenderLayer.Draw Background");
+#endif
 	RenderLayer.Draw(RENDERLAYER_BACKGROUND, DeltaTime);
+#if IF_RENDER_DOC
+	EndRenderDocEvent();
+#endif
 
 	// 渲染shadowCubeMap
 	// shadowCubeMapを描画する
+#if IF_RENDER_DOC
+	BeginRenderDocEvent("DynamicShadowCubeMap.PreDraw");
+#endif
 	GeometryMap.DynamicShadowCubeMap.PreDraw(DeltaTime);
+#if IF_RENDER_DOC
+	EndRenderDocEvent();
+#endif
 
 	// 渲染阴影
 	// シャドウを描画する
+#if IF_RENDER_DOC
+	BeginRenderDocEvent("GeometryMap.DrawShadow");
+#endif
 	GeometryMap.DrawShadow(DeltaTime);
+#if IF_RENDER_DOC
+	EndRenderDocEvent();
+#endif
 
 	// 阴影等离屏 pass 会改掉当前 OM 绑定，
 	// 在进入主绘制前先把主视口 RT/DSV 重新绑回去。
@@ -269,13 +384,27 @@ void FRenderingPipeline::PreDraw(float DeltaTime)
 	EndSetMainViewportRenderTarget();
 
 	RenderLayer.PreDraw(DeltaTime);
+
+#if IF_RENDER_DOC
+	EndRenderDocEvent();
+#endif
 }
 
 void FRenderingPipeline::Draw(float DeltaTime)
 {
 	// 主视口
 	// メインビュー
+#if IF_RENDER_DOC
+	BeginRenderDocEvent("RenderingPipeline::Draw");
+#endif
+
+#if IF_RENDER_DOC
+	BeginRenderDocEvent("GeometryMap.DrawViewport");
+#endif
 	GeometryMap.DrawViewport(DeltaTime);
+#if IF_RENDER_DOC
+	EndRenderDocEvent();
+#endif
 
 	// 绘制抓取到的ShadowCubeMap贴图
 	// 取得したShadowCubeMapのテクスチャを描画する
@@ -283,7 +412,13 @@ void FRenderingPipeline::Draw(float DeltaTime)
 
 	// 各类层级
 	// 各レイヤー
+#if IF_RENDER_DOC
+	BeginRenderDocEvent("RenderLayer.Draw Opaque");
+#endif
 	RenderLayer.Draw(RENDERLAYER_OPAQUE, DeltaTime);
+#if IF_RENDER_DOC
+	EndRenderDocEvent();
+#endif
 
 	// 动态反射对象需要在不透明物体之后、常规透明物体之前绘制：
 	// 这样玻璃可以看到背后的不透明场景，同时仍然使用当前对象对应的动态 CubeMap。
@@ -291,6 +426,9 @@ void FRenderingPipeline::Draw(float DeltaTime)
 	// これによりガラスは背後の不透明シーンを参照でき、かつ各オブジェクト専用の動的 CubeMap を使い続けられる。
 	if (DynamicCubeMap.IsExitDynamicReflectionMesh())
 	{
+#if IF_RENDER_DOC
+		BeginRenderDocEvent("DynamicCubeMap");
+#endif
 		DynamicCubeMap.PreDraw(DeltaTime);
 
 		// 动态 CubeMap 会临时切换 RTV/DSV，回到主流程前重新绑定主视口。
@@ -299,36 +437,82 @@ void FRenderingPipeline::Draw(float DeltaTime)
 		EndSetMainViewportRenderTarget();
 		GeometryMap.DrawViewport(DeltaTime);
 		GeometryMap.DrawCubeMapTexture(DeltaTime);
+#if IF_RENDER_DOC
+		EndRenderDocEvent();
+#endif
 	}
 
+#if IF_RENDER_DOC
+	BeginRenderDocEvent("RenderLayer.Draw Transparent");
+#endif
 	RenderLayer.Draw(RENDERLAYER_TRANSPARENT, DeltaTime);
+#if IF_RENDER_DOC
+	EndRenderDocEvent();
+#endif
 
 	// 渲染选择箭头
 	// 選択用のハンドルを描画する
+#if IF_RENDER_DOC
+	BeginRenderDocEvent("RenderLayer.Draw Select");
+#endif
 	RenderLayer.Draw(RENDERLAYER_SELECT, DeltaTime);
+#if IF_RENDER_DOC
+	EndRenderDocEvent();
+#endif
 
 	// 渲染旋转面片
 	// 回転ハンドルを描画する
+#if IF_RENDER_DOC
+	BeginRenderDocEvent("RenderLayer.Draw OperationHandleRotPlane");
+#endif
 	RenderLayer.Draw(RENDERLAYER_OPERATION_HANDLE_ROT_PLANE, DeltaTime);
+#if IF_RENDER_DOC
+	EndRenderDocEvent();
+#endif
 
 	// 渲染操作手柄
 	// 操作ハンドルを描画する
+#if IF_RENDER_DOC
+	BeginRenderDocEvent("RenderLayer.Draw OperationHandle");
+#endif
 	RenderLayer.Draw(RENDERLAYER_OPERATION_HANDLE, DeltaTime);
+#if IF_RENDER_DOC
+	EndRenderDocEvent();
+#endif
 
 	// 最后渲染UI
 	// UIを描画する
+#if IF_RENDER_DOC
+	BeginRenderDocEvent("UIPipeline.Draw");
+#endif
 	UIPipeline.Draw(DeltaTime);
+#if IF_RENDER_DOC
+	EndRenderDocEvent();
+#endif
 
 	DirectXPipelineState.Draw(DeltaTime);
+
+#if IF_RENDER_DOC
+	EndRenderDocEvent();
+#endif
 }
 
 void FRenderingPipeline::PostDraw(float DeltaTime)
 {
+#if IF_RENDER_DOC
+	BeginRenderDocEvent("RenderingPipeline::PostDraw");
+#endif
+
 	GeometryMap.PostDraw(DeltaTime);
 	RenderLayer.PostDraw(DeltaTime);
 	DirectXPipelineState.PostDraw(DeltaTime);
+
+#if IF_RENDER_DOC
+	EndRenderDocEvent();
+#endif
 }
+
 void FRenderingPipeline::Exit()
 {
-	//UIPipeline.Exit();
+	// UIPipeline.Exit();
 }
