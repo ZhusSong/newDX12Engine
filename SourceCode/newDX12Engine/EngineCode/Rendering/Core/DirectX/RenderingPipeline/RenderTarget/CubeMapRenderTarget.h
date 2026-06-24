@@ -11,6 +11,7 @@ public:
 	FCubeMapRenderTarget();
 
 	void Init(UINT InWidth, UINT InHeight, DXGI_FORMAT InFormat);
+	void SetOptimizedClearColor(const float InColor[4]);
 public:
 	// 获取cpu渲染目标视图
 	// CPUレンダーターゲットビューを取得する
@@ -25,4 +26,5 @@ private:
 private:
 	//RTV
 	std::vector<CD3DX12_CPU_DESCRIPTOR_HANDLE> CPURenderTargetView;
+	float OptimizedClearColor[4];
 };

@@ -93,7 +93,7 @@ float GetShadowFactor_PCF_Sample9(float4 InWorldPosition, float4x4 InShadowMatri
 
     // 添加max限制，以增加阴影细节
     // 最大値制限を追加して、シャドウのディテールを向上
-    return max(R / 9.f,0.5f);
+    return saturate(R / 9.f);
 }
 
 float ProcessingOmnidirectionalSampleCubeMapShadow(float4 InWorldPosition, float3 InWorldLightPosition)

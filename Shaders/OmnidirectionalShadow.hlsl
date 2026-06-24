@@ -34,6 +34,12 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
 {
 	// 采集深度图
     // 深度マップをサンプリング
+    MaterialConstBuffer MatConstBuffer = Materials[MaterialIndex];
+    float4 BaseColor = GetMaterialBaseColor(MatConstBuffer, MVOut.TexCoord);
+
+    // Only discard fully transparent texels so thin alpha-mask details can still cast shadows.
+    clip(BaseColor.a - (1.0f / 255.0f));
+
     float Depth = (1.f - (MVOut.PositionH.z / MVOut.PositionH.w));
 
     Depth = pow(Depth, 5);

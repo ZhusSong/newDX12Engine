@@ -5,12 +5,24 @@ FCubeMapRenderTarget::FCubeMapRenderTarget()
 	:Super()
 {
 	CPURenderTargetView.resize(6);
+	OptimizedClearColor[0] = 0.0f;
+	OptimizedClearColor[1] = 0.0f;
+	OptimizedClearColor[2] = 0.0f;
+	OptimizedClearColor[3] = 1.0f;
 }
 
 void FCubeMapRenderTarget::Init(UINT InWidth, UINT InHeight, DXGI_FORMAT InFormat)
 {
 	Super::Init(InWidth, InHeight, InFormat);
 
+}
+
+void FCubeMapRenderTarget::SetOptimizedClearColor(const float InColor[4])
+{
+	for (int i = 0; i < 4; i++)
+	{
+		OptimizedClearColor[i] = InColor[i];
+	}
 }
 
 CD3DX12_CPU_DESCRIPTOR_HANDLE& FCubeMapRenderTarget::GetCPURenderTargetView(int Index)
@@ -40,10 +52,10 @@ void FCubeMapRenderTarget::BuildRenderTargetMap()
 	// クリアカラー値を定義し、EXECUTION WARNING #820: CLEARRENDERTARGETVIEW_MISMATCHINGCLEARVA 警告の発生を防ぐ
 	D3D12_CLEAR_VALUE ClearValue = {};
 	ClearValue.Format = Format;
-	ClearValue.Color[0] = 0.0f;
-	ClearValue.Color[1] = 0.0f;
-	ClearValue.Color[2] = 0.0f;
-	ClearValue.Color[3] = 1.0f;
+	ClearValue.Color[0] = OptimizedClearColor[0];
+	ClearValue.Color[1] = OptimizedClearColor[1];
+	ClearValue.Color[2] = OptimizedClearColor[2];
+	ClearValue.Color[3] = OptimizedClearColor[3];
 
 	CD3DX12_HEAP_PROPERTIES BufferProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
 

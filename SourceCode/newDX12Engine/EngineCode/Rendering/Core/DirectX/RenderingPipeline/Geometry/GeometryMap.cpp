@@ -544,7 +544,7 @@ void FGeometryMap::BuildDescriptorHeap()
 		GetDrawCubeMapResourcesNumber() + //静态Cube贴图 背景 天空球   // 静的Cubeマップ 背景 スカイボックス
 		1 + //动态Cube贴图 反射                     // 動的Cubeマップ 反射
 		1 + //Shadow 直射灯 聚光灯               	// シャドウ 直射光 スポットライト
-		1 + //ShadowCubeMap 点光源的                // ShadowCubeMap 点光源のシャドウ
+		1 + //ShadowCubeMap 点光源                // ShadowCubeMap 点光源のシャドウ
 		1 + //UI
 		1 + //法线                                  // 法線
 		1 + //Depth

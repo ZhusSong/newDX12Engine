@@ -12,7 +12,11 @@
 FDynamicShadowCubeMap::FDynamicShadowCubeMap()
 	:Super()
 {
-
+	if (FCubeMapRenderTarget* InRenderTarget = dynamic_cast<FCubeMapRenderTarget*>(RenderTarget.get()))
+	{
+		const float ShadowClearColor[] = { 1.f, 1.f, 1.f, 1.f };
+		InRenderTarget->SetOptimizedClearColor(ShadowClearColor);
+	}
 }
 
 void FDynamicShadowCubeMap::OnResetSize(int InWidth, int InHeight)

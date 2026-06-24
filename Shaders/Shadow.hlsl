@@ -31,5 +31,9 @@ MeshVertexOut VertexShaderMain(MeshVertexIn MV)
 
 void PixelShaderMain(MeshVertexOut MVOut)
 {
+    MaterialConstBuffer MatConstBuffer = Materials[MaterialIndex];
+    float4 BaseColor = GetMaterialBaseColor(MatConstBuffer, MVOut.TexCoord);
 
+    // Only discard fully transparent texels so thin alpha-mask details can still cast shadows.
+    clip(BaseColor.a - (1.0f / 255.0f));
 }

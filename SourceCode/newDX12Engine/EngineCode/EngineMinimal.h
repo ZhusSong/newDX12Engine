@@ -12,7 +12,7 @@
 // エディターエンジンを使用するかどうか
 #define EDITOR_ENGINE 1
 
-// 是否使用RenderDoc调用
+// 是否使用RenderDoc
 // RenderDoc使用するかどうか
 #define IF_RENDER_DOC 1
 

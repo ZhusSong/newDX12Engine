@@ -144,29 +144,30 @@ int CDirectXRenderingEngine::PostInit()
 		// 创建灯光
 		// ライトを作成
 		
-		//  聚光灯
-		// スポットライト
-		if (GSpotLight* SpotLight = World->CreateActorObject<GSpotLight>())
-		{
-			SpotLight->SetPosition(XMFLOAT3(0.f, 0.f, 5.f));
-			SpotLight->SetRotation(fvector_3d(0.f, 0.f, 0.f));
-
-			SpotLight->SetLightIntensity(fvector_3d(1.3f, 1.3f, 1.3f));
-			//SpotLight->SetStartAttenuation(1.f);
-			SpotLight->SetEndAttenuation(130.f);
-
-			SpotLight->SetConicalInnerCorner(40.f);
-			SpotLight->SetConicalOuterCorner(60.f);
-		}
-		//// 点光源
-		//if (GPointLight* PointLight = World->CreateActorObject<GPointLight>())
+		////  聚光灯
+		//// スポットライト
+		//if (GSpotLight* SpotLight = World->CreateActorObject<GSpotLight>())
 		//{
-		//	PointLight->SetPosition(XMFLOAT3(0.f, 10.f, 10.f));
-		//	PointLight->SetRotation(fvector_3d(0.f, 0.f, 0.f));
+		//	SpotLight->SetPosition(XMFLOAT3(0.f, 0.f, 5.f));
+		//	SpotLight->SetRotation(fvector_3d(0.f, 0.f, 0.f));
 
-		//	PointLight->SetLightIntensity(fvector_3d(0.9f));
-		//	PointLight->SetEndAttenuation(190.f);
+		//	SpotLight->SetLightIntensity(fvector_3d(1.3f, 1.3f, 1.3f));
+		//	//SpotLight->SetStartAttenuation(1.f);
+		//	SpotLight->SetEndAttenuation(130.f);
+
+		//	SpotLight->SetConicalInnerCorner(40.f);
+		//	SpotLight->SetConicalOuterCorner(60.f);
 		//}
+		// 点光源
+		if (GPointLight* PointLight = World->CreateActorObject<GPointLight>())
+		{
+			PointLight->SetPosition(XMFLOAT3(0.f, 10.f, 10.f));
+			PointLight->SetRotation(fvector_3d(0.f, 0.f, 0.f));
+
+			PointLight->SetLightIntensity(fvector_3d(0.9f));
+			PointLight->SetEndAttenuation(190.f);
+		}
+
 		// 平行光
 		if (GParallelLight* ParallelLight = World->CreateActorObject<GParallelLight>())
 		{
@@ -607,6 +608,7 @@ int CDirectXRenderingEngine::PostInit()
 			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
 			{
 				InMaterial->SetNormal("Wood2_Nor");
+				
 				//InMaterial->SetBaseColor("Wood2");
 				InMaterial->SetMaterialType(EMaterialType::BinnPhong);
 			}
@@ -647,6 +649,7 @@ int CDirectXRenderingEngine::PostInit()
 			SphereMesh->CreateMesh(2.f, 100, 100);
 			SphereMesh->SetPosition(XMFLOAT3(21.f, 7, 0.f));
 			SphereMesh->SetRotation(fvector_3d(0.f, 0.f, 0.f));
+		
 			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
 			{
 				InMaterial->SetBaseColor("WireFence");
@@ -1446,16 +1449,15 @@ bool CDirectXRenderingEngine::InitDirect3D()
 	// RTV
 	
 	
-	//************ ！！！每次添加新RTV时需检查此处！！！****************
 	//************ ！！！新しいRTVを追加する際は毎回ここを確認すること！！！****************
 	D3D12_DESCRIPTOR_HEAP_DESC RTVDescriptorHeapDesc;
 	RTVDescriptorHeapDesc.NumDescriptors =
-		FEngineRenderConfig::GetRenderConfig()->SwapChainCount + //交换链 // スワップチェーン
-		6 + //反射的CubeMap RTV              // 反射用CubeMap RTV
-		6 + //ShadowCubeMap RTV Point Light  // ShadowCubeMap RTV 点光源
-		2 + //屏幕法线 + SSAO深度输入        // スクリーン法線 + SSAO depth input
+		FEngineRenderConfig::GetRenderConfig()->SwapChainCount +  // スワップチェーン
+		6 +              // 反射用CubeMap RTV
+		6 +  // ShadowCubeMap RTV 点光源
+		2 +         // スクリーン法線 + SSAO depth input
 		1 + //SSAO
-		1;  //双边模糊                       // 両方向ブラー
+		1;                      // 両方向ブラー
 
 
 	RTVDescriptorHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
