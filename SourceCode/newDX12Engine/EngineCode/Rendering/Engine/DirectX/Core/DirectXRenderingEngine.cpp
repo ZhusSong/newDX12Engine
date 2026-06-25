@@ -734,10 +734,9 @@ int CDirectXRenderingEngine::PostInit()
 				InMaterial->SetFresnelF0(fvector_3d(0.04f));
 				InMaterial->SetTransparency(0.5f);
 				InMaterial->SetUseGlass(true);
-				InMaterial->SetDynamicReflection(true);
 
 				InMaterial->SetSpecular(fvector_3d(1.f));
-				InMaterial->SetRefractiveValue(0.f);
+				InMaterial->SetRefractiveValue(0.0f);
 			}
 		}
 

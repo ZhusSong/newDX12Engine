@@ -4,18 +4,22 @@
 #include "ShaderCommon.hlsli"
 #include "ShaderFunctionLibrary.hlsli"
 
+// 通用材质数据
+// 汎用マテリアルデータ
 struct FMaterial
 {
-	// 通用材质
-    // 汎用マテリアル
     float4 BaseColor;
 };
 
+// Schlick 近似菲涅尔
+// Schlick近似フレネル
 float3 FresnelSchlickMethod(float3 InF0, float3 InObjectPointNormal, float3 InDirection, int InPowM)
 {
     return InF0 + (1.f - InF0) * pow(1.f - saturate(dot(InObjectPointNormal, InDirection)), InPowM);
 }
 
+// 获取材质基础颜色
+// マテリアルのベースカラーを取得
 float4 GetMaterialBaseColor(MaterialConstBuffer MatConstBuffer, float2 InTexCoord)
 {
     if (MatConstBuffer.BaseColorIndex != -1)
@@ -26,6 +30,8 @@ float4 GetMaterialBaseColor(MaterialConstBuffer MatConstBuffer, float2 InTexCoor
     return MatConstBuffer.BaseColor;
 }
 
+// 获取材质法线
+// マテリアル法線を取得
 float3 GetMaterialNormals(
 	MaterialConstBuffer MatConstBuffer,
 	float2 InTexCoord,
@@ -35,22 +41,20 @@ float3 GetMaterialNormals(
     if (MatConstBuffer.NormalIndex != -1)
     {
         float4 SampleNormal = SimpleTexture2DMap[MatConstBuffer.NormalIndex].Sample(AnisotropicSampler, InTexCoord);
-	
+
 		//[0,1]->[-1,1] => [0,1] * 2.f = [0,2] => [0-2]-1.f = [-1,1];
         float3 NormalsInTangentSpace = 2.0f * SampleNormal.rgb - 1.f;
 
-		// 拿到世界TBN
-        // ワールドTBNを取得
         float3x3 TBN = GetBuildTBNMatrix(InUnitWorldNormal, InWorldTangent);
 
-		// 把切线空间下的采样法线转为世界的法线
-        // タンジェント空間でサンプリングされた法線をワールド法線に変換
         return mul(NormalsInTangentSpace, TBN);
     }
 
     return InUnitWorldNormal;
 }
 
+// 获取高光颜色
+// スペキュラ色を取得
 float4 GetMaterialSpecular(MaterialConstBuffer MatConstBuffer, float2 InTexCoord)
 {
     if (MatConstBuffer.SpecularIndex != -1)
@@ -61,22 +65,30 @@ float4 GetMaterialSpecular(MaterialConstBuffer MatConstBuffer, float2 InTexCoord
     return float4(MatConstBuffer.SpecularColor, 1.f);
 }
 
+// 获取正交化切线
+// 直交化された接線を取得
 float3 GetOrthonormalizedTangent(float3 InWorldTangent, float3 InUnitWorldNormal)
 {
     return normalize(InWorldTangent - dot(InWorldTangent, InUnitWorldNormal) * InUnitWorldNormal);
 }
 
+// 偏移各向异性方向
+// 異方性方向をシフト
 float3 ShiftAnisotropyDirection(float3 InUnitWorldTangent, float3 InUnitWorldNormal, float InShift)
 {
     return normalize(InUnitWorldTangent + InShift * InUnitWorldNormal);
 }
 
+// 获取 Kajiya-Kay 漫反射项
+// Kajiya-Kay 拡散項を取得
 float GetKajiyaKayDiffuse(float3 InUnitWorldTangent, float3 InUnitLightDirection)
 {
     float TangentLight = dot(InUnitWorldTangent, InUnitLightDirection);
     return sqrt(saturate(1.0f - TangentLight * TangentLight));
 }
 
+// 获取 Kajiya-Kay 高光项
+// Kajiya-Kay スペキュラ項を取得
 float GetKajiyaKaySpecular(float3 InUnitWorldTangent, float3 InHalfDirection, float InExponent)
 {
     float TangentHalf = dot(InUnitWorldTangent, InHalfDirection);
@@ -90,22 +102,41 @@ float3 GetReflect(float3 InUnitWorldNormal, float3 WorldPosition)
     float3 ViewDirection = normalize(ViewportPosition.xyz - WorldPosition);
     return reflect(-ViewDirection, InUnitWorldNormal);
 }
-// 获取折射
-// 屈折を取得
+
+// 兼容旧折射参数与IOR折射率输入
+// 旧来の屈折パラメータとIOR入力を両対応する
+float GetRefractionEta(float InRefractiveValue)
+{
+    if (InRefractiveValue <= 0.0f)
+    {
+        return 1.0f;
+    }
+
+    if (InRefractiveValue < 1.0f)
+    {
+        return InRefractiveValue;
+    }
+
+    return 1.0f / InRefractiveValue;
+}
+
+// 获取折射方向
+// 屈折方向を取得
 float3 GetRefract(float3 InUnitWorldNormal, float3 WorldPosition, float InRefractiveValue)
 {
     float3 ViewDirection = normalize(ViewportPosition.xyz - WorldPosition);
-    return refract(-ViewDirection, InUnitWorldNormal, InRefractiveValue);
+    return refract(-ViewDirection, InUnitWorldNormal, GetRefractionEta(InRefractiveValue));
 }
 
-
-// 获取反射采样
-// 反射サンプリングを取得
+// 获取反射采样颜色
+// 反射サンプリング色を取得
 float3 GetReflectionSampleColor(float3 InUnitWorldNormal, float3 NewReflect)
 {
     return SimpleCubeMap.Sample(TextureSampler, NewReflect).rgb;
 }
 
+// 获取平面反射采样颜色
+// 平面反射サンプリング色を取得
 float3 GetPlanarReflectionSampleColor(float3 InUnitWorldNormal, float3 WorldPosition)
 {
     if (PlanarReflectionSettings.x <= 0.5f || PlanarReflectionSettings.y < 0.0f)
@@ -133,6 +164,8 @@ float3 GetPlanarReflectionSampleColor(float3 InUnitWorldNormal, float3 WorldPosi
     return SimpleTexture2DMap[TextureIndex].Sample(TextureSampler, PlanarPosition.xy).rgb;
 }
 
+// 根据材质设置选择反射采样源
+// マテリアル設定に応じて反射サンプル元を選択
 float3 GetReflectionSampleColor(MaterialConstBuffer MatConstBuffer, float3 InUnitWorldNormal, float3 WorldPosition, float3 NewReflect)
 {
     if (MatConstBuffer.UsePlanarReflection > 0.5f)
@@ -150,17 +183,32 @@ float GetShininess(MaterialConstBuffer MatConstBuffer)
     return 1.f - MatConstBuffer.MaterialRoughness;
 }
 
-// 获取菲尼尔参数
-// フレネルパラメータを取得
+// 获取菲涅尔反射系数
+// フレネル反射係数を取得
 float3 FresnelSchlickFactor(MaterialConstBuffer MatConstBuffer, float3 InUnitWorldNormal, float3 InReflect)
 {
     return FresnelSchlickMethod(MatConstBuffer.FresnelF0, InUnitWorldNormal, InReflect, 5);
 }
+
+// 获取玻璃透明度
+// ガラス透明度を取得
+float GetGlassOpacity(MaterialConstBuffer MatConstBuffer, float3 InUnitWorldNormal, float3 WorldPosition)
+{
+    float3 ViewDirection = normalize(ViewportPosition.xyz - WorldPosition);
+    float3 FresnelFactor = FresnelSchlickFactor(MatConstBuffer, InUnitWorldNormal, ViewDirection);
+    float FresnelMax = max(max(FresnelFactor.x, FresnelFactor.y), FresnelFactor.z);
+
+    return saturate(MatConstBuffer.Transparency * 0.2f + FresnelMax * 0.8f);
+}
+
+// 粗糙度版本的菲涅尔近似
+// 粗さ対応のフレネル近似
 float3 FresnelSchlickRoughness(float NV, float3 F0, float Roughness)
 {
     return F0 + (max(float3(1.0 - Roughness, 1.0 - Roughness, 1.0 - Roughness), F0) - F0) * pow(1.0 - NV, 5.0);
 }
-// 得到最终反射颜色
+
+// 获取最终反射颜色
 // 最終反射色を取得
 float3 GetReflectionColor(MaterialConstBuffer MatConstBuffer, float3 InUnitWorldNormal, float3 WorldPosition)
 {
@@ -172,8 +220,8 @@ float3 GetReflectionColor(MaterialConstBuffer MatConstBuffer, float3 InUnitWorld
     return SampleReflectionColor * FresnelFactor * Shininess;
 }
 
-// 获取折射的颜色 
-// 屈折の色を取得
+// 获取折射颜色
+// 屈折色を取得
 float3 GetRefractColor(MaterialConstBuffer MatConstBuffer, float InRefractiveIndex, float3 InUnitWorldNormal, float3 WorldPosition)
 {
     float3 NewRefract = GetRefract(InUnitWorldNormal, WorldPosition, MatConstBuffer.Refraction);

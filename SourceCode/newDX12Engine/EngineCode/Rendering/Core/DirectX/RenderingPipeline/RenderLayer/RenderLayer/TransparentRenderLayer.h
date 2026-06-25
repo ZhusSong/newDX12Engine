@@ -19,5 +19,9 @@ public:
 	virtual void DrawWithPipelineState(float DeltaTime, EPipelineState InPipelineState);
 
 private:
+	std::vector<std::weak_ptr<FRenderingData>> BuildSortedRenderDatas() const;
+	void DrawSortedRenderDatas(float DeltaTime);
+
+private:
 	XMFLOAT4 CachedViewPosition;
 };

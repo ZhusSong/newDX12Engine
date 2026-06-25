@@ -2,10 +2,46 @@
 #include "../../PipelineState/DirectXPipelineState.h"
 #include "../../Geometry/GeometryMap.h"
 #include "../RenderLayerManager.h"
+#include "../../../../../../Mesh/Core/Material/Material.h"
+#include "../../../../../../Component/Mesh/Core/MeshComponent.h"
 #include "../../../../../../Component/Mesh/Core/MeshComponentType.h"
 #include "../../../../../../Core/Viewport/ViewportInfo.h"
 
 #include <algorithm>
+
+namespace
+{
+	float BuildDistanceSquared(const std::shared_ptr<FRenderingData>& InRenderingData, const XMFLOAT4& InViewPosition)
+	{
+		const XMFLOAT3 Position(
+			InRenderingData->WorldMatrix._41,
+			InRenderingData->WorldMatrix._42,
+			InRenderingData->WorldMatrix._43);
+
+		return
+			(Position.x - InViewPosition.x) * (Position.x - InViewPosition.x) +
+			(Position.y - InViewPosition.y) * (Position.y - InViewPosition.y) +
+			(Position.z - InViewPosition.z) * (Position.z - InViewPosition.z);
+	}
+
+	bool IsGlassTransparentCandidate(const std::weak_ptr<FRenderingData>& InWeakRenderingData)
+	{
+		if (InWeakRenderingData.expired())
+		{
+			return false;
+		}
+
+		if (const std::shared_ptr<FRenderingData> InRenderingData = InWeakRenderingData.lock())
+		{
+			if (CMaterial* Material = InRenderingData->Mesh->GetMaterialBySlot(InRenderingData->MaterialSlotIndex))
+			{
+				return Material->IsUseGlass();
+			}
+		}
+
+		return false;
+	}
+}
 
 FTransparentRenderLayer::FTransparentRenderLayer()
 	:CachedViewPosition(0.f, 0.f, 0.f, 1.f)
@@ -16,65 +52,7 @@ FTransparentRenderLayer::FTransparentRenderLayer()
 void FTransparentRenderLayer::Draw(float DeltaTime)
 {
 	ResetPSO();
-
-	std::vector<std::weak_ptr<FRenderingData>> SortedRenderDatas = RenderDatas;
-	for (const std::shared_ptr<FRenderLayer>& InRenderLayer : FRenderLayerManager::GetRenderLayers())
-	{
-		if (InRenderLayer &&
-			InRenderLayer->GetRenderLayerType() != (int)EMeshRenderLayerType::RENDERLAYER_TRANSPARENT &&
-			InRenderLayer->GetRenderLayerType() != (int)EMeshRenderLayerType::RENDERLAYER_OPAQUE_REFLECTOR)
-		{
-			const std::vector<std::weak_ptr<FRenderingData>>& OtherRenderDatas = InRenderLayer->GetRenderDatas();
-			SortedRenderDatas.insert(SortedRenderDatas.end(), OtherRenderDatas.begin(), OtherRenderDatas.end());
-		}
-	}
-
-	std::sort(SortedRenderDatas.begin(), SortedRenderDatas.end(),
-		[&](const std::weak_ptr<FRenderingData>& InA, const std::weak_ptr<FRenderingData>& InB)
-		{
-			if (InA.expired())
-			{
-				return false;
-			}
-
-			if (InB.expired())
-			{
-				return true;
-			}
-
-			const std::shared_ptr<FRenderingData> RenderingDataA = InA.lock();
-			const std::shared_ptr<FRenderingData> RenderingDataB = InB.lock();
-			if (!RenderingDataA || !RenderingDataB)
-			{
-				return RenderingDataA != nullptr;
-			}
-
-			const XMFLOAT3 PositionA(
-				RenderingDataA->WorldMatrix._41,
-				RenderingDataA->WorldMatrix._42,
-				RenderingDataA->WorldMatrix._43);
-			const XMFLOAT3 PositionB(
-				RenderingDataB->WorldMatrix._41,
-				RenderingDataB->WorldMatrix._42,
-				RenderingDataB->WorldMatrix._43);
-
-			const float DistanceA =
-				(PositionA.x - CachedViewPosition.x) * (PositionA.x - CachedViewPosition.x) +
-				(PositionA.y - CachedViewPosition.y) * (PositionA.y - CachedViewPosition.y) +
-				(PositionA.z - CachedViewPosition.z) * (PositionA.z - CachedViewPosition.z);
-
-			const float DistanceB =
-				(PositionB.x - CachedViewPosition.x) * (PositionB.x - CachedViewPosition.x) +
-				(PositionB.y - CachedViewPosition.y) * (PositionB.y - CachedViewPosition.y) +
-				(PositionB.z - CachedViewPosition.z) * (PositionB.z - CachedViewPosition.z);
-
-			return DistanceA > DistanceB;
-		});
-
-	for (std::weak_ptr<FRenderingData>& InRenderingData : SortedRenderDatas)
-	{
-		DrawObject(DeltaTime, InRenderingData);
-	}
+	DrawSortedRenderDatas(DeltaTime);
 }
 
 void FTransparentRenderLayer::UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo)
@@ -156,16 +134,26 @@ void FTransparentRenderLayer::ResetPSO(EPipelineState InPipelineState)
 void FTransparentRenderLayer::DrawWithPipelineState(float DeltaTime, EPipelineState InPipelineState)
 {
 	ResetPSO(InPipelineState);
+	DrawSortedRenderDatas(DeltaTime);
+}
 
+std::vector<std::weak_ptr<FRenderingData>> FTransparentRenderLayer::BuildSortedRenderDatas() const
+{
 	std::vector<std::weak_ptr<FRenderingData>> SortedRenderDatas = RenderDatas;
 	for (const std::shared_ptr<FRenderLayer>& InRenderLayer : FRenderLayerManager::GetRenderLayers())
 	{
-		if (InRenderLayer &&
-			InRenderLayer->GetRenderLayerType() != (int)EMeshRenderLayerType::RENDERLAYER_TRANSPARENT &&
-			InRenderLayer->GetRenderLayerType() != (int)EMeshRenderLayerType::RENDERLAYER_OPAQUE_REFLECTOR)
+		if (InRenderLayer == nullptr ||
+			InRenderLayer->GetRenderLayerType() == (int)EMeshRenderLayerType::RENDERLAYER_TRANSPARENT)
 		{
-			const std::vector<std::weak_ptr<FRenderingData>>& OtherRenderDatas = InRenderLayer->GetRenderDatas();
-			SortedRenderDatas.insert(SortedRenderDatas.end(), OtherRenderDatas.begin(), OtherRenderDatas.end());
+			continue;
+		}
+
+		for (const std::weak_ptr<FRenderingData>& OtherRenderingData : InRenderLayer->GetRenderDatas())
+		{
+			if (IsGlassTransparentCandidate(OtherRenderingData))
+			{
+				SortedRenderDatas.push_back(OtherRenderingData);
+			}
 		}
 	}
 
@@ -189,28 +177,18 @@ void FTransparentRenderLayer::DrawWithPipelineState(float DeltaTime, EPipelineSt
 				return RenderingDataA != nullptr;
 			}
 
-			const XMFLOAT3 PositionA(
-				RenderingDataA->WorldMatrix._41,
-				RenderingDataA->WorldMatrix._42,
-				RenderingDataA->WorldMatrix._43);
-			const XMFLOAT3 PositionB(
-				RenderingDataB->WorldMatrix._41,
-				RenderingDataB->WorldMatrix._42,
-				RenderingDataB->WorldMatrix._43);
-
-			const float DistanceA =
-				(PositionA.x - CachedViewPosition.x) * (PositionA.x - CachedViewPosition.x) +
-				(PositionA.y - CachedViewPosition.y) * (PositionA.y - CachedViewPosition.y) +
-				(PositionA.z - CachedViewPosition.z) * (PositionA.z - CachedViewPosition.z);
-
-			const float DistanceB =
-				(PositionB.x - CachedViewPosition.x) * (PositionB.x - CachedViewPosition.x) +
-				(PositionB.y - CachedViewPosition.y) * (PositionB.y - CachedViewPosition.y) +
-				(PositionB.z - CachedViewPosition.z) * (PositionB.z - CachedViewPosition.z);
+			const float DistanceA = BuildDistanceSquared(RenderingDataA, CachedViewPosition);
+			const float DistanceB = BuildDistanceSquared(RenderingDataB, CachedViewPosition);
 
 			return DistanceA > DistanceB;
 		});
 
+	return SortedRenderDatas;
+}
+
+void FTransparentRenderLayer::DrawSortedRenderDatas(float DeltaTime)
+{
+	std::vector<std::weak_ptr<FRenderingData>> SortedRenderDatas = BuildSortedRenderDatas();
 	for (std::weak_ptr<FRenderingData>& InRenderingData : SortedRenderDatas)
 	{
 		DrawObject(DeltaTime, InRenderingData);
