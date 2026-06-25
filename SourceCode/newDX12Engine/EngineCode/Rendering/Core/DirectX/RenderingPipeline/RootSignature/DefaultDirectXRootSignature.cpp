@@ -9,7 +9,7 @@ FDefaultDirectXRootSignature::FDefaultDirectXRootSignature()
 // ルートシグネチャを構築する
 void FDefaultDirectXRootSignature::BuildRootSignature(UINT InTextureNum)
 {   
-    CD3DX12_ROOT_PARAMETER RootParam[10];
+    CD3DX12_ROOT_PARAMETER RootParam[11];
 
     // texture描述表(包括cubemap)
     // テクスチャ記述テーブル（キューブマップを含む）
@@ -59,12 +59,16 @@ void FDefaultDirectXRootSignature::BuildRootSignature(UINT InTextureNum)
     //SSAO
     RootParam[9].InitAsDescriptorTable(1, &DescriptorSSAOMapSRV, D3D12_SHADER_VISIBILITY_PIXEL);
 
+    // Planar reflection constants
+    // 平面反射定数
+    RootParam[10].InitAsConstantBufferView(4);
+
     // 构建静态采样
     // 静的サンプラーを構築する
     StaticSamplerObject.BuildStaticSampler();
 
     CD3DX12_ROOT_SIGNATURE_DESC RootSignatureDesc(
-        10,
+        11,
         RootParam,
         StaticSamplerObject.GetSize(),//采样数量  // サンプル数
         StaticSamplerObject.GetData(),//采样PTR   // サンプラーPTR

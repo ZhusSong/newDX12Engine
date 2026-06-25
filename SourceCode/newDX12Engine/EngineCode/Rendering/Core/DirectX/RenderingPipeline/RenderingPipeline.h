@@ -8,6 +8,7 @@
 
 #include "RenderLayer/RenderLayerManager.h"
 #include "DynamicMap/CubeMap/DynamicReflectionCubeMap.h"
+#include "DynamicMap/PlanarMap/PlanarReflectionMap.h"
 
 #include "UI/IMGUIPipeline.h"
 
@@ -66,6 +67,7 @@ protected:
 	// 动态cubemap
 	// 動的Cubemap
 	FDynamicReflectionCubeMap DynamicCubeMap;
+	FPlanarReflectionMap PlanarReflection;
 
 	// UI
 	FIMGUIPipeline UIPipeline;

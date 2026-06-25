@@ -143,7 +143,7 @@ int CDirectXRenderingEngine::PostInit()
 #endif
 		// 创建灯光
 		// ライトを作成
-		
+
 		////  聚光灯
 		//// スポットライト
 		//if (GSpotLight* SpotLight = World->CreateActorObject<GSpotLight>())
@@ -177,7 +177,7 @@ int CDirectXRenderingEngine::PostInit()
 			ParallelLight->SetLightIntensity(fvector_3d(1.1f, 1.1f, 1.1f));
 
 		}
-	
+
 		// 旧演示物体组
 		// 旧デモオブジェクト群
 
@@ -278,7 +278,7 @@ int CDirectXRenderingEngine::PostInit()
 			}
 		}
 
-	
+
 		//　兰伯特
 		// ランバート
 		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
@@ -386,14 +386,14 @@ int CDirectXRenderingEngine::PostInit()
 				InMaterial->SetRoughness(0.6f);
 			}
 		}
-		//phong 
+		//phong
 		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 		{
 			SphereMesh->CreateMesh(2.f, 50, 50);
 			SphereMesh->SetPosition(XMFLOAT3(9.f, 2, 0.f));
 			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
 			{
-				
+
 				InMaterial->SetBaseColor(fvector_4d(
 					191.f / 255.f,
 					173.f / 255.f,
@@ -420,7 +420,7 @@ int CDirectXRenderingEngine::PostInit()
 			}
 		}
 
-		// binn phong 
+		// binn phong
 		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 		{
 			//SphereMesh->SetMeshRenderLayerType(EMeshRenderLayerType::RENDERLAYER_OPAQUE_REFLECTOR);
@@ -454,7 +454,7 @@ int CDirectXRenderingEngine::PostInit()
 				InMaterial->SetBaseColor(fvector_4d(
 					2.f / 255.f,
 					214.f / 255.f,
-					17.f / 255.f, 
+					17.f / 255.f,
 					1.f));
 				InMaterial->SetMaterialType(EMaterialType::Back);
 
@@ -470,7 +470,7 @@ int CDirectXRenderingEngine::PostInit()
 			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
 			{
 				InMaterial->SetBaseColor("Hair");
-				
+
 				InMaterial->SetMaterialType(EMaterialType::AnisotropyKajiyaKay);
 
 			}
@@ -492,7 +492,7 @@ int CDirectXRenderingEngine::PostInit()
 
 			}
 		}
-	
+
 	/*	if (GetCurrentGPU() == NVIDIA)
 		{*/
 			//if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
@@ -521,7 +521,7 @@ int CDirectXRenderingEngine::PostInit()
 			//	}
 			//}
 		//}
-		
+
 		// 以法线显示
 		// 法線を表示
 		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
@@ -608,7 +608,7 @@ int CDirectXRenderingEngine::PostInit()
 			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
 			{
 				InMaterial->SetNormal("Wood2_Nor");
-				
+
 				//InMaterial->SetBaseColor("Wood2");
 				InMaterial->SetMaterialType(EMaterialType::BinnPhong);
 			}
@@ -649,7 +649,7 @@ int CDirectXRenderingEngine::PostInit()
 			SphereMesh->CreateMesh(2.f, 100, 100);
 			SphereMesh->SetPosition(XMFLOAT3(21.f, 7, 0.f));
 			SphereMesh->SetRotation(fvector_3d(0.f, 0.f, 0.f));
-		
+
 			if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
 			{
 				InMaterial->SetBaseColor("WireFence");
@@ -677,6 +677,22 @@ int CDirectXRenderingEngine::PostInit()
 			}
 		}
 
+		// 镜子
+		if (GPlaneMesh* PlaneMesh = World->CreateActorObject<GPlaneMesh>())
+		{
+			PlaneMesh->SetMeshRenderLayerType(EMeshRenderLayerType::RENDERLAYER_OPAQUE_REFLECTOR);
+			PlaneMesh->CreateMesh(15.f, 15.f, 10, 10, fvector_3d(90.0f, -90.0f, 0.0f));
+			PlaneMesh->SetPosition(XMFLOAT3(40.f, 9, 10.f));
+			if (CMaterial* InMaterial = (*PlaneMesh->GetMaterials())[0])
+			{
+				InMaterial->SetMaterialType(EMaterialType::Phong);
+				//InMaterial->SetDynamicReflection(true);
+				InMaterial->SetPlanarReflection(true);
+
+				InMaterial->SetRoughness(0.01f);
+				InMaterial->SetFresnelF0(fvector_3d(0.5f));
+			}
+		}
 		// 透明球
 		if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 		{
@@ -693,7 +709,6 @@ int CDirectXRenderingEngine::PostInit()
 				InMaterial->SetRoughness(0.02f);
 				InMaterial->SetFresnelF0(fvector_3d(0.04f));
 				InMaterial->SetTransparency(1.0f);
-				InMaterial->SetUseGlass(true);
 				InMaterial->SetDynamicReflection(true);
 
 				InMaterial->SetSpecular(fvector_3d(1.f));
@@ -734,7 +749,7 @@ int CDirectXRenderingEngine::PostInit()
 
 			InPlaneMesh->SetPosition(XMFLOAT3(0.f, -12.f, 0.f));
 			InPlaneMesh->SetScale(fvector_3d(1.f, 1.f, 1.f));
-			
+
 			// 地面不显示阴影
 			// 地面はシャドウを表示しない
 			InPlaneMesh->SetCastShadow(false);
@@ -746,6 +761,7 @@ int CDirectXRenderingEngine::PostInit()
 			}
 		}
 
+		// 2D
 		if (GSpriteQuadMesh* SpriteMesh = World->CreateActorObject<GSpriteQuadMesh>())
 		{
 			SpriteMesh->CreateMesh(1.f, 1.f);
@@ -904,7 +920,7 @@ int CDirectXRenderingEngine::PostInit()
 		//	}
 		//}
 
-		
+
 
 
 		// 天空
@@ -1348,7 +1364,7 @@ bool CDirectXRenderingEngine::InitDirect3D()
 
 	//创建Fence对象 为了CPU和GPU同步作准备
 	// フェンスオブジェクトを作成し、CPUとGPUの同期に備える
-	//D3D12_FENCE_FLAG_NONE 
+	//D3D12_FENCE_FLAG_NONE
 	//D3D11_FENCE_FLAG_SHARED
 	//D3D11_FENCE_FLAG_SHARED_CROSS_ADAPTER
 	/*
@@ -1363,7 +1379,7 @@ bool CDirectXRenderingEngine::InitDirect3D()
 	// 初始化命令对象
 	// コマンドオブジェクトを初期化
 ////////////////////////////////////////////////////////////////////////////////////////
-	// INT Priority 
+	// INT Priority
 	// D3D12_COMMAND_QUEUE_PRIORITY
 	// D3D12_COMMAND_QUEUE_PRIORITY_NORMAL
 	// D3D12_COMMAND_QUEUE_PRIORITY_HIGH
@@ -1419,7 +1435,7 @@ bool CDirectXRenderingEngine::InitDirect3D()
 	SwapChainDesc.BufferCount = FEngineRenderConfig::GetRenderConfig()->SwapChainCount;
 
 	// DXGI_USAGE_BACK_BUFFER //
-	// DXGI_USAGE_READ_ONLY 
+	// DXGI_USAGE_READ_ONLY
 	// DXGI_USAGE_SHADER_INPUT
 	// DXGI_USAGE_SHARED
 	// DXGI_USAGE_UNORDERED_ACCESS
@@ -1442,19 +1458,20 @@ bool CDirectXRenderingEngine::InitDirect3D()
 	// 资源描述符
 	// リソース記述子
 	////////////////////////////////////////////////////////////////////
-	// D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV	
-	// D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER		
-	// D3D12_DESCRIPTOR_HEAP_TYPE_RTV			
-	// D3D12_DESCRIPTOR_HEAP_TYPE_DSV			
+	// D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV
+	// D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER
+	// D3D12_DESCRIPTOR_HEAP_TYPE_RTV
+	// D3D12_DESCRIPTOR_HEAP_TYPE_DSV
 	// RTV
-	
-	
+
+
 	//************ ！！！新しいRTVを追加する際は毎回ここを確認すること！！！****************
 	D3D12_DESCRIPTOR_HEAP_DESC RTVDescriptorHeapDesc;
 	RTVDescriptorHeapDesc.NumDescriptors =
 		FEngineRenderConfig::GetRenderConfig()->SwapChainCount +  // スワップチェーン
 		6 +              // 反射用CubeMap RTV
 		6 +  // ShadowCubeMap RTV 点光源
+		1 + // 平面反射 RTV
 		2 +         // スクリーン法線 + SSAO depth input
 		1 + //SSAO
 		1;                      // 両方向ブラー
@@ -1472,11 +1489,12 @@ bool CDirectXRenderingEngine::InitDirect3D()
 	// 创建DSV
 	// DSVを作成
 	D3D12_DESCRIPTOR_HEAP_DESC DSVDescriptorHeapDesc;
-	DSVDescriptorHeapDesc.NumDescriptors =      
+	DSVDescriptorHeapDesc.NumDescriptors =
 		1	+			//main视口深度            // メインビューポート深度
 		1	+			//CubeMap 反射            // CubeMap 反射
 		1	+			//平行光 聚光灯 阴影深度  // 平行光 スポットライト シャドウ深度
-		1;				//点光源 CubeMapShadow    // 点光源 CubeMapShadow
+		1	+			//点光源 CubeMapShadow    // 点光源 CubeMapShadow
+		1;				//平面反射深度            // 平面反射深度
 
 	DSVDescriptorHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
 	DSVDescriptorHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
@@ -1493,7 +1511,7 @@ void CDirectXRenderingEngine::PostInitDirect3D()
 	OnResetSize(
 		FEngineRenderConfig::GetRenderConfig()->ScreenWidth,
 		FEngineRenderConfig::GetRenderConfig()->ScreenHight);
-	
+
 }
 
 bool CDirectXRenderingEngine::ReleaseD3DObjects()

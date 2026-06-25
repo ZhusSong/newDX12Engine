@@ -103,7 +103,44 @@ float3 GetRefract(float3 InUnitWorldNormal, float3 WorldPosition, float InRefrac
 // 反射サンプリングを取得
 float3 GetReflectionSampleColor(float3 InUnitWorldNormal, float3 NewReflect)
 {
-    return SimpleCubeMap.Sample(TextureSampler, NewReflect);
+    return SimpleCubeMap.Sample(TextureSampler, NewReflect).rgb;
+}
+
+float3 GetPlanarReflectionSampleColor(float3 InUnitWorldNormal, float3 WorldPosition)
+{
+    if (PlanarReflectionSettings.x <= 0.5f || PlanarReflectionSettings.y < 0.0f)
+    {
+        return float3(0.f, 0.f, 0.f);
+    }
+
+    float3 ViewDirection = normalize(ViewportPosition.xyz - WorldPosition);
+    if (dot(normalize(InUnitWorldNormal), ViewDirection) <= 0.0f)
+    {
+        return float3(0.f, 0.f, 0.f);
+    }
+
+    float4 PlanarPosition = mul(float4(WorldPosition, 1.f), PlanarReflectionTexViewProjection);
+    if (PlanarPosition.w <= 0.0001f)
+    {
+        return float3(0.f, 0.f, 0.f);
+    }
+
+    PlanarPosition /= PlanarPosition.w;
+
+    PlanarPosition.xy = saturate(PlanarPosition.xy);
+
+    int TextureIndex = (int)(PlanarReflectionSettings.y + 0.5f);
+    return SimpleTexture2DMap[TextureIndex].Sample(TextureSampler, PlanarPosition.xy).rgb;
+}
+
+float3 GetReflectionSampleColor(MaterialConstBuffer MatConstBuffer, float3 InUnitWorldNormal, float3 WorldPosition, float3 NewReflect)
+{
+    if (MatConstBuffer.UsePlanarReflection > 0.5f)
+    {
+        return GetPlanarReflectionSampleColor(InUnitWorldNormal, WorldPosition);
+    }
+
+    return GetReflectionSampleColor(InUnitWorldNormal, NewReflect);
 }
 
 // 得到反射强度(光泽度)
@@ -128,7 +165,7 @@ float3 FresnelSchlickRoughness(float NV, float3 F0, float Roughness)
 float3 GetReflectionColor(MaterialConstBuffer MatConstBuffer, float3 InUnitWorldNormal, float3 WorldPosition)
 {
     float3 NewReflect = GetReflect(InUnitWorldNormal, WorldPosition);
-    float3 SampleReflectionColor = GetReflectionSampleColor(InUnitWorldNormal, NewReflect);
+    float3 SampleReflectionColor = GetReflectionSampleColor(MatConstBuffer, InUnitWorldNormal, WorldPosition, NewReflect);
     float Shininess = GetShininess(MatConstBuffer);
     float3 FresnelFactor = FresnelSchlickFactor(MatConstBuffer, InUnitWorldNormal, NewReflect);
 
@@ -140,7 +177,7 @@ float3 GetReflectionColor(MaterialConstBuffer MatConstBuffer, float3 InUnitWorld
 float3 GetRefractColor(MaterialConstBuffer MatConstBuffer, float InRefractiveIndex, float3 InUnitWorldNormal, float3 WorldPosition)
 {
     float3 NewRefract = GetRefract(InUnitWorldNormal, WorldPosition, MatConstBuffer.Refraction);
-    float3 SampleReflectionColor = GetReflectionSampleColor(InUnitWorldNormal, NewRefract);
+    float3 SampleReflectionColor = GetReflectionSampleColor(MatConstBuffer, InUnitWorldNormal, WorldPosition, NewRefract);
     float Shininess = GetShininess(MatConstBuffer);
     float3 FresnelFactor = FresnelSchlickFactor(MatConstBuffer, InUnitWorldNormal, NewRefract);
 

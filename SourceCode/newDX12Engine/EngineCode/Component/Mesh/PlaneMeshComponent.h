@@ -9,7 +9,19 @@ class CPlaneMeshComponent :public CShellMeshComponent
 public:
 	CPlaneMeshComponent();
 
-	void CreateMesh(FMeshRenderingData& MeshData, float InHeight, float InWidth, uint32_t InHeightSubdivide, uint32_t InWidthSubdivide);
+	void CreateMesh(
+		FMeshRenderingData& MeshData,
+		float InHeight,
+		float InWidth,
+		uint32_t InHeightSubdivide,
+		uint32_t InWidthSubdivide,
+		const fvector_3d& InGenerateRotation = fvector_3d(0.f));
 
-	void BuildKey(size_t& OutHashKey, float InHeight, float InWidth, uint32_t InHeightSubdivide, uint32_t InWidthSubdivide);
+	void BuildKey(
+		size_t& OutHashKey,
+		float InHeight,
+		float InWidth,
+		uint32_t InHeightSubdivide,
+		uint32_t InWidthSubdivide,
+		const fvector_3d& InGenerateRotation = fvector_3d(0.f));
 };

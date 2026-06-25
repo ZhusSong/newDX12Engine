@@ -102,3 +102,15 @@ bool CMeshComponent::IsDynamicReflection() const
 	return false;
 }
 
+bool CMeshComponent::IsPlanarReflection() const
+{
+	if (Materials.size() >= 1)
+	{
+		return
+			Materials[0]->IsPlanarReflection() &&
+			MeshRenderLayerType == EMeshRenderLayerType::RENDERLAYER_OPAQUE_REFLECTOR;
+	}
+
+	return false;
+}
+

@@ -44,6 +44,7 @@ public:
 	// 动态反射
 	// 動的反射
 	bool IsDynamicReflection() const;
+	bool IsPlanarReflection() const;
 
 	// 设置是否开启阴影
 	// 影を有効にするかどうかを設定する

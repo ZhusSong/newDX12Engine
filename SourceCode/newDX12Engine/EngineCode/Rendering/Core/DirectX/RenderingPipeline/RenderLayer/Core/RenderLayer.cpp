@@ -282,6 +282,11 @@ void FRenderLayer::ResetPSO()
 void FRenderLayer::ResetPSO(EPipelineState InPipelineState)
 {
 }
+void FRenderLayer::DrawWithPipelineState(float DeltaTime, EPipelineState InPipelineState)
+{
+	ResetPSO(InPipelineState);
+	DrawMesh(DeltaTime);
+}
 
 void FRenderLayer::DrawMesh(float DeltaTime, ERenderingConditions RC)
 {

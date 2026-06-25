@@ -55,9 +55,20 @@ void FOpaqueReflectorRenderLayer::BuildPSO()
 
 	DirectXPipelineState->Build(Reflector);
 
+	CD3DX12_RASTERIZER_DESC RasterizerDesc(D3D12_DEFAULT);
+	RasterizerDesc.FillMode = D3D12_FILL_MODE_SOLID;
+	RasterizerDesc.CullMode = D3D12_CULL_MODE_NONE;
+	DirectXPipelineState->SetRasterizerState(RasterizerDesc);
+	DirectXPipelineState->Build(PlanarReflector);
+
 }
 
 void FOpaqueReflectorRenderLayer::ResetPSO()
 {
 	DirectXPipelineState->ResetPSO(Reflector);
+}
+
+void FOpaqueReflectorRenderLayer::ResetPSO(EPipelineState InPipelineState)
+{
+	DirectXPipelineState->ResetPSO(InPipelineState);
 }

@@ -146,7 +146,7 @@ void FRenderLayerManager::HighlightDisplayObject(CComponent* InComponent)
 }
 void FRenderLayerManager::Sort()
 {
-	auto CompRenderLayer = 
+	auto CompRenderLayer =
 	[&](const std::shared_ptr<FRenderLayer> &InA,const std::shared_ptr<FRenderLayer> &InB)->bool
 	{
 		return InA->GetRenderPriority() < InB->GetRenderPriority();
@@ -258,6 +258,7 @@ void FRenderLayerManager::FindObjectDraw(float DeltaTime, int InLayer, const CMe
 {
 	if (auto InRenderLayer = FindByRenderLayer(InLayer))
 	{
+		InRenderLayer->ResetPSO();
 		InRenderLayer->FindObjectDraw(DeltaTime, InKey);
 	}
 }

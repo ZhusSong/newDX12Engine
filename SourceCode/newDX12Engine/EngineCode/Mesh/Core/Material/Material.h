@@ -7,7 +7,7 @@
 class CMaterial :public CCoreMinimalObject
 {
 	CODEREFLECTION()
-public:	
+public:
 	  CMaterial();
 
 	  // 设置材质显示状态
@@ -61,6 +61,10 @@ public:
 	  // 设置动态反射
 	  // 動的反射を設定
 	  void SetDynamicReflection(bool InDynamicReflection);
+
+	  // 设置平面反射
+	  // 平面反射を設定
+	  void SetPlanarReflection(bool InPlanarReflection);
 	  // 设置折射率
 	  // 屈折率を設定
 	  void SetRefractiveValue(float InRefractiveValue);
@@ -79,13 +83,23 @@ public:
 	// 動的反射
 	  FORCEINLINE float IsDynamicReflection() const {
 		  return bDynamicReflection &&
+			  !bPlanarReflection &&
 			  (MaterialType == EMaterialType::Back ||
 				  MaterialType == EMaterialType::Phong ||
 				  MaterialType == EMaterialType::BinnPhong ||
 				  MaterialType == EMaterialType::PBR ||
 				  MaterialType == EMaterialType::Transparency);
 	  }
-	  
+
+	  FORCEINLINE float IsPlanarReflection() const {
+		  return bPlanarReflection &&
+			  (MaterialType == EMaterialType::Back ||
+				  MaterialType == EMaterialType::Phong ||
+				  MaterialType == EMaterialType::BinnPhong ||
+				  MaterialType == EMaterialType::PBR ||
+				  MaterialType == EMaterialType::Transparency);
+	  }
+
 
 	  FORCEINLINE float GetRoughness()const { return Roughness; }
 	  FORCEINLINE fvector_4d GetBaseColor()const { return BaseColor; }
@@ -95,7 +109,8 @@ public:
 	  FORCEINLINE float GetTransparency()const { return Transparency; }
 	  FORCEINLINE fvector_3d GetFresnelF0()const { return FresnelF0; }
 	  FORCEINLINE bool IsUseGlass()const { return bUseGlass; }
-	  
+	  FORCEINLINE bool IsUsePlanarReflection() const { return bPlanarReflection; }
+
 	  FORCEINLINE EMaterialType GetMaterialType()const { return MaterialType; }
 	  FORCEINLINE float GetRefractiveValue()const { return Refractive; }
 	  FORCEINLINE fvector_3d GetMetallicity()const { return Metallicity; }
@@ -105,7 +120,7 @@ public:
 		  switch (MaterialDisplayStatus){
 
 		  case EMaterialDisplayStatusType::DefaultDisplay:
-			  return  D3D_PRIMITIVE_TOPOLOGY_UNDEFINED; 
+			  return  D3D_PRIMITIVE_TOPOLOGY_UNDEFINED;
 
 		  case EMaterialDisplayStatusType::PointDisplay:
 			  return  D3D_PRIMITIVE_TOPOLOGY_POINTLIST;
@@ -149,6 +164,7 @@ private:
 	bool bUseGlass;			// 玻璃透明化处理 // ガラス透明処理
 
 	bool bDynamicReflection;	// 动态反射   // 動的反射
+	bool bPlanarReflection;		// 平面反射   // 平面反射
 
 	fvector_3d Metallicity;		// 金属度	  // メタリック値
 

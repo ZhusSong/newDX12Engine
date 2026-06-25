@@ -53,6 +53,7 @@ public:
 	// 通过流水线状态设置PSO
 	// パイプラインステートを通じてPSOを設定する
 	virtual void ResetPSO(EPipelineState InPipelineState);
+	virtual void DrawWithPipelineState(float DeltaTime, EPipelineState InPipelineState);
 
 	// 渲染 不包含设置PSO
 	// PSO設定を含まない描画

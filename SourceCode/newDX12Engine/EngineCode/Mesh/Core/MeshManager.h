@@ -59,7 +59,8 @@ public:
 		float InHeight,
 		float InWidth,
 		uint32_t InHeightSubdivide,
-		uint32_t InWidthSubdivide);
+		uint32_t InWidthSubdivide,
+		const fvector_3d& InGenerateRotation = fvector_3d(0.f));
 
 	CMeshComponent* CreateSphereMeshComponent(
 		const FCreateObjectParam& InObjectParam,

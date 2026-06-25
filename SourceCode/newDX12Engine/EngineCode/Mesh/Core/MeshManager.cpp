@@ -117,7 +117,20 @@ CMeshComponent* CMeshManager::CreateCylinderMeshComponent(const FCreateObjectPar
     return MeshConstruction::CreateMeshComponent<CCylinderMeshComponent>(InObjectParam, this, InTopRadius, InBottomRadius, InHeight, InAxialSubdivision, InHeightSubdivision);
 }
 
-CMeshComponent* CMeshManager::CreatePlaneMeshComponent(const FCreateObjectParam& InObjectParam, float InHeight, float InWidth, uint32_t InHeightSubdivide, uint32_t InWidthSubdivide)
+CMeshComponent* CMeshManager::CreatePlaneMeshComponent(
+	const FCreateObjectParam& InObjectParam,
+	float InHeight,
+	float InWidth,
+	uint32_t InHeightSubdivide,
+	uint32_t InWidthSubdivide,
+	const fvector_3d& InGenerateRotation)
 {
-    return MeshConstruction::CreateMeshComponent<CPlaneMeshComponent>(InObjectParam, this, InHeight, InWidth, InHeightSubdivide, InWidthSubdivide);
+    return MeshConstruction::CreateMeshComponent<CPlaneMeshComponent>(
+		InObjectParam,
+		this,
+		InHeight,
+		InWidth,
+		InHeightSubdivide,
+		InWidthSubdivide,
+		InGenerateRotation);
 }

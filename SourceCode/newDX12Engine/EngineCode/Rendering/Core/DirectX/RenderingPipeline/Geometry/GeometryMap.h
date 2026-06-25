@@ -4,6 +4,7 @@
 #include "RenderingData.h"
 #include "../DescriptorHeap/DirectXDescriptorHeap.h"
 #include "../ConstantBuffer/ConstantBufferViews.h"
+#include "../ConstantBuffer/PlanarReflectionConstantBuffer.h"
 #include "../../../../../Core/Viewport/ViewportInfo.h"
 #include "../DynamicMap/ShadowMap/DynamicShadowMap.h"
 #include "../DynamicMap/ShadowMap/DynamicShadowCubeMap.h"
@@ -123,6 +124,7 @@ struct FGeometryMap :public IDirectXDeviceInterface_Struct
 	//收集动态反射模型
 	// 動的反射モデルを収集する
 	void BuildDynamicReflectionMesh();
+	void BuildPlanarReflectionMesh();
 	void BuildFog();
 	void BuildShadow();
 
@@ -157,6 +159,7 @@ struct FGeometryMap :public IDirectXDeviceInterface_Struct
 	//构建Light常量缓冲区
 	// ライトの定数バッファを構築する
 	void BuildLightConstantBuffer();
+	void BuildPlanarReflectionConstantBuffer();
 
 	// 得到绘制mesh对象的数量
 	// 描画するメッシュオブジェクトの数を取得する
@@ -172,7 +175,9 @@ struct FGeometryMap :public IDirectXDeviceInterface_Struct
 
 	// 得到Texture资源数量
 	// テクスチャリソースの数を取得する
+	UINT GetImportedTexture2DResourcesNumber();
 	UINT GetDrawTexture2DResourcesNumber();
+	UINT GetPlanarReflectionTextureIndex() const;
 
 
 	// CubeMap贴图数量
@@ -182,7 +187,8 @@ struct FGeometryMap :public IDirectXDeviceInterface_Struct
 
 	//动态摄像机
 	// 動的カメラの数
-	UINT GetDynamicReflectionViewportNum();
+	UINT GetDynamicReflectionViewportNum() const;
+	UINT GetPlanarReflectionViewportOffset() const;
 
 	// 构建纹理SRV视图
 	// テクスチャSRVビューを構築する
@@ -200,6 +206,8 @@ public:
 	UINT GetDynamicReflectionMeshComponentsSize();
 
 	CMeshComponent* GetDynamicReflectionMeshComponents(int Index);
+	UINT GetPlanarReflectionMeshComponentsSize();
+	CMeshComponent* GetPlanarReflectionMeshComponents(int Index);
 
 	// 获取视口常量缓冲区size
 	// ビューポート定数バッファのサイズを取得する
@@ -225,6 +233,8 @@ public:
 
 	void DrawCubeMapTexture(float DeltaTime);
 	void DrawFog(float DeltaTime);
+	void DrawPlanarReflectionConstantBuffer(float DeltaTime, UINT InIndex = 0);
+	void UpdatePlanarReflectionConstantBuffer(const FPlanarReflectionConstantBuffer& InData, UINT InIndex = 0);
 public:
 	ID3D12DescriptorHeap* GetHeap()const { return DescriptorHeap.GetHeap(); }
 
@@ -251,11 +261,13 @@ protected:
 	// 雾常量缓冲区
 	// フォグ定数バッファ
 	FConstantBufferViews FogConstantBufferViews;
+	FConstantBufferViews PlanarReflectionConstantBufferViews;
 
 	std::shared_ptr<class FRenderingTextureResourcesUpdate> RenderingTexture2DResources;
 	std::shared_ptr<class FRenderingTextureResourcesUpdate> RenderingCubeMapResources;
 	std::vector<CMaterial*> Materials;
 	std::vector<CMeshComponent*> DynamicReflectionMeshComponents;
+	std::vector<CMeshComponent*> PlanarReflectionMeshComponents;
 
 	CFogComponent* Fog;
 

@@ -27,21 +27,21 @@ struct MeshVertexOut
 MeshVertexOut VertexShaderMain(MeshVertexIn MV)
 {
     MaterialConstBuffer MatConstBuffer = Materials[MaterialIndex];
-    
-	
+
+
     MeshVertexOut MOut;
-    
-	// 色
+
+	// 鑹?
     MOut.Color = MV.Color;
-    
-	// 世界坐标
-    // ワールド座標
+
+	// 涓栫晫鍧愭爣
+    // 銉兗銉儔搴ф
     MOut.WorldPosition = mul(float4(MV.Position, 1.f), WorldMatrix);
 
    	MOut.TexPositionHome = mul(MOut.WorldPosition, TexViewProjectionMatrix);
 
-	// 变换到齐次剪辑空间
-    // 同次クリップ空間に変換
+	// 鍙樻崲鍒伴綈娆″壀杈戠┖闂?
+    // 鍚屾銈儶銉冦儣绌洪枔銇鎻?
     MOut.Position = mul(MOut.WorldPosition, ViewProjectionMatrix);
 
     if (MatConstBuffer.MaterialType == 13)
@@ -50,16 +50,16 @@ MeshVertexOut VertexShaderMain(MeshVertexIn MV)
     }
     else
     {
-		// 转法线
-        // 法線を変換
+		// 杞硶绾?
+        // 娉曠窔銈掑鎻?
        	MOut.Normal = mul(MV.Normal, (float3x3)NormalTransformation);
     }
-	
-	// 切线
-    // 接線
+
+	// 鍒囩嚎
+    // 鎺ョ窔
     MOut.UTangent = mul(MV.UTangent, (float3x3)NormalTransformation);
 
-	// ui座標
+	// ui搴ф
     float4 MyTexCoord = mul(float4(MV.TexCoord, 0.0f, 1.f), ObjectTextureTransform);
     MOut.TexCoord = mul(MyTexCoord, MatConstBuffer.TransformInformation).xy;
 
@@ -69,12 +69,22 @@ MeshVertexOut VertexShaderMain(MeshVertexIn MV)
 float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
 {
     MaterialConstBuffer MatConstBuffer = Materials[MaterialIndex];
+
+    if (PlanarReflectionSettings.z > 0.5f)
+    {
+        float PlaneDistance = dot(
+            MVOut.WorldPosition.xyz - PlanarReflectionMirrorPlanePosition.xyz,
+            normalize(PlanarReflectionMirrorPlaneNormal.xyz));
+        float ClipSign = PlanarReflectionMirrorPlaneNormal.w != 0.0f ? PlanarReflectionMirrorPlaneNormal.w : 1.0f;
+        clip(PlaneDistance * ClipSign - 0.001f);
+    }
+
     bool UseGlass = MatConstBuffer.UseGlass > 0.5f;
     MVOut.TexPositionHome /= MVOut.TexPositionHome.w;
     float AmbientAccessibility = SimpleSSAOMap.Sample(TextureSampler, MVOut.TexPositionHome.xy, 0.0f).r;
-	
-    // 返回阴影贴图采样
-    // シャドウマップサンプリングを返す
+
+    // 杩斿洖闃村奖璐村浘閲囨牱
+    // 銈枫儯銉夈偊銉炪儍銉椼偟銉炽儣銉兂銈般倰杩斻仚
     if (MatConstBuffer.MaterialType == 101)
     {
       return float4(AmbientAccessibility, AmbientAccessibility, AmbientAccessibility, 1.f);
@@ -88,7 +98,7 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
 	//BaseColor
     if (MatConstBuffer.MaterialType == 12)
     {
-        // 反射
+        // 鍙嶅皠
         float4 Specular = GetMaterialSpecular(MatConstBuffer, MVOut.TexCoord);
         return Material.BaseColor * Specular + Material.BaseColor + 0.1f;
     }
@@ -104,14 +114,14 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
     float4 AmbientLight = { 0.15f, 0.15f, 0.15f, 1.0f };
     float3 ModelNormal = normalize(MVOut.Normal);
 
-	//　获取法线 如果设置了法线贴图就获取法线贴图
-    //　法線を取得 法線マップが設定されている場合は法線マップを取得
+	//銆€鑾峰彇娉曠嚎 濡傛灉璁剧疆浜嗘硶绾胯创鍥惧氨鑾峰彇娉曠嚎璐村浘
+    //銆€娉曠窔銈掑彇寰?娉曠窔銉炪儍銉椼亴瑷畾銇曘倢銇︺亜銈嬪牬鍚堛伅娉曠窔銉炪儍銉椼倰鍙栧緱
     ModelNormal = GetMaterialNormals(MatConstBuffer, MVOut.TexCoord, ModelNormal, MVOut.UTangent);
 
     float DotValue = 0;
 
     float4 FinalColor = { 0.f, 0.f, 0.f, 1.f };
-    
+
 
     for (int i = 0; i < 16; i++)
     {
@@ -123,14 +133,14 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
 
             float4 LightStrength = ComputeLightStrength(SceneLights[i], ModelNormal, MVOut.WorldPosition.xyz, NormalizeLightDirection);
 
-			//　兰伯特
-            //　ランバート
+			//銆€鍏颁集鐗?
+            //銆€銉┿兂銉愩兗銉?
             if (MatConstBuffer.MaterialType == 0)
             {
                 DotValue = pow(max(dot(ModelNormal, NormalizeLightDirection), 0.0), 2.f);
             }
-			//　半兰伯特
-            //　ハーフランバート
+			//銆€鍗婂叞浼壒
+            //銆€銉忋兗銉曘儵銉炽儛銉笺儓
             else if (MatConstBuffer.MaterialType == 1)
             {
                 float DiffuseReflection = dot(ModelNormal, NormalizeLightDirection);
@@ -149,21 +159,21 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
 
                 Specular *= saturate((M + 2.0f) * pow(max(dot(ViewDirection, ReflectDirection), 0.f), M) / 3.1415926);
             }
-			//blinn-phong 
+			//blinn-phong
             else if (MatConstBuffer.MaterialType == 3)
             {
                 float3 ViewDirection = normalize(ViewportPosition.xyz - MVOut.WorldPosition.xyz);
                 float3 HalfDirection = normalize(ViewDirection + NormalizeLightDirection);
 
-				// 先半兰博特化 再减去0.2f曝光的，再平方，变得更柔和
-                // まずハーフランバート化し、次に0.2fの露出を減算し、さらに二乗して、より柔らかくする
+				// 鍏堝崐鍏板崥鐗瑰寲 鍐嶅噺鍘?.2f鏇濆厜鐨勶紝鍐嶅钩鏂癸紝鍙樺緱鏇存煍鍜?
+                // 銇俱仛銉忋兗銉曘儵銉炽儛銉笺儓鍖栥仐銆佹銇?.2f銇湶鍑恒倰娓涚畻銇椼€併仌銈夈伀浜屼箺銇椼仸銆併倛銈婃煍銈夈亱銇忋仚銈?
                 DotValue = pow(max(0.0, (dot(ModelNormal, NormalizeLightDirection) * 0.5f + 0.5f) - 0.2f), 2);
 
                 float MaterialShininess = 1.f - saturate(MatConstBuffer.MaterialRoughness);
                 float M = MaterialShininess * 100.f;
 
-				// c=(m+2.f/PI) 归一化系数 后面会详细讲解推导
-                // c=(m+2.f/PI) 正規化係数 後で詳細な導出を説明
+				// c=(m+2.f/PI) 褰掍竴鍖栫郴鏁?鍚庨潰浼氳缁嗚瑙ｆ帹瀵?
+                // c=(m+2.f/PI) 姝ｈ鍖栦總鏁?寰屻仹瑭崇窗銇皫鍑恒倰瑾槑
                 Specular *= saturate((M + 2.0f) * pow(max(dot(HalfDirection, ModelNormal), 0.f), M) / 3.1415926);
             }
             //Wrap
@@ -176,7 +186,7 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
                 float DiffuseReflection = dot(ModelNormal, NormalizeLightDirection);
                 DotValue = max((DiffuseReflection + WrapValue) / (1.f + WrapValue), 0.0); //[-1,1] => [0,1]
             }
-            else if (MatConstBuffer.MaterialType == 5)//Minnaert 
+            else if (MatConstBuffer.MaterialType == 5)//Minnaert
             {
                 float3 ViewDirection = normalize(ViewportPosition.xyz - MVOut.WorldPosition.xyz);
 
@@ -187,12 +197,12 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
                 float M = MaterialShininess * 10.f;
                 DotValue = saturate(DotLight * pow(DotLight * DotView, M));
             }
-            else if (MatConstBuffer.MaterialType == 6)//Banded 
+            else if (MatConstBuffer.MaterialType == 6)//Banded
             {
                 if (i == 0)
                 {
-					// 融入半兰伯特
-                    // ハーフランバートを組み込む
+					// 铻嶅叆鍗婂叞浼壒
+                    // 銉忋兗銉曘儵銉炽儛銉笺儓銈掔祫銇胯炯銈€
                     float DiffuseReflection = (dot(ModelNormal, NormalizeLightDirection) + 1.f) * 0.5f;
 
                     float Layered = 4.f;
@@ -200,14 +210,14 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
                     DotValue = floor(DiffuseReflection * Layered) / Layered;
                 }
             }
-            else if (MatConstBuffer.MaterialType == 7)//Banded 
+            else if (MatConstBuffer.MaterialType == 7)//Banded
             {
                 if (i == 0)
                 {
                     float4 Color2 = { 245.f / 255.f, 88.f / 255.f, .0f, 1.f };
 
-					// 灯光点乘值
-                    // ライトの内積値
+					// 鐏厜鐐逛箻鍊?
+                    // 銉┿偆銉堛伄鍐呯鍊?
                     float LightDotValue = dot(ModelNormal, NormalizeLightDirection);
 
                     float DiffuseReflection = (LightDotValue + 1.f) * 0.5f;
@@ -218,28 +228,28 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
                     Material.BaseColor = lerp(Color2, Material.BaseColor, LightDotValue);
                 }
             }
-            //最終Banded 
-            else if (MatConstBuffer.MaterialType == 8)//鏈€绲侭anded 
+            //鏈€绲侭anded
+            else if (MatConstBuffer.MaterialType == 8)//閺堚偓缁蹭经anded
             {
                 if (i == 0)
                 {
-					//　融入半兰伯特
-                    //　ハーフランバートを組み込む
+					//銆€铻嶅叆鍗婂叞浼壒
+                    //銆€銉忋兗銉曘儵銉炽儛銉笺儓銈掔祫銇胯炯銈€
                     float DiffuseReflection = (dot(ModelNormal, NormalizeLightDirection) + 1.f) * 0.5f;
-                    
+
                     float Layered = 4.f;
                     DotValue = floor(DiffuseReflection * Layered) / Layered;
 
-					//　菲尼尔效果
-                    //　フレネル効果
+					//銆€鑿插凹灏旀晥鏋?
+                    //銆€銉曘儸銉嶃儷鍔规灉
                     float3 ViewDirection = normalize(ViewportPosition.xyz - MVOut.WorldPosition.xyz);
                     float3 F0 = { 0.05f, 0.05f, 0.05f };
                     Specular.xyz = FresnelSchlickMethod(F0, ModelNormal, ViewDirection, 3).xyz;
 
-					//　反射
+					//銆€鍙嶅皠
                     float3 ReflectDirection = normalize(-reflect(NormalizeLightDirection, ModelNormal));
 
-					//　highlight
+					//銆€highlight
                     if (DotValue > 0.f)
                     {
                         float MaterialShininess = 1.f - saturate(MatConstBuffer.MaterialRoughness);
@@ -269,8 +279,8 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
                     Specular = saturate(pow(max(dot(ViewDirection, ReflectDirection), 0.f), M));
                 }
 
-				// 模拟透射效果
-                // 透過効果をシミュレート
+				// 妯℃嫙閫忓皠鏁堟灉
+                // 閫忛亷鍔规灉銈掋偡銉熴儱銉兗銉?
                 float SSSValue = 1.3f;
                 float TransmissionIntensity = 2.f;
                 float TransmissionScope = 1.5f;
@@ -318,7 +328,7 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
             {
                 float3 ViewDirection = normalize(ViewportPosition.xyz - MVOut.WorldPosition.xyz);
 
-                float NormalLight = saturate(pow(max(dot(ModelNormal, NormalizeLightDirection), 0.0), 2.f)); //兰伯特
+                float NormalLight = saturate(pow(max(dot(ModelNormal, NormalizeLightDirection), 0.0), 2.f)); //鍏颁集鐗?
                 float NormalView = saturate(dot(ModelNormal, ViewDirection));
 
                 float Phiri =
@@ -338,7 +348,7 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
 
                 DotValue = NormalLight * (A + B * max(0, Phiri) * sin(Alpha) * tan(Beta));
             }
-            else if (MatConstBuffer.MaterialType == 15)//透明
+            else if (MatConstBuffer.MaterialType == 15)//閫忔槑
             {
                 //float DiffuseReflection = dot(ModelNormal, NormalizeLightDirection);
                 //DotValue = max((DiffuseReflection * 0.5f + 0.5f), 0.0); //[-1,1] => [0,1]
@@ -384,21 +394,21 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
 				//IBL
                 return float4(MyColor.xyz, 1.0f);
             }
-			// 菲尼尔
-            // フレネル
+			// 鑿插凹灏?
+            // 銉曘儸銉嶃儷
             else if (MatConstBuffer.MaterialType == 100)
             {
                 float3 ViewDirection = normalize(ViewportPosition.xyz - MVOut.WorldPosition.xyz);
                 DotValue = pow(1.f - max(dot(ModelNormal, ViewDirection), 0.0), 2.f);
-				
-				// Schlick 菲尼尔方法
-                // Schlick フレネル
+
+				// Schlick 鑿插凹灏旀柟娉?
+                // Schlick 銉曘儸銉嶃儷
 				//float3 F0 = { 0.1f,0.1f,0.1f };
 				//Specular.xyz = FresnelSchlickMethod(F0, ModelNormal, ViewDirection, 3).xyz;
             }
 
-            // 漫反射
-            // 拡散反射
+            // 婕弽灏?
+            // 鎷℃暎鍙嶅皠
             float4 Diffuse = Material.BaseColor;
             // highlight
 			Specular = saturate(Specular);
@@ -407,19 +417,19 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
             float ShadowFactor = 1.f;
 			if (SceneLights[i].LightType == 1)
 			{
-                // 点光源cubemap阴影
-                // 点光源のcubemapシャドウ
+                // 鐐瑰厜婧恈ubemap闃村奖
+                // 鐐瑰厜婧愩伄cubemap銈枫儯銉夈偊
 				ShadowFactor = ProcessingOmnidirectionalSampleCmpLevelZeroCubeMapShadow(MVOut.WorldPosition, SceneLights[i].Position);
 			}
 			else
 			{
-                // 此处可用ShadowFunction中的多种方式计算阴影
-                // ここではShadowFunction内の複数の方法でシャドウを計算可能
+                // 姝ゅ鍙敤ShadowFunction涓殑澶氱鏂瑰紡璁＄畻闃村奖
+                // 銇撱亾銇с伅ShadowFunction鍐呫伄瑜囨暟銇柟娉曘仹銈枫儯銉夈偊銈掕▓绠楀彲鑳?
 				//float ShadowFactor = GetShadowFactor(MVOut.WorldPosition, SceneLights[i].ShadowTransform);
 				//float ShadowFactor = GetShadowFactor_PCF_Sample4(MVOut.WorldPosition, SceneLights[i].ShadowTransform);
 				ShadowFactor = GetShadowFactor_PCF_Sample9(MVOut.WorldPosition, SceneLights[i].ShadowTransform);
 			}
-	
+
             FinalColor += ShadowFactor * (saturate((Diffuse + Specular) * LightStrength * DotValue));
         }
     }
@@ -429,38 +439,38 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
     float AOSurfaceFactor = lerp(1.0f, lerp(0.28f, 1.0f, pow(AOVisibility, 1.08f)), GroundReceiver);
     float4 Ambient = AOAmbientFactor * AmbientLight * Material.BaseColor;
 
-    // 最终颜色
-    // 最終色
-    MVOut.Color = (FinalColor + Ambient) * AOSurfaceFactor; 
-	
-    
+    // 鏈€缁堥鑹?
+    // 鏈€绲傝壊
+    MVOut.Color = (FinalColor + Ambient) * AOSurfaceFactor;
+
+
     switch (MatConstBuffer.MaterialType)
     {
         case 2:
         case 3:
         case 9:
-            {      
-			    //计算反射
-                //反射を計算 
+            {
+			    //璁＄畻鍙嶅皠
+                //鍙嶅皠銈掕▓绠?
                 float3 ReflectionColor = GetReflectionColor(MatConstBuffer, ModelNormal, MVOut.WorldPosition.xyz);
                 MVOut.Color.xyz += ReflectionColor;
                 break;
             }
-        // 透明算法
-        // 透明アルゴリズム
+        // 閫忔槑绠楁硶
+        // 閫忔槑銈儷銈淬儶銈恒儬
         case 15:
             {
-			    // 计算折射
-                // 屈折を計算
+			    // 璁＄畻鎶樺皠
+                // 灞堟姌銈掕▓绠?
                 float3 NewRefract = GetRefract(ModelNormal, MVOut.WorldPosition.xyz, MatConstBuffer.Refraction);
-                float3 SampleRefractColor = GetReflectionSampleColor(ModelNormal, NewRefract);
+                float3 SampleRefractColor = GetReflectionSampleColor(MatConstBuffer, ModelNormal, MVOut.WorldPosition.xyz, NewRefract);
 
-			    // 反射を計算
+			    // 鍙嶅皠銈掕▓绠?
                 float3 NewReflect = GetReflect(ModelNormal, MVOut.WorldPosition.xyz);
-                float3 SampleReflectionColor = GetReflectionSampleColor(ModelNormal, NewReflect);
-			
-			    // 计算A通道
-                // Aチャンネルを計算
+                float3 SampleReflectionColor = GetReflectionSampleColor(MatConstBuffer, ModelNormal, MVOut.WorldPosition.xyz, NewReflect);
+
+			    // 璁＄畻A閫氶亾
+                // A銉併儯銉炽儘銉倰瑷堢畻
                 float3 V = normalize(ViewportPosition.xyz - MVOut.WorldPosition.xyz);
                 float Shininess = GetShininess(MatConstBuffer);
                 float3 FresnelFactor = FresnelSchlickFactor(MatConstBuffer, ModelNormal, V);
@@ -474,18 +484,18 @@ float4 PixelShaderMain(MeshVertexOut MVOut) : SV_TARGET
 
     if (UseGlass || MatConstBuffer.MaterialType == 15)
     {
-		// 透明
+		// 閫忔槑
         MVOut.Color.a = MatConstBuffer.Transparency;
     }
     else
     {
-		// 非透明
+		// 闈為€忔槑
         MVOut.Color.a = Material.BaseColor.a;
     }
-	
-	
-	// 计算フォグ
+
+
+	// 璁＄畻銉曘偐銈?
     MVOut.Color = GetFogValue(MVOut.Color, (float3)MVOut.WorldPosition);
-    
+
     return MVOut.Color;
 }

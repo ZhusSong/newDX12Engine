@@ -449,6 +449,7 @@ UINT FScreenSpaceAmbientOcclusion::GetDepthBufferRTVOffset() const
 	return	FEngineRenderConfig::GetRenderConfig()->SwapChainCount +
 		6 +
 		6 +
+		1 +
 		1;
 }
 
@@ -466,7 +467,8 @@ UINT FScreenSpaceAmbientOcclusion::GetNormalBufferRTVOffset() const
 {
 	return	FEngineRenderConfig::GetRenderConfig()->SwapChainCount +//交换链     // スワップチェーン
 		6 +//反射的CubeMap RTV            // 反射用CubeMap RTV                          
-		6; //ShadowCubeMap RTV Point Light
+		6 +//ShadowCubeMap RTV Point Light
+		1; //平面反射RTV
 }
 
 UINT FScreenSpaceAmbientOcclusion::GetNoiseBufferSRVOffset() const
@@ -499,6 +501,7 @@ UINT FScreenSpaceAmbientOcclusion::GetAmbientBufferRTVOffset() const
 	return  FEngineRenderConfig::GetRenderConfig()->SwapChainCount +//交换链    // スワップチェーン
 		6 +//反射的CubeMap RTV                     // 反射用CubeMap RTV                       
 		6 +//ShadowCubeMap RTV Point Light
+		1 +//平面反射RTV
 		2; //法线 + 深度                            // 法線 + Depth
 }
 
@@ -521,6 +524,7 @@ UINT FScreenSpaceAmbientOcclusion::GetBilateralBlurRTVOffset() const
 	return  FEngineRenderConfig::GetRenderConfig()->SwapChainCount +//交换链    // スワップチェーン
 		6 +//反射的CubeMap RTV                        // 反射用CubeMap RTV             
 		6 +//ShadowCubeMap RTV Point Light
+		1 +//平面反射RTV
 		2 +//法线 + 深度                              // 法線 + Depth
 		1; //SSAO
 }

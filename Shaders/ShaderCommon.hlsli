@@ -72,6 +72,14 @@ cbuffer FogConstBuffer : register(b3)
 	float xxx2;
 };
 
+cbuffer PlanarReflectionConstBuffer : register(b4)
+{
+    float4x4 PlanarReflectionTexViewProjection;
+    float4 PlanarReflectionSettings;
+    float4 PlanarReflectionMirrorPlaneNormal;
+    float4 PlanarReflectionMirrorPlanePosition;
+};
+
 struct MaterialConstBuffer
 {
     int MaterialType;
@@ -95,6 +103,9 @@ struct MaterialConstBuffer
 
     float3 Metallicity;
     float UseGlass;
+    float UsePlanarReflection;
+    float MaterialPadding0;
+    float MaterialPadding1;
     
 };
 

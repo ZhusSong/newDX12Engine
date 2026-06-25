@@ -31,4 +31,7 @@ struct FMaterialConstantBuffer
 	XMFLOAT4X4 TransformInformation;
 	XMFLOAT3 Metallicity;
 	float UseGlass;
+	float UsePlanarReflection;
+	float MaterialPadding0;
+	float MaterialPadding1;
 };

@@ -1,4 +1,4 @@
-#include "TransparentRenderLayer.h"
+﻿#include "TransparentRenderLayer.h"
 #include "../../PipelineState/DirectXPipelineState.h"
 #include "../../Geometry/GeometryMap.h"
 #include "../RenderLayerManager.h"
@@ -135,9 +135,84 @@ void FTransparentRenderLayer::BuildPSO()
 
 	DirectXPipelineState->SetRenderTarget(0, RenderTargetBlendDesc);
 	DirectXPipelineState->Build(Transparent);
+
+	CD3DX12_RASTERIZER_DESC RasterizerDesc(D3D12_DEFAULT);
+	RasterizerDesc.FillMode = D3D12_FILL_MODE_SOLID;
+	RasterizerDesc.CullMode = D3D12_CULL_MODE_NONE;
+	DirectXPipelineState->SetRasterizerState(RasterizerDesc);
+	DirectXPipelineState->Build(PlanarTransparent);
 }
 
 void FTransparentRenderLayer::ResetPSO()
 {
 	DirectXPipelineState->ResetPSO(Transparent);
+}
+
+void FTransparentRenderLayer::ResetPSO(EPipelineState InPipelineState)
+{
+	DirectXPipelineState->ResetPSO(InPipelineState);
+}
+
+void FTransparentRenderLayer::DrawWithPipelineState(float DeltaTime, EPipelineState InPipelineState)
+{
+	ResetPSO(InPipelineState);
+
+	std::vector<std::weak_ptr<FRenderingData>> SortedRenderDatas = RenderDatas;
+	for (const std::shared_ptr<FRenderLayer>& InRenderLayer : FRenderLayerManager::GetRenderLayers())
+	{
+		if (InRenderLayer &&
+			InRenderLayer->GetRenderLayerType() != (int)EMeshRenderLayerType::RENDERLAYER_TRANSPARENT &&
+			InRenderLayer->GetRenderLayerType() != (int)EMeshRenderLayerType::RENDERLAYER_OPAQUE_REFLECTOR)
+		{
+			const std::vector<std::weak_ptr<FRenderingData>>& OtherRenderDatas = InRenderLayer->GetRenderDatas();
+			SortedRenderDatas.insert(SortedRenderDatas.end(), OtherRenderDatas.begin(), OtherRenderDatas.end());
+		}
+	}
+
+	std::sort(SortedRenderDatas.begin(), SortedRenderDatas.end(),
+		[&](const std::weak_ptr<FRenderingData>& InA, const std::weak_ptr<FRenderingData>& InB)
+		{
+			if (InA.expired())
+			{
+				return false;
+			}
+
+			if (InB.expired())
+			{
+				return true;
+			}
+
+			const std::shared_ptr<FRenderingData> RenderingDataA = InA.lock();
+			const std::shared_ptr<FRenderingData> RenderingDataB = InB.lock();
+			if (!RenderingDataA || !RenderingDataB)
+			{
+				return RenderingDataA != nullptr;
+			}
+
+			const XMFLOAT3 PositionA(
+				RenderingDataA->WorldMatrix._41,
+				RenderingDataA->WorldMatrix._42,
+				RenderingDataA->WorldMatrix._43);
+			const XMFLOAT3 PositionB(
+				RenderingDataB->WorldMatrix._41,
+				RenderingDataB->WorldMatrix._42,
+				RenderingDataB->WorldMatrix._43);
+
+			const float DistanceA =
+				(PositionA.x - CachedViewPosition.x) * (PositionA.x - CachedViewPosition.x) +
+				(PositionA.y - CachedViewPosition.y) * (PositionA.y - CachedViewPosition.y) +
+				(PositionA.z - CachedViewPosition.z) * (PositionA.z - CachedViewPosition.z);
+
+			const float DistanceB =
+				(PositionB.x - CachedViewPosition.x) * (PositionB.x - CachedViewPosition.x) +
+				(PositionB.y - CachedViewPosition.y) * (PositionB.y - CachedViewPosition.y) +
+				(PositionB.z - CachedViewPosition.z) * (PositionB.z - CachedViewPosition.z);
+
+			return DistanceA > DistanceB;
+		});
+
+	for (std::weak_ptr<FRenderingData>& InRenderingData : SortedRenderDatas)
+	{
+		DrawObject(DeltaTime, InRenderingData);
+	}
 }

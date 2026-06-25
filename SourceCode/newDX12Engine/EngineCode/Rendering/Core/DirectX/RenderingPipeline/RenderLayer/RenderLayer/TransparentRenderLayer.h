@@ -15,6 +15,8 @@ public:
 
 	virtual int GetRenderLayerType() const { return 1; }
 	virtual void ResetPSO();
+	virtual void ResetPSO(EPipelineState InPipelineState);
+	virtual void DrawWithPipelineState(float DeltaTime, EPipelineState InPipelineState);
 
 private:
 	XMFLOAT4 CachedViewPosition;

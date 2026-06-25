@@ -124,6 +124,7 @@ void FRenderingPipeline::UpdateCalculations(float DeltaTime, const FViewportInfo
 	GeometryMap.DynamicShadowCubeMap.UpdateCalculations(DeltaTime, ViewportInfo);
 
 	DynamicCubeMap.UpdateCalculations(DeltaTime, ViewportInfo);
+	PlanarReflection.UpdateCalculations(DeltaTime, ViewportInfo);
 	GeometryMap.UpdateCalculations(DeltaTime, ViewportInfo);
 	RenderLayer.UpdateCalculations(DeltaTime, ViewportInfo);
 }
@@ -132,6 +133,7 @@ void FRenderingPipeline::OnResetSize(int InWidth, int InHeight)
 {
 	SSAO.OnResetSize(InWidth, InHeight);
 	DynamicCubeMap.OnResetSize(InWidth, InHeight);
+	PlanarReflection.OnResetSize(InWidth, InHeight);
 	GeometryMap.OnResetSize(InWidth, InHeight);
 	RenderLayer.OnResetSize(InWidth, InHeight);
 }
@@ -161,6 +163,11 @@ void FRenderingPipeline::BuildPipeline()
 	// 构建动态的CubeMap
 	// 動的キューブマップを構築する
 	DynamicCubeMap.Init(
+		&GeometryMap,
+		&DirectXPipelineState,
+		&RenderLayer);
+
+	PlanarReflection.Init(
 		&GeometryMap,
 		&DirectXPipelineState,
 		&RenderLayer);
@@ -200,10 +207,12 @@ void FRenderingPipeline::BuildPipeline()
 	// 构建动态反射Mesh
 	// 動的反射メッシュを構築する
 	GeometryMap.BuildDynamicReflectionMesh();
+	GeometryMap.BuildPlanarReflectionMesh();
 
 	// 构建常量描述堆
 	// 定数ディスクリプタヒープを構築する
 	GeometryMap.BuildDescriptorHeap();
+	PlanarReflection.BuildDescriptors();
 
 	// 构建SSAO描述堆
 	// 定数ディスクリプタヒープを構築する
@@ -230,10 +239,12 @@ void FRenderingPipeline::BuildPipeline()
 	// 构建RTVDes
 	// RTV記述を構築する
 	DynamicCubeMap.BuildRenderTargetDescriptor();
+	PlanarReflection.BuildDepthStencilDescriptor();
 
 	// 构建深度模板
 	// デプスステンシルを構築する
 	DynamicCubeMap.BuildDepthStencil();
+	PlanarReflection.Init(GetViewportWidth(), GetViewportHeight());
 
 	//构建阴影
 	// シャドウを構築する
@@ -250,6 +261,7 @@ void FRenderingPipeline::BuildPipeline()
 	// 构建灯光常量缓冲区
 	// ライト定数バッファを構築する
 	GeometryMap.BuildLightConstantBuffer();
+	GeometryMap.BuildPlanarReflectionConstantBuffer();
 
 	// 构建视口常量缓冲区视图
 	// ビューポート定数バッファビューを構築する
@@ -437,6 +449,22 @@ void FRenderingPipeline::Draw(float DeltaTime)
 		EndSetMainViewportRenderTarget();
 		GeometryMap.DrawViewport(DeltaTime);
 		GeometryMap.DrawCubeMapTexture(DeltaTime);
+#if IF_RENDER_DOC
+		EndRenderDocEvent();
+#endif
+	}
+
+	if (PlanarReflection.IsExitPlanarReflectionMesh())
+	{
+#if IF_RENDER_DOC
+		BeginRenderDocEvent("PlanarReflection");
+#endif
+		PlanarReflection.PreDraw(DeltaTime);
+
+		StartSetMainViewportRenderTarget();
+		EndSetMainViewportRenderTarget();
+		GeometryMap.DrawViewport(DeltaTime);
+		GeometryMap.Draw(DeltaTime);
 #if IF_RENDER_DOC
 		EndRenderDocEvent();
 #endif

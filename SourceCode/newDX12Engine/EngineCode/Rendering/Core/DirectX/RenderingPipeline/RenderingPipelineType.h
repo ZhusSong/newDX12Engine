@@ -16,6 +16,9 @@ enum EPipelineState
 	State_Normal = 20,         // 法线　　　　　　　　// 法線
 	State_SSAO = 21,           // SSAO
 	State_SSAO_Bilateral = 22, // SSAO双边模糊
+	PlanarOpaque = 23,         // 平面反射-不透明       // 平面反射-不透明
+	PlanarTransparent = 24,    // 平面反射-透明         // 平面反射-透明
+	PlanarReflector = 25,      // 平面反射-反射体       // 平面反射-反射体
 };
 
 // 渲染条件

@@ -12,5 +12,10 @@ public:
 
 	virtual void Draw(float DeltaTime);
 
-	void CreateMesh(float InHeight, float InWidth, uint32_t InHeightSubdivide, uint32_t InWidthSubdivide);
+	void CreateMesh(
+		float InHeight,
+		float InWidth,
+		uint32_t InHeightSubdivide,
+		uint32_t InWidthSubdivide,
+		const fvector_3d& InGenerateRotation = fvector_3d(0.f));
 };

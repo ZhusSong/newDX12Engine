@@ -13,6 +13,7 @@ CMaterial::CMaterial()
 	, Transparency(1.f)
 	, bUseGlass(false)
 	, bDynamicReflection(false)
+	, bPlanarReflection(false)
 	, Refractive(1.1f)
 {
 	Param0 = 0.f;
@@ -110,6 +111,12 @@ void CMaterial::SetMaterialIndex(int InNewIndex)
 void CMaterial::SetDynamicReflection(bool InDynamicReflection)
 {
 	bDynamicReflection = InDynamicReflection;
+
+	SetDirty(true);
+}
+void CMaterial::SetPlanarReflection(bool InPlanarReflection)
+{
+	bPlanarReflection = InPlanarReflection;
 
 	SetDirty(true);
 }

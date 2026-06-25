@@ -68,6 +68,10 @@ void FGeometryMap::Draw(float DeltaTime)
 	// 绘制雾
 	// フォグを描画
 	DrawFog(DeltaTime);
+
+	// 绘制平面反射常量
+	// 平面反射定数を描画
+	DrawPlanarReflectionConstantBuffer(DeltaTime);
 }
 
 void FGeometryMap::PostDraw(float DeltaTime)
@@ -95,6 +99,9 @@ void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& View
 	// 更新雾
 	// フォグを更新
 	UpdateFog(DeltaTime, ViewportInfo);
+
+	FPlanarReflectionConstantBuffer DefaultPlanarReflectionConstantBuffer;
+	UpdatePlanarReflectionConstantBuffer(DefaultPlanarReflectionConstantBuffer);
 
 	// 更新视口
 	// ビューポートを更新
@@ -172,6 +179,9 @@ void FGeometryMap::UpdateMaterialShaderResourceView(float DeltaTime, const FView
 				// メタリック度
 				MaterialConstantBuffer.Metallicity = EngineMath::ToFloat3(InMaterial->GetMetallicity());
 				MaterialConstantBuffer.UseGlass = InMaterial->IsUseGlass() ? 1.0f : 0.0f;
+				MaterialConstantBuffer.UsePlanarReflection = InMaterial->IsUsePlanarReflection() ? 1.0f : 0.0f;
+				MaterialConstantBuffer.MaterialPadding0 = 0.0f;
+				MaterialConstantBuffer.MaterialPadding1 = 0.0f;
 
 				// 外部资源导入
 				// 外部リソースのインポート
@@ -410,6 +420,8 @@ void FGeometryMap::BuildShadow()
 }
 void FGeometryMap::BuildDynamicReflectionMesh()
 {
+	DynamicReflectionMeshComponents.clear();
+
 	for (auto& Tmp : GObjects)
 	{
 		if (CMeshComponent* InMeshComponent = dynamic_cast<CMeshComponent*>(Tmp))
@@ -417,6 +429,22 @@ void FGeometryMap::BuildDynamicReflectionMesh()
 			if (InMeshComponent->IsDynamicReflection())
 			{
 				DynamicReflectionMeshComponents.push_back(InMeshComponent);
+			}
+		}
+	}
+}
+
+void FGeometryMap::BuildPlanarReflectionMesh()
+{
+	PlanarReflectionMeshComponents.clear();
+
+	for (auto& Tmp : GObjects)
+	{
+		if (CMeshComponent* InMeshComponent = dynamic_cast<CMeshComponent*>(Tmp))
+		{
+			if (InMeshComponent->IsPlanarReflection())
+			{
+				PlanarReflectionMeshComponents.push_back(InMeshComponent);
 			}
 		}
 	}
@@ -618,6 +646,19 @@ void FGeometryMap::BuildLightConstantBuffer()
 
 }
 
+void FGeometryMap::BuildPlanarReflectionConstantBuffer()
+{
+	UINT ConstantBufferCount = GetPlanarReflectionMeshComponentsSize() * 2 + 1;
+	if (ConstantBufferCount == 0)
+	{
+		ConstantBufferCount = 1;
+	}
+	PlanarReflectionConstantBufferViews.CreateConstant(sizeof(FPlanarReflectionConstantBuffer), ConstantBufferCount);
+
+	FPlanarReflectionConstantBuffer DefaultPlanarReflectionConstantBuffer;
+	PlanarReflectionConstantBufferViews.Update(0, &DefaultPlanarReflectionConstantBuffer);
+}
+
 UINT FGeometryMap::GetDrawMeshObjectNumber()
 {
 	return Geometrys[0].GetDrawObjectNumber();
@@ -633,7 +674,17 @@ UINT FGeometryMap::GetDrawLightObjectNumber()
 	return 1;
 }
 
+UINT FGeometryMap::GetImportedTexture2DResourcesNumber()
+{
+	return RenderingTexture2DResources->Size();
+}
+
 UINT FGeometryMap::GetDrawTexture2DResourcesNumber()
+{
+	return GetImportedTexture2DResourcesNumber() + 1;
+}
+
+UINT FGeometryMap::GetPlanarReflectionTextureIndex() const
 {
 	return RenderingTexture2DResources->Size();
 }
@@ -643,9 +694,17 @@ UINT FGeometryMap::GetDrawCubeMapResourcesNumber()
 	return RenderingCubeMapResources->Size();
 }
 
-UINT FGeometryMap::GetDynamicReflectionViewportNum()
+UINT FGeometryMap::GetDynamicReflectionViewportNum() const
 {
 	return DynamicReflectionMeshComponents.size() * 6;
+}
+
+UINT FGeometryMap::GetPlanarReflectionViewportOffset() const
+{
+	return 1 +
+		GetDynamicReflectionViewportNum() +
+		1 +
+		6;
 }
 void FGeometryMap::BuildTextureConstantBuffer()
 {
@@ -673,6 +732,7 @@ void FGeometryMap::BuildViewportConstantBufferView(UINT InViewportOffset)
 		GetDynamicReflectionViewportNum() + //动态反射的视口        // 動的反射用のビューポート
 		1 + //阴影视口                                              // シャドウビューポート
 		6 + //ShadowCubeMap(用于点光源阴影)                         //ShadowCubeMap（点光源用シャドウ）
+		1 + //平面反射视口                                          // 平面反射ビューポート
 		InViewportOffset);
 }
 
@@ -684,6 +744,16 @@ UINT FGeometryMap::GetDynamicReflectionMeshComponentsSize()
 CMeshComponent* FGeometryMap::GetDynamicReflectionMeshComponents(int Index)
 {
 	return DynamicReflectionMeshComponents[Index];
+}
+
+UINT FGeometryMap::GetPlanarReflectionMeshComponentsSize()
+{
+	return PlanarReflectionMeshComponents.size();
+}
+
+CMeshComponent* FGeometryMap::GetPlanarReflectionMeshComponents(int Index)
+{
+	return PlanarReflectionMeshComponents[Index];
 }
 
 UINT FGeometryMap::GetViewportConstantBufferByteSize()
@@ -772,6 +842,23 @@ void FGeometryMap::DrawFog(float DeltaTime)
 	GetGraphicsCommandList()->SetGraphicsRootConstantBufferView(
 		3,
 		FogConstantBufferViews.GetBuffer()->GetGPUVirtualAddress());
+}
+
+void FGeometryMap::DrawPlanarReflectionConstantBuffer(float DeltaTime, UINT InIndex)
+{
+	UINT ConstantBufferByteSize = PlanarReflectionConstantBufferViews.GetConstantBufferByteSize();
+	D3D12_GPU_VIRTUAL_ADDRESS GPUVirtualAddress =
+		PlanarReflectionConstantBufferViews.GetBuffer()->GetGPUVirtualAddress() +
+		InIndex * ConstantBufferByteSize;
+
+	GetGraphicsCommandList()->SetGraphicsRootConstantBufferView(
+		10,
+		GPUVirtualAddress);
+}
+
+void FGeometryMap::UpdatePlanarReflectionConstantBuffer(const FPlanarReflectionConstantBuffer& InData, UINT InIndex)
+{
+	PlanarReflectionConstantBufferViews.Update(InIndex, &InData);
 }
 
 void FGeometry::BuildMesh(

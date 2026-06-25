@@ -18,5 +18,8 @@ FMaterialConstantBuffer::FMaterialConstantBuffer()
 	, Refraction(1.1f)
 	, Metallicity(0.2f, 0.2f, 0.2f)
 	, UseGlass(0.f)
+	, UsePlanarReflection(0.f)
+	, MaterialPadding0(0.f)
+	, MaterialPadding1(0.f)
 {
 }
