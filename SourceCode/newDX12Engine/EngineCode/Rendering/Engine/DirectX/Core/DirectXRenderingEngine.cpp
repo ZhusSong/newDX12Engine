@@ -677,7 +677,7 @@ int CDirectXRenderingEngine::PostInit()
 			}
 		}
 
-		// 镜子
+		// 鏡
 		if (GPlaneMesh* PlaneMesh = World->CreateActorObject<GPlaneMesh>())
 		{
 			PlaneMesh->SetMeshRenderLayerType(EMeshRenderLayerType::RENDERLAYER_OPAQUE_REFLECTOR);
@@ -810,7 +810,108 @@ int CDirectXRenderingEngine::PostInit()
 				}
 			}
 		}
+		// 2D
+		if (GSpriteQuadMesh* SpriteMesh = World->CreateActorObject<GSpriteQuadMesh>())
+		{
+			SpriteMesh->CreateMesh(1.f, 1.f);
+			SpriteMesh->SetPosition(XMFLOAT3(-12.f, -2.f, 18.f));
+			SpriteMesh->SetScale(fvector_3d(1.f, 1.f, 1.f));
+			SpriteMesh->SetRotation(fvector_3d(0.f, 0.f, 0.f));
+			SpriteMesh->SetCastShadow(false);
+			SpriteMesh->SetPickup(false);
 
+			if (CSpriteComponent* SpriteComponent = SpriteMesh->GetSpriteComponent())
+			{
+				const int CatFrameCount = 16;
+
+				SpriteComponent->SetPixelsPerUnit(64.f);
+				SpriteComponent->SetAutoSizeToFrame(true);
+				SpriteComponent->SetOpacity(1.f);
+				if (CSpriteAtlasManager::GenerateGridAtlasXML(
+					"Sprite/Chara_01_Stand.png",
+					"Sprite/Chara_01_Stand.xml",
+					10,
+					1,
+					"Chara01",
+					CatFrameCount))
+				{
+					SpriteComponent->LoadAtlas("Chara01", "Sprite/Chara_01_Stand.xml");
+				}
+
+				BUILD_OBJECT_PARAMETERS_BY_COMPONENT(SpriteAnimation, SpriteComponent);
+				if (CSpriteAnimationComponent* SpriteAnimation = CreateObject<CSpriteAnimationComponent>(ParamSpriteAnimation, new CSpriteAnimationComponent()))
+				{
+					SpriteAnimation->SetSpriteComponent(SpriteComponent);
+
+					CSpriteAnimationClip ShootClip;
+					ShootClip.SetName("Stand");
+					ShootClip.SetFramesPerSecond(2.f);
+					ShootClip.SetLoop(true);
+
+					for (int FrameIndex = 0; FrameIndex < CatFrameCount; ++FrameIndex)
+					{
+						char FrameName[64] = { 0 };
+						sprintf(FrameName, "Chara01_%02d", FrameIndex);
+						ShootClip.AddFrame(FrameName);
+					}
+
+					SpriteAnimation->AddClip(ShootClip);
+					SpriteAnimation->Play("Stand");
+				}
+			}
+		}
+
+
+		// 2D
+		if (GSpriteQuadMesh* SpriteMesh = World->CreateActorObject<GSpriteQuadMesh>())
+		{
+			SpriteMesh->CreateMesh(1.f, 1.f);
+			SpriteMesh->SetPosition(XMFLOAT3(-10.f, -2.f, 18.f));
+			SpriteMesh->SetScale(fvector_3d(1.f, 1.f, 1.f));
+			SpriteMesh->SetRotation(fvector_3d(0.f, 0.f, 0.f));
+			SpriteMesh->SetCastShadow(false);
+			SpriteMesh->SetPickup(false);
+
+			if (CSpriteComponent* SpriteComponent = SpriteMesh->GetSpriteComponent())
+			{
+				const int CatFrameCount = 16;
+
+				SpriteComponent->SetPixelsPerUnit(64.f);
+				SpriteComponent->SetAutoSizeToFrame(true);
+				SpriteComponent->SetOpacity(1.f);
+				if (CSpriteAtlasManager::GenerateGridAtlasXML(
+					"Sprite/Chara_01_Walk.png",
+					"Sprite/Chara_01_Walk.xml",
+					10,
+					1,
+					"Chara02",
+					CatFrameCount))
+				{
+					SpriteComponent->LoadAtlas("Chara02", "Sprite/Chara_01_Walk.xml");
+				}
+
+				BUILD_OBJECT_PARAMETERS_BY_COMPONENT(SpriteAnimation, SpriteComponent);
+				if (CSpriteAnimationComponent* SpriteAnimation = CreateObject<CSpriteAnimationComponent>(ParamSpriteAnimation, new CSpriteAnimationComponent()))
+				{
+					SpriteAnimation->SetSpriteComponent(SpriteComponent);
+
+					CSpriteAnimationClip ShootClip;
+					ShootClip.SetName("Walk");
+					ShootClip.SetFramesPerSecond(2.f);
+					ShootClip.SetLoop(true);
+
+					for (int FrameIndex = 0; FrameIndex < CatFrameCount; ++FrameIndex)
+					{
+						char FrameName[64] = { 0 };
+						sprintf(FrameName, "Chara02_%02d", FrameIndex);
+						ShootClip.AddFrame(FrameName);
+					}
+
+					SpriteAnimation->AddClip(ShootClip);
+					SpriteAnimation->Play("Walk");
+				}
+			}
+		}
 		////PBR模型组
 		//  PBRモデルグループ
 		//{
