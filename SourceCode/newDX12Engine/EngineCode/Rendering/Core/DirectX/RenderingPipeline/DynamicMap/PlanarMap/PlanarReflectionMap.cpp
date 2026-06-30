@@ -1,4 +1,4 @@
-﻿#include "PlanarReflectionMap.h"
+#include "PlanarReflectionMap.h"
 #include "../../Geometry/GeometryMap.h"
 #include "../../PipelineState/DirectXPipelineState.h"
 #include "../../RenderLayer/RenderLayerManager.h"
@@ -9,8 +9,45 @@
 #include "../../../../../../Config/EngineRenderConfig.h"
 #include "../../../../../../Component/Mesh/Core/MeshComponentType.h"
 #include "../../../../../../Component/Mesh/Core/MeshComponent.h"
+#include "../../../../../../Component/Mesh/PlaneMeshComponent.h"
 #include "../../../../../../Mesh/Core/Material/Material.h"
+#include "../../../../../../Math/EngineMath.h"
 #include <cmath>
+
+namespace
+{
+	XMFLOAT3 NormalizeDirection(const XMFLOAT3& InDirection)
+	{
+		XMFLOAT3 OutDirection;
+		XMStoreFloat3(
+			&OutDirection,
+			XMVector3Normalize(XMLoadFloat3(&InDirection)));
+		return OutDirection;
+	}
+
+	XMFLOAT3 TransformLocalNormalToWorld(
+		const XMFLOAT3& InLocalNormal,
+		CMeshComponent* InMirrorMesh)
+	{
+		XMFLOAT4X4 WorldMatrix;
+		EngineMath::BuildMatrix(
+			WorldMatrix,
+			InMirrorMesh->GetPosition(),
+			InMirrorMesh->GetScale(),
+			InMirrorMesh->GetRightVector(),
+			InMirrorMesh->GetUPVector(),
+			InMirrorMesh->GetForwardVector());
+
+		XMFLOAT3 OutNormal;
+		XMStoreFloat3(
+			&OutNormal,
+			XMVector3Normalize(
+				XMVector3TransformNormal(
+					XMLoadFloat3(&InLocalNormal),
+					XMLoadFloat4x4(&WorldMatrix))));
+		return OutNormal;
+	}
+}
 
 FPlanarReflectionMap::FPlanarReflectionMap()
 	: Super()
@@ -308,8 +345,10 @@ void FPlanarReflectionMap::BuildReflectedViewport(
 	XMFLOAT3 ReflectedUp = ReflectVector(CameraUp, MirrorNormal);
 
 	XMVECTOR ReflectedPositionVector = XMLoadFloat3(&ReflectedPosition);
-	XMVECTOR ReflectedForwardVector = XMLoadFloat3(&ReflectedForward);
-	XMVECTOR ReflectedUpVector = XMLoadFloat3(&ReflectedUp);
+	XMVECTOR ReflectedForwardVector = XMVector3Normalize(XMLoadFloat3(&ReflectedForward));
+	XMVECTOR ReflectedUpVector = XMVector3Normalize(XMLoadFloat3(&ReflectedUp));
+	XMVECTOR ReflectedRightVector = XMVector3Normalize(XMVector3Cross(ReflectedUpVector, ReflectedForwardVector));
+	ReflectedUpVector = XMVector3Normalize(XMVector3Cross(ReflectedForwardVector, ReflectedRightVector));
 	XMVECTOR ReflectedTargetVector = ReflectedPositionVector + ReflectedForwardVector;
 
 	XMMATRIX ReflectedViewMatrix = XMMatrixLookAtLH(
@@ -421,6 +460,36 @@ XMFLOAT3 FPlanarReflectionMap::ReflectVector(const XMFLOAT3& InVector, const XMF
 
 XMFLOAT3 FPlanarReflectionMap::GetMirrorPlaneNormal(CMeshComponent* InMirrorMesh)
 {
+	InMirrorMesh->CorrectionVector();
+
+	if (dynamic_cast<CPlaneMeshComponent*>(InMirrorMesh))
+	{
+		XMFLOAT3 PlaneLocalNormal(0.f, 1.f, 0.f);
+
+		FGeometry::FindRenderingDatas(
+			[&](std::shared_ptr<FRenderingData>& InRenderingData)->EFindValueType
+			{
+				if (!InRenderingData ||
+					InRenderingData->Mesh != InMirrorMesh ||
+					InRenderingData->MeshRenderingData == nullptr)
+				{
+					return EFindValueType::TYPE_IN_PROGRAM;
+				}
+
+				const FMeshRenderingData* MeshRenderingData = InRenderingData->MeshRenderingData;
+				if (InRenderingData->VertexOffsetPosition < MeshRenderingData->VertexData.size())
+				{
+					PlaneLocalNormal =
+						MeshRenderingData->VertexData[InRenderingData->VertexOffsetPosition].Normal;
+					return EFindValueType::TYPE_COMPLETE;
+				}
+
+				return EFindValueType::TYPE_IN_PROGRAM;
+			});
+
+		return TransformLocalNormalToWorld(PlaneLocalNormal, InMirrorMesh);
+	}
+
 	BoundingBox Bounds = InMirrorMesh->GetBoundingBox();
 	fvector_3d Scale = InMirrorMesh->GetScale();
 
@@ -438,7 +507,5 @@ XMFLOAT3 FPlanarReflectionMap::GetMirrorPlaneNormal(CMeshComponent* InMirrorMesh
 		MirrorNormal = InMirrorMesh->GetUPVector();
 	}
 
-	XMVECTOR MirrorNormalVector = XMVector3Normalize(XMLoadFloat3(&MirrorNormal));
-	XMStoreFloat3(&MirrorNormal, MirrorNormalVector);
-	return MirrorNormal;
+	return NormalizeDirection(MirrorNormal);
 }
