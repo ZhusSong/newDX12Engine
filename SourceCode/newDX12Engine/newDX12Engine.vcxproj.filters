@@ -167,6 +167,9 @@
     <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\DynamicShadowMap">
       <UniqueIdentifier>{e7058d27-f335-49be-9349-9f3bd7b4010b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\PlanarMap">
+      <UniqueIdentifier>{d9d87441-55b2-4e79-89aa-6b2ca19c48e1}</UniqueIdentifier>
+    </Filter>
     <Filter Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\Core">
       <UniqueIdentifier>{a138d020-2c90-4ad0-b389-bfee485a8bc9}</UniqueIdentifier>
     </Filter>
@@ -196,9 +199,6 @@
     </Filter>
     <Filter Include="EditorEngine\Core">
       <UniqueIdentifier>{a032bb4d-151d-46fb-a11e-5779e49ade72}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="EngineCode\Library">
-      <UniqueIdentifier>{006bafab-5f8e-42dc-9bb7-5d7b9abaf2aa}</UniqueIdentifier>
     </Filter>
     <Filter Include="EngineCode\Collision">
       <UniqueIdentifier>{d4b4a213-ca51-42f1-bfc8-2c03daf4f3dd}</UniqueIdentifier>
@@ -241,6 +241,9 @@
     </Filter>
     <Filter Include="Shaders\AO">
       <UniqueIdentifier>{4f2d51ec-9b4c-4ec9-9e04-6ea0a8444959}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineCode\Rendering\Library">
+      <UniqueIdentifier>{006bafab-5f8e-42dc-9bb7-5d7b9abaf2aa}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -353,6 +356,9 @@
       <Filter>EngineCode\Core\Viewport</Filter>
     </ClCompile>
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\ConstantBuffer\ConstantBufferViews.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\ConstantBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\ConstantBuffer\PlanarReflectionConstantBuffer.cpp">
       <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\ConstantBuffer</Filter>
     </ClCompile>
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DescriptorHeap\DirectXDescriptorHeap.cpp">
@@ -556,6 +562,9 @@
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\CubeMap\DynamicReflectionCubeMap.cpp">
       <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\DynamicCubeMap</Filter>
     </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\PlanarMap\PlanarReflectionMap.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\PlanarMap</Filter>
+    </ClCompile>
     <ClCompile Include="imgui\backends\imgui_impl_dx12.cpp">
       <Filter>imgui\backends</Filter>
     </ClCompile>
@@ -596,7 +605,7 @@
       <Filter>EngineCode</Filter>
     </ClCompile>
     <ClCompile Include="EngineCode\Library\RaycastSystemLibrary.cpp">
-      <Filter>EngineCode\Library</Filter>
+      <Filter>EngineCode\Rendering\Library</Filter>
     </ClCompile>
     <ClCompile Include="EngineCode\Collision\CollisionSceneQuery.cpp">
       <Filter>EngineCode\Collision</Filter>
@@ -644,6 +653,9 @@
       <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\AmbientOcclusion\ScreenSpace</Filter>
     </ClCompile>
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\BufferRenderTarget.cpp">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\PlanarMapRenderTarget.cpp">
       <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget</Filter>
     </ClCompile>
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\BufferRenderLayer\NormalBufferRenderLayer.cpp">
@@ -803,6 +815,9 @@
       <Filter>EngineCode\Core</Filter>
     </ClInclude>
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\ConstantBuffer\ConstantBufferViews.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\ConstantBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\ConstantBuffer\PlanarReflectionConstantBuffer.h">
       <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\ConstantBuffer</Filter>
     </ClInclude>
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DescriptorHeap\DirectXDescriptorHeap.h">
@@ -1021,6 +1036,9 @@
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\CubeMap\DynamicReflectionCubeMap.h">
       <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\DynamicCubeMap</Filter>
     </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\PlanarMap\PlanarReflectionMap.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\PlanarMap</Filter>
+    </ClInclude>
     <ClInclude Include="imgui\backends\imgui_impl_dx12.h">
       <Filter>imgui\backends</Filter>
     </ClInclude>
@@ -1073,7 +1091,7 @@
       <Filter>EngineCode</Filter>
     </ClInclude>
     <ClInclude Include="EngineCode\Library\RaycastSystemLibrary.h">
-      <Filter>EngineCode\Library</Filter>
+      <Filter>EngineCode\Rendering\Library</Filter>
     </ClInclude>
     <ClInclude Include="EngineCode\Collision\CollisionSceneQuery.h">
       <Filter>EngineCode\Collision</Filter>
@@ -1123,6 +1141,9 @@
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\BufferRenderTarget.h">
       <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget</Filter>
     </ClInclude>
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\PlanarMapRenderTarget.h">
+      <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget</Filter>
+    </ClInclude>
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\BufferRenderLayer\NormalBufferRenderLayer.h">
       <Filter>EngineCode\Rendering\Core\DirectX\RenderingPipeline\RednerLayer\BufferRednerLayer</Filter>
     </ClInclude>
@@ -1162,6 +1183,7 @@
     <ClInclude Include="EngineCode\Debug\Log\SimpleLog.h">
       <Filter>EngineCode\Debug\Log</Filter>
     </ClInclude>
+    <ClInclude Include="ThirdParty\RenderDoc\renderdoc_app.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Shaders\Fog.hlsli">

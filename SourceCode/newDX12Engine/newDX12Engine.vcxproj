@@ -105,10 +105,12 @@
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\AmbientOcclusion\ScreenSpace\ScreenSpaceAmbientOcclusion.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\AmbientOcclusion\ScreenSpace\SSAOType.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\ConstantBuffer\ConstantBufferViews.cpp" />
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\ConstantBuffer\PlanarReflectionConstantBuffer.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DescriptorHeap\DirectXDescriptorHeap.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\Core\DynamicCubeMap.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\Core\DynamicMap.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\CubeMap\DynamicReflectionCubeMap.cpp" />
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\PlanarMap\PlanarReflectionMap.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\ShadowMap\DynamicShadowCubeMap.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\ShadowMap\DynamicShadowMap.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\Geometry\GeometryMap.cpp" />
@@ -136,6 +138,7 @@
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\SSAORenderLayer.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\TransparentRenderLayer.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\BufferRenderTarget.cpp" />
+    <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\PlanarMapRenderTarget.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\Core\RenderTarget.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\CubeMapRenderTarget.cpp" />
     <ClCompile Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\ShadowMapRenderTarget.cpp" />
@@ -264,10 +267,12 @@
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\AmbientOcclusion\ScreenSpace\ScreenSpaceAmbientOcclusion.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\AmbientOcclusion\ScreenSpace\SSAOType.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\ConstantBuffer\ConstantBufferViews.h" />
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\ConstantBuffer\PlanarReflectionConstantBuffer.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DescriptorHeap\DirectXDescriptorHeap.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\Core\DynamicCubeMap.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\Core\DynamicMap.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\CubeMap\DynamicReflectionCubeMap.h" />
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\PlanarMap\PlanarReflectionMap.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\ShadowMap\DynamicShadowCubeMap.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\ShadowMap\DynamicShadowMap.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\Geometry\GeometryMap.h" />
@@ -296,6 +301,7 @@
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\SSAORenderLayer.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderLayer\RenderLayer\TransparentRenderLayer.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\BufferRenderTarget.h" />
+    <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\PlanarMapRenderTarget.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\Core\RenderTarget.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\CubeMapRenderTarget.h" />
     <ClInclude Include="EngineCode\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\ShadowMapRenderTarget.h" />
