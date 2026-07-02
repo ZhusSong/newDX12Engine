@@ -45,9 +45,9 @@ void FScreenSpaceAmbientOcclusion::OnResetSize(int InWidth, int InHeight)
 void FScreenSpaceAmbientOcclusion::Draw(float DeltaTime)
 {
 	NormalBuffer.Draw(DeltaTime);
-	AmbientBuffer.Draw(DeltaTime);
-	NoiseBuffer.Draw(DeltaTime);
-	BilateralBlur.Draw(DeltaTime);
+	//AmbientBuffer.Draw(DeltaTime);
+	//NoiseBuffer.Draw(DeltaTime);
+	//BilateralBlur.Draw(DeltaTime);
 
 	DirectXRootSignature.PreDraw(DeltaTime);
 
@@ -237,7 +237,9 @@ void FScreenSpaceAmbientOcclusion::DrawViewConstantBufferViews(float DeltaTime, 
 	XMMATRIX TexProjectionMatrixRIX = XMMatrixMultiply(ProjectMatrixRIX, HalLambertMatrix);
 	XMStoreFloat4x4(&SSAOViewportTransformation.TexProjectionMatrix, XMMatrixTranspose(TexProjectionMatrixRIX));
 
-	SSAOViewportTransformation.OcclusionRadius = 0.5f;
+	// 参数设置
+	// パラメータ設定
+	SSAOViewportTransformation.OcclusionRadius = 2.0f;
 	SSAOViewportTransformation.OcclusionStart = 0.2f;
 	SSAOViewportTransformation.OcclusionEnd = 2.0f;
 	SSAOViewportTransformation.ObscurationThreshold = 0.05f;

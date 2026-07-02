@@ -1,7 +1,7 @@
 #include "AOFunctionLibrary.hlsli"
 
-static const float GContactStrength = 1.68f;
-static const float GContactBias = 0.022f;
+static const float GContactStrength = 1.5f;
+static const float GContactBias = 0.02f;
 
 struct MeshVertexOut
 {
