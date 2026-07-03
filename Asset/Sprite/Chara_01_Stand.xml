@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="Chara_01_Stand.png" width="1630" height="388">
+  <SubTexture name="Chara01_00" x="0" y="0" width="163" height="388" />
+  <SubTexture name="Chara01_01" x="163" y="0" width="163" height="388" />
+  <SubTexture name="Chara01_02" x="326" y="0" width="163" height="388" />
+  <SubTexture name="Chara01_03" x="489" y="0" width="163" height="388" />
+  <SubTexture name="Chara01_04" x="652" y="0" width="163" height="388" />
+  <SubTexture name="Chara01_05" x="815" y="0" width="163" height="388" />
+  <SubTexture name="Chara01_06" x="978" y="0" width="163" height="388" />
+  <SubTexture name="Chara01_07" x="1141" y="0" width="163" height="388" />
+  <SubTexture name="Chara01_08" x="1304" y="0" width="163" height="388" />
+  <SubTexture name="Chara01_09" x="1467" y="0" width="163" height="388" />
+</TextureAtlas>

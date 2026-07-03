@@ -88,8 +88,17 @@ CDirectXRenderingEngine::CDirectXRenderingEngine()
 
 CDirectXRenderingEngine::~CDirectXRenderingEngine()
 {
-	delete MeshManager;
-	delete LightManager;
+	if (MeshManager)
+	{
+		delete MeshManager;
+		MeshManager = nullptr;
+	}
+
+	if (LightManager)
+	{
+		delete LightManager;
+		LightManager = nullptr;
+	}
 }
 
 int CDirectXRenderingEngine::PreInit(FWinMainCommandParameters InParameters)
@@ -1260,6 +1269,18 @@ int CDirectXRenderingEngine::PostExit()
 {
 	FEngineRenderConfig::Destroy();
 
+	// Release rendering-owned D3D objects before tearing down the device itself.
+	if (MeshManager)
+	{
+		delete MeshManager;
+		MeshManager = nullptr;
+	}
+
+	if (LightManager)
+	{
+		delete LightManager;
+		LightManager = nullptr;
+	}
 
 	ReleaseD3DObjects();
 	Engine_Log("Engine post exit complete.");

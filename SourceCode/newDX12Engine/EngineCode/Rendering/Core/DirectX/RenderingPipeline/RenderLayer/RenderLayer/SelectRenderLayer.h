@@ -13,4 +13,5 @@ public:
 	virtual void BuildShader();
 	virtual void BuildPSO();
 	virtual int GetRenderLayerType() const { return 9; }
+	virtual bool ShouldDrawInCurrentLayer(const FRenderingData& InRenderingData, const CMaterial* InMaterial) const override;
 };

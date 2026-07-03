@@ -93,3 +93,10 @@ void FSelectRenderLayer::Draw(float DeltaTime)
 
 	Super::Draw(DeltaTime);
 }
+
+bool FSelectRenderLayer::ShouldDrawInCurrentLayer(const FRenderingData& InRenderingData, const CMaterial* InMaterial) const
+{
+	// The selection pass stores the original mesh in a dedicated layer list,
+	// so it must not be filtered back out by the mesh's source render layer.
+	return true;
+}
